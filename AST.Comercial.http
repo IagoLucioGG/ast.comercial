@@ -1,0 +1,6 @@
+@AST.Comercial_HostAddress = http://localhost:5080
+
+GET {{AST.Comercial_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AST.Comercial - API</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6}.container{max-width:1200px;margin:0 auto;padding:2rem}h1{color:#818cf8;font-size:2rem;margin-bottom:.5rem}h2{color:#a78bfa;font-size:1.4rem;margin:2rem 0 1rem;border-bottom:1px solid #334155;padding-bottom:.5rem}.subtitle{color:#94a3b8;margin-bottom:2rem}.section{background:#1e293b;border-radius:8px;padding:1.5rem;margin-bottom:1.5rem}.ep{background:#0f172a;border:1px solid #334155;border-radius:6px;padding:.6rem 1rem;margin:.4rem 0;font-family:monospace;font-size:.85rem}.m{display:inline-block;padding:2px 8px;border-radius:4px;font-weight:bold;font-size:.7rem;margin-right:8px}.get{background:#065f46;color:#6ee7b7}.post{background:#92400e;color:#fcd34d}.patch{background:#1e40af;color:#93c5fd}.del{background:#991b1b;color:#fca5a5}.tag{display:inline-block;background:#312e81;color:#a5b4fc;padding:2px 8px;border-radius:4px;font-size:.7rem;margin:2px}table{width:100%;border-collapse:collapse;margin:1rem 0}th,td{text-align:left;padding:.5rem;border-bottom:1px solid #334155;font-size:.85rem}th{color:#a78bfa}code{background:#1e1b4b;padding:2px 6px;border-radius:3px;font-size:.85rem}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}.card{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:1rem}.card h4{color:#818cf8;margin-bottom:.5rem}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>AST.Comercial API</h1>
+<p class="subtitle">API OData - $filter, $select, $expand, $orderby, $top, $skip, $count</p>
+
+<h2>Autenticacao</h2>
+<div class="section">
+<p><b>JWT:</b> <code>Authorization: Bearer {token}</code></p>
+<div class="ep"><span class="m post">POST</span>/api/Autenticacao/login</div>
+<div class="ep"><span class="m post">POST</span>/api/Autenticacao/refresh</div>
+<p style="margin-top:.5rem"><b>API Key:</b> <code>X-Api-Key: {chave}</code></p>
+</div>
+
+<h2>Endpoints</h2>
+<div class="grid">
+<div class="card"><h4>Clientes</h4><div class="ep"><span class="m get">GET</span>/odata/Clientes</div><div class="ep"><span class="m post">POST</span>/odata/Clientes</div><div class="ep"><span class="m patch">PATCH</span>/odata/Clientes({id})</div><span class="tag">@Origens</span><span class="tag">@Status</span><span class="tag">@RamosAtividade</span><span class="tag">@Portes</span></div>
+<div class="card"><h4>Negocios</h4><div class="ep"><span class="m get">GET</span>/odata/Negocios</div><div class="ep"><span class="m post">POST</span>/odata/Negocios({id})/Ganhar</div><div class="ep"><span class="m post">POST</span>/odata/Negocios({id})/Perder</div><span class="tag">@Status</span><span class="tag">@MotivosPerda</span><span class="tag">@Funis</span><span class="tag">@Etapas</span></div>
+<div class="card"><h4>Propostas</h4><div class="ep"><span class="m get">GET</span>/odata/Propostas</div><div class="ep"><span class="m post">POST</span>...({id})/Aprovar</div><span class="tag">@Produtos</span><span class="tag">@Secoes</span><span class="tag">@Parcelas</span></div>
+<div class="card"><h4>Produtos</h4><div class="ep"><span class="m get">GET</span>/odata/Produtos</div><span class="tag">@Familias</span><span class="tag">@Grupos</span></div>
+<div class="card"><h4>Campos</h4><div class="ep"><span class="m get">GET</span>/odata/Campos</div><div class="ep"><span class="m get">GET</span>/odata/Campos@Esquema({entidade})</div><span class="tag">@Opcoes</span><span class="tag">@Regras</span><span class="tag">@Configuracoes</span><span class="tag">@Valores</span></div>
+<div class="card"><h4>Automacoes</h4><div class="ep"><span class="m get">GET</span>/odata/Automacoes</div><span class="tag">@Fila</span><span class="tag">@Logs</span><span class="tag">@Gatilhos</span><span class="tag">@Acoes</span></div>
+<div class="card"><h4>Integracoes</h4><div class="ep"><span class="m get">GET</span>/odata/Integracoes</div><div class="ep"><span class="m post">POST</span>/integracoes/callback/{chave}</div><span class="tag">@Mapeamentos</span><span class="tag">@Fluxos</span><span class="tag">@Etapas</span><span class="tag">@Logs</span></div>
+<div class="card"><h4>Formularios</h4><div class="ep"><span class="m get">GET</span>/odata/Formularios</div><span class="tag">@Secoes</span><span class="tag">@Campos</span></div>
+<div class="card"><h4>FluxosAprovacao</h4><div class="ep"><span class="m get">GET</span>/odata/FluxosAprovacao</div><span class="tag">@Niveis</span><span class="tag">@Solicitacoes</span></div>
+<div class="card"><h4>Outros</h4><div class="ep"><span class="m get">GET</span>/odata/Atividades, Funis, Usuarios, Empresas, Equipes, Departamentos, Cargos, Etiquetas, Moedas, Localidades, PessoasContato</div></div>
+</div>
+
+<h2>OData Query</h2>
+<div class="section">
+<table>
+<tr><th>Operacao</th><th>Exemplo</th></tr>
+<tr><td>Filtrar</td><td><code>?$filter=Nome eq 'Alterdata'</code></td></tr>
+<tr><td>Expandir</td><td><code>?$expand=Cliente,Funil,Etapa</code></td></tr>
+<tr><td>Selecionar</td><td><code>?$select=Nome,Preco</code></td></tr>
+<tr><td>Ordenar</td><td><code>?$orderby=Valor desc</code></td></tr>
+<tr><td>Paginar</td><td><code>?$top=10&$skip=20&$count=true</code></td></tr>
+<tr><td>OutrasPropriedades</td><td><code>?$expand=OutrasPropriedades($expand=Campo)</code></td></tr>
+</table>
+</div>
+</div>
+</body>
+</html>

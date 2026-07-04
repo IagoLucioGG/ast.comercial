@@ -16,7 +16,7 @@ public class RateLimitMiddleware(RequestDelegate next)
 
     private const int LimiteUsuarioNormal = 120;
     private const int LimiteIntegracao = 300;
-    private const int LimiteAnonimo = 30;
+    private const int LimiteAnonimo = 60;
     private const int JanelaSegundos = 60;
     private const int IntervaloLimpezaMinutos = 5;
 

@@ -9,11 +9,12 @@ namespace AST.Comercial.Domain.Entidades;
 /// </summary>
 public static class ContextoFormula
 {
-    private const int ProfundidadeMaxima = 3;
+    private const int ProfundidadeMaxima = 2;
 
     private static readonly HashSet<string> PropriedadesIgnoradas =
     [
-        "Id", "EmpresaId", "CriadoEm", "AtualizadoEm", "Ativo", "OutrasPropriedades"
+        "Id", "EmpresaId", "CriadoEm", "AtualizadoEm", "Ativo", "OutrasPropriedades",
+        "SenhaHash", "TokenIntegracao"
     ];
 
     private static readonly HashSet<Type> TiposIgnorados =
@@ -51,25 +52,36 @@ public static class ContextoFormula
         var resultado = new Dictionary<string, EsquemaNavegacao>
         {
             ["$registro"] = GerarEsquema(tipo, 0),
-            ["$campos"] = new EsquemaNavegacao { Tipo = "object", Descricao = "Campos personalizados (chave → valor)" },
-            ["$usuario"] = GerarEsquema(typeof(Usuario), 0, maxNivel: 0),
-            ["$empresa"] = GerarEsquema(typeof(Empresa), 0, maxNivel: 0)
+            ["$campos"] = new EsquemaNavegacao { Tipo = "object", Descricao = "Campos personalizados (chave → valor)" }
         };
 
+        // Só adiciona $usuario e $empresa como atalho se NÃO forem o próprio $registro
+        if (tipo != typeof(Usuario))
+            resultado["$usuario"] = GerarEsquema(typeof(Usuario), 0, maxNivel: 0);
+
+        if (tipo != typeof(Empresa))
+            resultado["$empresa"] = GerarEsquema(typeof(Empresa), 0, maxNivel: 0);
+
+        // Adiciona navegações como atalhos, mas só as que NÃO são redundantes
+        // com $usuario/$empresa e NÃO são o próprio tipo do $registro
         var navegacoes = ObterNavegacoes(tipo);
         foreach (var (nome, tipoNav) in navegacoes)
         {
+            if (tipoNav == tipo) continue;
             var chave = $"${char.ToLower(nome[0])}{nome[1..]}";
             if (!resultado.ContainsKey(chave))
-                resultado[chave] = GerarEsquema(tipoNav, 0);
+                resultado[chave] = GerarEsquema(tipoNav, 0, maxNivel: 1);
         }
 
         return resultado;
     }
 
-    private static EsquemaNavegacao GerarEsquema(Type tipo, int nivelAtual, int? maxNivel = null)
+    private static EsquemaNavegacao GerarEsquema(Type tipo, int nivelAtual, int? maxNivel = null, HashSet<Type>? visitados = null)
     {
         var limite = maxNivel ?? ProfundidadeMaxima;
+        visitados ??= [];
+        visitados.Add(tipo);
+
         var esquema = new EsquemaNavegacao
         {
             Tipo = tipo.Name,
@@ -92,7 +104,10 @@ public static class ContextoFormula
             }
             else if (nivelAtual < limite && EhNavegacaoUnica(prop) && !TiposIgnorados.Contains(tipoProp))
             {
-                esquema.Propriedades[prop.Name] = GerarEsquema(tipoProp, nivelAtual + 1, maxNivel);
+                // Evita recursão circular (ex: Departamento.DepartamentoPai.DepartamentoPai...)
+                if (visitados.Contains(tipoProp)) continue;
+
+                esquema.Propriedades[prop.Name] = GerarEsquema(tipoProp, nivelAtual + 1, maxNivel, [.. visitados]);
             }
         }
 

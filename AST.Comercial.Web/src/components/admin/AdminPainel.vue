@@ -95,7 +95,8 @@ const componentes: Record<string, any> = {
 
 .painel-content {
   flex: 1;
-  padding: 24px;
+  padding: 16px;
+  overflow-y: auto;
   overflow-y: auto;
 }
 

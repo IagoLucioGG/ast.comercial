@@ -2,15 +2,15 @@
 import { ref, onMounted, computed } from 'vue'
 import { odataGet, odataPost, odataPatch, odataDelete } from '@/services/api'
 
-interface Visualizacao { Id: number; Nome: string; Filtro: string | null; Ordenacao: string | null; ItensPorPagina: number; Padrao: boolean; Ordem: number; UsuariosVisiveis: string | null }
+interface Visualizacao { Id: number; Nome: string; Filtro: string | null; Ordenacao: string | null; ItensPorPagina: number; Padrao: boolean; Ordem: number; UsuariosVisiveis: string | null; Colunas: string | null }
 interface NodoSchema { nome: string; tipo: string; filhos?: NodoSchema[] }
 interface Condicao { id: number; caminho: string; label: string; operador: string; valor: string; tipoValor: string }
 interface UsuarioOpcao { Id: number; Nome: string }
 
 interface CampoEstatico { nome: string; tipo: string }
 
-const props = defineProps<{ entidade: string; camposEstaticos?: CampoEstatico[] }>()
-const emit = defineEmits<{ 'filtro-alterado': [filtro: string | null, ordenacao: string | null, itensPorPagina: number] }>()
+const props = defineProps<{ entidade: string; camposEstaticos?: CampoEstatico[]; vertical?: boolean }>()
+const emit = defineEmits<{ 'filtro-alterado': [filtro: string | null, ordenacao: string | null, itensPorPagina: number, colunas: string | null, abaId: number | null] }>()
 
 const abas = ref<Visualizacao[]>([])
 const abaAtiva = ref<number | null>(null)
@@ -211,8 +211,8 @@ async function carregarAbas() {
   } catch { abas.value = [] }
 }
 
-function selecionarAba(aba: Visualizacao) { abaAtiva.value = aba.Id; emit('filtro-alterado', aba.Filtro, aba.Ordenacao, aba.ItensPorPagina) }
-function verTodos() { abaAtiva.value = null; emit('filtro-alterado', null, null, 20) }
+function selecionarAba(aba: Visualizacao) { abaAtiva.value = aba.Id; emit('filtro-alterado', aba.Filtro, aba.Ordenacao, aba.ItensPorPagina, aba.Colunas, aba.Id) }
+function verTodos() { abaAtiva.value = null; emit('filtro-alterado', null, null, 20, null, null) }
 
 function abrirModalNova() {
   modoEdicao.value = false
@@ -270,7 +270,7 @@ async function excluirAba(id: number) {
 function aplicarFiltroRapido() {
   if (!filtroRapidoCampo.value || !filtroRapidoValor.value) return
   const filtro = montarFiltroOData([{ id: 0, caminho: filtroRapidoCampo.value, label: '', operador: filtroRapidoOperador.value, valor: filtroRapidoValor.value, tipoValor: 'string' }])
-  abaAtiva.value = null; emit('filtro-alterado', filtro, null, 20); mostrarFiltroRapido.value = false
+  abaAtiva.value = null; emit('filtro-alterado', filtro, null, 20, null, null); mostrarFiltroRapido.value = false
 }
 
 function limparFiltroRapido() { filtroRapidoCampo.value = ''; filtroRapidoValor.value = ''; mostrarFiltroRapido.value = false; verTodos() }
@@ -286,22 +286,23 @@ onMounted(() => { carregarAbas(); carregarSchema() })
 </script>
 
 <template>
-  <div class="tabs-filtro" @click="fecharMenus">
+  <div class="tabs-filtro" :class="{ vertical: props.vertical }" @click="fecharMenus">
     <div class="tabs-bar">
-      <button class="tab" :class="{ active: abaAtiva === null }" @click="verTodos">
-        <i class="mdi mdi-view-list"></i> Todos
-      </button>
+      <div class="tabs-bar-header">
+        <button class="tab" :class="{ active: abaAtiva === null }" @click="verTodos">Todos</button>
+        <button class="tab tab-add" @click="abrirModalNova" title="Nova aba"><i class="mdi mdi-plus"></i></button>
+      </div>
       <div v-for="aba in abas" :key="aba.Id" class="tab-wrapper">
         <button class="tab" :class="{ active: abaAtiva === aba.Id }" @click="selecionarAba(aba)">
           {{ aba.Nome }}
           <span class="tab-menu-trigger" @click.stop="toggleMenuAba(aba.Id, $event)"><i class="mdi mdi-dots-vertical"></i></span>
         </button>
         <div v-if="menuAbaAberta === aba.Id" class="tab-dropdown">
-          <button @click.stop="abrirModalEditar(aba)"><i class="mdi mdi-pencil-outline"></i> Editar</button>
-          <button class="del" @click.stop="excluirAba(aba.Id)"><i class="mdi mdi-delete-outline"></i> Excluir</button>
+          <p class="tab-dropdown-title">Ações da aba</p>
+          <button @click.stop="abrirModalEditar(aba)"><i class="mdi mdi-pencil-outline"></i> Editar aba</button>
+          <button class="del" @click.stop="excluirAba(aba.Id)"><i class="mdi mdi-delete-outline"></i> Excluir aba</button>
         </div>
       </div>
-      <button class="tab tab-add" @click="abrirModalNova"><i class="mdi mdi-plus"></i></button>
       <div class="tabs-actions">
         <button class="btn-filtro" @click.stop="mostrarFiltroRapido = !mostrarFiltroRapido">
           <i class="mdi mdi-filter-outline"></i> Filtros
@@ -414,6 +415,7 @@ onMounted(() => { carregarAbas(); carregarSchema() })
 <style scoped>
 .tabs-filtro { margin-bottom: 16px; }
 .tabs-bar { display: flex; align-items: center; gap: 4px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.tabs-bar-header { display: flex; align-items: center; gap: 4px; }
 .tab { padding: 8px 14px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.15s; border-radius: 6px 6px 0 0; }
 .tab:hover { color: var(--text-primary); background: var(--bg-elevated); }
 .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
@@ -421,7 +423,8 @@ onMounted(() => { carregarAbas(); carregarSchema() })
 .tab-menu-trigger { opacity: 0; margin-left: 4px; font-size: 12px; transition: opacity 0.15s; padding: 2px; border-radius: 3px; }
 .tab:hover .tab-menu-trigger { opacity: 1; }
 .tab-menu-trigger:hover { background: var(--bg-elevated); }
-.tab-dropdown { position: absolute; top: 100%; left: 0; z-index: 50; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); padding: 4px; min-width: 140px; animation: fadeIn 0.12s ease; }
+.tab-dropdown { position: absolute; top: 100%; left: 0; z-index: 100; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); padding: 6px; min-width: 160px; animation: fadeIn 0.12s ease; }
+.tab-dropdown-title { font-size: 11px; font-weight: 600; color: var(--text-muted); padding: 6px 12px 4px; margin: 0; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 .tab-dropdown button { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; border-radius: 6px; }
 .tab-dropdown button:hover { background: var(--bg-elevated); color: var(--text-primary); }
@@ -521,4 +524,22 @@ onMounted(() => { carregarAbas(); carregarSchema() })
 .btn-criar { display: flex; align-items: center; gap: 6px; padding: 8px 20px; border: none; border-radius: 8px; background: var(--accent); color: #000; font-size: 13px; font-weight: 600; cursor: pointer; }
 .btn-criar:hover { background: var(--accent-hover); }
 .btn-criar:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Vertical mode */
+.tabs-filtro.vertical { margin-bottom: 0; }
+.tabs-filtro.vertical .tabs-bar { flex-direction: column; border-bottom: none; overflow-x: visible; gap: 2px; align-items: stretch; }
+.tabs-filtro.vertical .tabs-bar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.tabs-filtro.vertical .tabs-bar-header .tab { padding: 6px 0; font-size: 12px; font-weight: 600; color: var(--text-secondary); border: none; }
+.tabs-filtro.vertical .tabs-bar-header .tab.active { color: var(--accent); }
+.tabs-filtro.vertical .tabs-bar-header .tab-add { padding: 4px 8px; font-size: 14px; border-radius: 4px; }
+.tabs-filtro.vertical .tabs-bar-header .tab-add:hover { background: var(--bg-elevated); }
+.tabs-filtro.vertical .tab { border-bottom: none; border-radius: 6px; border-left: 3px solid transparent; justify-content: flex-start; padding: 9px 12px; font-size: 13px; white-space: normal; line-height: 1.3; }
+.tabs-filtro.vertical .tab:hover { background: var(--bg-elevated); }
+.tabs-filtro.vertical .tab.active { border-left-color: var(--accent); border-bottom-color: transparent; background: var(--bg-elevated); color: var(--text-primary); }
+.tabs-filtro.vertical .tabs-actions { display: none; }
+.tabs-filtro.vertical .tab-wrapper { width: 100%; position: relative; }
+.tabs-filtro.vertical .tab-wrapper .tab { width: 100%; }
+.tabs-filtro.vertical .tab-menu-trigger { margin-left: auto; }
+.tabs-filtro.vertical .tab-dropdown { position: absolute; left: 100%; top: 0; z-index: 200; min-width: 160px; }
+.tabs-filtro.vertical .filtro-rapido { display: none; }
 </style>

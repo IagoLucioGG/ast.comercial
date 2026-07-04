@@ -7,6 +7,14 @@ function headers(): Record<string, string> {
   return h
 }
 
+function tratarErro(res: Response, url: string): never {
+  if (res.status === 401) {
+    localStorage.removeItem('token')
+    window.location.href = '/login'
+  }
+  throw new Error(`${res.status} em ${url}`)
+}
+
 export interface ODataResponse<T> {
   value: T[]
   '@odata.count'?: number
@@ -38,33 +46,33 @@ function buildQuery(params?: ODataParams): string {
 export async function odataGet<T>(endpoint: string, params?: ODataParams): Promise<ODataResponse<T>> {
   const url = `${BASE}/odata/${endpoint}${buildQuery(params)}`
   const res = await fetch(url, { headers: headers() })
-  if (!res.ok) throw new Error(`GET ${url} falhou: ${res.status}`)
+  if (!res.ok) tratarErro(res, url)
   return res.json()
 }
 
 export async function odataGetOne<T>(endpoint: string, id: number): Promise<T> {
   const url = `${BASE}/odata/${endpoint}(${id})`
   const res = await fetch(url, { headers: headers() })
-  if (!res.ok) throw new Error(`GET ${url} falhou: ${res.status}`)
+  if (!res.ok) tratarErro(res, url)
   return res.json()
 }
 
 export async function odataPost<T>(endpoint: string, data: Partial<T>): Promise<T> {
   const url = `${BASE}/odata/${endpoint}`
   const res = await fetch(url, { method: 'POST', headers: headers(), body: JSON.stringify(data) })
-  if (!res.ok) throw new Error(`POST ${url} falhou: ${res.status}`)
+  if (!res.ok) tratarErro(res, url)
   return res.json()
 }
 
 export async function odataPatch<T>(endpoint: string, id: number, data: Partial<T>): Promise<T> {
   const url = `${BASE}/odata/${endpoint}(${id})`
   const res = await fetch(url, { method: 'PATCH', headers: headers(), body: JSON.stringify(data) })
-  if (!res.ok) throw new Error(`PATCH ${url} falhou: ${res.status}`)
+  if (!res.ok) tratarErro(res, url)
   return res.json()
 }
 
 export async function odataDelete(endpoint: string, id: number): Promise<void> {
   const url = `${BASE}/odata/${endpoint}(${id})`
   const res = await fetch(url, { method: 'DELETE', headers: headers() })
-  if (!res.ok) throw new Error(`DELETE ${url} falhou: ${res.status}`)
+  if (!res.ok) tratarErro(res, url)
 }

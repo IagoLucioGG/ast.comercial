@@ -29,6 +29,16 @@ public class Campo : EntidadeBase
     public bool Visivel { get; set; } = true;
     public bool SomenteLeitura { get; set; }
 
+    /// <summary>
+    /// Campo nativo da entidade (não pode ser excluído nem ter tipo alterado)
+    /// </summary>
+    public bool Nativo { get; set; }
+
+    /// <summary>
+    /// Para campos do tipo Lista: permite selecionar mais de uma opção
+    /// </summary>
+    public bool PermiteMultiplosValores { get; set; }
+
     // Valor padrão (JSON)
     public JsonElement? ValorPadrao { get; set; }
 
@@ -70,12 +80,13 @@ public enum TipoCampo
     MultiLista = 9,
     Email = 10,
     Telefone = 11,
-    Url = 12,
+    Endereco = 12,
     Cpf = 13,
     Cnpj = 14,
     Cep = 15,
-    Formula = 16,
-    Referencia = 17
+    Percentagem = 16,
+    Imagem = 17,
+    Html = 18
 }
 
 /// <summary>

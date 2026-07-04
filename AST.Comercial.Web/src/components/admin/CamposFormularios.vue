@@ -1,62 +1,67 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { odataGet, odataPost, odataPatch, odataDelete, type ODataParams } from '@/services/api'
-import TabsFiltro from '@/components/shared/TabsFiltro.vue'
+import TabelaEntidade, { type ColunaConfig, type CampoEstaticoConfig } from '@/components/shared/TabelaEntidade.vue'
 import EditorFormula from '@/components/shared/EditorFormula.vue'
+import FormulariosAdmin from '@/components/admin/FormulariosAdmin.vue'
+
+const abaAtiva = ref<'campos' | 'formularios'>('campos')
 
 interface Campo {
-  Id: number; Nome: string; Chave: string; TipoCampo: string; EntidadeAlvo: string
+  Id: number; Nome: string; Chave: string; Tipo: string; EntidadeAlvo: string
   Obrigatorio: boolean; Visivel: boolean; SomenteLeitura: boolean; Ordem: number; Ativo: boolean
   Descricao: string | null; TamanhoMinimo: number | null; TamanhoMaximo: number | null
-  ValorMinimo: number | null; ValorMaximo: number | null
+  ValorMinimo: number | null; ValorMaximo: number | null; Nativo: boolean; PermiteMultiplosValores: boolean
 }
 
-const camposEstaticos = [
+const tiposCampo = [
+  { valor: 'Texto', label: 'Texto simples', icone: 'mdi-format-text' },
+  { valor: 'TextoLongo', label: 'Texto longo', icone: 'mdi-text-long' },
+  { valor: 'Numero', label: 'Número inteiro', icone: 'mdi-numeric' },
+  { valor: 'Decimal', label: 'Número com decimais', icone: 'mdi-decimal' },
+  { valor: 'Moeda', label: 'Moeda', icone: 'mdi-currency-usd' },
+  { valor: 'Percentagem', label: 'Percentagem', icone: 'mdi-percent' },
+  { valor: 'Lista', label: 'Lista de opções', icone: 'mdi-format-list-bulleted' },
+  { valor: 'Data', label: 'Data', icone: 'mdi-calendar' },
+  { valor: 'DataHora', label: 'Data e hora', icone: 'mdi-clock-outline' },
+  { valor: 'Booleano', label: 'Checkbox', icone: 'mdi-checkbox-marked-outline' },
+  { valor: 'Email', label: 'Email', icone: 'mdi-email-outline' },
+  { valor: 'Telefone', label: 'Telefone', icone: 'mdi-phone-outline' },
+  { valor: 'Cpf', label: 'CPF', icone: 'mdi-card-account-details-outline' },
+  { valor: 'Cnpj', label: 'CNPJ', icone: 'mdi-domain' },
+  { valor: 'Cep', label: 'CEP', icone: 'mdi-map-marker-outline' },
+  { valor: 'Endereco', label: 'Endereço', icone: 'mdi-home-outline' },
+  { valor: 'Imagem', label: 'Imagem', icone: 'mdi-image-outline' },
+  { valor: 'Html', label: 'HTML / Editor rico', icone: 'mdi-code-tags' },
+]
+
+const entidades = ['Cliente', 'Negocio', 'Atividade', 'Produto', 'Proposta', 'PessoaContato', 'Usuario', 'Equipe', 'Empresa', 'Departamento', 'Cargo']
+
+const entidadeSelecionada = ref<string | null>(null)
+const contagens = ref<Record<string, number>>({})
+
+const colunasTabela: ColunaConfig[] = [
+  { campo: 'Nome', label: 'Nome' },
+  { campo: 'Chave', label: 'Chave' },
+  { campo: 'Tipo', label: 'Tipo', tipo: 'badge' },
+  { campo: 'Obrigatorio', label: 'Obrig.' },
+  { campo: 'Ativo', label: 'Status', tipo: 'status' },
+]
+
+const camposEstaticosTabela: CampoEstaticoConfig[] = [
   { nome: 'Nome', tipo: 'string' },
-  { nome: 'TipoCampo', tipo: 'enum:Texto|TextoLongo|Numero|Decimal|Moeda|Data|DataHora|Booleano|Lista|MultiLista|Email|Telefone|Url|Cpf|Cnpj|Cep|Formula|Referencia' },
-  { nome: 'EntidadeAlvo', tipo: 'enum:Cliente|Negocio|Funil|EtapaFunil|Atividade|Produto|Empresa|Usuario|Equipe|Departamento|Cargo|Proposta' },
+  { nome: 'Tipo', tipo: 'enum:Texto|TextoLongo|Numero|Decimal|Moeda|Data|DataHora|Booleano|Lista|Email|Telefone|Cpf|Cnpj|Cep|Percentagem|Endereco|Imagem|Html' },
   { nome: 'Obrigatorio', tipo: 'boolean' },
   { nome: 'Visivel', tipo: 'boolean' },
   { nome: 'Ativo', tipo: 'boolean' },
 ]
 
-const tiposCampo = [
-  { valor: 'Texto', label: 'Texto simples', icone: 'mdi-format-text' },
-  { valor: 'TextoLongo', label: 'Texto multilinha', icone: 'mdi-text-long' },
-  { valor: 'Numero', label: 'Número inteiro', icone: 'mdi-numeric' },
-  { valor: 'Decimal', label: 'Número com decimais', icone: 'mdi-decimal' },
-  { valor: 'Moeda', label: 'Moeda', icone: 'mdi-currency-usd' },
-  { valor: 'Lista', label: 'Opções pré-cadastradas', icone: 'mdi-format-list-bulleted' },
-  { valor: 'MultiLista', label: 'Múltipla escolha', icone: 'mdi-format-list-checks' },
-  { valor: 'Data', label: 'Data', icone: 'mdi-calendar' },
-  { valor: 'DataHora', label: 'Horário', icone: 'mdi-clock-outline' },
-  { valor: 'Booleano', label: 'Checkbox', icone: 'mdi-checkbox-marked-outline' },
-  { valor: 'Cpf', label: 'CPF', icone: 'mdi-card-account-details-outline' },
-  { valor: 'Cnpj', label: 'CNPJ', icone: 'mdi-domain' },
-  { valor: 'Email', label: 'Email', icone: 'mdi-email-outline' },
-  { valor: 'Telefone', label: 'Telefone', icone: 'mdi-phone-outline' },
-  { valor: 'Url', label: 'URL / Percentagem', icone: 'mdi-link-variant' },
-  { valor: 'Cep', label: 'Endereço', icone: 'mdi-map-marker-outline' },
-  { valor: 'Formula', label: 'Fórmula', icone: 'mdi-function-variant' },
-  { valor: 'Referencia', label: 'Imagem', icone: 'mdi-image-outline' },
-]
-
-const entidades = ['Cliente', 'Negocio', 'Funil', 'EtapaFunil', 'Atividade', 'Produto', 'Empresa', 'Usuario', 'Equipe', 'Departamento', 'Cargo', 'Proposta']
-
-const itens = ref<Campo[]>([])
-const total = ref(0)
-const carregando = ref(false)
-const pagina = ref(1)
-const porPagina = ref(20)
-const filtroAba = ref<string | null>(null)
-const busca = ref('')
-const entidadeFiltro = ref<string | null>(null)
-
 const modalAberto = ref(false)
 const modoEdicao = ref(false)
 const campoEditando = ref<Campo | null>(null)
-const form = ref({ Nome: '', Descricao: '', TipoCampo: 'Texto', EntidadeAlvo: 'Cliente', Obrigatorio: false, Visivel: true, SomenteLeitura: false, Ordem: 0, CampoChave: false, DuasColunas: false, TamanhoMinimo: null as number | null, TamanhoMaximo: null as number | null, ValorMinimo: null as number | null, ValorMaximo: null as number | null, Mascara: '', Formula: '', FormulaVisibilidade: '', FormulaObrigatoriedade: '', FormulaCalculo: '', FormulaValorPadrao: '', FormulaSomenteLeitura: '' })
-const secoes = ref({ basicas: true, avancadas: false, obrigatoriedade: false, edicao: false, visualizacao: false, calculo: false })
+const ehNativo = computed(() => campoEditando.value?.Nativo ?? false)
+const form = ref({ Nome: '', Descricao: '', TipoCampo: 'Texto', Obrigatorio: false, Visivel: true, SomenteLeitura: false, PermiteMultiplosValores: false, TamanhoMinimo: null as number | null, TamanhoMaximo: null as number | null, ValorMinimo: null as number | null, ValorMaximo: null as number | null, Mascara: '', Formula: '', FormulaVisibilidade: '', FormulaObrigatoriedade: '', FormulaCalculo: '', FormulaValorPadrao: '', FormulaSomenteLeitura: '' })
+const secoes = ref<Record<string, boolean>>({ basicas: true, avancadas: false, obrigatoriedade: false, edicao: false, visualizacao: false })
 
 const formulaEditando = ref<string | null>(null)
 
@@ -67,43 +72,59 @@ function salvarFormula(campo: string, valor: string) { (form.value as any)[campo
 const tituloContador = computed(() => `${form.value.Nome.length}/80`)
 const descContador = computed(() => `${form.value.Descricao.length}/250`)
 
-async function carregar() {
-  carregando.value = true
-  try {
-    const params: ODataParams = { top: porPagina.value, skip: (pagina.value - 1) * porPagina.value, orderby: 'EntidadeAlvo asc,Ordem asc,Nome asc', count: true, select: 'Id,Nome,Chave,TipoCampo,EntidadeAlvo,Obrigatorio,Visivel,SomenteLeitura,Ordem,Ativo,Descricao' }
-    const filtros: string[] = []
-    if (filtroAba.value) filtros.push(filtroAba.value)
-    if (busca.value) filtros.push(`contains(Nome,'${busca.value}')`)
-    if (entidadeFiltro.value) filtros.push(`EntidadeAlvo eq '${entidadeFiltro.value}'`)
-    if (filtros.length) params.filter = filtros.join(' and ')
-    const res = await odataGet<Campo>('Campos', params)
-    itens.value = res.value; total.value = res['@odata.count'] ?? 0
-  } finally { carregando.value = false }
+function iconeEntidade(e: string): string {
+  const map: Record<string, string> = {
+    Cliente: 'mdi-account-group-outline',
+    Negocio: 'mdi-handshake-outline',
+    Proposta: 'mdi-file-document-outline',
+    Produto: 'mdi-package-variant-closed',
+    Atividade: 'mdi-calendar-check-outline',
+    PessoaContato: 'mdi-card-account-phone-outline',
+    Usuario: 'mdi-account-outline',
+    Equipe: 'mdi-account-supervisor-outline',
+    Empresa: 'mdi-domain',
+    Funil: 'mdi-filter-outline',
+    EtapaFunil: 'mdi-format-list-numbered',
+    Departamento: 'mdi-office-building-outline',
+    Cargo: 'mdi-briefcase-outline',
+  }
+  return map[e] || 'mdi-form-textbox'
 }
 
-function onFiltro(f: string | null, _o: string | null, pp: number) { filtroAba.value = f; porPagina.value = pp; pagina.value = 1; carregar() }
-function pg(p: number) { pagina.value = p; carregar() }
-const tp = () => Math.ceil(total.value / porPagina.value)
-function pesquisar() { pagina.value = 1; carregar() }
-function filtrarEntidade(e: string | null) { entidadeFiltro.value = e; pagina.value = 1; carregar() }
+function contarCampos(e: string): number {
+  return contagens.value[e] ?? 0
+}
+
+async function carregarContagens() {
+  for (const e of entidades) {
+    try {
+      const res = await odataGet<any>('Campos', { filter: `EntidadeAlvo eq '${e}'`, top: 0, count: true })
+      contagens.value[e] = res['@odata.count'] ?? 0
+    } catch { contagens.value[e] = 0 }
+  }
+}
+
+function selecionarEntidade(e: string) {
+  entidadeSelecionada.value = e
+}
 
 function abrirNovo() {
   modoEdicao.value = false; campoEditando.value = null
-  form.value = { Nome: '', Descricao: '', TipoCampo: 'Texto', EntidadeAlvo: 'Cliente', Obrigatorio: false, Visivel: true, SomenteLeitura: false, Ordem: 0, CampoChave: false, DuasColunas: false, TamanhoMinimo: null, TamanhoMaximo: null, ValorMinimo: null, ValorMaximo: null, Mascara: '', Formula: '', FormulaVisibilidade: '', FormulaObrigatoriedade: '', FormulaCalculo: '', FormulaValorPadrao: '', FormulaSomenteLeitura: '' }
-  secoes.value = { basicas: true, avancadas: false, obrigatoriedade: false, edicao: false, visualizacao: false, calculo: false }
+  form.value = { Nome: '', Descricao: '', TipoCampo: 'Texto', Obrigatorio: false, Visivel: true, SomenteLeitura: false, PermiteMultiplosValores: false, TamanhoMinimo: null, TamanhoMaximo: null, ValorMinimo: null, ValorMaximo: null, Mascara: '', Formula: '', FormulaVisibilidade: '', FormulaObrigatoriedade: '', FormulaCalculo: '', FormulaValorPadrao: '', FormulaSomenteLeitura: '' }
+  secoes.value = { basicas: true, avancadas: false, obrigatoriedade: false, edicao: false, visualizacao: false }
   modalAberto.value = true
 }
 
 function abrirEditar(campo: Campo) {
   modoEdicao.value = true; campoEditando.value = campo
-  form.value = { Nome: campo.Nome, Descricao: campo.Descricao ?? '', TipoCampo: campo.TipoCampo, EntidadeAlvo: campo.EntidadeAlvo, Obrigatorio: campo.Obrigatorio, Visivel: campo.Visivel, SomenteLeitura: campo.SomenteLeitura, Ordem: campo.Ordem, CampoChave: false, DuasColunas: false, TamanhoMinimo: campo.TamanhoMinimo, TamanhoMaximo: campo.TamanhoMaximo, ValorMinimo: campo.ValorMinimo, ValorMaximo: campo.ValorMaximo, Mascara: (campo as any).Mascara ?? '', Formula: (campo as any).Formula ?? '', FormulaVisibilidade: (campo as any).FormulaVisibilidade ?? '', FormulaObrigatoriedade: (campo as any).FormulaObrigatoriedade ?? '', FormulaCalculo: (campo as any).FormulaCalculo ?? '', FormulaValorPadrao: (campo as any).FormulaValorPadrao ?? '', FormulaSomenteLeitura: (campo as any).FormulaSomenteLeitura ?? '' }
-  secoes.value = { basicas: true, avancadas: false, obrigatoriedade: false, edicao: false, visualizacao: false, calculo: false }
+  form.value = { Nome: campo.Nome, Descricao: campo.Descricao ?? '', TipoCampo: campo.Tipo, Obrigatorio: campo.Obrigatorio, Visivel: campo.Visivel, SomenteLeitura: campo.SomenteLeitura, PermiteMultiplosValores: campo.PermiteMultiplosValores ?? false, TamanhoMinimo: campo.TamanhoMinimo, TamanhoMaximo: campo.TamanhoMaximo, ValorMinimo: campo.ValorMinimo, ValorMaximo: campo.ValorMaximo, Mascara: (campo as any).Mascara ?? '', Formula: (campo as any).Formula ?? '', FormulaVisibilidade: (campo as any).FormulaVisibilidade ?? '', FormulaObrigatoriedade: (campo as any).FormulaObrigatoriedade ?? '', FormulaCalculo: (campo as any).FormulaCalculo ?? '', FormulaValorPadrao: (campo as any).FormulaValorPadrao ?? '', FormulaSomenteLeitura: (campo as any).FormulaSomenteLeitura ?? '' }
+  secoes.value = { basicas: true, avancadas: false, obrigatoriedade: false, edicao: false, visualizacao: false }
   modalAberto.value = true
 }
 
 async function salvar() {
   if (!form.value.Nome.trim()) return
-  const payload: any = { Nome: form.value.Nome, Descricao: form.value.Descricao || null, TipoCampo: form.value.TipoCampo, EntidadeAlvo: form.value.EntidadeAlvo, Obrigatorio: form.value.Obrigatorio, Visivel: form.value.Visivel, SomenteLeitura: form.value.SomenteLeitura, Ordem: form.value.Ordem }
+  const payload: any = { Nome: form.value.Nome, Descricao: form.value.Descricao || null, Tipo: form.value.TipoCampo, EntidadeAlvo: entidadeSelecionada.value, Obrigatorio: form.value.Obrigatorio, Visivel: form.value.Visivel, SomenteLeitura: form.value.SomenteLeitura, PermiteMultiplosValores: form.value.PermiteMultiplosValores }
   if (form.value.TamanhoMinimo != null) payload.TamanhoMinimo = form.value.TamanhoMinimo
   if (form.value.TamanhoMaximo != null) payload.TamanhoMaximo = form.value.TamanhoMaximo
   if (form.value.ValorMinimo != null) payload.ValorMinimo = form.value.ValorMinimo
@@ -126,34 +147,57 @@ async function excluirCampo() {
   modalAberto.value = false; await carregar()
 }
 
-onMounted(carregar)
+onMounted(carregarContagens)
 </script>
 
 <template>
   <div class="cf-root">
-    <TabsFiltro entidade="Campo" :campos-estaticos="camposEstaticos" @filtro-alterado="onFiltro" />
-    <div class="cf-toolbar">
-      <div class="cf-search"><i class="mdi mdi-magnify"></i><input v-model="busca" placeholder="Buscar campo..." @keyup.enter="pesquisar" /></div>
-      <select class="cf-select" @change="filtrarEntidade(($event.target as HTMLSelectElement).value || null)">
-        <option value="">Todas entidades</option>
-        <option v-for="e in entidades" :key="e" :value="e">{{ e }}</option>
-      </select>
-      <button class="cf-btn-novo" @click="abrirNovo"><i class="mdi mdi-plus"></i> Novo campo</button>
-      <span class="cf-total">{{ total }} campos</span>
+    <!-- Abas: Campos | Formulários -->
+    <div class="cf-abas">
+      <button class="cf-aba" :class="{ ativa: abaAtiva === 'campos' }" @click="abaAtiva = 'campos'"><i class="mdi mdi-form-textbox"></i> Campos</button>
+      <button class="cf-aba" :class="{ ativa: abaAtiva === 'formularios' }" @click="abaAtiva = 'formularios'"><i class="mdi mdi-form-select"></i> Formulários</button>
     </div>
-    <div class="cf-table"><table><thead><tr><th>Nome</th><th>Chave</th><th>Tipo</th><th>Entidade</th><th>Obrig.</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr v-if="carregando"><td colspan="6" class="cf-msg">Carregando...</td></tr>
-        <tr v-else-if="!itens.length"><td colspan="6" class="cf-msg">Nenhum campo personalizado</td></tr>
-        <tr v-for="c in itens" :key="c.Id" class="cf-rowclick" @click="abrirEditar(c)">
-          <td class="cf-nome">{{ c.Nome }}</td><td class="cf-mono">{{ c.Chave }}</td>
-          <td><span class="cf-badge">{{ c.TipoCampo }}</span></td><td><span class="cf-badge-ent">{{ c.EntidadeAlvo }}</span></td>
-          <td>{{ c.Obrigatorio ? 'Sim' : 'Não' }}</td><td><span class="cf-dot" :class="{ on: c.Ativo }"></span></td>
-        </tr>
-      </tbody></table>
-    </div>
-    <div v-if="tp() > 1" class="cf-pag"><button :disabled="pagina <= 1" @click="pg(pagina - 1)"><i class="mdi mdi-chevron-left"></i></button><span>{{ pagina }} / {{ tp() }}</span><button :disabled="pagina >= tp()" @click="pg(pagina + 1)"><i class="mdi mdi-chevron-right"></i></button></div>
 
+    <!-- Tab: Formulários -->
+    <FormulariosAdmin v-if="abaAtiva === 'formularios'" />
+
+    <!-- Tab: Campos -->
+    <template v-if="abaAtiva === 'campos'">
+    <!-- View: Entity Cards -->
+    <div v-if="!entidadeSelecionada" class="cf-cards">
+      <div class="cf-cards-grid">
+        <button v-for="e in entidades" :key="e" class="cf-card" @click="selecionarEntidade(e)">
+          <i class="mdi" :class="iconeEntidade(e)"></i>
+          <span class="cf-card-nome">{{ e }}</span>
+          <span class="cf-card-count">{{ contarCampos(e) }} campos</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- View: Fields of entity -->
+    <div v-else class="cf-campos">
+      <div class="cf-campos-header">
+        <button class="cf-btn-voltar" @click="entidadeSelecionada = null">
+          <i class="mdi mdi-arrow-left"></i>
+        </button>
+        <h3>{{ entidadeSelecionada }}</h3>
+      </div>
+      <TabelaEntidade
+        :key="entidadeSelecionada"
+        entidade="Campo"
+        endpoint="Campos"
+        :titulo="entidadeSelecionada || 'Campo'"
+        :colunas="colunasTabela"
+        :campos-busca="['Nome', 'Chave']"
+        placeholder-busca="Buscar campo..."
+        ordenacao-padrao="Ordem asc,Nome asc"
+        :campos-estaticos="camposEstaticosTabela"
+        :filtro-base="`EntidadeAlvo eq '${entidadeSelecionada}'`"
+      />
+    </div>
+    </template>
+
+    <!-- Modal criar/editar -->
     <div v-if="modalAberto" class="cf-overlay" @click.self="modalAberto = false">
       <div class="cf-modal">
         <div class="cf-modal-head"><h3>{{ modoEdicao ? 'Editar campo' : 'Novo campo' }}</h3><button @click="modalAberto = false"><i class="mdi mdi-close"></i></button></div>
@@ -167,20 +211,21 @@ onMounted(carregar)
             <div v-if="secoes.basicas" class="cf-sec-body">
               <div class="cf-field"><div class="cf-field-top"><label>Título do campo</label><span>{{ tituloContador }}</span></div><input v-model="form.Nome" maxlength="80" placeholder="Nome do campo" /></div>
               <div class="cf-field"><div class="cf-field-top"><label>Texto informativo do campo</label><span>{{ descContador }}</span></div><textarea v-model="form.Descricao" maxlength="250" rows="3" placeholder="Escreva um texto informativo para os usuários..."></textarea></div>
-              <div class="cf-field"><label>Entidade alvo</label><select v-model="form.EntidadeAlvo"><option v-for="e in entidades" :key="e" :value="e">{{ e }}</option></select></div>
-              <div class="cf-toggle"><div><span class="cf-tl">Campo chave</span><span class="cf-td">Campo chave</span></div><label class="cf-sw"><input type="checkbox" v-model="form.CampoChave" /><span></span></label></div>
-              <div class="cf-toggle"><div><span class="cf-tl">Campo de duas colunas</span><span class="cf-td">Ative para que o campo ocupe duas colunas no formulário.</span></div><label class="cf-sw"><input type="checkbox" v-model="form.DuasColunas" /><span></span></label></div>
+              <div v-if="form.TipoCampo === 'Lista'" class="cf-toggle"><div><span class="cf-tl">Permite múltipla seleção</span><span class="cf-td">Permite selecionar mais de uma opção ao mesmo tempo</span></div><label class="cf-sw"><input type="checkbox" v-model="form.PermiteMultiplosValores" /><span></span></label></div>
             </div>
             <button class="cf-sec-head cf-sec-cyan" @click="secoes.avancadas = !secoes.avancadas"><span>Configurações avançadas</span><i class="mdi" :class="secoes.avancadas ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i></button>
-            <div v-if="secoes.avancadas" class="cf-sec-body"><div class="cf-row2"><div class="cf-field"><label>Tam. mínimo</label><input v-model.number="form.TamanhoMinimo" type="number" min="0" /></div><div class="cf-field"><label>Tam. máximo</label><input v-model.number="form.TamanhoMaximo" type="number" min="0" /></div></div><div class="cf-row2"><div class="cf-field"><label>Valor mínimo</label><input v-model.number="form.ValorMinimo" type="number" /></div><div class="cf-field"><label>Valor máximo</label><input v-model.number="form.ValorMaximo" type="number" /></div></div><div class="cf-field"><label>Ordem</label><input v-model.number="form.Ordem" type="number" min="0" /></div><div class="cf-field"><label>Máscara de entrada</label><input v-model="form.Mascara" placeholder="Ex: ###.###.###-## ou (##) #####-####" /></div><div v-if="form.TipoCampo === 'Formula'" class="cf-field"><label>Fórmula JS do campo</label><button class="cf-btn-formula" @click="abrirEditorFormula('Formula')"><i class="mdi mdi-function-variant"></i> {{ form.Formula ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
-            <button class="cf-sec-head cf-sec-orange" @click="secoes.obrigatoriedade = !secoes.obrigatoriedade"><span>Configurações de obrigatoriedade</span><i class="mdi" :class="secoes.obrigatoriedade ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i></button>
-            <div v-if="secoes.obrigatoriedade" class="cf-sec-body"><div class="cf-toggle"><div><span class="cf-tl">Obrigatório</span><span class="cf-td">O campo deve ser preenchido para salvar</span></div><label class="cf-sw"><input type="checkbox" v-model="form.Obrigatorio" /><span></span></label></div><div class="cf-field"><label>Fórmula JS de obrigatoriedade</label><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaObrigatoriedade')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaObrigatoriedade ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
+            <div v-if="secoes.avancadas" class="cf-sec-body">
+              <div v-if="['Texto', 'TextoLongo'].includes(form.TipoCampo)" class="cf-row2"><div class="cf-field"><label>Tam. mínimo</label><input v-model.number="form.TamanhoMinimo" type="number" min="0" placeholder="Sem limite" /></div><div class="cf-field"><label>Tam. máximo</label><input v-model.number="form.TamanhoMaximo" type="number" min="0" placeholder="Sem limite" /></div></div>
+              <div v-if="['Numero', 'Decimal', 'Moeda', 'Percentagem', 'Data', 'DataHora'].includes(form.TipoCampo)" class="cf-row2"><div class="cf-field"><label>Valor mínimo</label><input v-model.number="form.ValorMinimo" type="number" placeholder="Sem limite" /></div><div class="cf-field"><label>Valor máximo</label><input v-model.number="form.ValorMaximo" type="number" placeholder="Sem limite" /></div></div>
+              <div v-if="form.TipoCampo === 'Texto'" class="cf-field"><label>Máscara de entrada</label><input v-model="form.Mascara" placeholder="Ex: AAA-#### (placa), XX-###-YY" /></div>
+              <div v-if="form.TipoCampo !== 'Lista'" class="cf-field"><label>Fórmula de cálculo</label><small class="cf-field-desc">Deve retornar o valor do campo (texto, número, data, etc). Ex: <code>$registro.Quantidade * $registro.PrecoUnitario</code></small><button class="cf-btn-formula" @click="abrirEditorFormula('Formula')"><i class="mdi mdi-function-variant"></i> {{ form.Formula ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div>
+            </div>
+            <button v-if="form.TipoCampo !== 'Booleano'" class="cf-sec-head cf-sec-orange" @click="secoes.obrigatoriedade = !secoes.obrigatoriedade"><span>Configurações de obrigatoriedade</span><i class="mdi" :class="secoes.obrigatoriedade ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i></button>
+            <div v-if="secoes.obrigatoriedade && form.TipoCampo !== 'Booleano'" class="cf-sec-body"><div class="cf-toggle"><div><span class="cf-tl">Obrigatório</span><span class="cf-td">O campo deve ser preenchido para salvar</span></div><label class="cf-sw"><input type="checkbox" v-model="form.Obrigatorio" /><span></span></label></div><div class="cf-field"><label>Fórmula de obrigatoriedade condicional</label><small class="cf-field-desc">Deve retornar <code>true</code> (obrigatório) ou <code>false</code> (opcional). Ex: <code>$registro.Valor &gt; 1000</code></small><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaObrigatoriedade')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaObrigatoriedade ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
             <button class="cf-sec-head cf-sec-orange" @click="secoes.edicao = !secoes.edicao"><span>Configurações de edição e bloqueio</span><i class="mdi" :class="secoes.edicao ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i></button>
-            <div v-if="secoes.edicao" class="cf-sec-body"><div class="cf-toggle"><div><span class="cf-tl">Somente leitura</span><span class="cf-td">O campo não pode ser editado</span></div><label class="cf-sw"><input type="checkbox" v-model="form.SomenteLeitura" /><span></span></label></div><div class="cf-field"><label>Fórmula JS de bloqueio</label><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaSomenteLeitura')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaSomenteLeitura ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
+            <div v-if="secoes.edicao" class="cf-sec-body"><div class="cf-toggle"><div><span class="cf-tl">Somente leitura</span><span class="cf-td">O campo não pode ser editado</span></div><label class="cf-sw"><input type="checkbox" v-model="form.SomenteLeitura" /><span></span></label></div><div class="cf-field"><label>Fórmula de bloqueio condicional</label><small class="cf-field-desc">Deve retornar <code>true</code> (bloqueado) ou <code>false</code> (editável). Ex: <code>$registro.Status === 'Fechado'</code></small><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaSomenteLeitura')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaSomenteLeitura ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
             <button class="cf-sec-head cf-sec-orange" @click="secoes.visualizacao = !secoes.visualizacao"><span>Configurações de visualização</span><i class="mdi" :class="secoes.visualizacao ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i></button>
-            <div v-if="secoes.visualizacao" class="cf-sec-body"><div class="cf-toggle"><div><span class="cf-tl">Visível</span><span class="cf-td">O campo aparece nos formulários</span></div><label class="cf-sw"><input type="checkbox" v-model="form.Visivel" /><span></span></label></div><div class="cf-field"><label>Fórmula JS de visibilidade</label><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaVisibilidade')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaVisibilidade ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
-            <button class="cf-sec-head cf-sec-cyan" @click="secoes.calculo = !secoes.calculo"><span>Configurações de cálculo</span><i class="mdi" :class="secoes.calculo ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i></button>
-            <div v-if="secoes.calculo" class="cf-sec-body"><div class="cf-field"><label>Fórmula JS de cálculo</label><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaCalculo')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaCalculo ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div><div class="cf-field"><label>Fórmula JS de valor padrão</label><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaValorPadrao')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaValorPadrao ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
+            <div v-if="secoes.visualizacao" class="cf-sec-body"><div class="cf-toggle"><div><span class="cf-tl">Visível</span><span class="cf-td">O campo aparece nos formulários</span></div><label class="cf-sw"><input type="checkbox" v-model="form.Visivel" /><span></span></label></div><div class="cf-field"><label>Fórmula de visibilidade condicional</label><small class="cf-field-desc">Deve retornar <code>true</code> (ocultar campo) ou <code>false</code> (manter visível). Ex: <code>$registro.Tipo === 'Empresa'</code></small><button class="cf-btn-formula" @click="abrirEditorFormula('FormulaVisibilidade')"><i class="mdi mdi-function-variant"></i> {{ form.FormulaVisibilidade ? 'Editar fórmula' : 'Configurar fórmula' }}</button></div></div>
           </div>
         </div>
         <div class="cf-modal-foot">
@@ -194,8 +239,9 @@ onMounted(carregar)
     <EditorFormula
       v-if="formulaEditando"
       :model-value="(form as any)[formulaEditando] || ''"
-      :entidade="form.EntidadeAlvo"
-      :titulo="`Fórmula: ${formulaEditando}`"
+      :entidade="entidadeSelecionada || 'Cliente'"
+      :titulo="{ Formula: 'Cálculo automático', FormulaObrigatoriedade: 'Quando este campo é obrigatório?', FormulaSomenteLeitura: 'Quando bloquear edição?', FormulaVisibilidade: 'Quando ocultar este campo?' }[formulaEditando!] || 'Configurar fórmula'"
+      :tipo-retorno="formulaEditando === 'Formula' ? 'valor' : 'booleano'"
       @salvar="(v: string) => salvarFormula(formulaEditando!, v)"
       @fechar="fecharEditorFormula"
     />
@@ -204,32 +250,22 @@ onMounted(carregar)
 
 <style scoped>
 .cf-root{display:flex;flex-direction:column;height:100%}
-.cf-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.cf-search{display:flex;align-items:center;gap:8px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;width:240px}
-.cf-search .mdi{color:var(--text-muted);font-size:16px}
-.cf-search input{border:none;background:transparent;color:var(--text-primary);font-size:13px;outline:none;width:100%}
-.cf-search input::placeholder{color:var(--text-muted)}
-.cf-select{background:var(--bg-surface);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text-primary);font-size:12px;outline:none}
-.cf-btn-novo{display:flex;align-items:center;gap:4px;padding:6px 14px;border:none;border-radius:6px;background:var(--accent);color:#000;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
-.cf-btn-novo:hover{background:var(--accent-hover)}
-.cf-total{color:var(--text-muted);font-size:12px}
-.cf-table{flex:1;overflow:auto;border:1px solid var(--border);border-radius:10px}
-.cf-table table{width:100%;border-collapse:collapse;font-size:13px}
-.cf-table thead{position:sticky;top:0;z-index:1}
-.cf-table th{background:var(--bg-secondary);color:var(--text-muted);font-weight:600;text-transform:uppercase;font-size:11px;padding:12px 14px;text-align:left;border-bottom:1px solid var(--border)}
-.cf-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
-.cf-table tr:hover td{background:var(--bg-elevated)}
-.cf-msg{text-align:center;padding:40px;color:var(--text-muted)}
-.cf-nome{color:var(--text-primary);font-weight:500}
-.cf-mono{font-family:monospace;font-size:12px;color:var(--text-muted)}
-.cf-badge{background:var(--bg-elevated);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:11px}
-.cf-badge-ent{background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.2);padding:2px 8px;border-radius:4px;font-size:11px;color:var(--accent)}
-.cf-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444}.cf-dot.on{background:#22c55e}
-.cf-rowclick{cursor:pointer}
-.cf-pag{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 0}
-.cf-pag button{width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center}
-.cf-pag button:disabled{opacity:.3}
-.cf-pag span{color:var(--text-muted);font-size:13px}
+.cf-abas{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 16px}
+.cf-aba{padding:12px 20px;border:none;background:transparent;color:var(--text-muted);font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;display:flex;align-items:center;gap:6px;transition:all .15s}
+.cf-aba:hover{color:var(--text-primary)}
+.cf-aba.ativa{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.cf-aba .mdi{font-size:16px}
+.cf-campos{display:flex;flex-direction:column;flex:1;overflow:hidden}
+.cf-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:16px}
+.cf-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px 16px;border:1px solid var(--border);background:var(--bg-surface);border-radius:10px;cursor:pointer;transition:all .15s}
+.cf-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 12px rgba(6,182,212,.1)}
+.cf-card .mdi{font-size:28px;color:var(--accent)}
+.cf-card-nome{font-size:14px;font-weight:500;color:var(--text-primary)}
+.cf-card-count{font-size:12px;color:var(--text-muted)}
+.cf-campos-header{display:flex;align-items:center;gap:12px;flex-shrink:0;padding:12px 16px;border-bottom:1px solid var(--border)}
+.cf-campos-header h3{font-size:16px;font-weight:600;color:var(--text-primary);margin:0}
+.cf-btn-voltar{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cf-btn-voltar:hover{background:var(--bg-elevated);color:var(--text-primary)}
 .cf-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:flex;align-items:center;justify-content:center}
 .cf-modal{background:var(--bg-primary);border:1px solid var(--border);border-radius:14px;width:860px;max-width:95vw;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.5)}
 .cf-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border)}
@@ -276,4 +312,5 @@ onMounted(carregar)
 .cf-btn-formula{display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text-secondary);font-size:13px;cursor:pointer;width:100%}
 .cf-btn-formula:hover{background:var(--bg-elevated);color:var(--accent);border-color:var(--accent)}
 .cf-btn-formula .mdi{color:var(--accent)}
+.cf-field-desc{font-size:11px;color:var(--text-muted);margin-top:-2px;margin-bottom:4px;display:block}
 </style>

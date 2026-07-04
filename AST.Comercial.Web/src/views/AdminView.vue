@@ -110,8 +110,7 @@ function fecharPainel() {
 <style scoped>
 .admin-page {
   position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
+  height: 100%;
 }
 
 .admin-grid {

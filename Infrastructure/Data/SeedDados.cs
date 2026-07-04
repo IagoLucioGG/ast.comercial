@@ -93,58 +93,7 @@ public static class SeedDados
 
     private static async Task CriarFormulariosPadraoAsync(AppDbContext db, long empresaId)
     {
-        var e = empresaId;
-
-        await CriarFormularioAsync(db, e, "Clientes", EntidadeAlvo.Cliente, true,
-            ["Nome", "RazaoSocial", "Documento", "Email", "Telefone", "Site", "Endereco", "Cidade", "Estado", "Cep", "Observacoes"]);
-        await CriarFormularioAsync(db, e, "Clientes (mini)", EntidadeAlvo.Cliente, false,
-            ["Nome", "Documento", "Email", "Telefone"]);
-
-        await CriarFormularioAsync(db, e, "Pessoas de Contato", EntidadeAlvo.PessoaContato, true,
-            ["Nome", "Email", "Telefone", "Cargo", "Documento", "Decisor", "Observacoes"]);
-        await CriarFormularioAsync(db, e, "Pessoas (mini)", EntidadeAlvo.PessoaContato, false,
-            ["Nome", "Email", "Telefone", "Cargo"]);
-
-        await CriarFormularioAsync(db, e, "Produtos", EntidadeAlvo.Produto, true,
-            ["Nome", "Descricao", "Codigo", "Preco", "PrecoCusto", "Unidade", "Categoria", "Disponivel"]);
-        await CriarFormularioAsync(db, e, "Produtos (mini)", EntidadeAlvo.Produto, false,
-            ["Nome", "Codigo", "Preco"]);
-
-        await CriarFormularioAsync(db, e, "Sua Empresa", EntidadeAlvo.Empresa, true,
-            ["Nome", "RazaoSocial", "Cnpj", "Email", "Telefone", "Endereco", "Cidade", "Estado", "Cep", "LogoUrl"]);
-
-        await CriarFormularioAsync(db, e, "Usuários", EntidadeAlvo.Usuario, true,
-            ["Nome", "Email", "Perfil", "Tipo"]);
-
-        await CriarFormularioAsync(db, e, "Equipes", EntidadeAlvo.Equipe, true,
-            ["Nome", "Descricao"]);
-    }
-
-    private static async Task CriarFormularioAsync(AppDbContext db, long empresaId, string nome, EntidadeAlvo entidade, bool padrao, string[] campos)
-    {
-        var formulario = new Formulario
-        {
-            EmpresaId = empresaId,
-            Nome = nome,
-            EntidadeAlvo = entidade,
-            Padrao = padrao,
-            Ordem = padrao ? 1 : 2
-        };
-        db.Formularios.Add(formulario);
-        await db.SaveChangesAsync();
-
-        for (var i = 0; i < campos.Length; i++)
-        {
-            db.CamposFormulario.Add(new CampoFormulario
-            {
-                EmpresaId = empresaId,
-                FormularioId = formulario.Id,
-                NomeCampoFixo = campos[i],
-                Ordem = i + 1,
-                Coluna = (i % 2) + 1,
-                Visivel = true
-            });
-        }
-        await db.SaveChangesAsync();
+        // Delega para o seed de formulários com seções completas
+        await SeedFormulariosPadrao.SeedAsync(db, empresaId);
     }
 }

@@ -3,6 +3,8 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { odataGet, type ODataParams } from '@/services/api'
 import TabsFiltro from '@/components/shared/TabsFiltro.vue'
 import FormModal from '@/components/shared/FormModal.vue'
+import ModalColunas from '@/components/shared/ModalColunas.vue'
+import ModalFiltro from '@/components/shared/ModalFiltro.vue'
 
 export interface ColunaConfig {
   campo: string
@@ -25,6 +27,7 @@ const props = withDefaults(defineProps<{
   camposBusca?: string[]
   placeholderBusca?: string
   camposEstaticos?: CampoEstaticoConfig[]
+  filtroBase?: string
 }>(), {
   ordenacaoPadrao: 'Nome asc',
   placeholderBusca: 'Buscar...',
@@ -43,6 +46,8 @@ const formId = ref<number | null>(null)
 
 // Seleção de colunas visíveis
 const mostrarSeletorColunas = ref(false)
+const mostrarModalColunas = ref(false)
+const mostrarFiltroDropdown = ref(false)
 const colunasVisiveis = ref<string[]>([])
 const STORAGE_KEY = computed(() => `colunas_${props.entidade}`)
 
@@ -73,25 +78,51 @@ function toggleColuna(campo: string) {
   salvarColunas()
 }
 
-const colunasAtivas = computed(() => props.colunas.filter(c => colunasVisiveis.value.includes(c.campo)))
+const colunasAtivas = computed(() => {
+  const resultado: ColunaConfig[] = []
+  for (const campo of colunasVisiveis.value) {
+    const existente = props.colunas.find(c => c.campo === campo)
+    if (existente) {
+      resultado.push(existente)
+    } else {
+      // Coluna de expansão adicionada dinamicamente
+      const label = campo.includes('/') ? campo.split('/').pop()! : campo
+      resultado.push({ campo, label })
+    }
+  }
+  return resultado
+})
 
 const selectFields = computed(() => {
-  const campos = new Set(['Id', ...colunasVisiveis.value])
-  if (props.colunas.some(c => c.tipo === 'status')) campos.add('Ativo')
-  return Array.from(campos).join(',')
+  const camposDiretos = new Set(['Id'])
+  const expands = new Set<string>()
+  
+  for (const campo of colunasVisiveis.value) {
+    if (campo.includes('/')) {
+      expands.add(campo.split('/')[0])
+    } else {
+      camposDiretos.add(campo)
+    }
+  }
+  if (props.colunas.some(c => c.tipo === 'status')) camposDiretos.add('Ativo')
+  
+  return { select: Array.from(camposDiretos).join(','), expand: Array.from(expands).join(',') }
 })
 
 async function carregar() {
   carregando.value = true
   try {
+    const { select, expand } = selectFields.value
     const params: ODataParams = {
       top: porPagina.value,
       skip: (pagina.value - 1) * porPagina.value,
       orderby: ordenacaoAba.value ?? props.ordenacaoPadrao,
       count: true,
-      select: selectFields.value,
+      select,
     }
+    if (expand) params.expand = expand
     const filtros: string[] = []
+    if (props.filtroBase) filtros.push(props.filtroBase)
     if (filtroAba.value) filtros.push(filtroAba.value)
     if (busca.value && props.camposBusca?.length) {
       const buscaFiltros = props.camposBusca.map(c => `contains(${c},'${busca.value}')`)
@@ -104,8 +135,16 @@ async function carregar() {
   } finally { carregando.value = false }
 }
 
-function onFiltro(f: string | null, o: string | null, pp: number) {
-  filtroAba.value = f; ordenacaoAba.value = o; porPagina.value = pp; pagina.value = 1; carregar()
+const abaAtivaId = ref<number | null>(null)
+
+function onFiltro(f: string | null, o: string | null, pp: number, colunas: string | null, abaId: number | null) {
+  filtroAba.value = f; ordenacaoAba.value = o; porPagina.value = pp; abaAtivaId.value = abaId; pagina.value = 1
+  if (colunas) {
+    colunasVisiveis.value = colunas.split(',').map(c => c.trim()).filter(c => c)
+  } else {
+    colunasVisiveis.value = props.colunas.map(c => c.campo)
+  }
+  carregar()
 }
 function pg(p: number) { pagina.value = p; carregar() }
 const tp = () => Math.ceil(total.value / porPagina.value)
@@ -114,8 +153,37 @@ function abrirNovo() { formId.value = null; formAberto.value = true }
 function abrirEditar(id: number) { formId.value = id; formAberto.value = true }
 function onSalvo() { formAberto.value = false; carregar() }
 
+function onSalvarColunas(novasColunas: string[]) {
+  colunasVisiveis.value = novasColunas
+  salvarColunas()
+  mostrarModalColunas.value = false
+  // Salvar na aba ativa se houver
+  if (abaAtivaId.value) {
+    import('@/services/api').then(({ odataPatch }) => {
+      odataPatch('Visualizacoes', abaAtivaId.value!, { Colunas: novasColunas.join(',') })
+    })
+  }
+  carregar()
+}
+
+function onAplicarFiltro(filtro: string | null) {
+  filtroAba.value = filtro
+  pagina.value = 1
+  carregar()
+}
+
 function formatarValor(item: any, col: ColunaConfig): string {
-  const val = item[col.campo]
+  let val: any
+  if (col.campo.includes('/')) {
+    const partes = col.campo.split('/')
+    val = item
+    for (const p of partes) {
+      val = val?.[p]
+      if (val === undefined || val === null) break
+    }
+  } else {
+    val = item[col.campo]
+  }
   if (val === null || val === undefined) return '-'
   switch (col.tipo) {
     case 'data': return new Date(val).toLocaleDateString('pt-BR')
@@ -131,102 +199,110 @@ onMounted(carregar)
 
 <template>
   <div class="te-container" @click="mostrarSeletorColunas = false">
-    <TabsFiltro :entidade="entidade" :campos-estaticos="camposEstaticos" @filtro-alterado="onFiltro" />
-
-    <div class="te-toolbar">
+    <div class="te-header">
       <div class="search-inline">
         <i class="mdi mdi-magnify"></i>
         <input v-model="busca" :placeholder="placeholderBusca" @keyup.enter="pesquisar" />
       </div>
-      <div class="te-toolbar-right">
-        <div class="col-selector-wrap">
-          <button class="btn-colunas" @click.stop="mostrarSeletorColunas = !mostrarSeletorColunas">
-            <i class="mdi mdi-view-column-outline"></i> Colunas
-          </button>
-          <div v-if="mostrarSeletorColunas" class="col-dropdown" @click.stop>
-            <p class="col-dropdown-title">Colunas visíveis</p>
-            <label v-for="col in colunas" :key="col.campo" class="col-check" :class="{ active: colunasVisiveis.includes(col.campo) }">
-              <input type="checkbox" :checked="colunasVisiveis.includes(col.campo)" @change="toggleColuna(col.campo)" />
-              <span>{{ col.label }}</span>
-            </label>
-          </div>
+      <div class="te-header-right">
+        <div class="te-filtro-wrap">
+          <button class="btn-icon" title="Filtros" @click.stop="mostrarFiltroDropdown = !mostrarFiltroDropdown"><i class="mdi mdi-filter-variant"></i></button>
+          <ModalFiltro :aberto="mostrarFiltroDropdown" :entidade="entidade" :filtros-salvos="[]" @fechar="mostrarFiltroDropdown = false" @aplicar="onAplicarFiltro" />
         </div>
-        <button class="btn-novo" @click="abrirNovo"><i class="mdi mdi-plus"></i> Novo</button>
+        <button class="btn-colunas" @click="mostrarModalColunas = true"><i class="mdi mdi-view-column-outline"></i> Colunas</button>
         <span class="total">{{ total }} registros</span>
+        <button class="btn-novo" @click="abrirNovo"><i class="mdi mdi-plus"></i> Novo</button>
       </div>
     </div>
 
-    <div class="te-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th v-for="col in colunasAtivas" :key="col.campo" :style="col.largura ? { width: col.largura } : {}">{{ col.label }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="carregando"><td :colspan="colunasAtivas.length" class="msg">Carregando...</td></tr>
-          <tr v-else-if="!itens.length"><td :colspan="colunasAtivas.length" class="msg">Nenhum registro encontrado</td></tr>
-          <tr v-for="item in itens" :key="item.Id" class="row-click" @click="abrirEditar(item.Id)">
-            <td v-for="col in colunasAtivas" :key="col.campo">
-              <div v-if="col.tipo === 'avatar'" class="cell-avatar">
-                <div class="avatar-mini">{{ (item[col.campo] ?? '?')[0] }}</div>
-                <span>{{ item[col.campo] ?? '-' }}</span>
-              </div>
-              <span v-else-if="col.tipo === 'status'"><span class="dot" :class="{ on: item[col.campo] }"></span>{{ item[col.campo] ? 'Ativo' : 'Inativo' }}</span>
-              <span v-else-if="col.tipo === 'badge'" class="badge">{{ item[col.campo] ?? '-' }}</span>
-              <span v-else>{{ formatarValor(item, col) }}</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div v-if="tp() > 1" class="paginacao">
-      <button :disabled="pagina <= 1" @click="pg(pagina - 1)"><i class="mdi mdi-chevron-left"></i></button>
-      <span>{{ pagina }} / {{ tp() }}</span>
-      <button :disabled="pagina >= tp()" @click="pg(pagina + 1)"><i class="mdi mdi-chevron-right"></i></button>
+    <div class="te-body">
+      <aside class="te-sidebar">
+        <TabsFiltro :entidade="entidade" :campos-estaticos="camposEstaticos" vertical @filtro-alterado="onFiltro" />
+      </aside>
+      <div class="te-main">
+        <div class="te-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th v-for="col in colunasAtivas" :key="col.campo" :style="col.largura ? { width: col.largura } : {}">{{ col.label }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="carregando"><td :colspan="colunasAtivas.length" class="msg">Carregando...</td></tr>
+              <tr v-else-if="!itens.length"><td :colspan="colunasAtivas.length" class="msg">Nenhum registro encontrado</td></tr>
+              <tr v-for="item in itens" :key="item.Id" class="row-click" @click="abrirEditar(item.Id)">
+                <td v-for="col in colunasAtivas" :key="col.campo">
+                  <div v-if="col.tipo === 'avatar'" class="cell-avatar">
+                    <div class="avatar-mini">{{ (item[col.campo] ?? '?')[0] }}</div>
+                    <span>{{ item[col.campo] ?? '-' }}</span>
+                  </div>
+                  <span v-else-if="col.tipo === 'status'"><span class="dot" :class="{ on: item[col.campo] }"></span>{{ item[col.campo] ? 'Ativo' : 'Inativo' }}</span>
+                  <span v-else-if="col.tipo === 'badge'" class="badge">{{ item[col.campo] ?? '-' }}</span>
+                  <span v-else>{{ formatarValor(item, col) }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="tp() > 1" class="paginacao">
+          <span class="pag-info">Mostrando {{ (pagina-1)*porPagina + 1 }} - {{ Math.min(pagina*porPagina, total) }} de {{ total }}</span>
+          <button :disabled="pagina <= 1" @click="pg(pagina - 1)"><i class="mdi mdi-chevron-left"></i></button>
+          <span>{{ pagina }} / {{ tp() }}</span>
+          <button :disabled="pagina >= tp()" @click="pg(pagina + 1)"><i class="mdi mdi-chevron-right"></i></button>
+        </div>
+      </div>
     </div>
 
     <FormModal v-if="formAberto" :entidade="entidade" :endpoint="endpoint" :id="formId" :titulo="titulo" @fechar="formAberto = false" @salvo="onSalvo" />
+    <ModalColunas v-if="mostrarModalColunas" :colunas="colunas" :colunas-visiveis="colunasVisiveis" :entidade="entidade" @fechar="mostrarModalColunas = false" @salvar="onSalvarColunas" />
   </div>
 </template>
 
 <style scoped>
-.te-container{display:flex;flex-direction:column;height:100%}
-.te-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px}
-.search-inline{display:flex;align-items:center;gap:8px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;width:300px}
-.search-inline .mdi{color:var(--text-muted);font-size:18px}
+.te-container{display:flex;flex-direction:column;height:100%;overflow:hidden}
+.te-header{display:flex;align-items:center;gap:16px;flex-shrink:0;padding:12px 20px;background:var(--bg-primary);border-bottom:1px solid var(--border)}
+.search-inline{display:flex;align-items:center;gap:8px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;width:280px;transition:border-color .15s}
+.search-inline:focus-within{border-color:var(--accent)}
+.search-inline .mdi{color:var(--text-muted);font-size:16px}
 .search-inline input{border:none;background:transparent;color:var(--text-primary);font-size:13px;outline:none;width:100%}
 .search-inline input::placeholder{color:var(--text-muted)}
-.te-toolbar-right{display:flex;align-items:center;gap:10px}
-.col-selector-wrap{position:relative}
-.btn-colunas{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg-surface);color:var(--text-secondary);font-size:12px;cursor:pointer}
-.btn-colunas:hover{background:var(--bg-elevated);color:var(--text-primary)}
-.col-dropdown{position:absolute;top:100%;right:0;margin-top:6px;z-index:50;background:var(--bg-primary);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);padding:12px;min-width:200px;animation:fadeIn .12s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-.col-dropdown-title{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.col-check{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text-secondary);transition:background .1s}
-.col-check:hover{background:var(--bg-elevated)}
-.col-check.active{color:var(--text-primary)}
-.col-check input[type="checkbox"]{accent-color:var(--accent);width:14px;height:14px}
-.btn-novo{display:flex;align-items:center;gap:4px;padding:6px 14px;border:none;border-radius:6px;background:var(--accent);color:#000;font-size:12px;font-weight:600;cursor:pointer}
+.te-header-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.btn-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text-secondary);font-size:16px;cursor:pointer;transition:all .15s}
+.btn-icon:hover{background:var(--bg-elevated);color:var(--accent);border-color:var(--accent)}
+.te-filtro-wrap{position:relative}
+.btn-colunas{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text-secondary);font-size:12px;cursor:pointer;transition:all .15s}
+.btn-colunas:hover{background:var(--bg-elevated);color:var(--text-primary);border-color:var(--text-muted)}
+.btn-novo{display:flex;align-items:center;gap:5px;padding:8px 16px;border:none;border-radius:8px;background:var(--accent);color:#000;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
 .btn-novo:hover{background:var(--accent-hover)}
 .total{color:var(--text-muted);font-size:12px;white-space:nowrap}
-.te-table-wrap{flex:1;overflow:auto;border:1px solid var(--border);border-radius:10px}
+.te-body{display:flex;flex:1;overflow:hidden}
+.te-sidebar{width:200px;border-right:1px solid var(--border);background:var(--bg-secondary);padding:16px;overflow:visible;flex-shrink:0;display:flex;flex-direction:column}
+.te-sidebar :deep(.tabs-filtro){margin-bottom:0}
+.te-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.te-table-wrap{flex:1;overflow:auto;background:var(--bg-surface);border-left:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead{position:sticky;top:0;z-index:1}
-th{background:var(--bg-secondary);color:var(--text-muted);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.5px;padding:12px 14px;text-align:left;border-bottom:1px solid var(--border)}
-td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
+th{background:var(--bg-secondary);color:var(--text-muted);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.6px;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:11px 16px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
 tr:hover td{background:var(--bg-elevated)}
-.msg{text-align:center;padding:40px;color:var(--text-muted)}
+.msg{text-align:center;padding:60px 20px;color:var(--text-muted);font-size:14px}
 .cell-avatar{display:flex;align-items:center;gap:10px;color:var(--text-primary);font-weight:500}
-.avatar-mini{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-.badge{background:var(--bg-elevated);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-size:11px}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-right:4px}.dot.on{background:#22c55e}
-.row-click{cursor:pointer}
-.paginacao{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 0}
-.paginacao button{width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center}
-.paginacao button:hover:not(:disabled){background:var(--bg-elevated)}
+.avatar-mini{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.badge{background:var(--bg-elevated);border:1px solid var(--border);padding:3px 10px;border-radius:4px;font-size:11px;color:var(--text-secondary)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-right:6px}.dot.on{background:#22c55e}
+.row-click{cursor:pointer;transition:background .1s}
+.paginacao{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 16px;flex-shrink:0;border-top:1px solid var(--border);background:var(--bg-primary)}
+.paginacao button{width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.paginacao button:hover:not(:disabled){background:var(--bg-elevated);border-color:var(--text-muted)}
 .paginacao button:disabled{opacity:.3;cursor:not-allowed}
-.paginacao span{color:var(--text-muted);font-size:13px}
+.paginacao span{color:var(--text-muted);font-size:12px}
+.pag-info{font-size:11px;color:var(--text-muted);margin-right:auto}
+
+@media (max-width: 768px) {
+  .te-body{flex-direction:column}
+  .te-sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border);padding:12px;max-height:140px}
+  .te-main{padding-left:0}
+  .search-inline{width:100%}
+  .te-header{flex-wrap:wrap}
+}
 </style>

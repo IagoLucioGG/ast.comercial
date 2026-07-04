@@ -182,8 +182,8 @@ app.UseCors();
 app.UseMiddleware<SegurancaHeadersMiddleware>();
 app.UseMiddleware<TratamentoErrosMiddleware>();
 app.UseMiddleware<SanitizacaoMiddleware>();
-app.UseMiddleware<RateLimitMiddleware>();
 app.UseAuthentication();
+app.UseMiddleware<RateLimitMiddleware>();
 app.UseAuthorization();
 app.UseMiddleware<TenantMiddleware>();
 app.MapControllers();
@@ -198,6 +198,15 @@ if (app.Environment.IsDevelopment())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.MigrateAsync();
     await AST.Comercial.Infrastructure.Data.SeedDados.ExecutarAsync(db);
+
+    // Seed campos nativos para todas as empresas
+    var empresas = await db.Set<Empresa>().IgnoreQueryFilters().Select(e => e.Id).ToListAsync();
+    foreach (var empresaId in empresas)
+    {
+        db.EmpresaIdAtual = empresaId;
+        await AST.Comercial.Infrastructure.Data.SeedCamposNativos.SeedAsync(db, empresaId);
+        await AST.Comercial.Infrastructure.Data.SeedFormulariosPadrao.SeedAsync(db, empresaId);
+    }
 }
 
 app.Run();

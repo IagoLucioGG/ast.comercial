@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import logoAst from '@/assets/logo-menor.png'
-import logoMobile from '@/assets/logo-menor.png'
+import emblemaAst from '@/assets/emblema-sem-fundo.png'
+import nomeAst from '@/assets/nome-sem-fundo.png'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -59,7 +59,10 @@ async function entrar() {
       <aside class="painel-hero">
         <div class="hero-glow"></div>
         <div class="hero-content">
-          <img :src="logoAst" alt="AST Comercial" class="logo" />
+          <div class="logo-area">
+            <img :src="emblemaAst" alt="Emblema AST" class="emblema-spin" />
+            <img :src="nomeAst" alt="AST Comercial" class="logo-nome" />
+          </div>
           <h1>Consulte <span class="destaque">negócios</span>, gerencie regras e otimize suas vendas.</h1>
           <p class="descricao">CRM integrado ao seu dia a dia — funil de vendas, automações, propostas e muito mais.</p>
           <ul class="features">
@@ -73,7 +76,10 @@ async function entrar() {
       <!-- Painel do formulário -->
       <main class="painel-form">
         <div class="form-wrapper">
-          <img :src="logoMobile" alt="AST Comercial" class="logo-mobile" />
+          <div class="logo-mobile-area">
+            <img :src="emblemaAst" alt="Emblema AST" class="emblema-spin-mobile" />
+            <img :src="nomeAst" alt="AST Comercial" class="logo-nome-mobile" />
+          </div>
 
           <div class="badge">
             <span class="badge-dot"></span>
@@ -217,10 +223,31 @@ async function entrar() {
   padding: 0 40px 0 40px;
 }
 
-.logo {
-  width: 340px;
-  height: auto;
+.logo-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
   margin-bottom: 48px;
+}
+
+.emblema-spin {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  animation: spinCycle 8s ease-in-out infinite;
+}
+
+.logo-nome {
+  width: 280px;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes spinCycle {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
 }
 
 h1 {
@@ -295,6 +322,10 @@ h1 {
 }
 
 .logo-mobile {
+  display: none;
+}
+
+.logo-mobile-area {
   display: none;
 }
 
@@ -479,11 +510,25 @@ h2 {
     border-left: none;
   }
 
-  .logo-mobile {
-    display: block;
-    width: 100px;
-    height: auto;
+  .logo-mobile-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 32px;
+  }
+
+  .emblema-spin-mobile {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    animation: spinCycle 8s ease-in-out infinite;
+  }
+
+  .logo-nome-mobile {
+    width: 160px;
+    height: auto;
+    object-fit: contain;
   }
 
   .form-wrapper {

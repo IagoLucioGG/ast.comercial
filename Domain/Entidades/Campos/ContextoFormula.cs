@@ -159,5 +159,6 @@ public class EsquemaNavegacao
 {
     public string Tipo { get; set; } = string.Empty;
     public string? Descricao { get; set; }
+    public string? Chave { get; set; }
     public Dictionary<string, EsquemaNavegacao>? Propriedades { get; set; }
 }

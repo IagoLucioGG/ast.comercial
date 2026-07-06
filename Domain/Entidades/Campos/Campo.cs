@@ -51,6 +51,11 @@ public class Campo : EntidadeBase
     // Fórmula JavaScript segura (ex: retorna valor calculado)
     public string? Formula { get; set; }
 
+    // Fórmulas condicionais JS
+    public string? FormulaVisibilidade { get; set; }
+    public string? FormulaObrigatoriedade { get; set; }
+    public string? FormulaSomenteLeitura { get; set; }
+
     // Validações customizadas
     public int? TamanhoMinimo { get; set; }
     public int? TamanhoMaximo { get; set; }

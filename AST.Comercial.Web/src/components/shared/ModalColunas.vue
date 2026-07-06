@@ -33,7 +33,12 @@ async function carregarSchema() {
       esquema.value = data
       camposSchema.value = parsearPropriedades(data['$registro'], '')
     }
-  } catch { camposSchema.value = [] }
+  } catch {}
+
+  // Fallback: se não retornou nada, usar as colunas definidas no componente
+  if (!camposSchema.value.length) {
+    camposSchema.value = props.colunas.map(c => ({ nome: c.campo, tipo: 'string', caminho: c.campo }))
+  }
 }
 
 function parsearPropriedades(obj: any, prefixo: string): CampoSchema[] {

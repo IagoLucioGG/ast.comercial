@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 namespace AST.Comercial.Controllers;
 
@@ -152,12 +153,36 @@ public class CamposController(ICampoServico servico) : ODataController
     }
 
     [HttpGet("odata/Campos@Esquema({entidade})")]
-    public ActionResult ObterEsquema(string entidade)
+    public async Task<ActionResult> ObterEsquema(string entidade)
     {
         if (!Enum.TryParse<EntidadeAlvo>(entidade, out var alvo))
-            return BadRequest(new { erro = "EntidadeAlvo inválida." });
+            return Ok(new Dictionary<string, object>());
 
         var esquema = ContextoFormula.ObterEsquema(alvo);
+
+        // Adicionar campos personalizados ao $registro
+        var camposPersonalizados = await servico.ObterTodos()
+            .Where(c => c.EntidadeAlvo == alvo)
+            .Select(c => new { c.Nome, c.Chave, c.Tipo })
+            .ToListAsync();
+
+        if (esquema.TryGetValue("$registro", out var registro) && registro.Propriedades is not null)
+        {
+            foreach (var campo in camposPersonalizados)
+            {
+                var nomeProp = campo.Nome;
+                if (!registro.Propriedades.ContainsKey(nomeProp))
+                {
+                    registro.Propriedades[nomeProp] = new EsquemaNavegacao
+                    {
+                        Tipo = campo.Tipo.ToString(),
+                        Chave = campo.Chave,
+                        Descricao = $"Campo personalizado"
+                    };
+                }
+            }
+        }
+
         return Ok(esquema);
     }
 }

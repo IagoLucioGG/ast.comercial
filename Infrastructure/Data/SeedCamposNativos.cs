@@ -14,7 +14,7 @@ public static class SeedCamposNativos
     {
         var existentes = await db.Campos
             .IgnoreQueryFilters()
-            .Where(c => c.EmpresaId == empresaId && c.Nativo)
+            .Where(c => c.EmpresaId == empresaId)
             .Select(c => new { c.EntidadeAlvo, c.Chave })
             .ToListAsync();
 

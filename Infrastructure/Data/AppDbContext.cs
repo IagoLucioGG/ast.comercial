@@ -61,6 +61,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Formulario> Formularios => Set<Formulario>();
     public DbSet<SecaoFormulario> SecoesFormulario => Set<SecaoFormulario>();
     public DbSet<CampoFormulario> CamposFormulario => Set<CampoFormulario>();
+    public DbSet<ModeloDocumento> ModelosDocumento => Set<ModeloDocumento>();
+    public DbSet<SecaoModelo> SecoesModelo => Set<SecaoModelo>();
     public DbSet<RegistroAlteracao> RegistrosAlteracao => Set<RegistroAlteracao>();
     public DbSet<Empresa> Empresas => Set<Empresa>();
     public DbSet<Usuario> Usuarios => Set<Usuario>();

@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AST.Comercial.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260703201446_AdicionarCampoNativoEPermiteMultiplos")]
-    partial class AdicionarCampoNativoEPermiteMultiplos
+    [Migration("20260704050625_AlterarFormulaCampoParaText")]
+    partial class AlterarFormulaCampoParaText
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

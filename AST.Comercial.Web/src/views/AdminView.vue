@@ -24,14 +24,11 @@ const categorias: AdminCategoria[] = [
   {
     titulo: 'Geral',
     items: [
-      { icon: 'mdi-earth', label: 'Modelo do sistema', componente: 'ModeloSistema', slug: 'modelo-sistema' },
       { icon: 'mdi-form-select', label: 'Campos e formulários', componente: 'CamposFormularios', slug: 'campos-formularios' },
       { icon: 'mdi-account-supervisor', label: 'Equipes e colaboradores', componente: 'Equipes', slug: 'equipes' },
       { icon: 'mdi-domain', label: 'Dados da empresa', componente: 'DadosEmpresa', slug: 'dados-empresa' },
-      { icon: 'mdi-cog-outline', label: 'Configurações de campos', componente: 'ConfigCampos', slug: 'config-campos' },
       { icon: 'mdi-auto-fix', label: 'Automações', componente: 'Automacoes', slug: 'automacoes' },
       { icon: 'mdi-filter-outline', label: 'Funis', componente: 'Funis', slug: 'funis' },
-      { icon: 'mdi-label-outline', label: 'Etiquetas', componente: 'Etiquetas', slug: 'etiquetas' },
     ]
   },
   {
@@ -48,7 +45,6 @@ const categorias: AdminCategoria[] = [
     titulo: 'Propostas e Vendas',
     items: [
       { icon: 'mdi-file-document-multiple-outline', label: 'Modelos de documentos', componente: 'ModelosDocumentos', slug: 'modelos-documentos' },
-      { icon: 'mdi-table-large', label: 'Tabela de comissão', componente: 'TabelaComissao', slug: 'comissao' },
     ]
   },
   {
@@ -56,7 +52,7 @@ const categorias: AdminCategoria[] = [
     items: [
       { icon: 'mdi-puzzle-outline', label: 'Integrações e aplicativos', componente: 'Integracoes', slug: 'integracoes' },
       { icon: 'mdi-account-convert-outline', label: 'Usuários de integração', componente: 'UsuariosIntegracao', slug: 'usuarios-integracao' },
-      { icon: 'mdi-key-outline', label: 'Tokens de autenticação', componente: 'Tokens', slug: 'tokens' },
+      { icon: 'mdi-cloud-download-outline', label: 'Importar da Ploomes', componente: 'ImportadorPloomes', slug: 'importar-ploomes' },
     ]
   },
 ]

@@ -25,6 +25,7 @@ const router = createRouter({
             { path: ':painel', name: 'admin-painel', component: () => import('../views/AdminView.vue') },
           ]
         },
+        { path: 'admin/modelo-documento/:id', name: 'editor-modelo', component: () => import('../views/EditorModeloView.vue') },
       ],
     },
     {

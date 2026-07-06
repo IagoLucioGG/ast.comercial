@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { odataGet, odataPost, odataPatch, odataDelete, type ODataParams } from '@/services/api'
+import { odataGet, odataPost, odataPatch, odataDelete, odataGetOne } from '@/services/api'
 import TabelaEntidade, { type ColunaConfig, type CampoEstaticoConfig } from '@/components/shared/TabelaEntidade.vue'
 import EditorFormula from '@/components/shared/EditorFormula.vue'
 import FormulariosAdmin from '@/components/admin/FormulariosAdmin.vue'
@@ -46,6 +46,7 @@ const colunasTabela: ColunaConfig[] = [
   { campo: 'Tipo', label: 'Tipo', tipo: 'badge' },
   { campo: 'Obrigatorio', label: 'Obrig.' },
   { campo: 'Ativo', label: 'Status', tipo: 'status' },
+  { campo: 'CriadoEm', label: 'Criado em', tipo: 'data' },
 ]
 
 const camposEstaticosTabela: CampoEstaticoConfig[] = [
@@ -122,6 +123,15 @@ function abrirEditar(campo: Campo) {
   modalAberto.value = true
 }
 
+async function abrirEditarPorId(id: number) {
+  try {
+    const campo = await odataGetOne<Campo>('Campos', id)
+    abrirEditar(campo)
+  } catch {}
+}
+
+const tabelaCamposRef = ref<InstanceType<typeof TabelaEntidade> | null>(null)
+
 async function salvar() {
   if (!form.value.Nome.trim()) return
   const payload: any = { Nome: form.value.Nome, Descricao: form.value.Descricao || null, Tipo: form.value.TipoCampo, EntidadeAlvo: entidadeSelecionada.value, Obrigatorio: form.value.Obrigatorio, Visivel: form.value.Visivel, SomenteLeitura: form.value.SomenteLeitura, PermiteMultiplosValores: form.value.PermiteMultiplosValores }
@@ -138,13 +148,13 @@ async function salvar() {
   if (form.value.FormulaSomenteLeitura) payload.FormulaSomenteLeitura = form.value.FormulaSomenteLeitura
   if (modoEdicao.value && campoEditando.value) await odataPatch('Campos', campoEditando.value.Id, payload)
   else await odataPost('Campos', payload)
-  modalAberto.value = false; await carregar()
+  modalAberto.value = false; tabelaCamposRef.value?.carregar()
 }
 
 async function excluirCampo() {
   if (!campoEditando.value || !confirm('Deseja realmente excluir este campo?')) return
   await odataDelete('Campos', campoEditando.value.Id)
-  modalAberto.value = false; await carregar()
+  modalAberto.value = false; tabelaCamposRef.value?.carregar()
 }
 
 onMounted(carregarContagens)
@@ -183,6 +193,7 @@ onMounted(carregarContagens)
         <h3>{{ entidadeSelecionada }}</h3>
       </div>
       <TabelaEntidade
+        ref="tabelaCamposRef"
         :key="entidadeSelecionada"
         entidade="Campo"
         endpoint="Campos"
@@ -193,6 +204,9 @@ onMounted(carregarContagens)
         ordenacao-padrao="Ordem asc,Nome asc"
         :campos-estaticos="camposEstaticosTabela"
         :filtro-base="`EntidadeAlvo eq '${entidadeSelecionada}'`"
+        sem-form-interno
+        @novo="abrirNovo"
+        @editar="abrirEditarPorId"
       />
     </div>
     </template>

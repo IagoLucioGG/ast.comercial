@@ -18,6 +18,8 @@ export interface CampoEstaticoConfig {
   tipo: string
 }
 
+const emit = defineEmits<{ novo: []; editar: [id: number] }>()
+
 const props = withDefaults(defineProps<{
   entidade: string
   endpoint: string
@@ -28,9 +30,11 @@ const props = withDefaults(defineProps<{
   placeholderBusca?: string
   camposEstaticos?: CampoEstaticoConfig[]
   filtroBase?: string
+  semFormInterno?: boolean
 }>(), {
   ordenacaoPadrao: 'Nome asc',
   placeholderBusca: 'Buscar...',
+  semFormInterno: false,
 })
 
 const itens = ref<any[]>([])
@@ -39,6 +43,8 @@ const carregando = ref(false)
 const pagina = ref(1)
 const porPagina = ref(20)
 const busca = ref('')
+const ordenacaoColuna = ref('')
+const ordenacaoDirecao = ref<'asc' | 'desc'>('asc')
 const filtroAba = ref<string | null>(null)
 const ordenacaoAba = ref<string | null>(null)
 const formAberto = ref(false)
@@ -116,7 +122,7 @@ async function carregar() {
     const params: ODataParams = {
       top: porPagina.value,
       skip: (pagina.value - 1) * porPagina.value,
-      orderby: ordenacaoAba.value ?? props.ordenacaoPadrao,
+      orderby: ordenacaoColuna.value ? `${ordenacaoColuna.value} ${ordenacaoDirecao.value}` : (ordenacaoAba.value ?? props.ordenacaoPadrao),
       count: true,
       select,
     }
@@ -149,9 +155,23 @@ function onFiltro(f: string | null, o: string | null, pp: number, colunas: strin
 function pg(p: number) { pagina.value = p; carregar() }
 const tp = () => Math.ceil(total.value / porPagina.value)
 function pesquisar() { pagina.value = 1; carregar() }
-function abrirNovo() { formId.value = null; formAberto.value = true }
-function abrirEditar(id: number) { formId.value = id; formAberto.value = true }
+
+function ordenarPor(campo: string) {
+  if (campo.includes('/')) return
+  if (ordenacaoColuna.value === campo) {
+    ordenacaoDirecao.value = ordenacaoDirecao.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    ordenacaoColuna.value = campo
+    ordenacaoDirecao.value = 'asc'
+  }
+  pagina.value = 1
+  carregar()
+}
+function abrirNovo() { if (props.semFormInterno) { emit('novo') } else { formId.value = null; formAberto.value = true } }
+function abrirEditar(id: number) { if (props.semFormInterno) { emit('editar', id) } else { formId.value = id; formAberto.value = true } }
 function onSalvo() { formAberto.value = false; carregar() }
+
+defineExpose({ carregar })
 
 function onSalvarColunas(novasColunas: string[]) {
   colunasVisiveis.value = novasColunas
@@ -224,7 +244,9 @@ onMounted(carregar)
           <table>
             <thead>
               <tr>
-                <th v-for="col in colunasAtivas" :key="col.campo" :style="col.largura ? { width: col.largura } : {}">{{ col.label }}</th>
+                <th v-for="col in colunasAtivas" :key="col.campo" :style="col.largura ? { width: col.largura } : {}" @click="ordenarPor(col.campo)">
+                  {{ col.label }}<i v-if="ordenacaoColuna === col.campo" class="mdi" :class="ordenacaoDirecao === 'asc' ? 'mdi-arrow-up' : 'mdi-arrow-down'"></i>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -282,7 +304,9 @@ onMounted(carregar)
 .te-table-wrap{flex:1;overflow:auto;background:var(--bg-surface);border-left:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead{position:sticky;top:0;z-index:1}
-th{background:var(--bg-secondary);color:var(--text-muted);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.6px;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:var(--bg-secondary);color:var(--text-muted);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.6px;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--text-primary)}
+th .mdi{font-size:12px;color:var(--accent);margin-left:4px}
 td{padding:11px 16px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
 tr:hover td{background:var(--bg-elevated)}
 .msg{text-align:center;padding:60px 20px;color:var(--text-muted);font-size:14px}

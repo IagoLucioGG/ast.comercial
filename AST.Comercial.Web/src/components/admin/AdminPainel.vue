@@ -9,6 +9,8 @@ import EtiquetasAdmin from './EtiquetasAdmin.vue'
 import IntegracoesAdmin from './IntegracoesAdmin.vue'
 import DadosEmpresa from './DadosEmpresa.vue'
 import CamposFormularios from './CamposFormularios.vue'
+import ImportadorPloomes from './ImportadorPloomes.vue'
+import ModelosDocumentoAdmin from './ModelosDocumentoAdmin.vue'
 
 const props = defineProps<{ titulo: string; componente: string }>()
 defineEmits<{ fechar: [] }>()
@@ -24,6 +26,8 @@ const componentes: Record<string, any> = {
   Integracoes: IntegracoesAdmin,
   DadosEmpresa,
   CamposFormularios,
+  ImportadorPloomes,
+  ModelosDocumentos: ModelosDocumentoAdmin,
 }
 </script>
 

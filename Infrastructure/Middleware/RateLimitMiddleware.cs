@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Hosting;
 
 namespace AST.Comercial.Infrastructure.Middleware;
 
@@ -14,14 +15,21 @@ public class RateLimitMiddleware(RequestDelegate next)
     private static DateTime _ultimaLimpeza = DateTime.UtcNow;
     private static readonly object LockLimpeza = new();
 
-    private const int LimiteUsuarioNormal = 120;
-    private const int LimiteIntegracao = 300;
+    private const int LimiteUsuarioNormal = 600;
+    private const int LimiteIntegracao = 1200;
     private const int LimiteAnonimo = 60;
     private const int JanelaSegundos = 60;
     private const int IntervaloLimpezaMinutos = 5;
 
     public async Task InvokeAsync(HttpContext context)
     {
+        // Pular rate limit em ambiente de desenvolvimento
+        if (context.RequestServices.GetService<IWebHostEnvironment>()?.IsDevelopment() == true)
+        {
+            await next(context);
+            return;
+        }
+
         var (chave, limite) = ObterChaveELimite(context);
         var agora = DateTime.UtcNow;
 

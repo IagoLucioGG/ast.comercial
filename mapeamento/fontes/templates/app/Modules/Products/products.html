@@ -1,0 +1,230 @@
+<div class="vbox small-header">
+  <header class="regular-header new-header b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="input-group width-250 pull-left" tooltip-placement="right" uib-tooltip="{{ productsCtrl.quickSearchTooltipText }}">
+          <input class="form-control input-sm light-background" placeholder="{{ 'PRODUCTS.QUICK_FILTER_PLACEHOLDER' | translate }}" ng-model="productsCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? productsCtrl.quickFilter(productsCtrl.quick_filter) : productsCtrl.onTypeQuickFilter(productsCtrl.quick_filter)" data-cy="{{productsCtrl.main_entity.Id}}-quick-filter-input">
+          <div class="input-group-btn width-10" ng-if="productsCtrl.main_entity.Id !== 10 && productsCtrl.main_entity.Id !== 75">
+            <a class="btn button button-neutral-gray special-search-button" ng-click="productsCtrl.quickFilter(productsCtrl.quick_filter)">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+          <div class="input-group-btn dropdown" ng-if="productsCtrl.main_entity.Id === 10 || productsCtrl.main_entity.Id === 75">
+              <button class="btn button button-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="more_options"  ng-disabled="disabled">
+                  {{productsCtrl.current_quick_filter_property.Name}}
+                  <i class="fal fa-angle-down dropdown-sign font-very-small"></i>
+              </button>
+              <ul class="dropdown-menu pull-right white-dropdown-menu no-padding-top" aria-labelledby="more_options">
+                <div class="dropdown-subtitle">{{ 'PRODUCTS.SEARCH_PRODUCTS_BY' | translate }}</div>
+                  <li ng-repeat="quick_filter in productsCtrl.quick_filter_properties" ng-if="quick_filter.Id !== productsCtrl.current_quick_filter_property.Id">
+                      <a href class="white-dropdown-link" ng-click="productsCtrl.current_quick_filter_property = quick_filter">
+                          {{quick_filter.Name}}
+                      </a>
+                  </li>
+              </ul>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="dropdown pull-right">
+          <a class="dropdown-toggle button button-action pull-right" ng-if="productsCtrl.self.Profile.ProductsCreatePermission" id="filter-list" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-cy="products-new-dropdown">
+            <i class="button-icon fas fa-box-usd"></i>
+            {{ 'PRODUCTS.NEW' | translate }}
+            <i class="fal fa-angle-down dropdown-sign"></i>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="filter-list">
+            <li>
+              <a class="white-dropdown-link" ng-click="productsCtrl.openNewProductEntityModal('.newproduct')" data-cy="products-new-dropdown-product">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-box simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.PRODUCT' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ng-click="productsCtrl.openNewProductEntityModal('.newgroup')" data-cy="products-new-dropdown-group">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-boxes simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.GROUP' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ng-click="productsCtrl.openNewProductEntityModal('.newfamily')" data-cy="products-new-dropdown-family">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-inventory simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.FAMILY' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li ng-if="productsCtrl.activeCPQModule">
+              <a class="white-dropdown-link" ng-click="productsCtrl.openNewProductEntityModal('.newpart')" data-cy="products-new-dropdown-part">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-box-full simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.PART' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ng-show="productsCtrl.has_contact_products_module" ng-click="productsCtrl.openNewProductEntityModal('.contactproduct')" data-cy="products-new-dropdown-contact-product">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal {{ productsCtrl.customizables.contacts_products_module.icon_class }} simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{productsCtrl.customizables.contacts_products_module.singular_unit_name}}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <a id="orders-menu-button" ng-if="productsCtrl.show_menu" class="button button-white-no-border pull-right" open-side-menu side-menu-id="product_side_menu">
+          <span class="text-action"><i class="fal fa-cog button-icon"></i></span>
+          {{ 'GENERICS.MENU' | translate }}
+        </a>
+        <div class="dropdown pull-right">
+          <a href class="dropdown-toggle button button-white-no-border pull-right" type="button" id="product_views" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-cy="product-segment-by-button">
+            <ng-switch on="productsCtrl.current_view">
+              <span ng-switch-when="products"><span class="text-action"><i class="fal fa-box button-icon-margin"></i></span>{{ 'PRODUCTS.PRODUCTS' | translate }}</span>
+              <span ng-switch-when="groups"><span class="text-action"><i class="fal fa-boxes button-icon-margin"></i></span>{{ 'PRODUCTS.GROUPS' | translate }}</span>
+              <span ng-switch-when="families"><span class="text-action"><i class="fal fa-inventory button-icon-margin"></i></span>{{ 'PRODUCTS.FAMILIES' | translate }}</span>
+              <span ng-switch-when="parts"><span class="text-action"><i class="fal fa-box-full button-icon-margin"></i></span>{{ 'PRODUCTS.PARTS' | translate }}</span>
+              <span ng-switch-when="serializedproducts"><span class="text-action"><i class="fal {{ productsCtrl.customizables.contacts_products_module.icon_class }} button-icon-margin"></i></span>
+                {{productsCtrl.customizables.contacts_products_module.plural_unit_name}}
+              </span>
+            </ng-switch>
+            <span class="text-darkest-neutral">
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+            <div class="dropdown-subtitle">{{ 'PRODUCTS.VISUALIZATION_MODE' | translate }}</div>
+            <li>
+              <a href class="white-dropdown-link" ng-show="productsCtrl.current_view !== 'products'" ng-click="productsCtrl.changeVisualization('products')" data-cy="products-segment-by-products-button">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-box simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.PRODUCTS' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href class="white-dropdown-link" ng-show="productsCtrl.current_view !== 'groups'" ng-click="productsCtrl.changeVisualization('groups')" data-cy="products-segment-by-groups-button">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-boxes simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.GROUPS' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href class="white-dropdown-link" ng-show="productsCtrl.current_view !== 'families'" ng-click="productsCtrl.changeVisualization('families')" data-cy="products-segment-by-families-button">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-inventory simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.FAMILIES' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li ng-if="productsCtrl.activeCPQModule">
+              <a href class="white-dropdown-link" ng-show="productsCtrl.current_view !== 'parts'" ng-click="productsCtrl.changeVisualization('parts')" data-cy="products-segment-by-parts-button">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-box-full simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{ 'PRODUCTS.PARTS' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href class="white-dropdown-link" ng-show="productsCtrl.current_view !== 'serializedproducts' && productsCtrl.has_contact_products_module" ng-click="productsCtrl.changeVisualization('serializedproducts')">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal {{ productsCtrl.customizables.contacts_products_module.icon_class }} simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                      <span>{{productsCtrl.customizables.contacts_products_module.plural_unit_name}}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <filters-menu filters="productsCtrl.filters" applied-filter="productsCtrl.applied_filter" filter-actions-fn="productsCtrl.filterActions"></filters-menu>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="vbox">
+      <!-- CONTEÚDO DA TELA -->
+      <section ui-view="products-view" ng-if="productsCtrl.initial_load"></section>
+
+      <!--MODALS-->
+      <!-- <new-importation entity="productsCtrl.product_entity" modal-id="importation" ng-if="productsCtrl.state.current.name.endsWith('.productimportation')"></new-importation> -->
+      <filters-modal
+          ng-if="productsCtrl.state.current.name.endsWith('filter')"
+          modal-id="filter_modal"
+          entity="productsCtrl.main_entity"
+          remove-simple-filter="true"
+          filter-actions-fn="productsCtrl.filterActions">
+      </filters-modal>
+    </div>
+  </section>
+
+  <!--SIDE-MENU-->
+  <side-menu side-menu-id="product_side_menu">
+    <product-side-menu></product-side-menu>
+  </side-menu>
+  <!--END OF SIDE-MENU-->
+
+</div>

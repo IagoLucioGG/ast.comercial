@@ -1,0 +1,34 @@
+<div>
+  <div class="short-side-bottom-wrapper" ng-if="dealPageQuotesCtrl.activeQuoteModule && dealPageQuotesCtrl.self.Profile.QuotesModule && dealPageQuotesCtrl.dealModel.Pipeline.MayCreateQuotes">
+    <div class="font-big">
+      <span>Propostas</span>
+      <a ng-if="dealPageQuotesCtrl.dealModel.Editable && dealPageQuotesCtrl.self.Profile.QuotesCreatePermission" class="button button-light-background-border button-plus pull-right"
+        ui-sref="{{'deal.newquotelegacy'}}">
+        <i class="fas fa-plus font-super-super-small text-neutral"></i>
+      </a>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background">
+      <div class="gap-5"></div>
+      <div ng-repeat="quote in dealPageQuotesCtrl.quotes" ng-if="dealPageQuotesCtrl.can_load && quote">
+        <div class="gap-5"></div>
+        <a class="contact-card panel" ui-sref="{{'quote({quoteid: quote.Id})'}}">
+          <div class="font-semi-big">#{{quote.QuoteNumber}}</div>
+          <div class="gap-3"></div>
+          <span class="deal-detail">
+            <span class="font-small">{{(quote.Template.Name ? quote.Template.Name + " - " : "") + quote.Products.length + " produtos - " + (quote.Currency.Symbol || 'R$') + " " +
+              quote.Amount.toLocaleString('LANGUAGE' | translate, { minimumFractionDigits: 2})}}</span>
+          </span>
+        </a>
+      </div>
+      <a class="contact-card panel no-quote" ui-sref="deal.newquotelegacy"
+        ng-if="dealPageQuotesCtrl.dealModel.Editable && dealPageQuotesCtrl.self.Profile.QuotesCreatePermission && dealPageQuotesCtrl.can_load && dealPageQuotesCtrl.quotes.length === 0">
+        <div class="font-semi-big">Criar nova proposta</div>
+      </a>
+      <span class="contact-card panel no-quote" ng-if="(!dealPageQuotesCtrl.dealModel.Editable || !dealPageQuotesCtrl.self.Profile.QuotesCreatePermission) && dealPageQuotesCtrl.can_load && dealPageQuotesCtrl.quotes.length === 0">
+        <div class="font-semi-big">Nenhuma proposta criada</div>
+      </span>
+      <standard-loader margin-top="15" optionalclass="'timeline-loader'" loading="!dealPageQuotesCtrl.can_load"></standard-loader>
+    </div>
+  </div>
+</div>

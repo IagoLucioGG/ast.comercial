@@ -1,0 +1,69 @@
+<dynamic-modal
+  modal-id="users"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="Usuários inativos"
+  toggle-modal="usersCtrl.toggle_modal"
+  has-general-slide="user_slide"
+  is-fetching-modal-content="usersCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll">
+          <header class="sub-header b-b-1">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <div class="simple-inline width-200 v-bottom">
+                  <div class="input-group">
+                    <input class="form-control input-sm light-background" placeholder="Busca usuário" ng-model="usersCtrl.user_name_filter" ng-model-options="{debounce:300}">
+                    <div class="input-group-btn">
+                      <a class="btn button button-background-border">
+                        <i class="btn button button-neutral-gray special-search-button"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </header>
+          <section class="scrollable">
+            <div>
+              <table class="table table-hover white-table">
+                <thead>
+                  <tr>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.SUSPENDED_USERS.NAME' | translate}}</th>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.SUSPENDED_USERS.PROFILE' | translate}}</th>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.SUSPENDED_USERS.ROLE' | translate}}</th>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.SUSPENDED_USERS.CONTACT' | translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="contact-workplace-button" ng-repeat="user in usersCtrl.users | filter: { Name: usersCtrl.user_name_filter }:false" ui-sref="{{'user({userid: user.Id})'}}">
+                    <td>
+                      <img class="mini-avatar-less" ng-src="{{user.AvatarUrl}}">
+                      <span class="font-bold">{{user.Name}}</span>
+                    </td>
+                    <td>{{user.Profile.Name}}</td>
+                    <td>{{user.Role ? user.Role.Name : ''}}</td>
+                    <td>
+                      {{user.Email}}
+                      <br>
+                      <small class="text-muted">
+                        {{user.Phone}}
+                      </small>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="user_slide" modal-side-slide-title="Usuário Inativo">
+    <users-adm-slide-content model="usersCtrl.model" editing="usersCtrl.editing"></users-adm-slide-content>
+  </modal-side-slide>
+</dynamic-modal>

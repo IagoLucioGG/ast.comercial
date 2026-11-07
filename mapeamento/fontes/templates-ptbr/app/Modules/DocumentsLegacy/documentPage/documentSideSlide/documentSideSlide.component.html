@@ -1,0 +1,36 @@
+<div class="side-slide proposal-slide white-content b-l-1 hide-side-slide" id="side-slide-1" style="display: none;">
+  <div class="hbox stretch">
+    <aside>
+      <div class="vbox small-header">
+        <header class="regular-header b-b-1 new-header">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <div class="font-title font-thin text-left">{{documentSideSlideCtrl.current_option_title}}</div>
+            </aside>
+            <aside class="v-middle text-right">
+              <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="documentSideSlideCtrl.closeSideSlide()">
+                <i class="fal fa-times"></i>
+              </a>
+            </aside>
+          </div>
+        </header>
+
+        <section class="scrollable">
+          <div class="side-wrapper" ng-if="documentSideSlideCtrl.current_option === 1">
+            <div class="activity-history hist-separator"></div>
+            <document-side-slide-timeline document-id="documentSideSlideCtrl.document.Id"></document-side-slide-timeline>
+          </div>
+          <shared-people-slide-content ng-if="documentSideSlideCtrl.current_option === 6" entity-id="66" model-id="documentSideSlideCtrl.document.Id" model-shared="documentSideSlideCtrl.document.Shared" toggle-sharing-fn="documentSideSlideCtrl.toggleSharing(shared, sharing_text, sender_type_id)"></shared-people-slide-content>
+          <side-slide-comments ng-if="documentSideSlideCtrl.current_option === 2" api-url="Documents" get-comments-fn="documentSideSlideCtrl.getComments" model-id="documentSideSlideCtrl.document.Id"></side-slide-comments>
+          <side-slide-comments ng-if="documentSideSlideCtrl.current_option === 3" api-url="Documents" get-comments-fn="documentSideSlideCtrl.getExternalComments" external-comments="true" model-id="documentSideSlideCtrl.document.Id"></side-slide-comments>
+          <document-side-slide-details ng-if="documentSideSlideCtrl.current_option === 4" document="documentSideSlideCtrl.document"></document-side-slide-details>
+          <document-side-slide-approvals ng-if="documentSideSlideCtrl.current_option === 5" document-id="documentSideSlideCtrl.document.Id"></document-side-slide-approvals>
+          <dynamic-side-slide-content ng-if="documentSideSlideCtrl.dynamic_option" model="documentSideSlideCtrl.document" entity-id="66" option="documentSideSlideCtrl.dynamic_option"></dynamic-side-slide-content>
+        </section>
+
+      </div>
+    </aside>
+    <aside class="width-105"></aside>
+  </div>
+</div>
+<div class="proposal-slide-backdrop fade" id="side-slide-1-backdrop" style="display: none;"></div>

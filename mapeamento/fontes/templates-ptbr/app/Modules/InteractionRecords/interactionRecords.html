@@ -1,0 +1,116 @@
+<div class="vbox small-header">
+  <header class="regular-header b-b-1 new-header">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="input-group width-250" tooltip-placement="right" uib-tooltip="Pesquise registros pelo nome do cliente, e-mail, CPF ou CNPJ">
+          <input class="form-control input-sm light-background" placeholder="Busca por nome do cliente, e-mail, CPF ou CNPJ" ng-model="interactionRecordsCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? interactionRecordsCtrl.quickFilter(interactionRecordsCtrl.quick_filter) : interactionRecordsCtrl.onTypeQuickFilter(interactionRecordsCtrl.quick_filter)" data-cy="interaction-records-quick-filter-input">
+          <div class="input-group-btn width-10">
+            <a class="btn button button-neutral-gray special-search-button" ng-click="interactionRecordsCtrl.quickFilter(interactionRecordsCtrl.quick_filter)">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <a class="button button-action pull-right" ui-sref="interactionrecords.table.newinteractionrecord" data-cy="interaction-records-new-interaction-button">
+          <i class="fas fa-comment-plus button-icon"></i>
+          Novo registro de interação
+        </a>
+        <a id="contacts-menu-button" ng-if="interactionRecordsCtrl.show_menu" data-cy="interaction-record-menu-button" class="button button-white-no-border pull-right" open-side-menu side-menu-id="ir_side_menu">
+            <span class="text-action"><i class="fal fa-cog button-icon"></i></span>
+            Menu
+        </a>
+        <div class="dropdown pull-right">
+          <a href class="dropdown-toggle button button-white-no-border pull-right" type="button" id="task_views" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="text-action"><i class="fal fa-comment-lines button-icon"></i></span>
+            Registros de interação
+            <span>
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+            <div class="dropdown-subtitle">Modo de visualização</div>
+            <li>
+              <a class="white-dropdown-link" ui-sref="tasks.calendar">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-calendar simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span>Calendário</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ui-sref="tasks.list">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-tasks simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span>Lista</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ui-sref="tasks.table">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-table simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span>Tabela</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown pull-right">
+          <filters-menu filters="interactionRecordsCtrl.filters" applied-filter="interactionRecordsCtrl.applied_filter" filter-actions-fn="interactionRecordsCtrl.filterActions"></filters-menu>
+        </div>
+        
+        <!-- remove button, but in the future a feature will be made to show the location of interaction records.  -->
+        <!-- <button ng-click="interactionRecordsCtrl.toggleMap()" class="button button-white-no-border pull-right bottom-menu-button">
+          <span class="text-action"><i class="fal fa-map button-icon"></i></span>
+          <span>
+            Mapa
+          </span>
+        </button> -->
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="vbox">
+      <!-- CONTEÚDO DA TELA -->
+      <section ui-view="interaction-records-view"></section>
+
+      <!--MODALS-->
+      <google-maps markers="interactionRecordsCtrl.map_interaction_records" loaded="interactionRecordsCtrl.loaded" map-id="interaction_record_map" modal="#main_interaction_record_modal" modal-sref="{{'interactionrecords.table.interactionrecord'}}"></google-maps>
+      <!-- <new-importation entity="interactionRecordsCtrl.main_entity" modal-id="importation" ng-if="interactionRecordsCtrl.state.current.name === 'interactionrecords.table.interactionrecordsimportation'"></new-importation> -->
+      <filters-modal
+          ng-if="interactionRecordsCtrl.state.current.name.endsWith('filter')"
+          modal-id="filter_modal"
+          entity="interactionRecordsCtrl.main_entity"
+          filter-actions-fn="interactionRecordsCtrl.filterActions">
+      </filters-modal>
+
+    </div>
+  </section>
+
+
+  <!--SIDE-MENU-->
+  <side-menu side-menu-id="ir_side_menu">
+    <interaction-records-side-menu></interaction-records-side-menu>
+  </side-menu>
+  <!--END OF SIDE-MENU-->
+
+</div>

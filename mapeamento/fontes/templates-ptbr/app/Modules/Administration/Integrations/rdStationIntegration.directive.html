@@ -1,0 +1,172 @@
+<div class="vbox header-or-footer scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <div class="regular-background b-b-1 wrapper">
+      <div class="gap-15"></div>
+      <div>
+        <div class="hbox">
+          <aside class="width-10 text-center">
+            <div class="side-wrapper">
+              <img class="avatar-select" src="assets/images/rd.png">
+            </div>
+          </aside>
+          <aside>
+            <div class="side-wrapper">
+               O RD Station é uma ferramenta focada em Marketing Digital. Ela auxilia seus clientes na geração e nutrição de Leads, gestão de blog e Inbound Marketing, entre outros.
+              <div class="gap-10"></div>
+              Por essa integração, todos os Leads transformados em Oportunidades no RD Station serão enviados ao Ploomes de forma automática como uma Oportunidade.
+              <div class="gap-20"></div>
+              <!-- <a class="inline-link-blue" href target="_blank">
+                <div class="font-big font-bold">
+                  Material Explicativo
+                </div>
+              </a> -->
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="gap-15"></div>
+    </div>
+    <div class="gap-15"></div>
+    <form class="clearfix">
+      <div class="form-group col-sm-12">
+        <div class="darkest-background top-wrapper b-1 rounded-regular">
+          <div class="font-big side-wrapper">
+            <strong>
+              Passo 1: Configure as opções da integração
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div class="clearfix">
+            <div class="form-group col-sm-12">
+              <label>{{rdStationIntegrationCtrl.rd_behaviors_field.label}}</label>
+              <new-field field="rdStationIntegrationCtrl.rd_behaviors_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_behavior'" required="false" disabled="false" wide="true"></new-field>
+            </div>
+            <div class="form-group col-sm-12">
+              <label>{{rdStationIntegrationCtrl.rd_stage_field.label}}</label>
+              <new-field field="rdStationIntegrationCtrl.rd_stage_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_stage'" required="false" disabled="false" wide="true"></new-field>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    Sincronizar tags do RD com Empresas?
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-1" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_company_tag === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_company_tag">
+                    <label class="pull-right" for="cmn-toggle-1"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    Sincronizar tags do RD com Pessoas?
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-2" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_person_tag === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_person_tag">
+                    <label class="pull-right" for="cmn-toggle-2"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    Sincronizar tags do RD com Negócios?
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-3" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_deal_tag === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_deal_tag">
+                    <label class="pull-right" for="cmn-toggle-3"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    Enviar contatos criados no Ploomes para o RD Station?
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-8" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_send_persons === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_send_persons">
+                    <label class="pull-right" for="cmn-toggle-8"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12 text-muted">
+              <div class="gap-15"></div>
+              Para salvar o link do Lead recebido do RD Station, basta criar um campo chamado 'Link RD Station' (sem aspas) no formulário de Pessoas no Ploomes.
+              <div class="gap-10"></div>
+              Se houver campos customizados no RD Station e no Ploomes com o mesmo nome, eles serão sincronizados automaticamente.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <div class="darkest-background wrapper b-1 rounded-regular">
+          <div class="font-big">
+            <strong>
+              Passo 2: copie e cole seu Token Privado e seu Token Público do RD Station abaixo.
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div class="hbox">
+            <aside class="width-50-percent">
+              <div class="wrapper-right">
+                <label>Token Público</label>
+                <div class="input-group">
+                  <new-field field="rdStationIntegrationCtrl.rd_public_token_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_public_token'" required="false" disabled="false" wide="true"></new-field>
+                </div>
+              </div>
+            </aside>
+            <aside class="width-50-percent">
+              <div class="wrapper-left">
+                <label>Token Privado</label>
+                <div class="input-group">
+                  <new-field field="rdStationIntegrationCtrl.rd_private_token_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_private_token'" required="false" disabled="false" wide="true"></new-field>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12 font-big">
+        <div class="darkest-background wrapper b-1 rounded-regular">
+          <div class="font-big">
+            <strong>
+              Passo 3: disparar os Leads do RD Station para a URL abaixo dentro de um fluxo de automação:
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div class="nowrap side-scroll">
+            <div class="side-scroll-container wrapper regular-background b-1 rounded-regular">
+              https://api.ploomes.com/1/oportunidades/rdstation?aplk={{account.PublicKey}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="wrapper">
+      <div class="text-center">
+        <a class="button button-big button-action" ng-click="rdStationIntegrationCtrl.updateIntegration(true)">
+          <div class="font-big">{{ (account.RDStationIntegration && account.RDStationIntegration.Enabled ? 'INTEGRATIONS.UPDATE_INTEGRATION' : 'INTEGRATIONS.ENABLE_INTEGRATION') | translate }}</div>
+        </a>
+        <a class="button button-big button-neutral" ng-if="account.RDStationIntegration && account.RDStationIntegration.Enabled" ng-click="rdStationIntegrationCtrl.updateIntegration(false)">
+          <div class="font-big">Desabilitar integração</div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

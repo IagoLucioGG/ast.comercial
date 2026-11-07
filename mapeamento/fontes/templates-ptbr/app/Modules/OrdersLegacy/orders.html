@@ -1,0 +1,56 @@
+<div class="vbox">
+  <header class="regular-header b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <i class="icon-wallet module-id-icon"></i>
+        <span class="font-title font-thin" translate="ORDERS"></span>
+      </aside>
+      <aside class="v-middle" ng-if="ordersCtrl.self.Profile.OrdersCreatePermission">
+        <a class="button button-action pull-right" ng-click="ordersCtrl.state.go(state.current.name + '.neworder')">Nova venda</a>
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="vbox">
+      <header class="sub-header b-b-1">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <a id="orders-menu-button" ng-if="ordersCtrl.show_menu" class="button button-background pull-right" open-side-menu side-menu-id="order_side_menu">
+              <span class="text-darkest-neutral"><i class="fad fa-cog button-icon"></i> Menu</span>
+            </a>
+            <div class="dropdown">
+              <filters-menu filters="ordersCtrl.filters" applied-filter="ordersCtrl.applied_filter" filter-actions-fn="ordersCtrl.filterActions"></filters-menu>
+            </div>
+            <div class="input-group width-250 pull-right" tooltip-placement="right" uib-tooltip="Pesquise vendas pelo código ou pelo nome da empresa">
+              <input class="form-control input-sm light-background" placeholder="Busca por código ou pela empresa" ng-model="ordersCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? ordersCtrl.quickFilter(ordersCtrl.quick_filter) : ordersCtrl.onTypeQuickFilter(ordersCtrl.quick_filter)" data-cy="orders-quick-filter-input">
+              <div class="input-group-btn width-10">
+                <a class="btn button button-neutral-gray special-search-button" ng-click="ordersCtrl.quickFilter(ordersCtrl.quick_filter)">
+                  <i class="fas fa-search text-neutral"></i>
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </header>
+      <!-- CONTEÚDO DA TELA -->
+      <section ui-view="orders-view"></section>
+    </div>
+  </section>
+
+  <!--MODALS-->
+  <order-pipeline ng-if="ordersCtrl.state.current.name.includes('.orderpipeline')"></order-pipeline>
+  <filters-modal
+      ng-if="ordersCtrl.state.current.name.endsWith('filter')"
+      modal-id="filter_modal"
+      entity="ordersCtrl.main_entity"
+      remove-simple-filter="true"
+      filter-actions-fn="ordersCtrl.filterActions">
+  </filters-modal>
+
+  <!--SIDE-MENU-->
+  <side-menu side-menu-id="order_side_menu">
+    <order-side-menu></order-side-menu>
+  </side-menu>
+  <!--END OF SIDE-MENU-->
+
+</div>

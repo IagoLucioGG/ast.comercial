@@ -1,0 +1,25 @@
+<aside class="width-33-percent">
+  <div class="little-wrapper">
+    <checklist-block ng-if="rightSidebarCtrl.can_show_checklist && rightSidebarCtrl.self.Account.Plan.Checklists" deal="mainDealCtrl.deal_view"></checklist-block>
+    <deal-page-quotes ng-if="mainDealCtrl.initial_load === true" deal-model="mainDealCtrl.deal_view"></deal-page-quotes>
+    <deal-page-documents ng-if="mainDealCtrl.initial_load === true" deal-model="mainDealCtrl.deal_view"></deal-page-documents>
+    <deal-page-orders ng-if="mainDealCtrl.initial_load === true" deal-model="mainDealCtrl.deal_view"></deal-page-orders>
+    <deal-page-infos ng-if="mainDealCtrl.initial_load === true" deal-model="mainDealCtrl.deal_view"></deal-page-infos>
+    <attachments-widget model="mainDealCtrl.deal_view" api-url="Deals"></attachments-widget>
+
+    <div ng-if="mainDealCtrl.deal_view.OriginDeal">
+      <div class="short-side-bottom-wrapper">
+        <div class="font-big">
+          <span>Negócio Original</span>
+        </div>
+        <div class="gap-5"></div>
+        <div class="b-t-1 dark-background">
+          <div class="gap-5"></div>
+          <dynamic-funnel-card card="mainDealCtrl.deal_view.OriginDeal" entity="mainDealCtrl.main_entity" show-stage="true"></dynamic-funnel-card>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</aside>

@@ -1,0 +1,78 @@
+<div ng-class="{ 'wrapper': !simpleFormulaConfigCtrl.isTriggerConfig }" ng-style="{ 'margin-top': simpleFormulaConfigCtrl.isTriggerConfig ? '15px' : 'unset' }">
+  <formula-ia-generator ng-if="simpleFormulaConfigCtrl.ai_formula_gen_feature_flag" current-formula="simpleFormulaConfigCtrl.local_model" root-field="simpleFormulaConfigCtrl.field" formula-type="simpleFormulaConfigCtrl.formulaType"></formula-ia-generator>
+  <label ng-if="!simpleFormulaConfigCtrl.isTriggerConfig">
+    Fórmula
+  </label>
+  <label ng-if="simpleFormulaConfigCtrl.isTriggerConfig">
+    Gatilho
+  </label>
+  <div class="input-group">
+    <div class="input-group">
+      <div ng-class="{'code-input-width-on-simple-formula': !simpleFormulaConfigCtrl.isTriggerConfig, 'code-input-width-on-simple-trigger': simpleFormulaConfigCtrl.isTriggerConfig}">
+        <code-input
+          id="formula_string"
+          initial-text="simpleFormulaConfigCtrl.display_model || simpleFormulaConfigCtrl.local_model"
+          feature-flags="simpleFormulaConfigCtrl.featureFlags"
+          on-change-text="simpleFormulaConfigCtrl.typeCheck"
+          set-reset-text-callback="simpleFormulaConfigCtrl.setResetTextCallback"
+          set-apply-focus-on-prev-position-callback="simpleFormulaConfigCtrl.setApplyFocusOnPrevPositionCallback"
+          set-replace-formula-tokens-callback="simpleFormulaConfigCtrl.setReplaceFormulaTokensCallback"
+          on-cursor-position-change="simpleFormulaConfigCtrl.setCursorPosition"
+          on-copy-callback="simpleFormulaConfigCtrl.handleCopyFormula"
+          on-paste-callback="simpleFormulaConfigCtrl.handlePasteFormula"
+          on-did-model-change="simpleFormulaConfigCtrl.handleDidCodeInputModelChange">
+        </code-input>
+      </div>
+      <div
+        ng-if="!simpleFormulaConfigCtrl.loadingCurrentFormulaValidation"
+        class="input-group-addon white-content width-10 force-left-border"
+        uib-tooltip="{{ (simpleFormulaConfigCtrl.currentFormulaValid ? 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.VALID_FORMULA' : 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.INVALID_FORMULA') | translate }}"
+        tooltip-append-to-body="true"
+        >
+        <i class="fas" ng-class="{'fa-check': simpleFormulaConfigCtrl.currentFormulaValid, 'fa-times': !simpleFormulaConfigCtrl.currentFormulaValid}"></i>
+      </div>
+      <div
+        ng-if="simpleFormulaConfigCtrl.loadingCurrentFormulaValidation"
+        class="input-group-addon white-content width-10 force-left-border"
+        uib-tooltip="Carregando"
+        tooltip-append-to-body="true"
+        >
+        <i class="fas fa-sync loading-formula-validation"></i>
+      </div>
+    </div>
+    <div class="input-group-btn dropdown v-top">
+      <field-path-selection 
+        index="{{ simpleFormulaConfigCtrl.fieldPathSelectionIndex }}"
+        on-click-callback="simpleFormulaConfigCtrl.handleFieldPathSelectionOpen"
+        field-selection-fn="simpleFormulaConfigCtrl.addVariable(field, field_path_id)" 
+        start-entity-id="simpleFormulaConfigCtrl.field.entityId" 
+        enforce-field-path-reachability="true"
+        label="Campos" 
+        start-tree-edit-fn="simpleFormulaConfigCtrl.editTreeFn(tree)" 
+        custom-filter-fn="simpleFormulaConfigCtrl.customFilterFn(field, simpleFormulaConfigCtrl.field.entityId)"
+        check-force-disable-nesting-fn="simpleFormulaConfigCtrl.customDisableNestingFilterFn(field, simpleFormulaConfigCtrl.field.entityId)"
+        ></field-path-selection>
+      <formula-snippets
+        snippet-select-callback-fn="simpleFormulaConfigCtrl.selectSnippet"
+        snippet-config="simpleFormulaConfigCtrl.snippetConfig"
+        on-open-callback="simpleFormulaConfigCtrl.handleFormulaSnippetsOpen"></formula-snippets>
+      <a class="button button-white w-100" href ng-if="simpleFormulaConfigCtrl.clearValueFn"
+        ng-click="simpleFormulaConfigCtrl.clearValue()"
+        ng-click-confirm="{{ simpleFormulaConfigCtrl.isTriggerConfig ? ('FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.CLEAR_TRIGGER_CONFIRM' | translate) : ('FIELD_CONFIG_MODAL.FORMULA_CONFIG.CLEAR_FORMULA_CONFIRM' | translate) }}">
+        <span class="text-action"><i class="fal fa-trash button-icon"></i></span>
+        {{ simpleFormulaConfigCtrl.isTriggerConfig ? ('FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.CLEAR_TRIGGER' | translate) : ('FIELD_CONFIG_MODAL.FORMULA_CONFIG.CLEAR_FORMULA' | translate) }}
+      </a>
+    </div>
+  </div>
+  <div ng-if="simpleFormulaConfigCtrl.copy_paste_formulas" id="field-selector" style="position: absolute; display: none;">
+    <field-selector 
+      entity-id="simpleFormulaConfigCtrl.field.entityId" 
+      show="simpleFormulaConfigCtrl.showFieldSelector" 
+      on-close="simpleFormulaConfigCtrl.handleOnCloseFieldSelector" 
+      on-select-field="simpleFormulaConfigCtrl.handleOnSelectFieldOnFieldSelector"
+      filter-fields="simpleFormulaConfigCtrl.filterVisibleFieldsOnFieldSelector"
+      filter-fields-can-enter="simpleFormulaConfigCtrl.filterAllowedFieldsOnFieldSelector"
+      on-created-field="simpleFormulaConfigCtrl.onCreateFieldOnNewFieldSelector"
+      ></field-selector>
+  </div>
+</div>

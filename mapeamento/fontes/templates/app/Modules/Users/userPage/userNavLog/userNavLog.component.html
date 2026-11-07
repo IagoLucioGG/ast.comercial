@@ -1,0 +1,177 @@
+<div class="vbox small-header">
+  <header class="regular-header new-header white-content b-b-1" style="z-index: 7;">
+    <div class="hbox stretch">
+      <aside class="v-middle width-210">
+        <div class="input-group width-200">
+          <input
+            date
+            class="form-control input-sm light-background"
+            placeholder="{{ 'USERS.NAV_LOG_TABLE.FILTER_DATE_FROM' | translate }}"
+            datepicker="true"
+            ng-keyup="$event.keyCode === 13 ? $ctrl.applyFilter() : null"
+            ng-model="$ctrl.start_date">
+          <div class="input-group-btn width-10">
+            <a
+              class="btn button button-neutral-gray special-search-button"
+              ng-click="$ctrl.applyFilter()">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle width-210">
+        <div class="input-group width-200">
+          <input
+            date
+            class="form-control input-sm light-background"
+            placeholder="{{ 'USERS.NAV_LOG_TABLE.FILTER_DATE_TO' | translate }}"
+            datepicker="true"
+            ng-keyup="$event.keyCode === 13 ? $ctrl.applyFilter() : null"
+            ng-model="$ctrl.end_date">
+          <div class="input-group-btn width-10">
+            <a
+              class="btn button button-neutral-gray special-search-button"
+              ng-click="$ctrl.applyFilter()">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle width-210" ng-if="!$ctrl.userId">
+        <div class="input-group width-200">
+          <input
+            type="text"
+            class="form-control input-sm light-background"
+            placeholder="{{ 'USERS.NAV_LOG_TABLE.FILTER_USER' | translate }}"
+            ng-keyup="$event.keyCode === 13 ? $ctrl.applyFilter() : null"
+            ng-model="$ctrl.user">
+          <div class="input-group-btn width-10">
+            <a
+              class="btn button button-neutral-gray special-search-button"
+              ng-click="$ctrl.applyFilter()">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle" ng-class="{ 'width-200': $ctrl.current_filter && true }">
+        <div class="input-group width-200">
+          <input
+            type="text"
+            class="form-control input-sm light-background"
+            placeholder="{{ 'USERS.NAV_LOG_TABLE.FILTER_ID' | translate }}"
+            ng-keyup="$event.keyCode === 13 ? $ctrl.applyFilter() : null"
+            ng-model="$ctrl.page">
+          <div class="input-group-btn width-10">
+            <a
+              class="btn button button-neutral-gray special-search-button"
+              ng-click="$ctrl.applyFilter()">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle" ng-if="$ctrl.current_filter">
+        <div class="button button-neutral" ng-click="$ctrl.clearFilters()">
+          {{ 'USERS.NAV_LOG_TABLE.CLEAR_FILTERS' | translate }}
+        </div>
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="hbox stretch white-content">
+      <aside class="white-content">
+        <div class="vbox side-scroll">
+          <section class="scrollable">
+            <div class="wrapper-big-side">
+              <table
+                ng-style="$ctrl.loading && {'opacity':'0.4'}"
+                class="dynamic-table-class table table-reorder first-child-border table-hover white-table-with-header">
+                <thead>
+                  <tr>
+                    <th class="cancel-reorder nowrap" ng-if="!$ctrl.userId">
+                      <span>
+                        {{ 'USERS.NAV_LOG_TABLE.USER' | translate }}
+                      </span>
+                    </th>
+                    <th class="cancel-reorder nowrap">
+                      <span>
+                        {{ 'USERS.NAV_LOG_TABLE.PAGE' | translate }}
+                      </span>
+                    </th>
+                    <th class="cancel-reorder nowrap">
+                      <span>
+                        {{ 'USERS.NAV_LOG_TABLE.DATETIME' | translate }}
+                      </span>
+                    </th>
+                    <th class="cancel-reorder nowrap">
+                      <span>
+                        {{ 'USERS.NAV_LOG_TABLE.PLATAFORM' | translate }}
+                      </span>
+                    </th>
+                    <th class="cancel-reorder nowrap">
+                      <span>
+                        {{ 'USERS.NAV_LOG_TABLE.IP' | translate }}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="log in $ctrl.logs">
+                    <td ng-if="!$ctrl.userId">
+                      <span>
+                          <div class="data-edit">
+                            {{log.User.Name}}
+                          </div>
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <div class="data-edit">
+                          <a ng-if="log.FormattedPage" ng-href="{{log.FormattedPage}}" target="_blank" style="text-decoration: underline; color: #337ab7;">
+                            {{log.FormattedPage}}
+                          </a>
+                          <span ng-if="!log.FormattedPage">
+                            {{log.Page}}
+                          </span>
+                        </div>
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <div class="data-edit">
+                          {{log.FormattedDateTime}}
+                        </div>
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <div class="data-edit">
+                          {{log.Platform}}
+                        </div>
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                        <div class="data-edit">
+                          {{log.IPAddress}}
+                        </div>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <dynamic-table-pagination
+              items-per-page="$ctrl.top"
+              disable="$ctrl.loading"
+              current-page="$ctrl.current_page"
+              change-page-callback-fn="$ctrl.changePageCallback(page)"
+              total-items="$ctrl.total_items">
+            </dynamic-table-pagination>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>

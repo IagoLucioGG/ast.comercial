@@ -1,0 +1,310 @@
+<div ng-form name="section_product_form">
+  <div class="side-slide overflow-hidden big-border-right-fix white-content" ng-class="{'hide-size-slide': !formulaConfigSlideCtrl.open_slide, 'side-slide-wider-height': formulaConfigSlideCtrl.open_slide}" id="size-slide-5">
+    <div class="width-750 stretch">
+      <div class="regular-header new-header b-b-1 scroll-shadow arrange-mid">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <span class="font-thin font-title">
+              {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.TITLE' | translate }}
+            </span>
+          </aside>
+          <aside class="v-middle">
+            <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="formulaConfigSlideCtrl.manualClose()">
+              <i class="fal fa-times"></i>
+            </a>
+          </aside>
+        </div>
+      </div>
+      <div class="vbox big-header-or-footer" ng-if="formulaConfigSlideCtrl.initial_load && formulaConfigSlideCtrl.original_field_model">
+        <section class="scrollable">
+          <div class="white-content wrapper">
+            <div class="gap-10"></div>
+            <div class="white-content b-1">
+              <div class="wrapper">
+                <ul class="nav nav-tabs white-button-tabs-background no-borders">
+                  <li ng-class="{'active': formulaConfigSlideCtrl.formula_type === 1}" ng-if="formulaConfigSlideCtrl.allowed_formula_types['simple']">
+                    <a href ng-click="formulaConfigSlideCtrl.changeFormulaType(1)">
+                      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.INTERNAL_FORMULA' | translate }}
+                    </a>
+                  </li>
+                  <li ng-class="{'active': formulaConfigSlideCtrl.formula_type === 2}" ng-if="formulaConfigSlideCtrl.allowed_formula_types['external']">
+                    <a href ng-click="formulaConfigSlideCtrl.changeFormulaType(2)">
+                      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.REQUEST_FORMULA' | translate }}
+                    </a>
+                  </li>
+                  <li ng-class="{'active': formulaConfigSlideCtrl.formula_type === 3}" ng-if="formulaConfigSlideCtrl.allowed_formula_types['if']">
+                    <a href ng-click="formulaConfigSlideCtrl.changeFormulaType(3)">
+                      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.CONDITIONAL_FORMULA' | translate }}
+                    </a>
+                  </li>
+                  <li ng-class="{'active': formulaConfigSlideCtrl.formula_type === 4}" ng-if="formulaConfigSlideCtrl.allowed_formula_types['excel']">
+                    <a href ng-click="formulaConfigSlideCtrl.changeFormulaType(4)">
+                      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.EXCEL_FORMULA' | translate }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="wrapper" ng-if="formulaConfigSlideCtrl.is_filtering_formula">
+                <div class="wrapper white-content">
+                  {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.FILTER_FORMULA_HELPER' | translate }}
+                  <br>
+                  <a href ng-click="formulaConfigSlideCtrl.setFilteringFormulaTemplate()">
+                    {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.FILTER_FORMULA_CLICK_HELPER' | translate }}
+                  </a>
+                </div>
+              </div>
+              <div class="wrapper" ng-if="formulaConfigSlideCtrl.is_conditional_hide_formula ">
+                <div class="wrapper white-content" ng-bind-html="('FIELD_CONFIG_MODAL.FORMULA_CONFIG.HIDE_FORMULA_HELPER' | translate) | to_trusted">
+                </div>
+              </div>
+              <div class="wrapper" ng-if="formulaConfigSlideCtrl.is_conditional_disable_formula">
+                <div class="wrapper white-content" ng-bind-html="('FIELD_CONFIG_MODAL.FORMULA_CONFIG.BLOCK_FORMULA_HELPER' | translate) | to_trusted">
+                </div>
+              </div>
+              <div class="wrapper" ng-if="formulaConfigSlideCtrl.is_required_field_formula">
+                <div class="wrapper white-content" ng-bind-html="('FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELD_REQUIRED_FORMULA_HELPER' | translate) | to_trusted">
+                </div>
+              </div>
+              <div class="tab-content stretch">
+                <div class="tab-pane clearfix" ng-class="{'active': formulaConfigSlideCtrl.formula_type === 1}" ng-if="formulaConfigSlideCtrl.formula_type === 1">
+                  <simple-formula-config
+                    field="formulaConfigSlideCtrl.original_field_model"
+                    formula-type="formulaConfigSlideCtrl.formula_ai_type"
+                    formula-string="formulaConfigSlideCtrl.formula_string"
+                    current-formula-valid="formulaConfigSlideCtrl.current_formula_valid"
+                    type-check-fn="formulaConfigSlideCtrl.typeCheck(formula_string)"
+                    set-cursor-position-fn="formulaConfigSlideCtrl.setCursorPosition(cursor_position)"
+                    add-formula-variable-fn="formulaConfigSlideCtrl.addVariable(field, field_path_id, skip_formula_string_insert, var_name_by_prop, required, var_property)"
+                    remove-formula-variable-fn="formulaConfigSlideCtrl.removeVariable(token)"
+                    update-formula-fn="formulaConfigSlideCtrl.updateFormulaString(formula_string)"
+                    grab-current-variables-fn="formulaConfigSlideCtrl.getCurrentFormulaVariables()"
+                    edit-tree-fn="formulaConfigSlideCtrl.addCustomNodes"
+                    custom-filter-fn="formulaConfigSlideCtrl.customFieldFilter"
+                    automation-formulas="automationFormulas"
+                    check-force-disable-nesting-fn="formulaConfigSlideCtrl.checkForceDisableNestingFn"
+                    insert-code-snippet-fn="formulaConfigSlideCtrl.insertCodeSnippet"
+                    snippet-config="snippetConfig"
+                    loading-current-formula-validation="false"
+                    remove-hash-from-formula-fn="formulaConfigSlideCtrl.removeHashFromFormula()"
+                    >
+                  </simple-formula-config>
+                </div>
+                <div class="tab-pane clearfix" ng-class="{'active': formulaConfigSlideCtrl.formula_type === 2}" ng-if="formulaConfigSlideCtrl.formula_type === 2">
+                  <external-formula-config
+                    is-submitted="formulaConfigSlideCtrl.submitted"
+                    field="formulaConfigSlideCtrl.original_field_model"
+                    current-headers-valid="formulaConfigSlideCtrl.external_formula_headers_valid"
+                    require-url="formulaConfigSlideCtrl.external_formula_require_url"
+                    check-headers-validity-fn="formulaConfigSlideCtrl.checkValidJSON(headers)"
+                    external-formula-methods="formulaConfigSlideCtrl.external_formula_methods"
+                    external-formula-url="formulaConfigSlideCtrl.external_formula_url"
+                    external-formula-headers="formulaConfigSlideCtrl.external_formula_headers"
+                    external-formula-body="formulaConfigSlideCtrl.formula_string"
+                    external-formula-method="formulaConfigSlideCtrl.external_formula_method"
+                    external-formula-response-path="formulaConfigSlideCtrl.external_formula_response_path"
+                    update-formula-url-fn="formulaConfigSlideCtrl.updateExternalFormulaUrl(url)"
+                    update-formula-headers-fn="formulaConfigSlideCtrl.updateExternalFormulaHeaders(headers)"
+                    update-formula-body-fn="formulaConfigSlideCtrl.updateFormulaString(body)"
+                    update-formula-method-fn="formulaConfigSlideCtrl.updateExternalFormulaMethod(method)"
+                    update-formula-response-path-fn="formulaConfigSlideCtrl.updateExternalFormulaResponsePath(response_path)"
+                    set-cursor-position-fn="formulaConfigSlideCtrl.setCursorPosition(cursor_position)"
+                    add-formula-variable-fn="formulaConfigSlideCtrl.addVariable(field, field_path_id, skip_formula_string_insert, var_name_by_prop, required, var_property)"
+                    edit-tree-fn="formulaConfigSlideCtrl.addCustomNodes"
+                    custom-filter-fn="formulaConfigSlideCtrl.customFieldFilter"
+                    automation-formulas="automationFormulas"
+                    filter-fields-on-formula-result-fn="formulaConfigSlideCtrl.filterFieldsOnFormulaResult"
+                    changed-mapped-fields-fn="formulaConfigSlideCtrl.changedMappedFields(mapped_fields)"
+                    check-force-disable-nesting-fn="formulaConfigSlideCtrl.checkForceDisableMappingNestingFn(field)"
+                    grab-current-variables-fn="formulaConfigSlideCtrl.getCurrentFormulaVariables()"
+                    remove-hash-from-formula-fn="formulaConfigSlideCtrl.removeHashFromFormula()"
+                    >
+                  </external-formula-config>
+                </div>
+                <div class="tab-pane clearfix" ng-class="{'active': formulaConfigSlideCtrl.formula_type === 3}" ng-if="formulaConfigSlideCtrl.formula_type === 3">
+                  <if-formula-config 
+                    field="formulaConfigSlideCtrl.original_field_model" 
+                    parent-ctrl="formulaConfigSlideCtrl"
+                    automation-formulas="automationFormulas"
+                    add-formula-variable-fn="formulaConfigSlideCtrl.addVariable(field, field_path_id, skip_formula_string_insert, var_name_by_prop, required, var_property)"
+                    grab-current-variables-fn="formulaConfigSlideCtrl.getCurrentFormulaVariables()"
+                    remove-hash-from-formula-fn="formulaConfigSlideCtrl.removeHashFromFormula()"
+                    >
+                  </if-formula-config>
+                </div>
+                <div class="tab-pane clearfix" ng-class="{'active': formulaConfigSlideCtrl.formula_type === 4}" ng-if="formulaConfigSlideCtrl.formula_type === 4">
+                  <excel-sheet-formula-config
+                    field="formulaConfigSlideCtrl.original_field_model"
+                    add-formula-variable-fn="formulaConfigSlideCtrl.addVariable(field, field_path_id)"
+                    remove-formula-variable-fn="formulaConfigSlideCtrl.removeVariable(token)"
+                    update-formula-fn="formulaConfigSlideCtrl.updateFormulaString(formula_string)"
+                    allowed-entities="formulaConfigSlideCtrl.allowed_entities"
+                    edit-tree-fn="formulaConfigSlideCtrl.addCustomNodes"
+                    custom-filter-fn="formulaConfigSlideCtrl.customFieldFilter">
+                  </excel-sheet-formula-config>
+                </div>
+              </div>
+            </div>
+            <div class="gap-10"></div>
+            <div ng-if="formulaConfigSlideCtrl.current_tab === 'test'" class="white-content b-1 wrapper">
+              <div class="hbox">
+                <aside>
+                  <div class="font-semi-big">
+                    <strong>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.LAST_TEST_RESULT' | translate }}</strong>
+                  </div>
+                  <div class="nowrap side-scroll width-550">
+                    <div class="side-scroll-container wrapper white-content b-1 rounded-regular">
+                      {{formulaConfigSlideCtrl.last_formula_eval}}
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="font-semi-big" ng-if="formulaConfigSlideCtrl.last_formula_eval_error">
+                    <strong>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.LAST_TEST_ERROR' | translate }}</strong>
+                    <div class="nowrap side-scroll width-550">
+                      <div class="side-scroll-container wrapper white-content b-1 rounded-regular">
+                        {{formulaConfigSlideCtrl.last_formula_eval_error}}
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+                <aside style="padding-top: 20px;">
+                  <a class="pull-right button button-white nowrap" href ng-click="formulaConfigSlideCtrl.runFormula(formulaConfigSlideCtrl.formula_string)">
+                    <span class="text-action"><i class="fal fa-calculator button-icon"></i></span>
+                    {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.CALCULATE_FORMULA' | translate }}
+                  </a>
+                </aside>
+              </div>
+            </div>
+            <div class="gap-10"></div>
+
+            <div class="regular-background">
+              <div ng-if="formulaConfigSlideCtrl.getCurrentFormulaVariables().length > 0">
+                <ul class="nav nav-tabs border-tabs special-tabs b-b-1 arrange-mid">
+                  <li ng-class="{ 'active': formulaConfigSlideCtrl.current_tab === 'variables'}" ng-click="formulaConfigSlideCtrl.changeTab('variables')">
+                    <a class="text-muted" href="">
+                      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.FORMULA_VARIABLES' | translate }}
+                    </a>
+                  </li>
+                  <li ng-class="{ 'active': formulaConfigSlideCtrl.current_tab === 'test'}"
+                    ng-click="formulaConfigSlideCtrl.changeTab('test')" class="">
+                    <a href="" class="text-muted">
+                      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.TEST_FORMULA' | translate }}
+                    </a>
+                  </li>
+                </ul>
+                <div class="white-content b-1 rounded-regular bottom-scroll-container" ng-if="formulaConfigSlideCtrl.current_tab === 'variables'">
+                  <table class="table table-striped modal-table">
+                    <thead>
+                      <tr>
+                        <th>
+                          {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.VARIABLE' | translate }}
+                        </th>
+                        <th>
+                          {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.RELATED_FIELD' | translate }}
+                        </th>
+                        <th class="width-100" ng-if="!automationFormulas && !formulaConfigSlideCtrl.is_conditional_hide_formula && !formulaConfigSlideCtrl.is_conditional_disable_formula">
+                          {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.PROPERTY' | translate }}
+                        </th>
+                        <th class="width-10" ng-if="!automationFormulas && !formulaConfigSlideCtrl.is_conditional_hide_formula && !formulaConfigSlideCtrl.is_conditional_disable_formula">
+                          {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.REQUIRED' | translate }}
+                        </th>
+                        <th class="width-10">
+                          {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.REMOVE' | translate }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="formula_variable in formulaConfigSlideCtrl.getCurrentFormulaVariables()">
+                        <td inline-edit model="formula_variable" class="formula-config-var" properties="[formulaConfigSlideCtrl.formula_variable_fieldkey]" submit-fn="formulaConfigSlideCtrl.inlineEdit(item)">
+                          <span class="info-display-divider" style="white-space: pre;">{{ formula_variable.var_name.replace('[', '').replace(']', '') }}</span>
+                        </td>
+                        <td>
+                          <span class="info-display-divider" class="formula-config-var" style="white-space: pre;">{{ formula_variable.field.entity.Name + '.' + formula_variable.field.label }}</span>
+                        </td>
+                        <td ng-if="!automationFormulas && !formulaConfigSlideCtrl.is_conditional_hide_formula && !formulaConfigSlideCtrl.is_conditional_disable_formula">
+                          <select
+                            class="form-control input-sm"
+                            ng-options="property as property.Name for property in formulaConfigSlideCtrl.getAllowedProperties(formula_variable)"
+                            ng-model="formula_variable.var_property"
+                            ng-disabled="!formulaConfigSlideCtrl.canSelectVarProperty(formula_variable)">
+                            <option value=""></option>
+                          </select>
+                        </td>
+                        <td ng-if="!automationFormulas && !formulaConfigSlideCtrl.is_conditional_hide_formula && !formulaConfigSlideCtrl.is_conditional_disable_formula">
+                          <div class="switch">
+                            <input class="cmn-toggle cmn-toggle-round-flat" id="{{formula_variable.var_name}}" type="checkbox" ng-model="formula_variable.required">
+                            <label class="pull-right" for="{{formula_variable.var_name}}"></label>
+                          </div>
+                        </td>
+                        <td class="text-center nowrap">
+                          <div ng-click="formulaConfigSlideCtrl.removeVariable(formula_variable.var_name, true)" class="button-white align-middle button-fixed-size button-fixed-size-small" href>
+                            <i class="fal fa-trash fixing-fixed-size-button"></i>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="darkest-background b-1 rounded-regular" ng-if="formulaConfigSlideCtrl.current_tab === 'test'">
+                  <table class="table table-striped modal-table">
+                    <thead>
+                      <tr>
+                        <th class="width-200">
+                          {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.VARIABLE' | translate }}
+                        </th>
+                        <th>
+                          {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.TEST_VALUE' | translate }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="formula_variable in formulaConfigSlideCtrl.getCurrentFormulaVariables()">
+                        <td>
+                          {{formula_variable.var_name.replace('[', '').replace(']', '')}}
+                        </td>
+                        <td>
+                          <input ng-if="formula_variable.field.typeId !== 7" class="form-control input-sm" type="text" ng-model="formula_variable.value">
+                          <new-field
+                            ng-if="formula_variable.field.typeId === 7"
+                            field="formula_variable.field"
+                            model="formula_variable"
+                            property="'value'"
+                            required="false"
+                            disabled="false"
+                            wide="true"
+                            hide-label="true"
+                            not-trigger-formula="true">
+                          </new-field>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="height-40 b-t-1 white-content side-wrapper" ng-show="formulaConfigSlideCtrl.initial_load">
+        <div class="hbox stretch">
+          <div class="ai-formula-config-warn-wrapper" ng-if="formulaConfigSlideCtrl.showAIWarn">
+            <i class="fad fa-info-circle"></i>
+            <span class="text-muted">{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.AI_LABELS.ALWAYS_TEST_AI_FORMULAS' | translate }}</span>
+          </div>
+          <aside class="v-middle text-right">
+            <a class="button button-white-no-border" href ng-click="formulaConfigSlideCtrl.resetFormula()" ng-click-confirm="{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.CLEAR_FORMULA_CONFIRM' | translate }}">
+              <span class="text-action"><i class="fal fa-eraser button-icon"></i></span>
+              {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.CLEAR_FORMULA' | translate }}
+            </a>
+            <a class="button button-action" href ng-click="formulaConfigSlideCtrl.addFormulaField()">
+              <i class="fas fa-save button-icon"></i>
+              {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.SAVE_FORMULA' | translate }}
+            </a>
+          </aside>
+        </div>
+      </div>
+      <standard-loader margin-top="15" loading="!formulaConfigSlideCtrl.initial_load"></standard-loader>
+    </div>
+  </div>
+  <div class="side-slide-wider-height-backdrop" id="size-slide-5-backdrop" ng-class="{'fade': !formulaConfigSlideCtrl.open_slide}" style="display:block"></div>
+</div>

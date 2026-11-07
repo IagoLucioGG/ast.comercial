@@ -1,0 +1,27 @@
+<div class="modal fade" id="{{$ctrl.modalId}}">
+  <div class="modal-dialog modal-confirmation width-450">
+    <div class="modal-content white-content">
+      <div class="big-wrapper white-content">
+        <div class="hbox stretch mb-5">
+          <aside class="v-middle">
+            <h4 class="modal-title">
+              <span class="font-big font-bold">
+                {{ $ctrl.title }}
+              </span>
+            </h4>
+          </aside>
+          <br />
+        </div>
+        <ng-transclude></ng-transclude>
+        <div class="modal-confirm-footer mt-20 text-right">
+          <a href class="button button-white button-wide mr-10" ng-class="$ctrl.buttonsProps.cancel.class" ng-click="$ctrl.close()">
+            {{ $ctrl.buttonsProps.cancel.text }}
+          </a>
+          <a href class="button button-action button-wide loss-confirm-button" ng-class="{{ $ctrl.buttonsProps.confirm.class }}" ng-click="$ctrl.save()">
+            {{ $ctrl.buttonsProps.confirm.text }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

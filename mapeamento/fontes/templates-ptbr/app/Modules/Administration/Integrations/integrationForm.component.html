@@ -1,0 +1,172 @@
+<div class="vbox header-or-footer" ng-form="integration_form">
+  <standard-loader margin-top="'15'" loading="!integrationFormCtrl.initial_load"></standard-loader>
+  <section class="scrollable" ng-if="integrationFormCtrl.initial_load">
+    <div class="white-content b-b-1 wrapper">
+      <div class="gap-15"></div>
+      <div>
+        <div class="hbox">
+          <aside class="width-10 text-center">
+            <div class="side-wrapper">
+              <img class="avatar-select" ng-src="{{integrationFormCtrl.integration.ImageUrl}}">
+            </div>
+          </aside>
+          <aside>
+            <div class="side-wrapper">
+              <div class="mtop3" ng-bind-html="integrationFormCtrl.integration.Description | to_trusted"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="gap-15"></div>
+    </div>
+    <div class="gap-15"></div>
+
+    <form class="clearfix">
+      <div class="form-group col-sm-12 font-big" ng-if="(integrationFormCtrl.account_integration.StatusId === 1 || integrationFormCtrl.account_integration.StatusId === 3) && integrationFormCtrl.integration.RedirectUrl">
+        <div class="white-content wrapper b-1 rounded-regular">
+          <div class="font-big">
+            <strong>
+              {{ 'INTEGRATIONS.FORM.AUTHORIZE_INTEGRATION_BY' | translate_with_replace: { name: integrationFormCtrl.integration.Name } }}
+            </strong>
+          </div>
+          <div class="gap-15"></div>
+          Essa integração precisa que você autorize a conexão com o Ploomes.
+          <div class="gap-10"></div>
+          <div class="text-center">
+            <a class="button button-big" ng-class="{'button-action': !integrationFormCtrl.account_integration.Authorized, 'button-success': integrationFormCtrl.account_integration.Authorized}" href ng-click="integrationFormCtrl.authorizeIntegration()">
+              <div class="font-big">
+                <i ng-if="integrationFormCtrl.account_integration.Authorized" class="fad fa-check-circle regular-icon"></i>
+                {{ (integrationFormCtrl.account_integration.Authorized ? 'INTEGRATIONS.FORM.AUTHORIZED_INTEGRATION' : 'INTEGRATIONS.FORM.AUTHORIZE_INTEGRATION') | translate }}
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12" ng-if="(integrationFormCtrl.account_integration.StatusId === 1 || integrationFormCtrl.account_integration.StatusId === 3) && (integrationFormCtrl.form | filter:{hidden: false}).length > 0">
+        <div class="white-content top-wrapper b-1 rounded-regular">
+          <div class="font-big side-wrapper">
+            <strong ng-if="!integrationFormCtrl.isPowerBIIntegration">
+              Configure as opções da integração
+            </strong>
+            <strong ng-if="integrationFormCtrl.isPowerBIIntegration">
+              Configuração de expiração do link de integração
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div ng-if="integrationFormCtrl.isPowerBIIntegration" class="side-wrapper">
+            Configure um prazo de expiração do link de integração. Após esse período o link deverá ter seu prazo resetado pelo usuário que o gerou nas ações da aba. Os links gerados por um usuário que for desativado são expirados automaticamente.
+          </div>
+          <div class="gap-10" ng-if="integrationFormCtrl.isPowerBIIntegration"></div>
+          <div class="clearfix">
+            <forms model="integrationFormCtrl.model" fields="integrationFormCtrl.form" model-change-callback="integrationFormCtrl.modelChangeCallback(new_val, old_val)" form="integration_form" watch-field-changes="true"></forms>
+            <!-- <div class="form-group col-sm-12 text-muted">
+              <div class="gap-15"></div>
+              Se houver <b>campos customizados</b> no {{integrationFormCtrl.integration.Name}} e no Ploomes com o mesmo nome, eles serão sincronizados automaticamente.
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12 font-big" ng-if="integrationFormCtrl.account_integration && (integrationFormCtrl.account_integration.StatusId === 1 || integrationFormCtrl.account_integration.StatusId === 3) && integrationFormCtrl.ordinated_buttons.length > 0">
+        <div class="darkest-background wrapper b-1 rounded-regular">
+          <div class="text-center" ng-repeat="button in integrationFormCtrl.ordinated_buttons">
+            <div class="font-big">
+              <strong>
+                {{ button.Description }}
+              </strong>
+            </div>
+            <div class="gap-10"></div>
+            <a
+            uib-tooltip="{{integrationFormCtrl.alreadyOnCurseTerm}}"
+              tooltip-placement="top"
+              tooltip-append-to-body="true"
+              tooltip-enable="button.disabled"
+              ng-class="{'button-action': !button.Color, 'integration-button-disabled' : button.disabled}"
+              ng-style="button.Color ? {'background-color': button.Color, 'border-color': button.Color, 'color': '#ffffff'} : null"
+              class="button button-big button-action"
+              href
+              ng-click="!button.disabled ? integrationFormCtrl.dynamicButtonClick(button) : null"
+              ng-if="!button.loading"
+            >
+              <div class="font-big">
+                <i ng-if="button.Icon" ng-class="'fad ' + button.Icon.Class"></i>
+                {{ button.Name }}
+              </div>
+            </a>
+            <standard-loader margin-top="'0'" loading="button.loading"></standard-loader>
+          </div>
+        </div>  
+      </div>
+
+      <div ng-if="integrationFormCtrl.hasDynamicMappingEnabled()">
+        <dynamic-field-mapping
+          ng-repeat="dynamic_mapping in integrationFormCtrl.account_integration.Integration.DynamicMapEntities"
+          dynamic-map-entity="dynamic_mapping"
+          root-entity-id="dynamic_mapping.EntityId"
+          account-integration="integrationFormCtrl.account_integration"
+          update-dynamic-mapped-fields-fn="integrationFormCtrl.updateDynamicMappedFields">
+        </dynamic-field-mapping>
+      </div>
+
+      <div class="form-group col-sm-12 font-big" ng-if="(integrationFormCtrl.account_integration.StatusId === 1 || integrationFormCtrl.account_integration.StatusId === 3) && (integrationFormCtrl.mapped_fields_object | filter: { hidden: false }).length > 0">
+        <div class="white-content wrapper b-1 rounded-regular">
+          <div class="font-big">
+            <strong>
+              {{ 'INTEGRATIONS.FORM.MAP_PATTERN_FIELDS' | translate_with_replace: { name: integrationFormCtrl.integration.Name } }}
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <table class="table modal-table table-smaller-header double-header">
+            <thead>
+              <tr>
+                <th>{{ 'INTEGRATIONS.FORM.FIELD_NAME' | translate_with_replace: { name: integrationFormCtrl.integration.Name } }}</th>
+                <th>Campo Ploomes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="mapped_field in integrationFormCtrl.mapped_fields_object | filter: { hidden: false }">
+                <td>
+                  {{mapped_field.Name}}
+                </td>
+                <td>
+                  <field-path-selection field-selection-fn="integrationFormCtrl.selectField(field, field_path_id, mapped_field)" start-entity-id="mapped_field.EntityId" custom-filter-fn="integrationFormCtrl.selectFieldFilterFunction(field, mapped_field)"
+                  dynamic-label="(mapped_field.selected_field_name) || (mapped_field.Required ? 'INTEGRATIONS.FORM.SELECT_REQUIRED' : 'INTEGRATIONS.FORM.SELECT_A_FIELD' | translate )"
+                  remove-field-selection-fn="integrationFormCtrl.removeField(mapped_field)"></field-path-selection>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="form-group col-sm-12 font-big" ng-if="integrationFormCtrl.account_integration && integrationFormCtrl.account_integration.StatusId === 1 && integrationFormCtrl.integration.Callbacks.length > 0" ng-repeat="callback_obj in integrationFormCtrl.callbacks" ng-if="callback_obj.Url">
+        <div class="white-content wrapper b-1 rounded-regular">
+          <div class="font-big">
+            <strong>
+              {{ callback_obj.Description }}
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div class="nowrap side-scroll">
+            <div class="side-scroll-container wrapper regular-background b-1 rounded-regular">
+              {{ callback_obj.Url }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="wrapper">
+      <div class="text-center integration-buttons-container">
+        <a class="button button-big button-action" ng-if="integrationFormCtrl.account_integration.StatusId === 2 && integrationFormCtrl.requestContactUrl" ng-href="{{integrationFormCtrl.requestContactUrl}}" target="_blank">Solicitar contato</a>
+        <!-- HARDCODED: When Google Calendar Integration is typeId == 2, display only ENABLE and TURN_OFF buttons -->
+        <a class="button button-big button-action" ng-click="integrationFormCtrl.submitControl(integration_form)" ng-if="!(integrationFormCtrl.account_integration.IntegrationId === 12 && integrationFormCtrl.account_integration.StatusId === 3 && ctrl.customGoogleCalendarIntegrationEnabled)">
+          {{integrationFormCtrl.actionButtonLabel(integrationFormCtrl.account_integration ? integrationFormCtrl.account_integration.StatusId : null)}}
+        </a>
+        <a class="button button-big button-white" ng-if="integrationFormCtrl.account_integration && (integrationFormCtrl.account_integration.StatusId === 1 || integrationFormCtrl.account_integration.StatusId === 3)" ng-click="integrationFormCtrl.disableIntegration()">
+          <div class="text-danger">
+            <i class="fal fa-pause button-icon"></i>
+            <span class="text-regular">Desligar integração</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

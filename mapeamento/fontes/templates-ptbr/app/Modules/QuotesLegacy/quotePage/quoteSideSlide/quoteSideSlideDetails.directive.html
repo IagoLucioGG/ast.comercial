@@ -1,0 +1,12 @@
+<div ng-if="quoteSideSlideDetailsCtrl.initial_load" class="wrapper deal-or-contact-domain min-height-100-percent light-background">
+  <infos-widget ng-if="quoteSideSlideDetailsCtrl.quote_deal" form-key="deal_quick_form" entity-type="Deal" patch-fn="quoteSideSlideDetailsCtrl.dealPatchFn(model)" model="quoteSideSlideDetailsCtrl.quote_deal" replace-section-title="{{quoteSideSlideDetailsCtrl.quote_deal.Title}}" replace-section-title-icon="{{quoteSideSlideDetailsCtrl.customizables.deals_module.icon_class}}" replace-section-title-link="deal({ dealid: {{quoteSideSlideDetailsCtrl.quote_deal.Id}} })" reduced-layout="true"></infos-widget>
+
+  <infos-widget ng-if="quoteSideSlideDetailsCtrl.quote_contact" form-key="{{ quoteSideSlideDetailsCtrl.contactQuickForm }}" entity-type="Contact" patch-fn="quoteSideSlideDetailsCtrl.contactPatchFn(model)" model="quoteSideSlideDetailsCtrl.quote_contact" replace-section-title="{{quoteSideSlideDetailsCtrl.quote_contact.Name}}" replace-section-title-icon="fal {{ quoteSideSlideDetailsCtrl.contactIcon }}" replace-section-title-link="contact({ contactid: {{quoteSideSlideDetailsCtrl.quote_contact.Id}} })" reduced-layout="true"></infos-widget>
+
+  <infos-widget ng-if="quoteSideSlideDetailsCtrl.quote_person" form-key="contact_person_quick_form" entity-type="Contact" patch-fn="quoteSideSlideDetailsCtrl.contactPatchFn(model)" model="quoteSideSlideDetailsCtrl.quote_person" replace-section-title="{{quoteSideSlideDetailsCtrl.quote_person.Name}}" replace-section-title-icon="fal fa-user" replace-section-title-link="contact({ contactid: {{quoteSideSlideDetailsCtrl.quote_person.Id}} })" reduced-layout="true"></infos-widget>
+
+  <!-- <div class="deal-or-contact-domain">
+    <attachments-widget model="quote" api-url="Quotes"></attachments-widget>
+  </div> -->
+</div>
+<standard-loader margin-top="15" loading="!quoteSideSlideDetailsCtrl.initial_load"></standard-loader>

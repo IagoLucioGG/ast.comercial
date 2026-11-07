@@ -1,0 +1,30 @@
+<div class="vbox tab-header scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <div class="white-content b-b-1 wrapper">
+      <div class="gap-15"></div>
+      <div>
+        <div class="hbox">
+          <aside class="width-10 text-center">
+            <div class="side-wrapper"><img class="avatar-select" ng-src="{{callixIntegrationCtrl.imageSrc}}" /></div>
+          </aside>
+          <aside>
+            <div class="side-wrapper">
+              <div class="mtop3" ng-bind-html="callixIntegrationCtrl.description | to_trusted"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="gap-15"></div>
+    </div>
+    <div class="gap-15"></div>
+    <div class="text-center">
+      <a
+        class="button button-big button-action"
+        target="_blank"
+        href="https://api.whatsapp.com/send/?phone=551131262414&text=Ol%C3%A1%21+Encontrei+voc%C3%AAs+no+site+de+parceiros+da+Ploomes+e+gostaria+de+saber+mais+sobre+suas+solu%C3%A7%C3%B5es+e+servi%C3%A7os.&type=phone_number&app_absent=0"
+      >
+        {{'INTEGRATIONS.CALLIX.CALLIX_REQUEST_CONTACT' | translate}}
+      </a>
+    </div>
+  </section>
+</div>

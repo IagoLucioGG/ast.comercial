@@ -1,0 +1,7 @@
+passo: ad_systemsettings
+url: https://app10.ploomes.com/administration/systemsettings
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

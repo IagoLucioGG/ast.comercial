@@ -1,0 +1,132 @@
+<ul class="nav nav-tabs b-b-1 border-tabs arrange-mid">
+  <li ng-repeat="tab in $ctrl.tabs | filter: { Available: true }" ng-class="{ 'active': $ctrl.current_tab.Key === tab.Key }" ng-click="$ctrl.changeTab(tab)">
+    <a class="text-muted" href="">
+      {{ tab.Name }}
+    </a>
+  </li>
+</ul>
+<div class="vbox task-vbox regular-background">
+  <section class="scrollable">
+    <div class="tab-content">
+
+      <div class="tab-pane active" ng-if="$ctrl.current_tab.Key === 'comments'">
+        <div>
+
+          <comments-directive
+            api-url="'InteractionRecords(' + $ctrl.model.Id + ')/NewComment'"
+            comments="$ctrl.model.Comments"
+            origin-name="'interaction-record-modal'"
+            permissions-interaction-record="$ctrl.permissions_interaction_record"
+          ></comments-directive>
+
+          <div class="side-wrapper task-inter-comments-info">
+            <div class="activity-history hist-separator"></div>
+            <div class="hbox">
+              <aside class="activity-history">
+                <div>
+                  <div style="background-color: #a9bcc1; color: #fff">
+                    <i class="fal fa-comment-alt-plus activity-icon"></i>
+                  </div>
+                </div>
+              </aside>
+              <aside class="v-middle">
+                <div class="timeline-bubble">
+                  <div class="history-arrow arrow-style"></div>
+                  <div class="bubble-wrapper no-comments-bubble">
+                    <div class="hbox">
+                      <aside class="width-40">
+                        <img ng-src="{{$ctrl.model.Creator.AvatarUrl}}" class="avatar-timeline">
+                      </aside>
+                      <aside>
+                        <a ui-sref="{{'user({userid: $ctrl.model.Creator.Id})'}}" class="font-bold inline-link-regular">{{$ctrl.model.Creator.Name}}</a>
+                        <br>
+                        <span class="timeline-clock">
+                          <i class="fal fa-clock"></i>
+                          {{$ctrl.model.formatted_ir_create_date}}
+                        </span>
+                        <div class="mtop3">
+                          {{ 'INTERACTION_RECORDS.INTERACTION_RECORD_CREATED' | translate }}
+                          <div class="gap-10" ng-if="$ctrl.model.OriginalTaskId"></div>
+                          <div class="big-simple-inline text-muted font-big">
+                            <a ui-sref="{{$ctrl.original_task_link}}" ng-if="$ctrl.model.OriginalTaskId" class="inline-link-muted">
+                              <i class="fal fa-calendar big-simple-line big-simple-line-fix"></i>
+                              <span class="font-small">
+                                {{ 'INTERACTION_RECORDS.INTERACTION_RECORD_MODAL.SHOW_ORIGIN_TASK' | translate }}
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane active" ng-if="$ctrl.current_tab.Key === 'contact_data'">
+        <div class="wrapper">
+          <div class="panel light-background" ng-if="$ctrl.model.Contact.StreetAddress || $ctrl.model.Contact.Email || ($ctrl.model.Contact.Phones.length > 0 && $ctrl.model.Contact.Phones[0].PhoneNumber.length > 0)">
+            <div class="wrapper">
+              <span ng-if="$ctrl.model.Contact.StreetAddress">
+                <div class="font-bold">
+                  {{ 'INTERACTION_RECORDS.INTERACTION_RECORD_MODAL.ADDRESS' | translate }}
+                </div>
+                {{$ctrl.model.Contact.StreetAddress}}
+                {{$ctrl.model.Contact.StreetAddressLine2 ? ", " + $ctrl.model.Contact.StreetAddressLine2 : ""}}
+                {{$ctrl.model.Contact.City ? ", " + $ctrl.model.Contact.City.Name : ""}}
+                {{$ctrl.model.Contact.City.State ? ", " + $ctrl.model.Contact.City.State.Short : ""}}
+                <div class="gap-10"></div>
+              </span>
+              <div class="font-bold" ng-show="$ctrl.model.Contact.Email">
+                E-mail
+              </div>
+              {{$ctrl.model.Contact.Email}}
+              <span ng-repeat="phone in $ctrl.model.Contact.Phones" ng-show="phone.PhoneNumber.length > 0">
+                <div class="gap-10"></div>
+                <div class="font-bold">Telefone</div>
+                {{phone.PhoneNumber}} ({{phone.Type.Name}})
+              </span>
+            </div>
+          </div>
+          <div ng-if="$ctrl.model.Contact.TypeId === 1 && $ctrl.model.Contact.company_contacts.length > 0">
+            <br>
+            <div class="font-thin text-darkest-neutral font-very-big">
+              {{ 'INTERACTION_RECORDS.INTERACTION_RECORD_MODAL.COMPANY_PEOPLE' | translate }}
+            </div>
+            <div class="gap-10"></div>
+            <div class="panel light-background overflow-hidden">
+              <div class="b-b-1 regular-background">
+                <table class="table table-static table-hover funnels-table">
+                  <tbody>
+                  <tr ng-repeat="contact in $ctrl.model.Contact.company_contacts track by $index" ui-sref="{{'contact({contactid: contact.Id})'}}">
+                    <a></a>
+                    <td>
+                      <strong>{{contact.Name}}</strong>
+                      <div class="gap-3"></div>
+                      {{contact.Phones[0].PhoneNumber}} {{contact.Phones[0] ? "("+contact.Phones[0].Type.Name+")" : ""}}
+                      <div class="gap-3"></div>
+                      {{contact.Email}}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane active" ng-if="$ctrl.current_tab.Key === 'timeline'">
+        <div class="side-wrapper">
+          <div>
+            <main-timeline standard-filter="$ctrl.user_filter" ng-if="$ctrl.model.Contact" entity-type="'Contact'" entity-id="$ctrl.model.Contact.Id || $ctrl.model.Contact.ContactId" hide-contact-name="true" is-task-timeline="true" minimize-icon="true"></main-timeline>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>

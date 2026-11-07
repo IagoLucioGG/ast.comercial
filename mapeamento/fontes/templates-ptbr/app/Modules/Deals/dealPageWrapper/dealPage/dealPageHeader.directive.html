@@ -1,0 +1,94 @@
+<header>
+  <div class="light-background b-b-1 side-wrapper height-50">
+    <div class="hbox stretch">
+      <aside class="width-45 v-middle">
+        <div class="height-30 text-center width-30 light-background b-t-2 b-b-2 b-r-2 b-l-2">
+          <div class="hbox stretch">
+            <aside class="v-middle font-title">
+              <div class="gap-3"></div>
+              <i class="fad fa-money-bill-wave text-neutral-light"></i>
+            </aside>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="font-thin font-title big-simple-inline max-width-400 ellipsis align-middle nowrap">{{mainDealCtrl.deal_view.Title}}</div>
+        <div class="font-big big-simple-inline text-neutral align-middle">{{mainDealCtrl.deal_view.Currency.Symbol + " " + mainDealCtrl.deal_view.Amount.toLocaleString('LANGUAGE' | translate, { minimumFractionDigits: 2})}}</div>
+      </aside>
+      <aside class="v-middle text-right">
+        <div class="mini-side-wrapper" ng-if="mainDealCtrl.deal_view.Editable">
+          <deal-actions model="mainDealCtrl.deal_view" deal-page="true"></deal-actions>
+        </div>
+      </aside>
+      <aside class="v-middle width-25 text-right" ng-hide="headerCtrl.block_pipeline_change">
+        <div class="mini-side-wrapper">
+          <div class="dropdown pull-right" ng-if="(mainDealCtrl.pipelines | filter: { Archived: false }).length > 1">
+            <a class="button button-white-light-border dropdown-toggle nowrap" href data-toggle="dropdown" aria-expanded="false">
+              <span class="text-darkest-neutral">
+                Funil: {{mainDealCtrl.current_pipeline ? (mainDealCtrl.current_pipeline.Name + (mainDealCtrl.current_pipeline.Archived ? ' (Arquivado)' : '')) : '(excluído)'}}<i class="fal fa-angle-down dropdown-sign"></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right">
+              <li ng-repeat="pipeline in mainDealCtrl.pipelines | filter: { Archived: false }" ng-if="mainDealCtrl.current_pipeline.Id !== pipeline.Id">
+                <a class="white-dropdown-link" ng-click="headerCtrl.changePipeline(pipeline)">
+                  {{pipeline.Name}}
+                </a>
+              </li>
+              <li ng-if="mainDealCtrl.pipelines.length === 1">
+                <a href class="white-dropdown-link">
+                  <span>Você possui somente um funil.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle width-25 text-right" ng-if="mainDealCtrl.deal_view.Editable || mainDealCtrl.deal_view.Deletable">
+        <div class="mini-side-wrapper">
+          <div class="dropdown pull-right">
+            <a class="button button-white-light-border dropdown-toggle nowrap" href data-toggle="dropdown" aria-expanded="false">
+              <span class="text-darkest-neutral">
+                Opções<i class="fal fa-angle-down dropdown-sign"></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right">
+              <li>
+                <a class="white-dropdown-link" ng-if="mainDealCtrl.deal_view.Editable" ng-click="mainDealCtrl.editDeal()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fad fa-pen simple-line list-simple-line"></i>
+                    </span></aside>
+                    <aside class="v-middle">Editar negócio</aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-if="mainDealCtrl.deal_view.Deletable" ng-click="mainDealCtrl.deleteDeal()" ng-click-confirm="deletar &quot;{{mainDealCtrl.deal_view.Title}}&quot;" reversible="false">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fad fa-clone simple-line list-simple-line"></i>
+                    </span></aside>
+                    <aside class="v-middle">Duplicar negócio</aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click="headerCtrl.goToNewVersion()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fad fa-star simple-line list-simple-line"></i>
+                    </span></aside>
+                    <aside class="v-middle">Usar versão nova</aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</header>

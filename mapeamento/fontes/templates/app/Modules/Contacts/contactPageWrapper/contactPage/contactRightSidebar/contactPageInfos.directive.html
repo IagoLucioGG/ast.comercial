@@ -1,0 +1,14 @@
+<div>
+  <infos-widget form-key="{{::infosCtrl.contact_form}}" entity-type="Contact" patch-fn="infosCtrl.patchFn(model)" model="contactModel"></infos-widget>
+  <div class="short-side-bottom-wrapper" ng-if="contactModel.CompanyId && infosCtrl.person_model">
+    <div class="font-big">
+      <span>Empresa</span>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background"></div>
+    <div class="gap-5"></div>
+  </div>
+  <div class="contact-page-person-list" ng-if="contactModel.CompanyId && infosCtrl.person_model">
+    <infos-widget form-key="{{::infosCtrl.person_form}}" entity-type="Contact" patch-fn="infosCtrl.patchFn(model)" model="infosCtrl.person_model" replace-section-title="{{infosCtrl.person_model.Name}}" replace-section-title-icon="fal fa-industry" replace-section-title-link="contact({ contactid: {{infosCtrl.person_model.Id}} })"></infos-widget>
+  </div>
+</div>

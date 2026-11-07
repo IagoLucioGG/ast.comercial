@@ -1,0 +1,39 @@
+<div class="side-slide proposal-slide white-content b-l-1 hide-side-slide" id="side-slide-1" style="display: none;">
+  <div class="hbox stretch">
+    <aside>
+      <div class="vbox small-header">
+        <header class="regular-header b-b-1 new-header">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <div class="font-title font-thin text-left">{{orderSideSlideCtrl.current_option_title}}</div>
+            </aside>
+            <aside class="v-middle text-right">
+              <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="orderSideSlideCtrl.closeSideSlide()">
+                <i class="fal fa-times"></i>
+              </a>
+            </aside>
+          </div>
+        </header>
+
+        <section class="scrollable">
+          <div class="side-wrapper" ng-if="orderSideSlideCtrl.current_option === 1">
+            <div class="activity-history hist-separator"></div>
+            <order-side-slide-timeline order-id="order.Id"></order-side-slide-timeline>
+          </div>
+          <shared-people-slide-content ng-if="orderSideSlideCtrl.current_option === 6" entity-id="4" model-id="order.Id" model-shared="order.Shared" toggle-sharing-fn="orderSideSlideCtrl.toggleSharing(shared, sharing_text, sender_type_id)"></shared-people-slide-content>
+          <side-slide-comments ng-if="orderSideSlideCtrl.current_option === 2" api-url="Orders" get-comments-fn="orderSideSlideCtrl.getComments" model-id="order.Id"></side-slide-comments>
+          <side-slide-comments ng-if="orderSideSlideCtrl.current_option === 3" api-url="Orders" get-comments-fn="orderSideSlideCtrl.getExternalComments" external-comments="true" model-id="order.Id"></side-slide-comments>
+          <!-- <order-side-slide-external-comments ng-if="orderSideSlideCtrl.current_option === 3" order="order"></order-side-slide-external-comments> -->
+          <order-side-slide-details ng-if="orderSideSlideCtrl.current_option === 4" order="order"></order-side-slide-details>
+          <order-side-slide-approvals ng-if="orderSideSlideCtrl.current_option === 5" order-id="order.Id">
+          </order-side-slide-approvals>
+          <dynamic-side-slide-content ng-if="orderSideSlideCtrl.dynamic_option" model="order" entity-id="4" option="orderSideSlideCtrl.dynamic_option"></dynamic-side-slide-content>
+          <!-- <order-side-slide-reviews ng-if="orderSideSlideCtrl.current_option === 5" deal-id="order.DealId" order-id="order.Id"></order-side-slide-reviews> -->
+        </section>
+
+      </div>
+    </aside>
+    <aside class="width-105"></aside>
+  </div>
+</div>
+<div class="proposal-slide-backdrop fade" id="side-slide-1-backdrop" style="display: none;"></div>

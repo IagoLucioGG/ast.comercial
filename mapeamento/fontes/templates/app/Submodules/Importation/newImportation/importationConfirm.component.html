@@ -1,0 +1,59 @@
+<div class="wizard-step" wizard-step-content="4">
+  <div class="wrapper">
+    <span class="font-thin font-title">{{ 'IMPORTATION.CONFIRM.TITLE' | translate }}</span>
+    <br>
+    <div class="gap-10"></div>
+    <span class="text-muted" ng-if="errorsCtrl.sheetErrors.Rows.length > 0">
+      {{ 'IMPORTATION.CONFIRM.FOUND_ERRORS' | translate_with_replace : { rowsLength: errorsCtrl.sheetErrors.Rows.length } }}
+      <br>
+      <span ng-bind-html="('IMPORTATION.CONFIRM.ERRORS_IN_RED' | translate) | to_trusted"></span>
+      <br>
+      <span ng-bind-html="('IMPORTATION.CONFIRM.ERRORS_IN_YELLOW' | translate) | to_trusted"></span>
+      <!-- <a class="button button-white" href>
+        <span class="text-success font-thin"><i class="fad fa-file-excel regular-fa"></i></span>Planilha de erros
+      </a> -->
+      <div class="gap-10"></div>
+    </span>
+    <span class="text-muted" ng-if="errorsCtrl.sheetErrors.Rows.length === 0">
+      {{ 'IMPORTATION.CONFIRM.NO_ERROR' | translate }}
+      <br>
+      <!-- <a class="button button-white" href>
+        <span class="text-success font-thin"><i class="fad fa-file-excel regular-fa"></i></span>Planilha de erros
+      </a> -->
+      <div class="gap-10"></div>
+    </span>
+    <span class="text-muted text-warning" ng-if="!errorsCtrl.has_unique_in_map_fields">
+      {{ 'IMPORTATION.CONFIRM.POSSIBLE_DUPLICATION_ALERT' | translate_with_replace: { entity: errorsCtrl.entity_name } }}
+    </span>
+    <div class="gap-10"></div>
+    <span class="text-muted text-danger font-bold" ng-if="errorsCtrl.tooManyErrors">
+      {{ 'IMPORTATION.CONFIRM.TOO_MANY_ERRORS' | translate }}
+    </span>
+    <br>
+    <br>
+    <div class="panel b-1 white-content medium-shadow" ng-if="errorsCtrl.sheetErrors.Rows.length > 0">
+      <div class="side-scroll white-content">
+        <div class="side-scroll-container nowrap">
+          <table class="table table-striped import-table">
+            <thead>
+              <tr>
+                <th class="small-cell" ng-repeat="col in errorsCtrl.sheetErrors.Columns | filter: errorsCtrl.filterColumns track by $index">{{ (col.ColumnIndex === -1 ? 'IMPORTATION.CONFIRM.SPREADSHEET_LINE' : col.Name) | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in errorsCtrl.formatted_sheet_errors.Rows.slice(((errorsCtrl.current_page - 1) * 10), ((errorsCtrl.current_page) * 10)) track by $index">
+                <td ng-repeat="cell in row | filter: { Mapped: true } track by $index">
+                  {{cell.Value}}
+                  <div ng-repeat="error in cell.Errors">
+                    <strong ng-class="{'text-danger': error.Level === 'Block', 'text-warning': error.Level === 'Warning'}">{{error.message}}</strong>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <ul ng-if="errorsCtrl.sheetErrors.Rows.length > 0" uib-pagination ng-model="errorsCtrl.current_page" total-items="errorsCtrl.sheetErrors.Rows.length" class="pagination-sm" num-pages="numPages" boundary-links="true" items-per-page="10" rotate="true" max-size="5" force-ellipses="true" first-text="{{ 'IMPORTATION.CONFIRM.FIRST_TEXT' | translate }}" previous-text="{{ 'IMPORTATION.CONFIRM.PREVIOUS_TEXT' | translate }}" next-text="{{ 'IMPORTATION.CONFIRM.NEXT_TEXT' | translate }}" last-text="{{ 'IMPORTATION.CONFIRM.LAST_TEXT' | translate }}"></ul>
+  </div>
+</div>

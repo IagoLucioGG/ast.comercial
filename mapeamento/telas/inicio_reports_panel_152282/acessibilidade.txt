@@ -1,0 +1,58 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - text: "Painel ativo:"
+    - paragraph: Promotor de Marca
+    - button
+    - button "Modo Apresentação"
+    - button "Filtros"
+    - button "Atualizar painel"
+    - button "Novo gráfico"
+    - button
+    - text: Painéis
+    - button "Novo painel"
+    - button "Promotor de Marca":
+      - text: Promotor de Marca
+      - button
+    - button "Teste PETRO"
+    - button "."
+    - text: Contagem de contato de venda por usuário de abertura contato de venda
+    - button
+    - button
+    - table:
+      - columnheader "Criador do Contato de Venda"
+      - columnheader "Contatos de Vendas"
+      - text: ALCIONE.SAOPAULO DUARTE.RIO ESCOBAR.RIO JADSON.RECIFE JAINA.OSASCO LARISSE.VENDAS PEDRO.GOIANIA 3 19 15 3 5 1 Total 51
+    - button "Novo filtro"
+    - button
+    - button "Data"
+    - button
+    - button "Usuário"
+    - button
+    - button "Limpar filtros"

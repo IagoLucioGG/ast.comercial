@@ -1,0 +1,33 @@
+<div id="gif-search-wrapper">
+  <span
+    id="gif-search-button"
+    class="button button-short no-border"
+    ng-class="{ 'button-dark': $ctrl.isMiniChat, 'button-darkest-background': !$ctrl.isMiniChat }"
+    ng-click="$ctrl.togglePopover()"
+    uib-popover-template="$ctrl.popoverTemplate"
+    popover-append-to-body="true"
+    popover-trigger="none"
+    popover-is-open="$ctrl.is_open"
+    popover-placement="auto top"
+    popover-title="Gifs">
+    <span id="gif-search-label" class="font-regular-weight font-very-big" ng-class="{ 'text-darkest-neutral': !$ctrl.isMiniChat }">
+      GIF
+    </span>
+  </span>
+
+  <script type="text/ng-template" id="gif-search-template">
+    <div class="vbox height-300" id="gif-search-content">
+      <section class="scrollable">
+        <input id="gif-input" type="text" class="form-control input-sm" ng-model="$ctrl.gif_search_model" ng-change="$ctrl.getGifs()" ng-model-options="{ debounce: 300 }" placeholder="{{ 'CHATS.MESSAGES.SEARCH_FOR_GIFS' | translate }}">
+        <div ng-repeat="gif in $ctrl.gifs">
+          <a href ng-click="$ctrl.selectGif(gif)">
+            <img ng-src="{{gif.Url}}" width="100%">
+          </a>
+        </div>
+      </section>
+      <div style="position: absolute; bottom: 0; background-color: #f6f8f8; width: 100%">
+        <img src="assets/images/giphy.png" width="100" />
+      </div>
+    </div>
+  </script>
+</div>

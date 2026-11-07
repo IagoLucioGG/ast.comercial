@@ -1,0 +1,126 @@
+<div>
+  <div class="side-scroll">
+    <div class="regular-header new-header white-content b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="input-group pull-left width-250 mright10">
+            <input class="form-control input-sm light-background" placeholder="Pesquisar"
+                   ng-model="$ctrl.quick_filter"
+                   ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)">
+            <div class="input-group-btn width-10">
+              <a ng-click="$ctrl.quickFilter($ctrl.quick_filter)" class="btn button button-neutral-gray special-search-button">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+          <div class="dropdown pull-right">
+            <a class="dropdown-toggle button button-white-no-border pull-right" id="approvals" href
+               type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="text-action"><i class="fal button-icon-margin" ng-class="$ctrl.current_mode.Icon"></i></span>
+                {{ 'CONTACTS.CONTACT_PAGE.SEGMENT_BY' | translate_with_replace : { name: $ctrl.current_mode.Name.toLowerCase() } }}
+                <i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top"
+                aria-labelledby="more_options">
+              <div class="dropdown-subtitle">Opções de visualização</div>
+              <li ng-repeat="mode in $ctrl.modes|filter:{ Active: false }">
+                <a class="white-dropdown-link" href ng-click="$ctrl.changeMode(mode.EntityId)">
+                  <span class="text-darkest-neutral">
+                    <i class="fal button-icon-margin" ng-class="mode.Icon"></i>
+                  </span>
+                  {{ 'CONTACTS.CONTACT_PAGE.SEGMENT_BY' | translate_with_replace : { name: mode.Name.toLowerCase() } }}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown pull-right" ng-if="$ctrl.sankhyaIntegrationModule && $ctrl.sankhyaIntegration.Active">
+            <a href class="dropdown-toggle button button-white-no-border pull-right" type="button" id="population-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span>
+                <span class="text-action"><i class="fal fa-eye button-icon"></i></span>
+                Exibir
+                <i class="fal fa-angle-down dropdown-sign"></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="population-list">
+              <div class="display-flex align-items-center space-gap-5 dropdown-subtitle">
+                <span>Tipos de venda</span>
+                <span class="text-neutral">
+                  <img src="assets/images/logo_sankhya_gray.svg" alt="Sankhya" height="10" class="v-unset">
+                </span>
+              </div>
+              <li>
+                <a class="white-dropdown-link" ng-click="$ctrl.changeSankhyaOrderMode('all')">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="$ctrl.sankhya_order_mode === 'all'">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle">
+                      Todas as vendas
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click="$ctrl.changeSankhyaOrderMode('sales_orders')">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="$ctrl.sankhya_order_mode === 'sales_orders'">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle">
+                      Pedidos de venda
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click="$ctrl.changeSankhyaOrderMode('invoices')">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="$ctrl.sankhya_order_mode === 'invoices'">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle">
+                      Notas de venda
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <aside class="text-right width-10 v-middle" ng-if="$ctrl.self.Profile.OrdersCreatePermission && !$ctrl.blockCreate">
+          <div class="dropdown">
+            <a class="button button-action nowrap" ng-click="$ctrl.openNewOrder()">
+              <i class="fas button-icon-margin fa-money-check-edit-alt"></i>
+              Nova venda
+            </a>
+          </div>
+        </aside>
+        <div class="width-5"></div>
+        <aside class="text-right width-10 v-middle" ng-if="$ctrl.cpq_beta_button_enabled && $ctrl.self.Profile.OrdersCreatePermission && !$ctrl.blockCreate">
+          <div class="dropdown">
+            <a class="button button-action nowrap" ng-click="$ctrl.openBetaNewOrder()">
+              Nova venda&nbsp;BETA
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content white-content">
+      <dynamic-table
+          ng-if="$ctrl.can_load"
+          entity="$ctrl.current_entity"
+          opt-filter="$ctrl.current_filter"
+          table-edit-fn="$ctrl.editTablePatch"
+          current-tab="$ctrl.front_tab"
+          block-table-edit="$ctrl.blockCreate"
+          entity-page-loader="true">
+      </dynamic-table>
+    </div>
+  </div>
+</div>

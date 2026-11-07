@@ -1,0 +1,58 @@
+<dynamic-modal
+  modal-id="product_list_modal"
+  wide="false"
+  footer="false"
+  dark="true"
+  modal-title="Marcadores de Produtos"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="modal-body-no-padding">
+          <table class="table modal-table products-table table-hover">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Cor</th>
+                <th></th>
+              </tr>
+              <tr>
+                <th>
+                  <new-field ng-class="{'is-button': field.isButton}" field="$ctrl.list_name_field" model="$ctrl.new_list" property="$ctrl.list_name_field.key" required="$ctrl.list_name_field.required" disabled="false" wide="false" hide-label="false"></new-field>
+                </th>
+                <th>
+                  <new-field ng-class="{'is-button': field.isButton}" field="$ctrl.list_color_field" model="$ctrl.new_list" property="$ctrl.list_color_field.key" required="$ctrl.list_color_field.required" disabled="false" wide="false" hide-label="false"></new-field>
+                </th>
+                <th class="text-center">
+                  <a class="button-fixed-size button-action button-fixed-size-big" href ng-click="$ctrl.addProductList()">
+                    <i class="fas fa-check"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="list in $ctrl.lists track by $index" ng-click="$ctrl.openProductListSlide(list)" ng-mouseover="showIcons = true" ng-mouseout="showIcons = false">
+                <td inline-edit model="list" properties="['product_list_name']" patch-api="Products@Lists" submit-fn="$ctrl.inlineProductListEdit(item)" non-editable="false">{{list.Name}}</td>
+
+                <td inline-edit model="list" properties="['product_list_color']" patch-api="Products@Lists" submit-fn="$ctrl.inlineProductListEdit(item)" non-editable="false">
+                  <i class="activity-icon fas fa-tag" ng-style="{'color': list.Color}"></i>
+                </td>
+
+                <td class="text-center">
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" href ng-show="showIcons" ng-click="$event.stopPropagation(); $ctrl.removeProductList(list)" ng-click-confirm="excluir este marcador?" reversible="false">
+                    <i class="fal fa-trash fixing-fixed-size-button"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="product_list_slide" modal-side-slide-title="Marcador de produto">
+    <list-side-expand-content model="$ctrl.selected_list" entity="$ctrl.list_entity" products="selectedItems" editing="true" create-listeners="true"></list-side-expand-content>
+  </modal-side-slide>
+</dynamic-modal>

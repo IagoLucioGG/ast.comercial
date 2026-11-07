@@ -1,0 +1,58 @@
+<div class="activities arrange-mid">
+  <a ng-repeat="type in $ctrl.task_types" ng-class="{ 'chosen': type.Id === $ctrl.selected_type.Id }" ng-style="{ 'background-color': type.Id === $ctrl.selected_type.Id ? type.Color : '' }" ng-click="$ctrl.changeType(type)" uib-tooltip="{{type.Name}}" tooltip-append-to-body="true">
+    <div ng-class="{ 'font-big': type.Id === $ctrl.selected_type.Id, 'font-big': type.Id !== $ctrl.selected_type.Id }">
+      <i ng-style="{ 'color': type.Id === $ctrl.selected_type.Id ? '#fff' : '' }" class="fal {{type.Icon}}"></i>
+    </div>
+  </a>
+</div>
+
+<div class="line line-border arrange-top"></div>
+
+<div class="vbox task-vbox light-background">
+  <section class="scrollable scroll-shadow-container">
+    <div class="gap-15"></div>
+    <form class="clearfix">
+      <infos-widget
+        form-key="interaction_record_form"
+        entity-type="InteractionRecordId"
+        replace-form="$ctrl.forms"
+        patch-fn="$ctrl.patchFn(model)"
+        model="$ctrl.model"
+        patch-fn-callback="$ctrl.patchCallback(data)"
+        reduced-layout="true">
+      </infos-widget>
+      <interaction-record-modal-check-in-out
+        check-in-out-info="$ctrl.checkInOutInfo"
+        ng-if="$ctrl.showCheckInOutInfo">
+      </interaction-record-modal-check-in-out>
+    </form>
+    <div ng-if="$ctrl.attachments.length" class="text-uppercase light-background b-b-1 rectangular-wrapper">
+      {{ 'INTERACTION_RECORDS.INTERACTION_RECORD_MODAL.ATTACHMENTS' | translate }}
+    </div>
+    <div class="gap-5"></div>
+    <task-attachments ng-if="$ctrl.has_permission" model="$ctrl.model" api-url="InteractionRecords"></task-attachments>
+    <div ng-if="!$ctrl.has_permission && $ctrl.attachments.length" class="form-group col-sm-12">
+      <div class="gap-5"></div>
+      <button ng-repeat="attachment in $ctrl.attachments track by $index" class="line-item light-badge badge-border neutral-content nowrap mr-5" ng-click="$ctrl.downloadUrl(attachment)">
+        <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+          <i class="fas fa-paperclip"></i>
+          <span
+            class="align-middle"
+            uib-tooltip="{{ attachment.FileName }}"
+            tooltip-append-to-body="true"
+            tooltip-enable="attachment.FileName.length > 30">{{ attachment.FileName.length > 30 ? attachment.FileName.substring(0, 29) + '...' : attachment.FileName }}</span>
+        </div>
+      </button>
+    </div>
+    <div class="short-side-bottom-wrapper" ng-if="$ctrl.model.Latitude && $ctrl.model.Longitude">
+      <div class="font-big b-b-1 light-background">
+        {{ 'INTERACTION_RECORDS.INTERACTION_RECORD_MODAL.ADDRESS' | translate }}
+        <div class="gap-5"></div>
+      </div>
+      <div class="gap-10"></div>
+      <a ng-if="$ctrl.model.Latitude && $ctrl.model.Longitude" href class="button button-white full-width" ng-click="$ctrl.openMapSideSlide()">
+        {{ 'INTERACTION_RECORDS.INTERACTION_RECORD_MODAL.VISUALIZE_ON_MAP' | translate }}
+      </a>
+    </div>
+  </section>
+</div>

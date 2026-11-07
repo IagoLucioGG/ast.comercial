@@ -1,0 +1,81 @@
+<dynamic-modal
+  helper-key="'ADMINISTRATION_AUTOMATION'"
+  modal-id="automations"
+  wider="true"
+  footer="false"
+  dark="true"
+  modal-title="Automações"
+  toggle-modal="$ctrl.toggle_modal"
+  has-formula-config="true"
+  automation-formulas="true"
+  include-dev-field-config="true"
+  has-trigger-config="false"
+  cypress-prefix="administration-automations"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="hbox stretch">
+      <aside class="overflow-hidden width-300 light-background">
+        <div class="sub-header b-b-1 scroll-shadow arrange-mid">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <span class="font-thin font-title">
+                Entidade
+              </span>
+            </aside>
+          </div>
+        </div>
+        <div class="vbox deals-vbox">
+          <section class="scrollable light-background">
+            <div class="wrapper">
+              <div ng-repeat="entity in $ctrl.allowed_entities">
+                <a class="button button-full-width button-very-big text-left" href ng-click="$ctrl.selectEntity(entity)" ng-class="{ 'button-light-background': $ctrl.selected_entity.Id !== entity.Id || $ctrl.selected_logs, 'button-dry-background': $ctrl.selected_entity.Id === entity.Id && !$ctrl.selected_logs }">
+                  <span
+                    class="font-regular-weight font-regular-size text-regular display-block text-ellipsis"
+                    tooltip-append-to-body="true"
+                    uib-tooltip="{{entity.Name}}"
+                    tooltip-placement="top"
+                    tooltip-enable="$ctrl.isTooltipEnabled('automation-entity-name-{{entity.Id}}')"
+                    id="automation-entity-name-{{entity.Id}}"
+                  >
+                    {{entity.Name}}
+                  </span>
+                </a>
+                <div class="gap-5"></div>
+              </div>
+              <div>
+                <a class="button button-full-width button-very-big text-left" href ng-click="$ctrl.selectLogs()" ng-class="{ 'button-light-background': !$ctrl.selected_logs, 'button-dry-background': $ctrl.selected_logs }">
+                  <span class="font-regular-weight font-regular-size text-regular">
+                    Histórico de automações
+                  </span>
+                </a>
+                <div class="gap-5"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+      <aside class="b-l-1 overflow-hidden white-content">
+        <div class="vbox scroll-shadow neutral-shadow">
+          <section class="scrollable scroll-shadow-container">
+            <automations-list
+              entity="$ctrl.selected_entity"
+              top-layout="true"
+              ng-if="$ctrl.initial_load && !$ctrl.selected_logs"
+              cancel-last-request="$ctrl.cancelLastRequest">
+            </automations-list>
+            <automations-logs ng-if="$ctrl.initial_load && $ctrl.selected_logs"></automations-logs>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="automations_slide" modal-side-slide-title="Regras da automação" side-slide-wider="true"  cypress-prefix="administration-automations-rules">
+    <automation-content
+      entity="$ctrl.parsed_selected_entity"
+      allowed-actions="$ctrl.selected_entity.Actions"
+      automation="$ctrl.selected_automation"
+      update-automation-callback-fn="$ctrl.updateSelectedAutomation"
+      ></automation-content>
+  </modal-side-slide>
+</dynamic-modal>

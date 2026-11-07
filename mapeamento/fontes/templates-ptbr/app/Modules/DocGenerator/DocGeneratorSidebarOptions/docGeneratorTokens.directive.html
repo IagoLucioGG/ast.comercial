@@ -1,0 +1,85 @@
+<div class="tab-content">
+  <div class="tab-pane wrapper" ng-class="{'active': !docGeneratorTokensCtrl.current_entity}">
+    <div class="col-sm-6 auto-padding" ng-repeat="entity in docGeneratorTokensCtrl.entities">
+      <a class="panel button button-white-no-border-light-hover full-width height-165" href ng-click="docGeneratorTokensCtrl.showEntityFields(entity, false, true)">
+        <div class="wrapper">
+          <div 
+            class="text-ellipsis text-muted font-regular-size font-bold"
+            uib-tooltip="{{ entity.Name }}"
+            tooltip-append-to-body="true"
+            tooltip-enable="docGeneratorTokensCtrl.isTooltipEnabled('doc-generator-token-' + entity.Id)"
+            id="doc-generator-token-{{entity.Id}}"
+            tooltip-placement="right"
+          >
+            <div class="gap-15"></div>
+            <i class="font-giant-title fad text-darkest-neutral" ng-class="entity.Icon"></i>
+            <div class="gap-15"></div>
+            <span class="text-darkest-neutral">{{entity.Name}}</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="tab-pane active" ng-if="docGeneratorTokensCtrl.current_entity">
+    <div class="height-50 regular-background b-b-1 side-wrapper">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="font-very-big font-thin">
+            <a ng-repeat="path in docGeneratorTokensCtrl.entity_path" href ng-click="docGeneratorTokensCtrl.goToEntity(path)">{{path.Name}} / </a>
+            {{docGeneratorTokensCtrl.current_entity.Name}}
+          </div>
+        </aside>
+        <aside class="v-middle text-right">
+          <a class="inline-link-darkest-neutral" href ng-click="docGeneratorTokensCtrl.closeEntityFields()">
+            Voltar
+          </a>
+        </aside>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="col-sm-12 auto-padding" ng-if="docGeneratorTokensCtrl.self.Profile.FieldsCreatePermission">
+        <a class="button button-action button-full-width" ng-click="docGeneratorTokensCtrl.openFieldConfigModal()">
+          <div class="text-white font-semi-big font-regular-weight">
+            Criar campo
+          </div>
+        </a>
+      </div>
+      <div class="col-sm-12 auto-padding">
+        <div class="input-group">
+          <input class="form-control input-sm light-background" placeholder="Buscar campo" ng-model="docGeneratorTokensCtrl.filtering">
+          <div class="input-group-addon white-content width-10 force-left-border">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 auto-padding">
+        <ul id="fieldList" class="no-wrapper">
+          <li ng-repeat="field in docGeneratorTokensCtrl.fields | filter:docGeneratorTokensCtrl.filterTokens(docGeneratorTokensCtrl.filtering)" draggable="true" class="button-short button button-full-width button-background text-left drag-button data-visualization" ng-click="docGeneratorTokensCtrl.insertFieldOnClick(field)">
+            <div class="hbox">
+              <aside class="v-middle width-20">
+                <div class="token-drag-indicator"></div>
+              </aside>
+              <aside class="v-middle doc-field-name">
+                <span class="font-regular-weight font-regular-size text-muted" style="padding-left: 3px; width: 20px;" ng-class="'fa ' + field.icon" ng-style="field.dynamic && { 'border-left': '2px solid lightgray' }"></span>
+                <span class="font-regular-weight font-regular-size" style="padding-left: 3px" uib-tooltip="{{field.label}}"
+                tooltip-append-to-body="true">
+                  {{field.label}}
+                </span>
+              </aside>
+              <aside class="v-middle text-right" ng-if="!field.ckEditorOnly && docGeneratorTokensCtrl.self.Profile.FieldsEditPermission && field.configurable">
+                <div class="button-fixed-size button-fixed-size-small data-edit-button" ng-click="docGeneratorTokensCtrl.openFieldConfigModal(field); $event.stopPropagation()">
+                  <i class="fal fa-pen activity-icon-top-3"></i>
+                </div>
+              </aside>
+              <aside class="v-middle text-right width-10 text-neutral" ng-if="field.path_to_entity">
+                  <div class="f-1 ai-center background-field-path-action field-path-action jc-center">
+                    <i class="fas fa-chevron-right"></i>
+                  </div>
+              </aside>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="wizard-step" wizard-step-content="1">
+  <div class="top-side-wrapper">
+    <span class="font-thin font-title">{{ 'IMPORTATION.UPLOAD.TITLE' | translate }}</span>
+    <br>
+    <span class="text-muted">{{ 'IMPORTATION.UPLOAD.DESCRIPTION' | translate_with_replace: {singularName: uploadCtrl.entityName.singularName, pluralName: uploadCtrl.entityName.entityName} }}</span>
+    <div class="line"></div>
+    <label class="button button-action">
+      <i class="fas fa-cloud-upload-alt simple-line-big"></i>
+      <span class="font-big">{{ (uploadCtrl.file_name ? uploadCtrl.file_name : 'IMPORTATION.UPLOAD.UPLOAD_SPREADSHEET') | translate }} </span>
+      <input id="sheet" type="file" style="display: none;"/>
+    </label>
+  </div>
+  <br>
+  <div ng-if="uploadCtrl.show_owner_observation">
+    <div class="top-side-wrapper"><span class="font-thin font-title">{{ 'IMPORTATION.UPLOAD.NOTES' | translate }}</span><br>
+      <div class="line"></div>
+    </div>
+    <ul>
+      <li class="font-semi-big">{{ 'IMPORTATION.UPLOAD.NOTES_TEXT' | translate_with_replace: {singularName: uploadCtrl.entityName.singularName, singularNameRepetition: uploadCtrl.entityName.singularName} }}</li>
+    </ul>
+  </div>
+</div>

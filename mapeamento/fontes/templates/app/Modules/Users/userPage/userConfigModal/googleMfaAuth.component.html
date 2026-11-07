@@ -1,0 +1,41 @@
+<div class="form-group col-sm-12">
+  <div class="hbox" ng-if="$ctrl.isSelf">
+    <aside class="v-middle">
+      <label>
+        <span class="font-semi-big">
+          {{ 'USERS.USER_CONFIG_MODAL.GOOGLE_MFA.TITLE' | translate }}
+        </span>
+        <br>
+        <small class="text-muted">
+          {{ 'USERS.USER_CONFIG_MODAL.GOOGLE_MFA.DESCRIPTION' | translate }}
+        </small>
+      </label>
+    </aside>
+    <aside class="v-middle">
+      <div class="left-wrapper">
+        <div class="button button-action" ng-if="!$ctrl.hasMfaConfigured" ng-click="$ctrl.activateMFA()">
+          {{ 'GENERICS.ACTIVATE' | translate }}
+        </div>
+        <div class="button button-neutral" ng-if="$ctrl.hasMfaConfigured" ng-click="$ctrl.deactivateMFA()">
+          {{ 'GENERICS.DEACTIVATE' | translate }}
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="hbox" ng-if="!$ctrl.isSelf && $ctrl.hasMfaConfigured">
+    <aside class="v-middle">
+      <label>
+        <span class="font-semi-big">{{ 'USERS.USER_CONFIG_MODAL.GOOGLE_MFA.RESET_TITLE' | translate }}</span>
+        <br>
+        <small class="text-muted">{{ 'USERS.USER_CONFIG_MODAL.GOOGLE_MFA.RESET_DESCRIPTION' | translate }}</small>
+      </label>
+    </aside>
+    <aside class="v-middle">
+      <div class="left-wrapper">
+        <div class="button button-action" ng-click-confirm="resetar o Google Authenticator para esse usuário" ng-click="$ctrl.resetUserMFA()" reversible="false">
+          {{ 'GENERICS.RESET' | translate }}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <div class="side-wrapper">
+      <div class="gap-20"></div>
+      <div ng-if="$ctrl.can_load">
+        <div class="text-right" style="margin-bottom: 15px">
+          <filter-clipboard-bar filter-fields="$ctrl.filterFields"></filter-clipboard-bar>
+        </div>
+        <filter-container
+          ng-if="!$ctrl.filter_compare_fields"
+          entity="$ctrl.front_entity"
+          query-object="$ctrl.query_object"
+          skip-wrapper="true"
+        ></filter-container>
+        <filter-container
+          ng-if="$ctrl.filter_compare_fields"
+          entity="$ctrl.front_entity"
+          query-object="$ctrl.query_object"
+          filter-fields="$ctrl.filterFields"
+          update-filter-fields="$ctrl.updateFilterFields(filterFields)"
+        ></filter-container>
+      </div>
+      <standard-loader loading="!$ctrl.can_load"></standard-loader>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle">
+      <a href class="button button-neutral" ng-click="$ctrl.deleteFilter()">
+        Remover filtro
+      </a>
+    </aside>
+    <aside class="v-middle text-right">
+      <a class="button button-action pull-right" href ng-click="$ctrl.submitControl()">
+        <i class="button-icon fas fa-save"></i>
+        Salvar filtro
+      </a>
+      <div class="loader modal-loader" ng-if="$ctrl.loading"></div>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="vbox">
+  <section class="first-screen-section">
+    <div class="hbox stretch">
+      <div class="vbox side-scroll small-header">
+        <header class="regular-header b-b-1 white-content new-header">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <ul class="nav nav-tabs border-tabs special-tabs">
+                <li ng-class="{ 'active': homeCtrl.state.current.name.includes('home.dashboard') }" ng-click="homeCtrl.changeCurrentView('dashboard')" data-cy="home-dashboard">
+                  <a ui-sref="home.dashboard">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <i class="fal fa-user-chart simple-line-space"></i>
+                      </aside>
+                      <aside class="v-middle font-semi-big">
+                        Resumo
+                      </aside>
+                    </div>
+                  </a>
+                </li>
+                <li ng-class="{ 'active': homeCtrl.state.current.name.includes('goals') }" ng-if="homeCtrl.has_goals" ng-click="homeCtrl.changeCurrentView('goals')" data-cy="home-goals">
+                  <a ui-sref="home.goals">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <i class="fal fa-bullseye-arrow simple-line-space"></i>
+                      </aside>
+                      <aside class="v-middle font-semi-big">
+                        Metas
+                      </aside>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+            <aside class="text-right v-middle">
+              <div class="hbox text-muted">
+                <aside class="width-100 text-right" ng-show="homeCtrl.self.IsSupportUser">
+                  <span class="font-bold">
+                    Conta
+                  </span>{{::homeCtrl.self.Account.Name}}
+                </aside>
+              </span>
+            </aside>
+          </div>
+        </header>
+        <section class="tab-content">
+          <div class="tab-pane stretch active" ui-view="home-view"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>

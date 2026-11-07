@@ -1,0 +1,949 @@
+<div ng-if="$ctrl.can_load">
+  <!-- Ações -->
+  <div>
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+          <div class="add-condition button-avoid">
+            <i class="fal fa-magic activity-icon" style="top: 2px"></i>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width">
+          <div class="hbox">
+            <aside>
+              <div class="hbox">
+                <aside
+                  class="v-middle width-160 nowrap"
+                  ng-class="{'invalid-input': $ctrl.isSubmitted && !$ctrl.action.selected_action}"
+                >
+                  <div class="gap-10"></div>
+                  <div class="hbox">
+                    <aside>
+                      <div class="font-bold font-semi-big">
+                        {{ ($ctrl.actionIndex === 0 ? 'AUTOMATIONS.AUTOMATION_ACTION.TITLE' : 'AUTOMATIONS.AUTOMATION_ACTION.NEXT_ACTION_TITLE') | translate }}
+                        <span
+                          uib-tooltip="Campo obrigatório"
+                          tooltip-append-to-body="true"
+                          ng-class="{'text-neutral': $ctrl.action.selected_action, 'text-danger': !$ctrl.action.selected_action}"
+                          class="small"
+                        >
+                          <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                      </div>
+                    </aside>
+                    <aside class="text-right">
+                      <a
+                        href
+                        class="button-fixed-size button-fixed-size-small button-white b-1 inline-edit-icon checklist-action button-fixed-side-round"
+                        ng-if="!($ctrl.actionIndex === 0 && $ctrl.isLastAction)"
+                        ng-click="$ctrl.removeAction()"
+                        uib-tooltip="Remover ação"
+                        tooltip-append-to-body="true">
+                        <i class="fal fa-trash fixing-fixed-size-button"></i>
+                      </a>
+                      <a
+                        href
+                        class="button-fixed-size button-fixed-size-small button-white b-1 inline-edit-icon checklist-action button-fixed-side-round"
+                        ng-if="$ctrl.actionIndex > 0"
+                        ng-click="$ctrl.moveActionUp()"
+                        uib-tooltip="Mover ação para cima"
+                        tooltip-append-to-body="true">
+                        <i class="fal fa-arrow-up fixing-fixed-size-button" style="top: 3.5px"></i>
+                      </a>
+                      <a
+                        href
+                        class="button-fixed-size button-fixed-size-small button-white b-1 inline-edit-icon checklist-action button-fixed-side-round"
+                        ng-if="!$ctrl.isLastAction"
+                        ng-click="$ctrl.moveActionDown()"
+                        uib-tooltip="Mover ação para baixo"
+                        tooltip-append-to-body="true">
+                        <i class="fal fa-arrow-down fixing-fixed-size-button"></i>
+                      </a>
+                    </aside>
+                  </div>
+                  <div class="gap-5"></div>
+                  <select
+                    ng-options="action as action.Name for action in $ctrl.applied_filter track by action.Id"
+                    ng-model="$ctrl.action.selected_action"
+                    ng-change="$ctrl.selectAction()"
+                    class="form-control input-sm"
+                    ng-required="true"
+                  >
+                  </select>
+                </aside>
+              </div>
+            </aside>
+          </div>
+          <div class="gap-10" ng-if="$ctrl.hasDeletedFields()"></div>
+          <alert-message
+            ng-if="$ctrl.hasDeletedFields()"
+            class-name="'automation-action__deleted-fields-alert'"
+            status="'alert'"
+            message="'AUTOMATIONS.FIELD_MAPPING.DELETED_FIELD_WARNING' | translate">
+          </alert-message>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Editar informações-->
+  <div ng-if="$ctrl.action.selected_action.FieldKeyRequired">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <div class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione um campo e o tipo de edição
+                <span
+                  uib-tooltip="Campo obrigatório"
+                  tooltip-append-to-body="true"
+                  ng-class="{'text-neutral':
+                  !$ctrl.isEditInvalid($ctrl.selected_field), 'text-danger':
+                  $ctrl.isEditInvalid($ctrl.selected_field)}"
+                  class="small"
+                >
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+              <div class="gap-10"></div>
+              <field-path-selection
+                field-selection-fn="$ctrl.selectField(field, field_path_id, checklist_item)"
+                start-entity-id="$ctrl.entity.Id"
+                dynamic-label="$ctrl.selected_field_label || ('GENERICS.SELECT_A_FIELD' | translate)"
+                custom-filter-fn="$ctrl.fieldSelectionFilterFunction(field, path_fields)"
+                check-field-disabling-fn="$ctrl.fieldDisablingFilterFunction(field, parentField)"
+                validate-field-selection-fn="$ctrl.fieldSelectionSelectFunction(field)"
+                skip-pull-right="true"
+                selected-trigger="selectedTrigger"
+                tooltip-message-fn="$ctrl.getFieldPathTooltipMessage(field)"
+                >
+              </field-path-selection>
+              <div class="gap-5" ng-if="$ctrl.selected_field_deleted"></div>
+              <div class="text-danger font-small" ng-if="$ctrl.selected_field_deleted">
+                <i class="fal fa-exclamation-triangle mr-5"></i>Campo excluído
+              </div>
+              <div class="gap-10"></div>
+              <automation-field-mapping
+                ng-if="$ctrl.selected_field"
+                fields="[$ctrl.selected_field]"
+                hide-field-column="true"
+                entity="$ctrl.entity"
+                model="$ctrl.selected_field_model"
+                model-field-mapping="$ctrl.custom_field_mapping"
+                field-mapping-select="$ctrl.fieldMappingSelect"
+                pipeline-automation="$ctrl.stage"
+                should-clear-field-values="$ctrl.front_action.ShouldClearFieldValues"
+                is-submitted="$ctrl.isSubmitted"
+                action-id="$ctrl.action.selected_action.Id"
+              >
+              </automation-field-mapping>
+            </aside>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Alterar estágio do negócio-->
+  <div ng-if="$ctrl.action.selected_action.DealStageIdRequired">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <div class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione o estágio (do:deal:aa:s) (name:deal::s)
+                <span
+                  uib-tooltip="Campo obrigatório"
+                  tooltip-append-to-body="true"
+                  ng-class="{'text-neutral': !$ctrl.isEmptyObject($ctrl.front_action), 'text-danger': $ctrl.isEmptyObject($ctrl.front_action)}"
+                  class="small"
+                >
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+              <div class="gap-5"></div>
+              <new-field
+                field="$ctrl.deal_stage_field"
+                model="$ctrl.front_action"
+                property="$ctrl.deal_stage_field.key"
+                wide="true"
+                outside-form="true"
+                hide-label="true"
+                not-trigger-formula="true"></new-field>
+            </aside>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Enviar e-mail-->
+  <div ng-if="$ctrl.action.selected_action.EmailTemplateIdRequired">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <div class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione o tipo de remetente
+                <span uib-tooltip="Campo obrigatório" tooltip-append-to-body="true"
+                ng-class="{'text-neutral': !$ctrl.isEmptyObject($ctrl.selected_email_sender_type), 'text-danger': $ctrl.isEmptyObject($ctrl.selected_email_sender_type)}"
+                class="small">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+              <div class="gap-5"></div>
+              <div class="hbox">
+                <aside class="v-middle width-250" ng-class="{'invalid-input': $ctrl.isSubmitted && $ctrl.isEmptyObject($ctrl.selected_email_sender_type) }">
+                  <select
+                    ng-options="email_sender_type as email_sender_type.Name for email_sender_type in $ctrl.email_sender_types track by email_sender_type.Id"
+                    ng-model="$ctrl.selected_email_sender_type"
+                    ng-change="$ctrl.selectEmailSenderType()" class="form-control input-sm"></select>
+                </aside>
+                <aside class="v-middle">
+                  <input class="form-control input-sm" ng-if="$ctrl.selected_email_sender_type.Id === 1"
+                    placeholder="O e-mail será enviado por no-reply@ploomes.com" disabled />
+                  <new-field ng-if="$ctrl.selected_email_sender_type.Id === 2"
+                    field="$ctrl.email_sender_field" model="$ctrl.email_sender_model"
+                    property="$ctrl.email_sender_field.key" wide="true" outside-form="true"
+                    hide-label="true" not-trigger-formula="true" placeholder="Listando usuários com e-mail integrado">
+                  </new-field>
+                  <field-path-selection
+                    ng-if="$ctrl.selected_email_sender_type.Id === 3"
+                    field-selection-fn="$ctrl.selectEmailSenderField(field, field_path_id, 'selected_email_sender_field')"
+                    start-entity-id="$ctrl.entity.Id"
+                    dynamic-label="$ctrl.selected_email_sender_field_label || ('GENERICS.SELECT_A_FIELD' | translate)"
+                    custom-filter-fn="$ctrl.fieldSelectionUsersFilterFunction(field, path_fields)"
+                    check-field-disabling-fn="$ctrl.fieldDisablingUsersFilterFunction(field)"
+                    validate-field-selection-fn="$ctrl.fieldSelectionUsersSelectFunction(field)"
+                    skip-pull-right="true">
+                  </field-path-selection>
+                </aside>
+              </div>
+            </aside>
+          </div>
+          <div class="gap-15"></div>
+          <div class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione um usuário para ser avisado caso o envio do e-mail falhe
+                <span uib-tooltip="Campo obrigatório" tooltip-append-to-body="true"
+                ng-class="{'text-neutral': !$ctrl.isEmptyArray($ctrl.email_sender_model.email_fail), 'text-danger': $ctrl.isEmptyArray($ctrl.email_sender_model.email_fail)}"
+                class="small">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+              <div class="gap-5"></div>
+              <new-field field="$ctrl.email_fail_field" model="$ctrl.email_sender_model"
+                property="$ctrl.email_fail_field.key" wide="true" outside-form="true" hide-label="true"
+                not-trigger-formula="true"></new-field>
+            </aside>
+          </div>
+          <div class="gap-15"></div>
+          <div class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione campo de e-mail para o destinatário ou escreva e-mails separados por ponto e vírgula
+                <span uib-tooltip="Campo obrigatório" tooltip-append-to-body="true"
+                ng-class="{'text-neutral': $ctrl.isValidOneField([!!$ctrl.email_recipients, !$ctrl.isEmptyObject($ctrl.selected_field)]), 'text-danger': !$ctrl.isValidOneField([!!$ctrl.email_recipients, !$ctrl.isEmptyObject($ctrl.selected_field)])}"
+                class="small">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+              <div class="gap-5"></div>
+              <div class="hbox" ng-if="$ctrl.action.selected_action.FieldKeyOrRecipientsEmailAddressRequired">
+                <aside class="v-middle width-85">
+                  <field-path-selection
+                    field-selection-fn="$ctrl.selectField(field, field_path_id)"
+                    start-entity-id="$ctrl.entity.Id"
+                    dynamic-label="$ctrl.selected_field_label || ('GENERICS.SELECT_A_FIELD' | translate)"
+                    custom-filter-fn="$ctrl.fieldSelectionTextFilterFunction(field, path_fields)"
+                    check-field-disabling-fn="$ctrl.fieldDisablingEmailRecipientFunction(field)"
+                    validate-field-selection-fn="$ctrl.fieldSelectionEmailRecipientSelectFunction(field)"
+                    field-display-override-fn="$ctrl.emailRecipientFieldDisplayOverride(field)"
+                    remove-field-selection-fn="$ctrl.fieldSelectionRemoveFunction()"
+                    skip-pull-right="true">
+                  </field-path-selection>
+                  <div class="gap-5" ng-if="$ctrl.selected_field_deleted"></div>
+                  <div class="text-danger font-small" ng-if="$ctrl.selected_field_deleted">
+                    <i class="fal fa-exclamation-triangle mr-5"></i>Campo excluído
+                  </div>
+                </aside>
+                <aside class="v-middle text-center width-85 font-thin font-very-big"> OU </aside>
+                <aside class="v-middle position-relative">
+                  <span class="text-muted font-small custom-character-limit">{{ $ctrl.email_recipients.length || '0'}}/{{$ctrl.max_length_recipients}}</span>
+                  <input maxlength="250" class="form-control input-sm " ng-model="$ctrl.email_recipients"
+                    placeholder="Digite os e-mails separados por ; (ponto e vírgula)" />
+                </aside>
+              </div>
+            </aside>
+          </div>
+          <div class="gap-15"></div>
+          <email-template-content
+            subject-required="true"
+            content-required="true"
+            start-entity="$ctrl.entity.Id"
+            model="$ctrl.email_template_model"
+            update-model-fn="$ctrl.updateEmailTemplateModel(model_name, model_subject, model_subject_variables, model_content)"
+            update-attachments-fn="$ctrl.updateEmailTemplateAttachments(files)"
+            hide-model-name="true"
+            hide-model-allowed-users="true"
+            is-automation="true"
+            >
+          </email-template-content>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Criar tarefa-->
+  <div ng-if="$ctrl.action.selected_action.TaskDaysFromNowRequired">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <div class="hbox">
+            <aside>
+              <div class="hbox" ng-if="$ctrl.stage">
+                <aside class="width-180">
+                  <div class="font-bold font-semi-big">
+                    Definir data da tarefa para quantos dias depois?
+                    <span
+                      uib-tooltip="Campo obrigatório"
+                      tooltip-append-to-body="true"
+                      ng-class="{'text-neutral': $ctrl.hasTaskDaysFromNowValue(), 'text-danger': !$ctrl.hasTaskDaysFromNowValue()}"
+                      class="small px-5"
+                    >
+                      <i class="fas fa-exclamation-circle"></i>
+                    </span>
+                  </div>
+                </aside>
+                <aside ng-class="{ 'invalid-input': $ctrl.isSubmitted && !$ctrl.hasTaskDaysFromNowValue() }">
+                  <input class="form-control input-sm" ng-required="true" type="number" ng-model="$ctrl.task_days_from_now">
+                </aside>
+              </div>
+              <div class="gap-10" ng-if="$ctrl.stage"></div>
+              <div class="hbox" ng-if="$ctrl.stage">
+                <aside class="width-180">
+                  <div class="font-bold font-semi-big">
+                    Adicionar usuários de um campo
+                  </div>
+                </aside>
+                <aside>
+                  <field-path-selection
+                    field-selection-fn="$ctrl.selectField(field, field_path_id)"
+                    start-entity-id="$ctrl.entity.Id"
+                    dynamic-label="$ctrl.selected_field_label || ('GENERICS.SELECT_A_FIELD' | translate)"
+                    custom-filter-fn="$ctrl.fieldSelectionUsersFilterFunction(field, path_fields)"
+                    check-field-disabling-fn="$ctrl.fieldDisablingUsersFilterFunction(field)"
+                    validate-field-selection-fn="$ctrl.fieldSelectionUsersSelectFunction(field)"
+                    skip-pull-right="true">
+                  </field-path-selection>
+                  <div class="gap-5" ng-if="$ctrl.selected_field_deleted"></div>
+                  <div class="text-danger font-small" ng-if="$ctrl.selected_field_deleted">
+                    <i class="fal fa-exclamation-triangle mr-5"></i>Campo excluído
+                  </div>
+                </aside>
+              </div>
+              <div class="gap-10" ng-if="$ctrl.stage"></div>
+              <automation-field-mapping
+                fields="$ctrl.task_form"
+                entity="$ctrl.entity"
+                model="$ctrl.new_task"
+                model-field-mapping="$ctrl.task_field_mapping"
+                field-mapping-select="$ctrl.fieldMappingSelect"
+                pipeline-automation="$ctrl.stage"
+                action-id="$ctrl.action.selected_action.Id">
+              </automation-field-mapping>
+            </aside>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Criar negócio-->
+  <div ng-if="$ctrl.action.selected_action.Id === 7">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <div class="full-width text-center mb-15 pipeline-selector">
+            <pipeline-selector
+              change-pipeline-callback-fn="$ctrl.changePipeline(pipeline, first_trigger)"
+              pipeline-id="$ctrl.new_deal.PipelineId">
+            </pipeline-selector>
+
+            <stage-selector
+              ng-if="$ctrl.selected_pipeline"
+              change-stage-callback-fn="$ctrl.changeStage(stage)"
+              stage-id="$ctrl.new_deal.StageId"
+              stages="$ctrl.selected_pipeline.Stages"
+            ></stage-selector>
+          </div>
+          <automation-field-mapping
+            fields="$ctrl.deal_form"
+            entity="$ctrl.entity"
+            model="$ctrl.new_deal"
+            model-field-mapping="$ctrl.deal_field_mapping"
+            field-mapping-select="$ctrl.fieldMappingSelect"
+            pipeline-automation="$ctrl.stage"
+            action-id="$ctrl.action.selected_action.Id">
+          </automation-field-mapping>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Criar registro-->
+  <div ng-if="$ctrl.action.selected_action.Id === 8">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <automation-field-mapping
+            fields="$ctrl.interaction_record_form"
+            entity="$ctrl.entity"
+            model="$ctrl.new_interaction_record"
+            model-field-mapping="$ctrl.interaction_record_field_mapping"
+            field-mapping-select="$ctrl.fieldMappingSelect"
+            pipeline-automation="$ctrl.stage"
+            is-submitted="$ctrl.isSubmitted"
+            action-id="$ctrl.action.selected_action.Id">
+          </automation-field-mapping>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Perder negócio-->
+  <div ng-if="$ctrl.action.selected_action.LossReasonIdRequired">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <div class="hbox">
+            <aside>
+              <div class="hbox">
+                <aside class="width-180">
+                  <div class="font-bold font-semi-big">
+                    Qual motivo deve ser selecionado?
+                    <span
+                      uib-tooltip="Campo obrigatório"
+                      tooltip-append-to-body="true"
+                      ng-class="{'text-neutral': !$ctrl.isEmptyArray($ctrl.front_action.deal_loss_reason), 'text-danger': $ctrl.isEmptyArray($ctrl.front_action.deal_loss_reason)}"
+                      class="small"
+                    >
+                      <i class="fas fa-exclamation-circle"></i>
+                    </span>
+                  </div>
+                </aside>
+                <aside>
+                  <div class="gap-5"></div>
+                  <select-fk
+                    field="$ctrl.deal_loss_reason_field"
+                    model="$ctrl.front_action.deal_loss_reason"
+                    parent-model="$ctrl.front_action"
+                    api-url="{{$ctrl.deal_loss_reason_field.apiUrl}}"
+                    restrict-badge-size="true"
+                    hide-label="true"
+                    display-property="$ctrl.deal_loss_reason_field.displayProperty"
+                    list="true"
+                    custom-data-source="$ctrl.loadLossReasons"
+                    on-save-form-mini-callback="$ctrl.handleLossReasonSave"
+                  >
+                  </select-fk>
+                </aside>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+  <!-- Finalizar tarefas -->
+  <div ng-if="$ctrl.action.selected_action.Id === 13 || $ctrl.action.selected_action.Id === 14">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+            <div class="hbox">
+            <aside>
+              <div class="hbox">
+                <aside class="width-180">
+                  <div class="font-bold font-semi-big mr-30">
+                    Selecione quais tarefas deseja finalizar
+                  </div>
+                </aside>
+                <aside>
+                  <div class="gap-5"></div>
+                  <select
+                    ng-options="option as option.Name for option in $ctrl.finish_task_options track by option.Id"
+                    ng-model="$ctrl.selected_finish_task_option"
+                    ng-change="$ctrl.selectFinishTaskOption()"
+                    class="form-control input-sm"
+                  >
+                  </select>
+                </aside>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div ng-if="$ctrl.selected_finish_task_option.Id === 2 || $ctrl.action.selected_action.Id === 13">
+      <div class="activity-history hist-separator"></div>
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width wrapper panel white-content b-1">
+            <div class="display-inline-block full-width" ng-if="$ctrl.selected_finish_task_option.Id === 2">
+              <div class="display-block">
+                <div class="goal-filter-header">
+                  <div class="font-bold font-semi-big mr-30">
+                    Selecione quais tarefas específicas devem ser finalizadas
+                    <span
+                      uib-tooltip="Campo obrigatório"
+                      tooltip-append-to-body="true"
+                      ng-class="{'text-neutral': $ctrl.checkLengthValidity($ctrl.front_action.task_query_object), 'text-danger': !$ctrl.checkLengthValidity($ctrl.front_action.task_query_object)}"
+                      class="small"
+                    >
+                      <i class="fas fa-exclamation-circle"></i>
+                    </span>
+                  </div>
+                  <filter-clipboard-bar filter-fields="$ctrl.filterFields"></filter-clipboard-bar>
+                </div>
+                <div class="gap-10"></div>
+              </div>
+              <filter-container
+                ng-if="!$ctrl.filter_compare_fields"
+                entity="$ctrl.taskEntity"
+                query-object="$ctrl.front_action.task_query_object"
+                skip-wrapper="true"
+                filter-fields-fn="$ctrl.filterFieldsFn"
+                invalid-filter-length="$ctrl.invalid_filter_length">
+              </filter-container>
+              <filter-container
+                ng-if="$ctrl.filter_compare_fields"
+                entity="$ctrl.taskEntity"
+                filter-fields="$ctrl.filterFields"
+                update-filter-fields="$ctrl.updateFilterFields(filterFields)"
+                query-object="$ctrl.front_action.task_query_object"
+                skip-wrapper="true"
+                invalid-filter-length="$ctrl.invalid_filter_length"
+                not-allowed-field-keys="$ctrl.taskFilterFieldsNotAllowed"
+                field-keys-blacklist="$ctrl.taskFilterBlacklist">
+              </filter-container>
+            </div>
+            <div ng-if="$ctrl.action.selected_action.Id === 13">
+              <div class="gap-10" ng-if="$ctrl.selected_finish_task_option.Id === 2"></div>
+              <div>
+                <div class="font-bold font-semi-big mr-30">
+                  Finalizar com observações
+                </div>
+                <div class="font-regular-weight font-semi-big text-muted mr-30">
+                  Preencha o Formulário de Registro de Interação para salvar com observações
+                </div>
+                <div class="gap-10"></div>
+              </div>
+              <automation-field-mapping
+                fields="$ctrl.task_interaction_record_form"
+                entity="$ctrl.entity"
+                model="$ctrl.new_interaction_record"
+                model-field-mapping="$ctrl.interaction_record_field_mapping"
+                field-mapping-select="$ctrl.fieldMappingSelect"
+                pipeline-automation="$ctrl.stage"
+                is-submitted="$ctrl.isSubmitted">
+              </automation-field-mapping>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+
+  <!-- Enviar lead para o meetime-->
+  <div ng-if="$ctrl.action.selected_action.Id === $ctrl.automationActionsConstants.SEND_TO_MEETIME">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-flex full-width wrapper panel white-content b-1 gap-flex-15">
+          <div>
+            <img class="b-1 white-content p-10 panel" height="60" width="auto" src="assets/images/meetime/logo-meetime-minimal.png" alt="Meetime logo">
+          </div>
+          <div class="display-flex gap-flex-8" style="flex-direction: column;" ng-class="{ 'invalid-input': $ctrl.isSubmitted && !$ctrl.selectedCadence }">
+            <div class="font-bold font-semi-big">Selecione a cadência dos leads a serem enviados
+              <span
+                  uib-tooltip="Campo obrigatório"
+                  tooltip-append-to-body="true"
+                  ng-class="{'text-neutral': !$ctrl.isEmptyObject($ctrl.selectedCadence), 'text-danger': $ctrl.isEmptyObject($ctrl.selectedCadence)}"
+                  class="small"
+                >
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+            </div>
+            <select
+              ng-options="cadence as cadence.Name for cadence in $ctrl.meetimeCadences track by cadence.Id"
+              ng-model="$ctrl.selectedCadence"
+              class="form-control input-sm"
+              ng-required="true"
+            ></select>
+            <div class="display-flex gap-flex-8 radio-options-container" style="flex-direction: column;">
+              <div class="display-flex align-items-center gap-flex-5">
+                <input type="radio" id="sendToMeetimeNow" name="send_to_meetime_lead" ng-model="$ctrl.sendToMeetimeLead" ng-value="true">
+                <label for="sendToMeetimeNow"><span class="font-bold">Início imediato</span><span class="font-regular-weight text-muted"> - Disponibilizar a execução do lead imediatamente</span></label>
+              </div>
+              <div class="display-flex align-items-center gap-flex-5">
+                <input type="radio" id="sendToMeetimeWait" name="send_to_meetime_lead" ng-model="$ctrl.sendToMeetimeLead" ng-value="false">
+                <label for="sendToMeetimeWait"><span class="font-bold">Aguardar início</span><span class="font-regular-weight text-muted"> - O vendedor receberá esse lead ao iniciar a prospecção de novos leads</span></label>
+              </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+
+  <!-- Enviar mensagem whatsapp -->
+  <div style="transform:scale(0.6)" ng-if="$ctrl.action.selected_action.Id === 12 && !$ctrl.neppo_groups_loaded">
+    <loader loading="true"></loader>
+  </div>
+
+  <div ng-if="$ctrl.action.selected_action.Id === 12 && $ctrl.neppo_groups_loaded">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <!-- Remetente -->
+          <div class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione o remetente
+              </div>
+
+              <div class="hbox">
+                <aside class="v-middle width-250">
+                  <select class="form-control input-sm"
+                    ng-options="t as (t.key | translate) for t in $ctrl.wpp_sender_types track by t.id"
+                    ng-model="$ctrl.selected_wpp_sender_type" ng-change="$ctrl.changeWppSenderType()">
+                  </select>
+                </aside>
+
+                <aside class="v-middle" style="flex: 1; padding-left: 6px;">
+                  <new-field ng-if="$ctrl.selected_wpp_sender_type.id === 2" field="$ctrl.wpp_sender_static_field"
+                    model="$ctrl.wpp_sender_model" property="$ctrl.wpp_sender_static_field.key" wide="true"
+                    outside-form="true" hide-label="true" not-trigger-formula="true">
+                  </new-field>
+
+                  <field-path-selection ng-if="$ctrl.selected_wpp_sender_type.id === 3"
+                    field-selection-fn="$ctrl.selectWppSenderField(field, field_path_id)"
+                    start-entity-id="$ctrl.entity.Id"
+                    dynamic-label="$ctrl.selected_wpp_sender_field_label || ('GENERICS.SELECT_A_FIELD' | translate)"
+                    custom-filter-fn="$ctrl.wppFieldFilterFunction(field, path_fields)"
+                    check-field-disabling-fn="$ctrl.fieldWppSelectionUsersSelectFunction(field)"
+                    skip-pull-right="true">
+                  </field-path-selection>
+                </aside>
+              </div>
+            </aside>
+          </div>
+
+          <div class="gap-15"></div>
+
+          <!-- Destinatário -->
+          <div class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione os destinatários
+                <span
+                  uib-tooltip="Campo obrigatório"
+                  tooltip-append-to-body="true"
+                  class="small"
+                  ng-class="{
+                    'text-danger': $ctrl.action.selected_action.Id === 12 && (
+                      $ctrl.isEmptyObject($ctrl.selected_wpp_recipient_type) ||
+                      ($ctrl.selected_wpp_recipient_type.id === 2 && !$ctrl.wpp_recipient_model.trim()) ||
+                      ($ctrl.selected_wpp_recipient_type.id === 3 && $ctrl.isEmptyObject($ctrl.selected_wpp_recipient_field))
+                    ),
+                    'text-neutral': !(
+                      $ctrl.action.selected_action.Id === 12 && (
+                        $ctrl.isEmptyObject($ctrl.selected_wpp_recipient_type) ||
+                        ($ctrl.selected_wpp_recipient_type.id === 2 && !$ctrl.wpp_recipient_model.trim()) ||
+                        ($ctrl.selected_wpp_recipient_type.id === 3 && $ctrl.isEmptyObject($ctrl.selected_wpp_recipient_field))
+                      )
+                    )
+                  }">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+
+              <div class="hbox">
+                <aside class="v-middle width-250">
+                  <select
+                    class="form-control input-sm"
+                    ng-options="t as (t.key | translate) for t in $ctrl.wpp_recipient_types track by t.id"
+                    ng-model="$ctrl.selected_wpp_recipient_type"
+                    ng-change="$ctrl.changeWppRecipientType()"
+                    ng-required="true">
+                  </select>
+                </aside>
+
+                <aside class="gap-10"></aside>
+
+                <aside class="v-middle" style="flex: 1; padding-left: 6px;">
+                  <div class="position-relative" ng-if="$ctrl.selected_wpp_recipient_type.id === 2">
+                    <span class="text-muted font-small custom-character-limit">
+                      {{ $ctrl.wpp_recipient_model.length || '0'}}/{{$ctrl.max_length_recipients}}
+                    </span>
+                    <input
+                      maxlength="250"
+                      class="form-control input-sm"
+                      ng-model="$ctrl.wpp_recipient_model"
+                      placeholder="Digite os telefones separados por ; (ponto e vírgula)"
+                      ng-required="true"/>
+                  </div>
+
+                  <field-path-selection
+                    ng-if="$ctrl.selected_wpp_recipient_type.id === 3"
+                    field-selection-fn="$ctrl.selectWppRecipientField(field, field_path_id)"
+                    start-entity-id="$ctrl.entity.Id"
+                    dynamic-label="$ctrl.selected_wpp_recipient_field_label || ('GENERICS.SELECT_A_FIELD' | translate)"
+                    custom-filter-fn="$ctrl.wppFieldFilterFunction(field, path_fields)"
+                    check-field-disabling-fn="$ctrl.fieldDisablingFilterFunction(field, parentField)"
+                    validate-field-selection-fn="$ctrl.fieldSelectionSelectFunction(field)"
+                    skip-pull-right="true"
+                    ng-required="true">
+                  </field-path-selection>
+                </aside>
+              </div>
+
+              <div class="hbox">
+                <aside class="v-middle" style="flex: 1;">
+                    <div ng-if="$ctrl.selected_wpp_recipient_type.id === 3">
+                        <span class="text-muted">
+                          O campo selecionado deve conter o(s) telefone(s) que receberão a mensagem do Whatsapp
+                        </span>
+
+                        <div  class="font-bold font-semi-big" style="padding-top: 15px;">
+                          Caso haja mais de um número de telefone para o contato:
+                          <span uib-tooltip="Campo obrigatório" tooltip-append-to-body="true" class="small text-neutral">
+                            <i class="fas fa-exclamation-circle"></i>
+                          </span>
+                        </div>
+
+                      <select class="form-control input-sm"
+                              ng-options="opt as (opt.key | translate) for opt in $ctrl.wpp_recipient_phone_modes track by opt.id"
+                              ng-model="$ctrl.selected_wpp_recipient_phone_mode"
+                              ng-change="$ctrl.changeWppRecipientPhoneMode()">
+                      </select>
+                </aside>
+              </div>
+            </aside>
+          </div>
+
+          <div class="gap-10"></div>
+          <!-- Grupo de atendimento -->
+          <div  ng-if="$ctrl.action.selected_action.Id === 12 && $ctrl.neppo_groups_loaded" class="hbox">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Selecione o grupo de atendimento
+                <span
+                  uib-tooltip="Campo obrigatório"
+                  tooltip-append-to-body="true"
+                  class="small"
+                  ng-class="{
+                    'text-danger': $ctrl.action.selected_action.Id === 12 && ($ctrl.selected_neppo_group == null),
+                    'text-neutral': $ctrl.action.selected_action.Id === 12 && ($ctrl.selected_neppo_group != null)
+                  }">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+              <select
+                class="form-control input-sm"
+                ng-options="g.Id as g.Name for g in $ctrl.neppo_groups"
+                ng-model="$ctrl.selected_neppo_group"
+                ng-change="$ctrl.changeNeppoGroup()"
+                ng-required="true">
+              </select>
+            </aside>
+          </div>
+          <div class="gap-15"></div>
+          <!-- Modelo da mensagem -->
+          <div class="hbox" ng-if="$ctrl.action.selected_action.Id === 12 && $ctrl.neppo_groups_loaded">
+            <aside class="v-middle">
+              <div class="font-bold font-semi-big">
+                Modelo da mensagem
+                <span
+                  uib-tooltip="Campo obrigatório"
+                  tooltip-append-to-body="true"
+                  class="small"
+                  ng-class="{
+                    'text-danger': $ctrl.action.selected_action.Id === 12 && $ctrl.isEmptyObject($ctrl.selected_neppo_hsm_template),
+                    'text-neutral': !($ctrl.action.selected_action.Id === 12 && $ctrl.isEmptyObject($ctrl.selected_neppo_hsm_template))
+                  }">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+              </div>
+
+              <select
+                class="form-control input-sm"
+                style="width: fit-content;"
+                ng-model="$ctrl.selected_neppo_hsm_template"
+                ng-options="tpl as tpl.hsmTemplate.elementName for tpl in $ctrl.neppo_hsm_templates track by tpl.hsmTemplate.id"
+                ng-change="$ctrl.changeNeppoHsmTemplate()"
+                ng-disabled="!$ctrl.neppo_hsm_templates.length"
+                ng-required="true">
+                <option value="" disabled>Selecionar</option>
+              </select>
+
+              <div class="gap-10"></div>
+
+              <textarea
+                class="form-control input-sm"
+                rows="4"
+                ng-value="$ctrl.selected_neppo_hsm_template.hsmTemplate.template"
+                readonly
+                style="height: 100%">
+              </textarea>
+            </aside>
+          </div>
+          <div class="gap-15"></div>
+          <!-- Parâmetros -->
+          <div class="hbox" ng-if="$ctrl.action.selected_action.Id === 12 && $ctrl.hsm_parameters_fields.length">
+            <aside class="v-middle full-width">
+              <automation-field-mapping 
+                fields="$ctrl.hsm_parameters_fields" 
+                entity="$ctrl.entity"
+                model="$ctrl.hsm_parameters_model" 
+                model-field-mapping="$ctrl.hsm_parameters_mapping"
+                field-mapping-select="$ctrl.fieldMappingSelect"
+                show-required-indicator="true"
+                action-id="$ctrl.action.selected_action.Id">
+              </automation-field-mapping>
+            </aside>
+          </div>
+          <!---->
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Criar produto de cliente -->
+  <div ng-if="$ctrl.action.selected_action.Id === 16">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+            <div class="hbox">
+            <aside>
+              <div class="hbox">
+                <aside class="width-180">
+                  <div class="font-bold font-semi-big mr-30">
+                    O que fazer se (o:contact_product:aa:s) (name:contact_product:aa:s) já existir?
+                    <span
+                      uib-tooltip-html="$ctrl.contactProductInfoHTML"
+                      class="small text-neutral ml-5"
+                      tooltip-append-to-body="true"
+                      tooltip-class="automations-action__info-tooltip"
+                    >
+                      <i class="fal fa-exclamation-circle"></i>
+                    </span>
+                  </div>
+                </aside>
+                <aside>
+                  <div class="gap-5"></div>
+                  <select
+                    ng-options="option as option.Name for option in $ctrl.create_contact_product_options track by option.Id"
+                    ng-model="$ctrl.selected_create_contact_product_option"
+                    ng-change="$ctrl.selectCreateContactProductOption()"
+                    class="form-control input-sm"
+                  >
+                  </select>
+                </aside>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="display-inline-block full-width wrapper panel white-content b-1">
+          <automation-field-mapping
+            fields="$ctrl.contact_product_form"
+            entity="$ctrl.entity"
+            model="$ctrl.new_contact_product"
+            model-field-mapping="$ctrl.contact_product_field_mapping"
+            field-mapping-select="$ctrl.fieldMappingSelect"
+            pipeline-automation="$ctrl.stage"
+            is-submitted="$ctrl.isSubmitted"
+            action-id="$ctrl.action.selected_action.Id"
+            enable-unique-fields="$ctrl.selected_create_contact_product_option.Id === 2"
+            check-field-mapping-validity-fn="$ctrl.registerFieldMappingChecker(fn, message)">
+          </automation-field-mapping>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator"></div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+</div>

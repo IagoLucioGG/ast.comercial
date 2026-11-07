@@ -1,0 +1,22 @@
+<div class="modal-body-no-padding">
+  <div class="gap-15"></div>
+  <ul class="nav nav-tabs button-tabs-background filter-tabs" ng-if="simpleFilterContentCtrl.simple_filter_entities.length > 1">
+    <li ng-repeat="entity in simpleFilterContentCtrl.simple_filter_entities" ng-class="{'active': simpleFilterContentCtrl.simple_filter_current_entity.name === entity.name}">
+      <a class="text-darkest-neutral" href ng-click="simpleFilterContentCtrl.setSimpleFilterEntity(entity)" aria-label="{{ 'ARIA_LABELS.FILTER.ENTITY_BUTTON' | translate_sentence_with_replace: { entityName: entity.name } }}">{{entity.name}}</a>
+    </li>
+  </ul>
+  <div class="gap-15"></div>
+  <div class="tab-content">
+    <div ng-repeat="section in simpleFilterContentCtrl.simple_filter_sections">
+      <div ng-if="section.Id === 'null'">
+        <forms model="simpleFilterContentCtrl.simple_filter_model" fields="simpleFilterContentCtrl.simple_filter_forms[$index]" form="simple_filter_form" ignore-default-values="true" not-trigger-formula="true"></forms>
+      </div>
+      <div ng-if="section.Id !== 'null'">
+        <modal-section section-form="simple_filter_form" name="section.name || 'GENERIC_DIRECTIVES.ENTITY_PAGE.DEFAULT_SECTION_NAME' | translate" section-id="section.Id">
+          <forms model="simpleFilterContentCtrl.simple_filter_model" fields="simpleFilterContentCtrl.simple_filter_forms[$index]" form="simple_filter_form" ignore-default-values="true" not-trigger-formula="true"></forms>
+        </modal-section>
+      </div>
+      <div class="gap-20"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,3 @@
+<div ng-if="$ctrl.company_model">
+  <infos-widget form-key="{{::$ctrl.contact_form}}" entity-type="Contact" patch-fn="$ctrl.patchFn(model)" model="$ctrl.company_model" replace-section-title="{{$ctrl.company_model.Name}}" replace-section-title-icon="fal fa-industry" replace-section-title-link="contact({ contactid: {{$ctrl.company_model.Id}} })" new-layout="true"></infos-widget>
+</div>

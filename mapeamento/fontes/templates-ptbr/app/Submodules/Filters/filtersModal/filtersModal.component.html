@@ -1,0 +1,103 @@
+<dynamic-modal
+  modal-id="{{ filterModalCtrl.modalId }}"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{::(filterModalCtrl.filterId ? 'FILTERS.EDIT_FILTER' : 'FILTERS.NEW_FILTER' | translate)}}"
+  ng-form="new_filter_form"
+  toggle-modal="filterModalCtrl.toggle_modal"
+  is-fetching-modal-content="filterModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <ul class="nav nav-tabs b-b-1 border-tabs arrange-mid">
+      <li ng-class="{'active': filterModalCtrl.simple_filter}" ng-if="!filterModalCtrl.filterId && !filterModalCtrl.removeSimpleFilter">
+        <a class="text-muted" href data-target="#simple_filters" data-toggle="tab" aria-expanded="true" ng-click="filterModalCtrl.advancedOptions(false)" aria-label="Aba de filtro simples" data-cy="filters-select-simple-filter">
+          Filtro simples
+        </a>
+      </li>
+      <li ng-class="{'active': !filterModalCtrl.simple_filter}">
+        <a class="text-muted" href data-target="#advanced_filters" data-toggle="tab" aria-expanded="false" ng-click="filterModalCtrl.advancedOptions(true)" aria-label="Aba de filtro avançado" data-cy="filters-select-advanced-filter">
+          Filtro avançado
+        </a>
+      </li>
+    </ul>
+    <div class="vbox scroll-shadow neutral-shadow tab-header">
+      <section class="scrollable scroll-shadow-container">
+          <div class="tab-content">
+            <div class="tab-pane" id="simple_filters" ng-class="{'active': filterModalCtrl.simple_filter}" ng-if="!filterModalCtrl.filterId && !filterModalCtrl.removeSimpleFilter">
+              <simple-filter-content entity="filterModalCtrl.entity" update-filter-string-fn="filterModalCtrl.updateFilterString(filter_string)" pipeline-form-id="filterModalCtrl.pipelineFormId"></simple-filter-content>
+            </div>
+            <div class="tab-pane" id="advanced_filters" ng-class="{'active': !filterModalCtrl.simple_filter}">
+              <div class="modal-body-no-padding" ng-if="filterModalCtrl.filterObject">
+                <div class="gap-15"></div>
+                <form class="clearfix">
+                  <div class="form-group col-sm-12">
+                    <label data-cy="filters-name-input">
+                      Nome do filtro
+                    </label>
+                    <span class="align-limited-characters">
+                      <span class="text-muted font-small">
+                        {{ filterModalCtrl.filterObject.filter_name.length || 0 }}/{{ filterModalCtrl.filter_name_max_length }}
+                      </span>
+                    </span>
+                    <div ng-class="{ 'invalid-input': new_filter_form.$submitted && new_filter_form.$error.required[0].$error.required[0] }">
+                      <input class="form-control input-sm" placeholder="" ng-model="filterModalCtrl.filterObject.filter_name" ng-required="true" maxlength="{{ filterModalCtrl.filter_name_max_length }}" aria-label="Nome do filtro" data-cy="filters-advanced-filter-name">
+                    </div>
+                  </div>
+                  <allowed-users model="filterModalCtrl.filterObject" title="('FILTERS.FILTER_VIEW_PERMISSION' | translate)"></allowed-users>
+                </form>
+                <div class="filter-group-container" ng-if="filterModalCtrl.filter_compare_fields">
+                  <div class="header">
+                    <i class="fas fa-filter"></i>
+                    <span>Filtros</span>
+                    <filter-clipboard-bar filter-fields="filterModalCtrl.filterFields"></filter-clipboard-bar>
+                  </div>
+                  <div class="content">
+                    <filter-container 
+                      entity="filterModalCtrl.entity" 
+                      query-object="filterModalCtrl.filterObject" 
+                      invalid-filter-length="filterModalCtrl.invalid_filter_length"
+                      filter-fields="filterModalCtrl.filterFields" 
+                      update-filter-fields="filterModalCtrl.updateFilterFields(filterFields)"
+                      compare-fields="true"
+                    ></filter-container>
+                  </div>
+                </div>
+                <div ng-if="!filterModalCtrl.filter_compare_fields">
+                  <filter-container 
+                    entity="filterModalCtrl.entity" 
+                    query-object="filterModalCtrl.filterObject" 
+                    invalid-filter-length="filterModalCtrl.invalid_filter_length"
+                  ></filter-container>
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+    </div>
+</modal-content>
+<modal-footer>
+  <aside class="v-middle text-left" ng-if="filterModalCtrl.filterId">
+    <a href class="button button-white" ng-click="filterModalCtrl.deleteFilter()" ng-click-confirm="{{::('FILTERS.CONFIRM_FILTER_DELETE' | translate)}} &quot;{{filterModalCtrl.filterObject.filter_name}}&quot;?" reversible="false" aria-label="Botão de deletar filtro" data-cy="filters-delete-filter-button">
+      <span class="font-big">
+        <i class="fal fa-trash"></i>
+      </span>
+    </a>
+  </aside>
+  <div class="modal-footer-wrapper height-max">
+    <loading-tooltip loading="filterModalCtrl.loading" form="new_filter_form" danger="(filterModalCtrl.invalid_length) || (!filterModalCtrl.valid_views) || (new_filter_form.$submitted && filterModalCtrl.invalid_length)"></loading-tooltip>
+    <a class="button button-white pull-right" ng-if="!filterModalCtrl.filterId" ng-click="filterModalCtrl.applyWithoutSaving()" aria-label="Botão de aplicar filtro" data-cy="filters-apply-without-save-button">
+      <i class="fal fa-filter button-icon"></i>
+      Aplicar
+    </a>
+    <button ng-if="filterModalCtrl.filterId && !filterModalCtrl.simple_filter" ng-click="filterModalCtrl.submitControl(filterModalCtrl.filterObject, new_filter_form, true)" href class="btn button button-action btn-sm pull-right" aria-label="Botão de salvar filtro" data-cy="filters-save-filter-button">
+      <i class="fas fa-save button-icon"></i>
+      Salvar
+    </button>
+    <button ng-if="!filterModalCtrl.filterId && !filterModalCtrl.simple_filter" ng-click="filterModalCtrl.submitControl(filterModalCtrl.filterObject, new_filter_form, false)" href class="btn button button-action btn-sm pull-right" aria-label="Botão de salvar filtro" data-cy="filters-save-filter-button">
+      <i class="fas fa-save button-icon"></i>
+      Salvar
+    </button>
+  </div>
+</modal-footer>
+</dynamic-modal>

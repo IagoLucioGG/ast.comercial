@@ -1,0 +1,68 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wider="true"
+  footer="false"
+  dark="true"
+  modal-title="Lead"
+  toggle-modal="leadModalCtrl.toggle_modal"
+  has-options-menu="true"
+  options-menu="leadModalCtrl.options_menu"
+  ng-form
+  name="lead_model_form"
+  is-fetching-modal-content="leadModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow deal-or-contact-domain" ng-if="!leadModalCtrl.not_found">
+      <section class="scrollable scroll-shadow-container" ng-if="leadModalCtrl.initial_load">
+        <lead-status model="leadModalCtrl.model" ng-if="leadModalCtrl.self.Profile.LeadsUpdateStatusPermission"></lead-status>
+        <div class="hbox stretch">
+          <aside class="regular-background b-r-1">
+            <div class="top-side-wrapper">
+              <span ng-if="leadModalCtrl.model.Editable && leadModalCtrl.self.Profile.LeadsUpdateStatusPermission">
+                <div class="panel white-content b-1 overflow-hidden new-standard-shadow">
+                  <div class="wrapper">
+                    <div class="hbox">
+                      <aside class="width-40">
+                        <img class="avatar-header" ng-src="{{leadModalCtrl.self.AvatarUrl}}">
+                      </aside>
+                      <aside>
+                        <div class="hbox">
+                          <aside class="text-muted font-semi-big width-30 v-bottom">Nova nota:</aside>
+                        </div>
+                        <div class="gap-5"></div>
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <new-field field="leadModalCtrl.lead_comment_field" model="leadModalCtrl.comment_model" property="'lead_comment'" required="false" disabled="false" wide="true" hide-label="true"></new-field>
+                          </aside>
+                        </div>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="white-content b-t-1 short-wrapper">
+                    <div class="hbox">
+                      <aside class="nowrap">
+                        <a class="button button-action button-short" href ng-click="leadModalCtrl.postComment()">
+                          <span class="font-regular-weight font-regular-size">Salvar</span>
+                        </a>
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+                <br>
+              </span>
+              <lead-history lead="leadModalCtrl.model" original-history="leadModalCtrl.model.History"></lead-history>
+            </div>
+          </aside>
+          <aside class="width-350 light-background">
+            <div class="gap-10"></div>
+            <infos-widget form-key="lead_form" entity-type="Lead" patch-fn="leadModalCtrl.patchFn(model)" patch-fn-callback="leadModalCtrl.patchCallback(data)" model="leadModalCtrl.model"></infos-widget>
+            <attachments-widget model="leadModalCtrl.model" api-url="Leads"></attachments-widget>
+          </aside>
+        </div>
+      </section>
+    </div>
+    <div class="vbox scroll-shadow neutral-shadow deal-or-contact-domain" ng-if="leadModalCtrl.not_found">
+      <page-not-found></page-not-found>
+    </div>
+  </modal-content>
+</dynamic-modal>

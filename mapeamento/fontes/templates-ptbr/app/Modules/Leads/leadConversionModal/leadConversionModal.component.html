@@ -1,0 +1,78 @@
+<dynamic-modal
+  modal-id="{{::leadConversionModalCtrl.modalId}}"
+  footer="true"
+  dark="true"
+  modal-title="Converter Lead"
+  toggle-modal="leadConversionModalCtrl.toggle_modal"
+  ng-form
+  name="lead_conversion_form"
+  is-fetching-modal-content="leadConversionModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow" ng-if="!leadConversionModalCtrl.not_found">
+      <section class="scrollable scroll-shadow-container">
+        <div class="overflow-hidden dark-background b-b-1">
+          <div class="lead-minimal rounded-regular">
+            <a ng-if="leadConversionModalCtrl.company_form" class="clickable-true" ng-class="{'current-stage': leadConversionModalCtrl.converting_company}" ng-click="leadConversionModalCtrl.manageConvertingEntities(1)">
+              <div class="stage-ball">
+                <div class="ball-form ball-1">
+                  <div class="fal fa-industry"></div>
+                </div>
+              </div>
+              <div class="gap-3"></div>
+              <div class="stage-name">Converter Empresa</div>
+            </a>
+            <a ng-class="{'current-stage': leadConversionModalCtrl.converting_deal}" class="clickable-true" ng-click="leadConversionModalCtrl.manageConvertingEntities(2)">
+              <div class="stage-ball">
+                <div class="ball-form ball-1">
+                  <div class="fal" ng-class="leadConversionModalCtrl.customizables.deals_module.icon_class"></div>
+                </div>
+              </div>
+              <div class="gap-3"></div>
+              <div class="stage-name">Converter {{leadConversionModalCtrl.customizables.deals_module.singular_unit_name}}</div>
+            </a>
+            <a ng-if="leadConversionModalCtrl.person_form" class="clickable-true" ng-class="{'current-stage': leadConversionModalCtrl.converting_person}" ng-click="leadConversionModalCtrl.manageConvertingEntities(3)">
+              <div class="stage-ball">
+                <div class="ball-form ball-1">
+                  <div class="fal fa-user"></div>
+                </div>
+              </div>
+              <div class="gap-3"></div>
+              <div class="stage-name">Converter Pessoa</div>
+            </a>
+          </div>
+        </div>
+
+        <div class="gap-20" ng-if="leadConversionModalCtrl.converting_deal"></div>
+        <modal-section ng-if="leadConversionModalCtrl.converting_deal" name="'LEADS.CONVERSION_MODAL.DEAL' | translate_sentence" section-id="'1'" collapsed="true">
+          <div class="full-width text-center mbottom10">
+            <pipeline-selector change-pipeline-callback-fn="leadConversionModalCtrl.changePipeline(pipeline, true)"></pipeline-selector>
+          </div>
+          <forms model="leadConversionModalCtrl.new_deal" ng-if="leadConversionModalCtrl.deal_form" fields="leadConversionModalCtrl.deal_form" form="lead_conversion_form" watch-field-changes="true"></forms>
+        </modal-section>
+        <div class="gap-20" ng-if="leadConversionModalCtrl.company_form && leadConversionModalCtrl.converting_company"></div>
+        <modal-section ng-if="leadConversionModalCtrl.company_form && leadConversionModalCtrl.converting_company" name="'LEADS.CONVERSION_MODAL.COMPANY' | translate" section-id="'2'" collapsed="true">
+          <forms model="leadConversionModalCtrl.new_company" fields="leadConversionModalCtrl.company_form" form="lead_conversion_form"></forms>
+        </modal-section>
+        <div class="gap-20" ng-if="leadConversionModalCtrl.person_form && leadConversionModalCtrl.converting_person"></div>
+        <modal-section ng-if="leadConversionModalCtrl.person_form && leadConversionModalCtrl.converting_person" name="'LEADS.CONVERSION_MODAL.PERSON' | translate" section-id="'3'" collapsed="true">
+          <forms model="leadConversionModalCtrl.new_person" fields="leadConversionModalCtrl.person_form" form="lead_conversion_form"></forms>
+        </modal-section>
+        <div class="gap-20"></div>
+      </section>
+    </div>
+    <div class="vbox scroll-shadow neutral-shadow" ng-if="leadConversionModalCtrl.not_found">
+      <page-not-found></page-not-found>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch" ng-if="!leadConversionModalCtrl.not_found">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button class="button button-action pull-right" ng-disabled="leadConversionModalCtrl.loading" ng-click="leadConversionModalCtrl.submitControl(lead_conversion_form)">Salvar</button>
+          <loading-tooltip loading="leadConversionModalCtrl.loading" form="lead_conversion_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

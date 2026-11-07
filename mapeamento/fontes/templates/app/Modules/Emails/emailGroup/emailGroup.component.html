@@ -1,0 +1,344 @@
+<div class="stretch">
+  <div class="dark-background mini-wrapper b-1 panel big-shadow mail-reply-position" ng-if="$ctrl.is_replying">
+    <div class="hbox v-middle">
+      <aside class="v-middle font-bold left-wrapper" ng-if="$ctrl.minimized_reply">
+        {{ 'EMAILS.EMAIL_GROUP.SKETCH' | translate }}
+      </aside>
+      <aside class="v-middle width-100 text-right nowrap">
+        <a id="replyer" class="button-fixed-size button-fixed-size-big button-dark-background pull-right" href ng-click="$ctrl.cancelReply()">
+          <i class="text-neutral fas fa-times"></i>
+        </a>
+        <a class="button-fixed-size button-fixed-size-big button-dark-background pull-right" ng-click="$ctrl.toggleMinimize()">
+          <i class="text-neutral fas" ng-class="{ 'fa-minus': !$ctrl.minimized_reply, 'fa-arrow-up-right-and-arrow-down-left-from-center': $ctrl.minimized_reply }"></i>
+        </a>
+      </aside>
+    </div>
+    <new-email-content
+      ng-hide="$ctrl.minimized_reply"
+      use-compact-view="true"
+      base-email="$ctrl.base_email"
+      action="$ctrl.action"
+      enable-submit-button="true"
+      submit-callback-fn="$ctrl.submitCallback(send, sent_email, action)">
+    </new-email-content>
+  </div>
+
+  <div class="text-center fixed-email-actions" style="z-index: 9;" ng-if="!$ctrl.is_replying && ctrl.latest_email.internetid">
+    <div class="display-inline-block margin-auto">
+      <a class="button button-big button-dark-action pull-right panel big-shadow" href ng-click="$ctrl.replyEmail('forward')">
+        <div class="font-big">
+          <i class="fal fa-share-square list-fa"></i>
+          {{ 'EMAILS.EMAIL_GROUP.FORWARD' | translate }}
+        </div>
+      </a>
+      <a class="button button-big button-dark-action pull-right panel big-shadow" href ng-click="$ctrl.replyEmail('replyall')">
+        <div class="font-big">
+          <i class="fal fa-reply-all list-fa"></i>
+          {{ 'EMAILS.EMAIL_GROUP.REPLY_ALL' | translate }}
+        </div>
+      </a>
+      <a class="button button-big button-dark-action pull-right panel big-shadow" href ng-click="$ctrl.replyEmail('reply')">
+        <div class="font-big">
+          <i class="fal fa-reply list-fa"></i>
+          {{ 'EMAILS.EMAIL_GROUP.REPLY' | translate }}
+        </div>
+      </a>
+    </div>
+  </div>
+
+
+  <div class="vbox">
+    <header class="white-content b-b-1 position-relatives height-41 side-wrapper">
+      <div class="hbox stretch" ng-if="$ctrl.initial_load">
+        <aside class="v-middle">
+          <div class="button font-very-big button-white-no-border close-mail" uib-tooltip="{{ ('EMAILS.EMAIL_GROUP.BACK' | translate) + ' (ESC)' }}" tooltip-append-to-body="true" ng-click="$ctrl.closeEmailGroup()">
+            <span class="text-action"><i class="fal fa-long-arrow-left title-icon-bigger-top"></i></span>
+            {{ 'EMAILS.EMAIL_GROUP.BACK' | translate }}
+          </div>
+        </aside>
+        <aside class="v-middle text-right">
+          <email-table-toolbar
+            ng-if="$ctrl.initial_load"
+            current-folder="$ctrl.selectedFolder"
+            remove-mass-edit="true"
+            current-selected-emails="$ctrl.all_emails_ids"
+            is-trash-folder="$ctrl.is_trash_folder"
+            email-group-page="true"
+            update-actions-fn="$ctrl.updateActionsFn"
+            user-data="$ctrl.userData"
+            >
+          </email-table-toolbar>
+        </aside>
+      </div>
+    </header>
+    <section class="scrollable email-header-top white-content" style="height: -webkit-fill-available" >
+      <div class="big-wrapper" ng-if="$ctrl.initial_load">
+        <div class="big-side-wrapper">
+          <div class="hbox">
+            <aside>
+              <div class="font-very-big">
+                {{$ctrl.latest_email.basesubject || ('EMAILS.NO_SUBJECT' | translate)}}
+              </div>
+              <div class="gap-10"></div>
+              <div class="font-big simple-inline v-top" ng-if="$ctrl.loadingThreadLink || ($ctrl.linkedDealId || $ctrl.linkedContactId) && (!$ctrl.email_group.Deal && !$ctrl.email_group.Contact)">
+                <span class="text-action font-bold">
+                  <i class="fal fa-spinner fa-spin"></i>
+                </span>
+              </div>
+              <div class="font-big simple-inline v-top" ng-if="!$ctrl.loadingThreadLink && (!$ctrl.linkedDealId && !$ctrl.linkedContactId) && !$ctrl.email_group.Deal && !$ctrl.email_group.Contact">
+                  <a 
+                    class="button-white b-1 font-bold button button-rounded" 
+                    href 
+                    mini-modal 
+                    on-save-form-mini-callback="$ctrl.onSaveFormMiniCallback"
+                    mini-modal-title="{{ 'EMAILS.EMAIL_GROUP.LINK_EMAIL_TO_ENTITY_MODAL_TITLE' | translate_sentence }}"
+                    mini-modal-fields="$ctrl.link_fields" 
+                    mini-modal-model="$ctrl.miniModalModel" 
+                    mini-modal-callback="$ctrl.linkThread(model)" 
+                    mini-modal-close-callback="$ctrl.handleCloseLinkModal"
+                    mini-modal-cancel-callback="$ctrl.handleCancelCallback"
+                  >
+                    <span class="text-action"><i class="button-icon fal fa-link"></i></span>
+                    {{ 'EMAILS.EMAIL_GROUP.LINK_EMAIL_TO_ENTITY' | translate_sentence }}
+                  </a>
+              </div>
+              <div class="font-big simple-inline" ng-if="!$ctrl.loadingThreadLink && !$ctrl.email_group.Deal && $ctrl.email_group.Contact">
+                <div class="simple-inline v-top">
+                  <a class="button-white font-bold button button-rounded" ui-sref="contact({contactid: $ctrl.email_group.Contact.Id})">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <span class="text-action"><i class="simple-line-space-small fal" ng-class="{ 'fa-industry': $ctrl.email_group.Contact.TypeId !== 2, 'fa-user': $ctrl.email_group.Contact.TypeId === 2 }"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{$ctrl.email_group.Contact.Name}}
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+                <div class="simple-inline v-top">
+                  <a 
+                    class="button-white font-bold button button-rounded" 
+                    href 
+                    mini-modal 
+                    on-save-form-mini-callback="$ctrl.onSaveFormMiniCallback"
+                    mini-modal-title="{{ 'EMAILS.EMAIL_GROUP.LINK_EMAIL_TO_ENTITY_MODAL_TITLE' | translate_sentence }}"
+                    mini-modal-fields="$ctrl.link_fields" 
+                    mini-modal-model="$ctrl.miniModalModel" 
+                    mini-modal-callback="$ctrl.linkThread(model)" 
+                    mini-modal-close-callback="$ctrl.handleCloseLinkModal"
+                    mini-modal-cancel-callback="$ctrl.handleCancelCallback"
+                  >
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <span class="text-action"><i class="simple-line-space-small fal fa-at"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{ 'EMAILS.EMAIL_GROUP.UPDATE_LINK_DEAL' | translate_sentence }}
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+                <div class="simple-inline v-top">
+                  <a class="button-white font-bold button button-rounded v-top" href ng-click="$ctrl.removeThreadLink()" ng-click-confirm="{{ 'EMAILS.EMAIL_GROUP.REMOVE_LINK_CONFIRMATION' | translate_with_replace: { button: $ctrl.updateDealButton } }}" reversible="false" uib-tooltip="{{ 'EMAILS.EMAIL_GROUP.REMOVE_LINK' | translate }}">
+                    <div class="hbox stretch">
+                      <aside class="v-middle">
+                        <span class="text-action"><i class="fal fa-times fixing-fixed-size-button"></i></span>
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="font-big simple-inline" ng-if="!$ctrl.loadingThreadLink && $ctrl.email_group.Deal">
+                <div class="simple-inline v-top" ng-if="$ctrl.email_group.Deal.Contact && ($ctrl.email_group.Deal.Contact.Name || $ctrl.email_group.Deal.ContactName) && $ctrl.email_group.Deal.Contact.TypeId">
+                  <a class="button-white font-bold button button-rounded" ui-sref="contact({contactid: $ctrl.email_group.Deal.Contact.Id})">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <span class="text-action"><i class="simple-line-space-small fal" ng-class="{ 'fa-industry': $ctrl.email_group.Deal.Contact.TypeId !== 2, 'fa-user': $ctrl.email_group.Deal.Contact.TypeId === 2 }"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{$ctrl.email_group.Deal.Contact.Name || $ctrl.email_group.Deal.ContactName}}
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+                <div class="simple-inline v-top" ng-if="$ctrl.email_group.Deal.Person">
+                  <a class="button-white font-bold button button-rounded" ui-sref="contact({contactid: $ctrl.email_group.Deal.Person.Id})">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                       <span class="text-action"> <i class="simple-line-space-small fal fa-user"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{$ctrl.email_group.Deal.Person.Name || $ctrl.email_group.Deal.PersonName}}
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+                <div class="simple-inline v-top">
+                  <a class="button-white font-bold button button-rounded" ui-sref="deal({dealid: $ctrl.email_group.Deal.Id})">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <span class="text-action"><i class="simple-line-space-small fal" ng-class="$ctrl.customizables.deals_module.icon_class"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{$ctrl.email_group.Deal.Title}}
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+                <div class="simple-inline v-top" ng-if="$ctrl.email_group.Deal.Amount">
+                  <div class="button-white font-bold button button-rounded canceling-button-background">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <span class="text-action"><i class="simple-line-space-small fal fa-sack-dollar"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{$ctrl.formatAmount($ctrl.email_group.Deal)}}
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+                <div class="simple-inline v-top">
+                  <a 
+                    class="button-white font-bold button button-rounded" 
+                    href 
+                    mini-modal
+                    on-save-form-mini-callback="$ctrl.onSaveFormMiniCallback"
+                    mini-modal-title="{{ 'EMAILS.EMAIL_GROUP.LINK_EMAIL_TO_ENTITY_MODAL_TITLE' | translate_sentence }}"
+                    mini-modal-fields="$ctrl.link_fields" 
+                    mini-modal-model="$ctrl.miniModalModel" 
+                    mini-modal-callback="$ctrl.linkThread(model)" 
+                    mini-modal-close-callback="$ctrl.handleCloseLinkModal"
+                    mini-modal-cancel-callback="$ctrl.handleCancelCallback"
+                  >
+                    <div class="hbox">
+                      <aside class="v-middle width-25 text-center">
+                        <span class="text-action"><i class="simple-line-space-small fal fa-at"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{ 'EMAILS.EMAIL_GROUP.UPDATE_LINK' | translate }}
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+                <div class="simple-inline v-top">
+                  <a class="button-white font-bold button button-rounded v-top" href ng-click="$ctrl.removeThreadLink()" ng-click-confirm="{{ 'EMAILS.EMAIL_GROUP.REMOVE_LINK_CONFIRMATION' | translate_with_replace: { button: $ctrl.updateLinkButton } }}" reversible="false" uib-tooltip="{{ 'EMAILS.EMAIL_GROUP.REMOVE_LINK' | translate }}">
+                    <div class="hbox stretch">
+                      <aside class="v-middle">
+                        <span class="text-action"><i class="fal fa-times fixing-fixed-size-button"></i></span>
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <div class="gap-15"></div>
+
+          <div class="text-center" ng-if="$ctrl.has_emails_left && !$ctrl.reached_end">
+            <a class="button-white font-bold button button-rounded email-thread__more-emails__btn"
+            ng-click="$ctrl.loadMoreGroupEmails()" ng-class="{'--new-email': $ctrl.hiddenUnreadMessages}">
+            <i class="fas fa-circle text-action email-thread__more-emails__notification-icon" ng-if="$ctrl.hiddenUnreadMessages"></i>
+            <div>
+                <span class="text-action"><i class="fal fa-clock button-icon"></i></span>
+                {{ 'EMAILS.EMAIL_GROUP.LOAD_PREVIOUS_EMAILS' | translate }}
+              </div>
+            </a>
+          </div>
+          <div class="gap-10" ng-if="$ctrl.has_emails_left && !$ctrl.reached_end"></div>
+
+          <div ng-repeat="email in $ctrl.email_group.messages">
+            <div
+            class="button-white medium-wrapper button button-full-width sub-mail display-block"
+            ng-class="{'--new-email': email.read === false}"
+            ng-click="$ctrl.toggleContent(email)"
+            >
+              <div class="new-mail-alert --thread-view">
+                <i class="fas fa-circle text-action" ng-if="!email.read"></i>
+              </div>
+              <div class="hbox fixed-size font-regular-weight text-left">
+                <aside class="v-middle width-20">
+                  <span class="text-action"><i class="fal fa-envelope-open-text"></i></span>
+                </aside>
+                <aside class="v-middle width-150">
+                  <div class="ellipsis nowrap v-overflow-hidden full-width font-bold">
+                    {{email.from[0].name ? email.from[0].name : email.from[0].email}}
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="ellipsis nowrap text-muted"><span> - {{ email.snippet ? email.snippet : (email.subject || ('EMAILS.NO_SUBJECT' | translate)) }}</span></div>
+                </aside>
+                <aside class="v-middle text-right">
+                  <div ng-if="email.send_error"
+                        class="simple-inline text-danger"
+                        uib-tooltip="{{ ('EMAILS.EMAIL_GROUP.SEND_ERROR' | translate) + email.send_error }}"
+                        tooltip-append-to-body="true"
+                        tooltip-placement="auto top">
+                    <i class="fa fa-exclamation"></i>
+                  </div>
+                  <div class="simple-inline"
+                        ng-if="email.imapsubstatus !== null && email.imapsubstatus !== undefined && email.imapsubstatus !== false"
+                        tooltip-append-to-body="true"
+                        tooltip-placement="auto top">
+                    <i class="fas fa-sync text-muted mr-5" ng-class="{ 'text-action': email.imapsubstatus === 0 && $ctrl.userData.active_imap }"></i>
+                    <span>{{ email.imapsubstatus === 0 && $ctrl.userData.active_imap ? 'EMAILS.IMAP_SYNCED' : 'EMAILS.IMAP_NOT_SYNCED' | translate }}</span>
+                  </div>
+                  <div
+                  class="simple-inline"
+                  ng-if="email.readsdates"
+                  ng-class="{ 'text-muted': email.readsdates.length === 0 , 'text-action': email.readsdates.length > 0 }"
+                  uib-tooltip-html="email.ReadsDatesList"
+                  tooltip-append-to-body="true"
+                  tooltip-placement="auto top">
+                  <i class="fal fa-eye"></i>
+                </div>
+                  <div class="simple-inline text-muted"
+                        ng-if="email.attachments.length > 0"
+                        uib-tooltip="{{ 'EMAILS.HAS_ATTACHMENTS' | translate_with_replace: { number: email.attachments.length } }}"
+                        tooltip-append-to-body="true"
+                        tooltip-placement="auto top"
+                    >
+                    <i class="fal fa-paperclip"></i>
+                  </div>
+                  <div ng-if="!email.processing_ir"
+                      class="simple-inline"
+                      uib-tooltip="{{ email.public ? 'EMAILS.IS_PUBLIC' : 'EMAILS.NOT_PUBLIC' | translate }}"
+                      tooltip-append-to-body="true"
+                      tooltip-placement="auto top"
+                  >
+                    <i class="fas" ng-class="{'fa-lock-alt text-neutral': !email.public, 'fa-unlock-alt text-success': email.public }"></i>
+                  </div>
+                  <div ng-if="email.processing_ir"
+                      class="simple-inline"
+                      uib-tooltip="{{ 'EMAILS.CREATING_LINK_FOR_MESSAGE' | translate }}"
+                      tooltip-append-to-body="true"
+                      tooltip-placement="auto top"
+                  >
+                    <i class="fas fa-link"></i>
+                  </div>
+                  {{email.formatted_date}}
+                </aside>
+              </div>
+            </div>
+            <section id="{{'email-' + email.message_id}}" ng-show="email.open_content" class="scrollable white-content b-1 panel no-shadow email-group__email-section" ng-style="{ 'height': email.iframe_height, 'overflow-y': auto }">
+              <email-directive-content
+                content-is-open="email.open_content"
+                email-model="email"
+                email-group-page="true"
+                email-content-resize-callback-fn="$ctrl.emailContentResizeCallback(height, email)"
+                email-iframe-loaded-callback-fn="$ctrl.iframeLoadedCallback"
+                >
+              </email-directive-content>
+            </section>
+            <div class="gap-10"></div>
+          </div>
+          <div class="gap-30"></div>
+        </div>
+        <!-- <div class="gap-90"></div> -->
+        <!-- <div class="gap-90"></div> -->
+        <!-- <div class="gap-90"></div> -->
+        <!-- <div class="gap-90"></div> -->
+      </div>
+      <standard-loader loading="!$ctrl.initial_load" margin-top="15"></standard-loader>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+<div ng-if="$ctrl.can_load">
+  <div class="side-wrapper">
+    <div class="activity-history hist-separator"></div>
+    <span ng-repeat="related_person in $ctrl.related_persons track by $index">
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="no-color-timeline">
+              <i class="fas fa-check activity-icon" ng-show="related_person.ExternallyAccepted"></i>
+              <i class="fas fa-times activity-icon" ng-show="related_person.ExternallyAccepted === false"></i>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="hbox fixed-size">
+            <aside>
+              <div class="gap-10"></div>
+              <div class="gap-3"></div>
+              <div class="font-bold font-semi-big ellipsis">{{related_person.Email}}</div>
+              <div class="gap-15"></div>
+            </aside>
+            <aside class="width-30 v-middle">
+              <a class="button-white-no-border button-fixed-size button-fixed-size-small" href ng-click="$ctrl.removeDocumentRelatedPerson($index)" ng-if="!($ctrl.remove_loading && $ctrl.removing_related_person_index === $index)">
+                <i class="fal fa-trash fixing-fixed-size-button"></i>
+              </a>
+              <loading-tooltip loading="$ctrl.remove_loading && $ctrl.removing_related_person_index === $index"></loading-tooltip>
+              <div class="gap-3"></div>
+            </aside>
+          </div>
+        </aside>
+      </div>
+      <div class="activity-history hist-separator"></div>
+    </span>
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+          <div class="no-color-timeline"></div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="hbox">
+          <aside>
+            <div class="font-bold font-semi-big">
+              {{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.NEW_RECIPIENT' | translate }}
+            </div>
+            <div class="gap-5"></div>
+            <div class="input-group" ng-class="{ 'multiple-email-on': $ctrl.multipleEmailFeature }">
+              <input class="form-control input-sm" placeholder="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.PLACEHOLDER_EMAIL' | translate }}" ng-model="$ctrl.email_model" ng-change="$ctrl.onChangeEmail()" autocomplete="off" uib-typeahead="email for email in $ctrl.getEmails($viewValue)" typeahead-wait-ms="300" typeahead-popup-template-url="email-search-popup2.html" typeahead-on-select="$ctrl.selectEmailModel($item)" aria-label="{{ 'ARIA_LABELS.EMAILS.SEARCH_INPUT' | translate }}" typeahead-min-length="0">
+
+              <script type="text/ng-template" id="email-search-popup2.html">
+                <ul class="dropdown-menu deal-title-suggestion email-search-popup" ng-show="isOpen() && !moveInProgress">
+                  <div class="suggestion-group-header" ng-repeat-start="match in matches track by $index" ng-show="match.model.groupHeader" ng-bind="match.model.groupHeader"></div>
+                  <li class="uib-typeahead-match" ng-repeat-end ng-class="{'quicksearch-keyboard': isActive($index)}" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" aria-label="{{ 'ARIA_LABELS.EMAILS.OPTION' | translate_with_replace: { email: match.model.email || match.model.Email } }}">
+                    {{match.model.email || match.model.Email}}
+                    <div class="text-muted text-small">
+                      {{match.model.name || match.model.Name}}<span ng-if="match.model.isMain"> | {{ 'EMAILS.MAIN' | translate }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </script>
+            </div>
+
+            <div class="gap-10"></div>
+            <a class="btn button button-white" href ng-click="$ctrl.addDocumentRelatedPerson()">
+              <span class="text-action"><i class="button-icon fal fa-user-plus"></i></span>
+              {{ 'GENERICS.ADD' | translate }}
+            </a>
+            <div class="loader modal-loader signer-loader" ng-if="$ctrl.add_loading"></div>
+          </aside>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <div class="wrapper" ng-if="!$ctrl.modelShared">
+    <div class="gap-15"></div>
+    <div>
+      <div class="font-bold">
+        {{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.WHAT_IS_SHARE' | translate }}
+      </div>
+      <div class="white-content b-t-1"></div>
+      <div class="gap-5"></div>
+      {{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.WHAT_IS_SHARE_HELPER' | translate_with_replace : { name: $ctrl.entity_name } }}
+    </div>
+  </div>
+  <div class="wrapper" ng-if="$ctrl.modelShared">
+    <div class="button button-action button-full-width button-big disabled">
+      <div class="font-big">
+        {{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.SHARING_ON' | translate }}
+      </div>
+    </div>
+  </div>
+  <div class="wrapper" ng-if="$ctrl.modelShared && $ctrl.sharing_accepted && !$ctrl.sharing_refused">
+    <div class="button button-success button-full-width button-big disabled">
+      <div class="font-big">{{::$ctrl.sharingMessage('accepted')}}</div>
+    </div>
+  </div>
+  <div class="wrapper" ng-if="$ctrl.modelShared && !$ctrl.sharing_accepted && $ctrl.sharing_refused">
+    <div class="button button-delete button-full-width button-big disabled">
+      <div class="font-big">{{::$ctrl.sharingMessage('refused')}}</div>
+    </div>
+  </div>
+</div>
+<standard-loader loading="!$ctrl.can_load"></standard-loader>

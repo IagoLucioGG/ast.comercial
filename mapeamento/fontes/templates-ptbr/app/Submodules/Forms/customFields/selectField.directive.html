@@ -1,0 +1,81 @@
+<div class="ploomes-host" id="ploomes-host-{{selectFieldCtrl.parsed_field_name}}" ng-click="selectFieldCtrl.focus()" ng-class="{'host-disabled': disabled, 'filter-form__invalid-input': selectFieldCtrl.isFilterLengthValid(required)}">
+  <div class="ploomes-tags full-width" id="tag-holder-field-{{selectFieldCtrl.parsed_field_name}}">
+    <span>
+      <a
+        class="light-badge neutral-content badge-border ploomes-one-tag"
+        ng-show="model !== null && model !== undefined"
+        style="float:left;"
+        uib-tooltip="{{ model[selectFieldCtrl.displayProperty] }}"
+        tooltip-append-to-body="true"
+        tooltip-placement="auto top"
+        tooltip-enable="selectFieldCtrl.Utils.isActiveTooltipBadge(selectFieldCtrl.$element, model[selectFieldCtrl.displayProperty])">
+        <div class="font-bold table-cell-align-top plooomes-tag-content text-darkest-neutral">
+          <div class="hbox fixed-size">
+            <aside class="v-middle">
+              <div class="full-width nowrap ellipsis">
+                <span class="align-middle">
+                  {{selectFieldCtrl.buildBadgeDisplay(model)}}
+                </span>
+              </div>
+            </aside>
+          </div>
+          <i class="fas fa-times remove-button-class" ng-click="selectFieldCtrl.removeItem(item)" ng-if="!disabled"></i>
+        </div>
+      </a>
+    </span>
+    <input type="hidden" ng-model="model" ng-required="required">
+    <input
+      ng-if="!model"
+      id="select-field-{{selectFieldCtrl.parsed_field_name}}"
+      type="search"
+      autocomplete="off"
+      autocomplete="ploomes-dynamic-input"
+      placeholder="{{placeholder}}"
+      ng-style="{'width': '100%'}"
+      class="form-control input-sm"
+      ng-disabled="disabled"
+      ng-model="selectFieldCtrl.query"
+      ng-model-options="{debounce: 300}"
+      ng-change="selectFieldCtrl.loadItems(selectFieldCtrl.query)"
+      ng-focus="selectFieldCtrl.loadItems(selectFieldCtrl.query)"
+      ng-keydown="selectFieldCtrl.keyboardOptions($event)"
+      ng-blur="selectFieldCtrl.blurAction($event)"
+      data-cy="select-field-input"
+      aria-label="{{selectFieldCtrl.filterFieldAriaLabel}}"
+    />
+  </div>
+</div>
+
+<script type="text/ng-template" id="autocomplete-selectfield-template">
+  <div class="tags-input-class">
+    <div class="host">
+      <div class='autocomplete' ng-style="{'min-width': '150px'}">
+        <ul class='suggestion-list' id="suggestion-list-{{selectFieldCtrl.parsed_field_name}}">
+          <li class='suggestion-item'
+            aria-label="{{ 'ARIA_LABELS.FIELD.PRE_REGISTERED_OPTION' | translate_with_replace: { optionLabel: item[selectFieldCtrl.displayProperty] } }}"
+            ng-class="{'dropdown-keyboard': selectFieldCtrl.active_index === $index}"
+            ng-repeat='item in selectFieldCtrl.loaded_items track by $index'
+            ng-click='selectFieldCtrl.addItem(item)'
+            uib-tooltip="{{item[selectFieldCtrl.displayProperty]}}"
+            tooltip-append-to-body="true"
+            tooltip-placement="auto right"
+            tooltip-enable="item[selectFieldCtrl.displayProperty].length > 20"
+            data-cy="{{ 'select-field-item-' + item.key}}">
+            <div class="hbox fixed-size">
+              <aside class="v-middle">
+                <div class="full-width nowrap ellipsis">
+                  <span class="align-middle">
+                    {{item[selectFieldCtrl.displayProperty] || "."}}
+                  </span>
+                </div>
+              </aside>
+            </div>
+          </li>
+          <li ng-show="selectFieldCtrl.loaded_items.length === 0" class="select-fk-no-results">
+            {{ ::('FORMS.SELECT_FK.NO_RESULT_FOUND' | translate) }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</script>

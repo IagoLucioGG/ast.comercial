@@ -1,0 +1,46 @@
+<div>
+  <div
+    id="size-slide-5"
+    class="side-slide overflow-hidden big-border-right-fix white-content"
+    ng-class="{
+      'hide-size-slide': !modalSideSlideCtrl.open_slide,
+      'side-slide-insert-product': !sideSlideWider,
+      'side-slide-wider': sideSlideWider,
+      'side-slide-wider-height': sideSlideWider && modalSideSlideCtrl.open_slide && slideId !== 'automations_slide',
+      'side-slide-height': !sideSlideWider && modalSideSlideCtrl.open_slide && slideId !== 'integrations_slide',
+      'width-800': slideId === 'integrations_slide',
+      'width-850': modalSideSlideCtrl.wider_automation_slide
+    }">
+    <div class="stretch" ng-class="{
+      'width-550': !sideSlideWider,
+      'width-750': sideSlideWider,
+      'width-800': slideId === 'integrations_slide',
+      'width-850': modalSideSlideCtrl.wider_automation_slide
+    }" ng-if="modalSideSlideCtrl.open_slide">
+      <div class="regular-header b-b-1 scroll-shadow arrange-mid new-header" ng-if="!hideHeader">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <span class="font-thin font-title" data-cy="{{ cypressPrefix + '-title' }}">{{modalSideSlideCtrl.truncateText(modalSideSlideTitle)}}</span>
+          </aside>
+          <aside class="v-middle">
+            <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="modalSideSlideCtrl.manualClose()">
+              <i class="fal fa-times"></i>
+            </a>
+            <helper-button ng-if="helperKey" helper-key="helperKey" tooltip-placement="'left'"></helper-button>
+          </aside>
+        </div>
+      </div>
+      <ng-transclude></ng-transclude>
+    </div>
+  </div>
+  <div
+    id="size-slide-5-backdrop"
+    class="side-slide-insert-product-backdrop"
+    style="display:block"
+    ng-class="{
+      'fade': !modalSideSlideCtrl.open_slide,
+      'side-slide-height-backdrop': !sideSlideWider && modalSideSlideCtrl.open_slide && slideId !== 'integrations_slide',
+      'side-slide-wider-height-backdrop': sideSlideWider && modalSideSlideCtrl.open_slide && slideId !== 'automations_slide'
+    }">
+  </div>
+</div>

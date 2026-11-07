@@ -1,0 +1,7 @@
+<div class="tab-pane active" id="gmail">
+  <div class="wrapper">
+    <a class="button button-neutral full-width" href ng-click="gmailIntegrationCtrl.disableGmailIntegration()" ng-if="gmailIntegrationCtrl.self.EmailIntegration.GmailEmail">
+      {{ 'EMAILS.INTEGRATIONS.GMAIL.DISABLE_INTEGRATION_WITH' | translate_with_replace: { email: gmailIntegrationCtrl.self.EmailIntegration.GmailEmail } }}
+    </a>
+  </div>
+</div>

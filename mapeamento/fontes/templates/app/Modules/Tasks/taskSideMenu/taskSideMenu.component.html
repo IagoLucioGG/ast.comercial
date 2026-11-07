@@ -1,0 +1,40 @@
+<div class="bottom-side-wrapper">
+  <div>
+    <div class="button full-width button-white-light-border b-1 button-very-big" ng-click="$ctrl.openIntegrations()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+          <span>
+            <i class="fal fa-lightbulb simple-line-space"></i>
+          </span>
+        </aside>
+        <aside class="text-left">
+          <span class="text-regular semi-big">{{ 'TASKS.SIDE_MENU.TASKS_INTEGRATIONS' | translate }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="$ctrl.tags_permission" ng-click="$ctrl.openTagModal()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-tag simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'TASKS.SIDE_MENU.TAGS_CONFIG' | translate }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="$ctrl.administrator_permission" ng-click="$ctrl.openTypesModal()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-comment-lines simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'TASKS.SIDE_MENU.TYPES_CONFIG' | translate }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

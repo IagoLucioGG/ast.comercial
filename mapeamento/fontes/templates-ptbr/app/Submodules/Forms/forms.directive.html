@@ -1,0 +1,137 @@
+<div class="main-container" style="position: absolute; width: 100%; height: 100%; z-index: 100; text-align: center; top: 0;" ng-if="formsCtrl.show_loading_products">
+  <standard-loader margin-top="10" loading="formsCtrl.show_loading_products"></standard-loader>
+  <div style="font-size: 30px; margin: 20px 0;" class="text-darkest-neutral">
+    Carregando produtos<br />
+    {{formsCtrl.total_products_loaded}} de {{formsCtrl.total_products}}
+  </div>
+  <div style="width: 500px; margin: 0 auto;">
+    <div class="progress table-progress goal-bar">
+      <div class="progress-bar" ng-style="{width: formsCtrl.progress_bar_products + '%'}"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Our main form -->
+<form class="clearfix form" novalidate editable-form name="{{name}}">
+  <span ng-repeat="field_array in formsCtrl.fields track by $index" ng-hide="field_array[0].hidden || field_array[1].hidden || field_array[0].formHidden">
+    <div ng-if="field_array[0].key.includes('_sections')">
+      <div ng-if="!useNewProductSection" class="position-relative" ng-repeat="section in model[field_array[0].key]">
+        <product-section field="field_array[0]" section="section" section-index="$index" section-array="model[field_array[0].key]" model="model" collapse-all="formsCtrl.collapse_all" model-prefix="formsCtrl.getModelPrefix(field_array[0].key)" multipliable="documentTemplateFormat" editing-model="editingModel" is-modal-full-screen="isModalFullScreen"></product-section>
+      </div>
+      <div ng-if="useNewProductSection" class="position-relative" ng-repeat="section in model[field_array[0].key]">
+        <new-product-section
+          field="field_array[0]"
+          section="section"
+          section-index="$index"
+          parent-form-scope="$parent.$parent"
+          section-array="model[field_array[0].key]"
+          model="model"
+          collapse-all="formsCtrl.collapse_all"
+          model-prefix="formsCtrl.getModelPrefix(field_array[0].key)"
+          multipliable="documentTemplateFormat"
+          editing-model="editingModel"
+          is-modal-full-screen="isModalFullScreen"
+          template-load="templateLoad"
+          total-products="formsCtrl.total_products"
+          callback-on-loaded-product="formsCtrl.callbackOnLoadedProduct"
+          contact-product-insertion-target="field_array[0].key === formsCtrl.contact_product_insertion_target_section_key"
+        ></new-product-section>
+      </div>
+    </div>
+
+    <div ng-if="field_array[0].key.endsWith('_installments')">
+      <div class="position-relative">
+        <document-installments field="field_array[0]" model="model" entity-prefix="field_array[0].key.replace('_installments', '')" update-installments-callback="formsCtrl.updateInstallmentsCallback(installments, model, field_array[0])"></document-installments>
+      </div>
+    </div>
+
+    <div class="form-group"
+         ng-class="[ formsCtrl.getFieldSize(field_array[0]), field_array[0].useCheckboxBox ? 'is-checkbox' : '' ]"
+         ng-if="!field_array[0].multiField &&
+         !field_array[1].multiField &&
+         field_array[0].key !== 'contact_email_addresses' &&
+         !field_array[0].key.includes('_sections') &&
+         !field_array[0].key.includes('_section_products') &&
+         (field_array[0].key.includes('contact_product_product') || !field_array[0].key.includes('_product_product')) &&
+         !field_array[0].key.endsWith('_installments')"
+         style="word-break: break-word">
+      <div ng-class="{ 'checkbox-inline-flex': field_array[0].useCheckboxBox }">
+        <label ng-if="!field_array[0].useCheckboxBox" ng-hide="field_array[0].hideLabel"
+          for="{{::field_array[0].label}}" data-cy="{{'field-label-' + field_array[0].key}}">
+          {{::field_array[0].label}}
+          <img ng-if="field_array[0].isAiField" src="assets/images/ai-assistant-logo.svg" class="ai-field-label-icon" />
+        </label>
+        <label ng-if="!field_array[0].useCheckboxBox && field_array[1].label" ng-hide="field_array[1].hideLabel"
+          for="{{::field_array[1].label}}" data-cy="{{'field-label-' + field_array[1].key}}">
+          {{::field_array[1].label}}
+          <img ng-if="field_array[1].isAiField" src="assets/images/ai-assistant-logo.svg" class="ai-field-label-icon" />
+        </label>
+
+        <field-symbol-validation ng-if="!skipValidation" field="field_array[0].isButton ? field_array[1] : field_array[0]"
+          form="form" model="model" validation-callback-fn="formsCtrl.validationCallback" disabled="field.disabled"
+          ng-class="{ 'display-flex': field_array[0].useCheckboxBox }" has-formula="!notTriggerFormula">
+        </field-symbol-validation>
+
+        <div
+          class="input-group full-width"
+          uib-tooltip="{{field_array[0].moveBlockedTooltip}}"
+          tooltip-append-to-body="true"
+          tooltip-enable="field_array[0].key === 'interaction_record_deal' && !!field_array[0].moveBlockedTooltip"
+          ng-class="
+            {
+              'single-select': field_array.length === 1 && field_array[0].typeId === 7 && !field_array[0].multiple,
+              'invalid-input': form.$submitted && field_array[0].typeId !== 7 && field_array[0].typeId !== 19 && formsCtrl.invalid_fields_map[field_array[0].key],
+              'invalid-input-ploomes-host': form.$submitted && (field_array[0].typeId === 7 || field_array[0].typeId === 19) && formsCtrl.invalid_fields_map[field_array[0].key]
+            }
+          ">
+          <new-field
+            form="form"
+            ng-repeat="field in field_array track by $index"
+            ng-class="{'is-button': field.isButton}"
+            field="field"
+            model="model"
+            property="field.key"
+            required="field.required"
+            disabled="field.disabled"
+            placeholder="{{field.placeholder}}"
+            wide="field.wide"
+            hide-label="field.hideLabel"
+            formula-scope="formulaScoped"
+            ignore-default-values="ignoreDefaultValues"
+            not-trigger-formula="notTriggerFormula"
+            formula-trigger-hide-or-disable="editingModel || formulaTriggerHideOrDisable"
+            show-zip-code-mask="true"
+            is-inline-form="isInlineForm"
+            start-entity-id="startEntityId"
+            section-name="name"
+            on-save-form-mini-callback="formsCtrl.onSaveFormMiniCallback"
+          >
+          </new-field>
+        </div>
+      </div>
+    </div>
+
+    <new-multi-field formula-trigger-hide-or-disable="editingModel || formulaTriggerHideOrDisable" ng-repeat="field in field_array track by $index" ng-class="{'is-button': field.isButton}" form="form" field="field" model="model" property="field.key" required="field.required" disabled="field.disabled" wide="field.wide" hide-label="field.hideLabel" ng-if="field_array[0].multiField &&
+          !field_array[1].multiField &&
+          !field_array[0].key.includes('_sections') &&
+          !field_array[0].key.includes('_section_products') &&
+          (field_array[0].key.includes('contact_product_product') || !field_array[0].key.includes('_product_product')) &&
+          !field_array[0].key.endsWith('_installments')">
+    </new-multi-field>
+
+    <emails-directive
+      ng-if="field_array[0].key === 'contact_email_addresses'"
+      form="form"
+      field="field_array[0]"
+      model="model"
+      property="field_array[0].key"
+      required="field_array[0].required"
+      disabled="field_array[0].disabled"
+      hide-label="field_array[0].hideLabel">
+    </emails-directive>
+  </span>
+  <div ng-if="!formsCtrl.fields.length">
+    <div class="text-neutral-light flex-col-no-fields" ><i class="font-title fal fa-exclamation-triangle"></i>{{ formsCtrl.noFieldsMessage }}</div>
+    <div class="gap-10"></div>
+  </div>
+</form>

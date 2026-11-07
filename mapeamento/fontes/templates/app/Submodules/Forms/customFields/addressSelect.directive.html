@@ -1,0 +1,61 @@
+<div class="form-group col-sm-6">
+  <label>Endereço</label>
+  <input vs-google-autocomplete
+         ng-model="model.StreetAddress"
+         vs-place="addressSelectCtrl.place"
+         vs-latitude="model.Latitude"
+         vs-longitude="model.Longitude"
+         vs-post-code="model.ZipCode"
+         type="text"
+         name="address"
+         id="address"
+         class="form-control input-sm"
+         placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}"
+         ng-disabled="disabled"
+         ng-required="required"
+         ng-focus="addressSelectCtrl.show_icon = true"
+         ng-blur="addressSelectCtrl.show_icon = false">
+  <span ng-show="addressSelectCtrl.show_icon" class="text-muted font-very-big address-found" type="button" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="{{'TOOLTIPS.ADDRESS_TIP' | translate}}">
+    <i class="fad fa-question-circle"></i>
+  </span>
+</div>
+<div class="form-group col-sm-6">
+  <label>Complemento</label>
+  <input class="form-control input-sm" placeholder="" ng-model="model.StreetAddressLine2">
+</div>
+<div class="form-group col-sm-6">
+  <label>Bairro</label>
+  <input class="form-control input-sm" placeholder="" ng-model="model.Neighborhood">
+</div>
+<div class="form-group col-sm-6">
+  <label>CEP / Código postal</label>
+  <input vs-google-autocomplete
+         ng-model="model.ZipCode"
+         vs-place="addressSelectCtrl.place"
+         vs-latitude="model.Latitude"
+         vs-longitude="model.Longitude"
+         type="text"
+         name="address"
+         id="address"
+         class="form-control input-sm"
+         placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}"
+         ng-disabled="disabled"
+         ng-required="required"
+         ng-focus="addressSelectCtrl.show_icon = true"
+         ng-blur="addressSelectCtrl.show_icon = false">
+  <span ng-show="addressSelectCtrl.show_icon" class="text-muted font-very-big address-found" type="button" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="{{'TOOLTIPS.ADDRESS_TIP' | translate}}">
+    <i class="fad fa-question-circle"></i>
+  </span>
+</div>
+<div class="form-group col-sm-6">
+  <label>Cidade</label>
+  <select-tag model="model.City" field="addressSelectCtrl.city_field" api-url="{{addressSelectCtrl.city_field.apiUrl}}" display-property="{{addressSelectCtrl.city_field.displayProperty}}" list="true" required="false" disabled="false"></select-tag>
+</div>
+<div class="form-group col-sm-6">
+  <label>Estado</label>
+  <select-tag model="model.State" field="addressSelectCtrl.state_field" api-url="{{addressSelectCtrl.state_field.apiUrl}}" display-property="{{addressSelectCtrl.state_field.displayProperty}}" list="true" required="false" disabled="false"></select-tag>
+</div>
+<div class="form-group col-sm-6">
+  <label>País</label>
+  <select-tag model="model.Country" field="addressSelectCtrl.country_field" api-url="{{addressSelectCtrl.country_field.apiUrl}}" display-property="{{addressSelectCtrl.country_field.displayProperty}}" list="true" required="false" disabled="false"></select-tag>
+</div>

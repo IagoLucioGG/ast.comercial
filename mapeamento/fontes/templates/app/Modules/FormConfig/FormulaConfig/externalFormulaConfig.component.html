@@ -1,0 +1,132 @@
+<div>
+  <div class="form-group col-sm-6" ng-class="{'invalid-input': $ctrl.isSubmitted && $ctrl.requireUrl}">
+    <label>URL
+      <span
+        uib-tooltip="{{ 'FORMS.REQUIRED' | translate}}"
+        tooltip-append-to-body="true"
+        ng-class="{'text-neutral': (!$ctrl.requireUrl || !$ctrl.isSubmitted), 'text-danger': $ctrl.isSubmitted && $ctrl.requireUrl}"
+        class="small"
+      >
+        <i class="fas fa-exclamation-circle"></i>
+      </span>
+    </label>
+    <input type="text" ng-model="$ctrl.local_external_formula_url" ng-change="$ctrl.updateFormulaUrl($ctrl.local_external_formula_url)" class="form-control input-sm"/>
+  </div>
+  <div class="form-group col-sm-6">
+    <label>Headers</label>
+    <div class="input-group" ng-class="{'invalid-input': $ctrl.isSubmitted && !$ctrl.currentHeadersValid}">
+      <input type="text" ng-model="$ctrl.local_external_formula_headers" ng-change="$ctrl.checkHeadersValidity($ctrl.local_external_formula_headers)" class="form-control input-sm"/>
+      <div class="input-group-addon white-content width-10 force-left-border" uib-tooltip="{{ ($ctrl.currentHeadersValid ? 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.VALID_JSON' : 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.INVALID_JSON') | translate }}" tooltip-append-to-body="true">
+        <i class="fas" ng-class="{'fa-check': $ctrl.currentHeadersValid, 'fa-times': !$ctrl.currentHeadersValid}"></i>
+      </div>
+    </div>
+  </div>
+  <div class="form-group col-sm-6">
+    <label>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.METHOD' | translate }}</label>
+    <select ng-model="$ctrl.local_external_formula_method" ng-change="$ctrl.updateFormulaMethod($ctrl.local_external_formula_method)" class="form-control input-sm" ng-options="method.Name for method in $ctrl.externalFormulaMethods">
+    </select>
+  </div>
+  <div class="form-group col-sm-6">
+    <label>JSONPath</label>
+    <input type="text" ng-model="$ctrl.local_external_formula_response_path" ng-change="$ctrl.updateFormulaResponsePath($ctrl.local_external_formula_response_path)" placeholder="$." class="form-control input-sm"/>
+  </div>
+  <div class="form-group col-sm-12">
+    <div class="input-group">
+      <label>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.REQUEST_BODY' | translate }}</label>
+      <div class="input-group">
+        <div class="code-input-width-on-external-formula">
+          <code-input
+            id="formula_string"
+            initial-text="$ctrl.local_external_formula_body"
+            language="'json'"
+            on-change-text="$ctrl.updateFormulaBody"
+            height="'200px'"
+            feature-flags="$ctrl.featureFlags"
+            set-reset-text-callback="$ctrl.setResetTextCallback"
+            set-apply-focus-on-prev-position-callback="$ctrl.setApplyFocusOnPrevPositionCallback"
+            set-replace-formula-tokens-callback="$ctrl.setReplaceFormulaTokensCallback"
+            on-cursor-position-change="$ctrl.setCursorPosition"
+            on-copy-callback="$ctrl.handleCopyFormula"
+            on-paste-callback="$ctrl.handlePasteFormula"
+            on-did-model-change="$ctrl.handleDidCodeInputModelChange"
+            on-cursor-position-change="$ctrl.setCursorPosition">
+          </code-input>
+        </div>
+        <div class="input-group-btn dropdown v-top">
+          <field-path-selection enforce-field-path-reachability="true" field-selection-fn="$ctrl.addVariable(field, field_path_id)" start-entity-id="$ctrl.field.entityId" label="{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELDS' | translate }}" start-tree-edit-fn="$ctrl.editTreeFn(tree)" custom-filter-fn="$ctrl.customFilterFn(field, $ctrl.field.entityId)"></field-path-selection>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group col-sm-12">
+    <label>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.FILL_WITH_FORMULA_RESULT' | translate }}</label>
+    <div class="gap-5"></div>
+    <div class="regular-background b-1">
+      <table class="table modal-table table-smaller-header double-header">
+        <thead>
+          <tr>
+            <th>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELD' | translate }}</th>
+            <th>JSONPath</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>
+              <div class="dropdown">
+                <field-path-selection
+                  field-selection-fn="$ctrl.selectMappedField(field, field_path_id)"
+                  start-entity-id="$ctrl.field.field.entityId || $ctrl.field.entityId"
+                  dynamic-label="$ctrl.selected_field.MappedFieldLabel || ('FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELDS' | translate)"
+                  skip-pull-right="true"
+                  custom-filter-fn="$ctrl.filterFieldsOnFormulaResultFn(field)"
+                  check-force-disable-nesting-fn="$ctrl.checkForceDisableNestingFn({ field: field })">
+                </field-path-selection>
+              </div>
+            </td>
+            <td>
+              <input class="form-control input-sm" placeholder="$." ng-model="$ctrl.current_json_path">
+            </td>
+            <td class="text-center">
+              <a class="button-fixed-size button-action button-fixed-size-big" href
+                ng-click="$ctrl.addMappedField()">
+                <i class="fas fa-check"></i>
+              </a>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="mapped_field in $ctrl.mapped_fields track by $index">
+            <td>
+              <field-path-selection
+                field-selection-fn="$ctrl.selectMappedField(field, field_path_id, mapped_field)"
+                start-entity-id="$ctrl.field.field.entityId || $ctrl.field.entityId"
+                dynamic-label="mapped_field.MappedFieldLabel || ('FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELDS' | translate)"
+                check-force-disable-nesting-fn="$ctrl.checkForceDisableNestingFn({ field: field })"
+                skip-pull-right="true">
+              </field-path-selection>
+            </td>
+            <td>
+              <input class="form-control input-sm" placeholder="$." ng-model="mapped_field.Path" ng-change="$ctrl.changedMappedFieldPath()">
+            </td>
+            <td class="text-center">
+              <a class="button-inherit button-fixed-size button-fixed-size-small" href
+                ng-click="$ctrl.removeMappedField($index)">
+                <i class="fal fa-trash text-darkest-neutral fixing-fixed-size-button"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div ng-if="$ctrl.copy_paste_formulas" id="field-selector" style="position: absolute; display: none;">
+    <field-selector 
+      entity-id="$ctrl.field.entityId" 
+      show="$ctrl.showFieldSelector" 
+      on-close="$ctrl.handleOnCloseFieldSelector" 
+      on-select-field="$ctrl.handleOnSelectFieldOnFieldSelector"
+      filter-fields="$ctrl.filterVisibleFieldsOnFieldSelector"
+      filter-fields-can-enter="$ctrl.filterAllowedFieldsOnFieldSelector"
+      on-created-field="$ctrl.onCreateFieldOnNewFieldSelector"
+      ></field-selector>
+  </div>
+</div>

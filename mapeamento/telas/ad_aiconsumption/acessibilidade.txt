@@ -1,0 +1,51 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - heading "Consumo IA" [level=1]
+    - paragraph: Saldo, ritmo e histórico dos créditos de IA da conta.
+    - button "Comprar créditos"
+    - heading "Saldo em recargas Soma do que resta na recarga em uso com as recargas na fila. Não inclui o pool do plano." [level=2]: Saldo em recargas
+    - text: 3.971.680 créditos
+    - paragraph: Somando 1 recarga com saldo
+    - heading "Ordem de consumo" [level=2]
+    - text: A recarga mais antiga é consumida primeiro
+    - list:
+      - listitem: Recarga RC-22 Em uso 75% consumido 11.737.941 de 15.709.621 Créditos não expiram Restam 3.971.680
+    - paragraph: Nenhuma recarga na fila. Quando esta acabar, a IA usa apenas o pool do plano.
+    - heading "Histórico de recargas" [level=2]
+    - text: 0 recargas
+    - table "Histórico de recargas":
+      - row "ID Compra Status Créditos Valor":
+        - columnheader "ID"
+        - columnheader "Compra"
+        - columnheader "Status"
+        - columnheader "Créditos"
+        - columnheader "Valor"
+      - row "Nenhuma recarga esgotada ainda.":
+        - cell "Nenhuma recarga esgotada ainda."

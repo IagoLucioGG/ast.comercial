@@ -1,0 +1,38 @@
+<dynamic-modal modal-id="report_filter" wide="true" footer="true" dark="true" modal-title="{{ 'REPORTS.FILTER_METRICS' | translate }}" toggle-modal="$ctrl.toggle_modal">
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="wrapper">
+          <div ng-repeat="entity in $ctrl.panelEntities">
+            <div class="gap-15"></div>
+            <div class="checklist-action-container">
+              <a class="button-neutral-gray button font-regular-size text-left button-full-width" role="button"
+                data-toggle="collapse" data-target="{{'#checklist_item_' + $index}}" aria-expanded="true">
+                {{ 'REPORTS.FILTER_ENTITY_METRICS' | translate }} {{entity.name}}
+                <i class="fal fa-angle-down dropdown-sign"></i>
+              </a>
+              <div class="collapse" ng-class="{ 'in': entity.query_object.query }" id="{{'checklist_item_' + $index}}" aria-expanded="true">
+                <div class="clearfix border-bottom-fix">
+                  <filter-generator entity="entity" query-object="entity.query_object" skip-wrapper="true"></filter-generator>
+                </div>
+              </div>
+            </div>
+            <div class="gap-15"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <a class="button button-action" href ng-click="$ctrl.applyFilter()">
+            <i class="button-icon fas fa-filter"></i>
+            {{ 'REPORTS.APPLY_FILTER' | translate }}
+          </a>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

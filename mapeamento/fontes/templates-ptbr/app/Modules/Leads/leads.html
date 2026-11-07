@@ -1,0 +1,50 @@
+<div class="vbox small-header">
+  <header class="regular-header new-header b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="input-group width-250 pull-left" tooltip-placement="right" uib-tooltip="Pesquise leads pelo nome da empresa, nome do contato, e-mail, CNPJ ou telefone">
+          <input class="form-control input-sm light-background" placeholder="Busca por nome da empresa, e-mail, CNPJ" ng-model="leadsCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? leadsCtrl.quickFilter(leadsCtrl.quick_filter) : leadsCtrl.onTypeQuickFilter(leadsCtrl.quick_filter)">
+          <div class="input-group-btn width-10">
+            <a class="btn button button-neutral-gray special-search-button" ng-click="leadsCtrl.quickFilter(leadsCtrl.quick_filter)">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <a class="button button-action pull-right" ng-if="leadsCtrl.self.Profile.LeadsCreatePermission" ui-sref="leads.table.newlead">Novo lead</a>
+        <a id="contacts-menu-button" ng-if="leadsCtrl.show_menu" class="button button-white-no-border pull-right" open-side-menu side-menu-id="lead_side_menu">
+          <span class="text-action"><i class="fal fa-cog button-icon"></i></span> Menu
+        </a>
+        <div class="dropdown pull-right">
+          <filters-menu filters="leadsCtrl.filters" applied-filter="leadsCtrl.applied_filter" filter-actions-fn="leadsCtrl.filterActions"></filters-menu>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="vbox">
+      <!-- CONTEÚDO DA TELA -->
+      <section ui-view="leads-view"></section>
+
+      <!--MODALS-->
+      <google-maps markers="leadsCtrl.map_leads" loaded="leadsCtrl.loaded" modal="#main_lead_modal" modal-sref="{{'leads.table.lead'}}" force-dialog="true" limit="leadsCtrl.map_marker_limit"></google-maps>
+      <!-- <new-importation entity="leadsCtrl.main_entity" modal-id="importation" ng-if="leadsCtrl.state.current.name === 'leads.table.leadimportation'"></new-importation> -->
+      <filters-modal
+          ng-if="leadsCtrl.state.current.name.endsWith('filter')"
+          modal-id="filter_modal"
+          entity="leadsCtrl.main_entity"
+          filter-actions-fn="leadsCtrl.filterActions">
+      </filters-modal>
+
+    </div>
+  </section>
+
+
+  <!--SIDE-MENU-->
+  <side-menu side-menu-id="lead_side_menu">
+    <leads-side-menu></leads-side-menu>
+  </side-menu>
+  <!--END OF SIDE-MENU-->
+
+</div>

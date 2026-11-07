@@ -1,0 +1,70 @@
+- document:
+  - banner:
+    - img
+    - complementary: Configuração do modelo
+    - complementary:
+      - link "Salvar":
+        - /url: ""
+      - text: Voltar
+    - group "Barra de Ferramentas do Editor":
+      - toolbar "Estilos Básicos":
+        - button "Negrito"
+        - button "Itálico"
+        - button "Sublinhado"
+        - button "Tachado"
+        - button "Subscrito"
+        - button "Sobrescrito"
+        - button "Remover Formatação"
+      - toolbar "Estilos":
+        - button "Estilo"
+        - button "Formatação": Normal
+        - button "Fonte"
+        - button "Tamanho"
+      - toolbar "Cores":
+        - button "Cor do Texto"
+        - button "Cor do Plano de Fundo"
+      - toolbar "Paragrafo":
+        - button "Lista numerada"
+        - button "Lista sem números"
+        - button "Diminuir Recuo" [disabled]
+        - button "Aumentar Recuo"
+        - button "Alinhar Esquerda" [pressed]
+        - button "Centralizar"
+        - button "Alinhar Direita"
+        - button "Justificado"
+      - toolbar "Links":
+        - button "Inserir/Editar Link"
+      - toolbar "Inserir":
+        - button "Imagem"
+        - button "Tabela"
+        - button "Inserir Caractere Especial"
+        - button "Inserir Quebra de Página"
+        - button "Alternar campos escondidos"
+      - toolbar "Documento":
+        - button "Código-Fonte"
+  - complementary:
+    - complementary:
+      - list:
+        - listitem:
+          - link "Opções":
+            - /url: ""
+        - listitem:
+          - link "Campos":
+            - /url: ""
+        - listitem:
+          - link "Blocos":
+            - /url: ""
+        - listitem:
+          - link "Estilos":
+            - /url: ""
+      - text: Opções gerais Nome do modelo
+      - textbox: Proposta Comercial 3.0
+      - text: Quem pode ver esse modelo  Todos da empresa  Opções gerais Modelo tem paginação Personalizar nome do .pdf? Obrigatório ter parcelas preenchidas Campo de total das parcelas do modelo
+      - complementary: Valor
+      - text:  Integração com Clicksign Usar mensagem personalizada nesse modelo Preenchimento Externo Formulário com preenchimento externo
+    - complementary:
+      - button "Nova seção"
+      - text: Capa Seção 1 Seção 2 Seção 3
+      - application "Editor de Rich Text, editor1":
+        - iframe
+  - button "Alterar conteúdo com IA"

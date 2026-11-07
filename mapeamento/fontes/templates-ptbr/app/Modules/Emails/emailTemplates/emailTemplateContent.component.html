@@ -1,0 +1,98 @@
+<form class="clearfix">
+  <div class="form-group col-sm-12" ng-if="!$ctrl.hideModelName">
+    <label>Nome do modelo</label>
+    <input
+      class="form-control input-sm"
+      ng-model="$ctrl.model.Name"
+      ng-change="$ctrl.updateModel()"
+      ng-disabled="!$ctrl.model.Editable"
+    >
+  </div>
+  <div class="form-group col-sm-12" ng-if="!$ctrl.hideModelAllowedUsers">
+    <allowed-users model="$ctrl.allowed_views_model" title="('EMAILS.TEMPLATE.ALLOWED_USERS_TITLE' | translate)"
+      remove-side-wrapper="true" skip-erase-views="true" block-edit="!$ctrl.model.Editable"
+      model-change-callback-fn="$ctrl.updateAllowedUsersCallback">
+    </allowed-users>
+  </div>
+  <div class="form-group col-sm-12">
+    <label>Assunto do e-mail</label>
+    <span
+      ng-if="$ctrl.subjectRequired"
+      uib-tooltip="Campo obrigatório"
+      tooltip-append-to-body="true"
+      ng-class="[$ctrl.model.Subject ? 'text-neutral' : 'text-danger']"
+      class="small"
+    >
+      <i class="fas fa-exclamation-circle"></i>
+    </span>
+    <field-path-selection
+      ng-if="$ctrl.model.Editable"
+      field-selection-fn="$ctrl.addSubjectVariable(field, field_path_id)"
+      custom-filter-fn="$ctrl.filterField(field)"
+      start-entity-id="$ctrl.startEntity"
+      skip-pull-right="true"
+    ></field-path-selection>
+    <input 
+      class="form-control input-sm" 
+      ng-model="$ctrl.model.Subject" 
+      ng-class="{ 'is-invalid-input': $ctrl.errorsField.subject }" 
+      ng-change="$ctrl.updateSubject()"
+      ng-disabled="!$ctrl.model.Editable"
+    />
+  </div>
+  <div class="form-group col-sm-12">
+    <label>Conteúdo do e-mail</label>
+    <span 
+      ng-if="$ctrl.contentRequired"
+      uib-tooltip="Campo obrigatório"
+      tooltip-append-to-body="true"
+      ng-class="[$ctrl.model.Content ? 'text-neutral' : 'text-danger']"
+      class="small"
+    >
+      <i class="fas fa-exclamation-circle"></i>
+    </span>
+    <field-path-selection
+      ng-if="$ctrl.model.Editable"
+      field-selection-fn="$ctrl.addVariable(field, field_path_id)"
+      custom-filter-fn="$ctrl.filterField(field)"
+      start-entity-id="$ctrl.startEntity"
+      skip-pull-right="true"
+    ></field-path-selection>
+    <textarea class="form-control height-100" ng-if="!$ctrl.rich_text_editor_feature && !$ctrl.hide_ckeditor" ng-model="$ctrl.model.Content"
+      ng-disabled="!$ctrl.model.Editable" ng-change="$ctrl.updateModel()" pl-ckeditor="$ctrl.options"
+      pl-editor-id="{{::($ctrl.editor_name)}}">
+    </textarea>
+    <rich-text-editor
+      value="$ctrl.model.Content"
+      ng-if="$ctrl.rich_text_editor_feature && !$ctrl.hide_ckeditor"
+      disabled="!$ctrl.model.Editable"
+      on-init-editor="$ctrl.onInitRichTextEditor"
+      on-change-value="$ctrl.onRichTextEditorChangeValue"
+      unique-focus-id="$ctrl.editor_name"
+      mode="'emailTemplate'"
+      min-height="260"
+      language="$ctrl.language"
+    ></rich-text-editor>
+    <div ng-if="$ctrl.isAutomation" class="mt-5">
+      <span class="font-small text-muted"><i class="text-warning fas fa-exclamation-triangle"></i> Necessário incluir assinatura de e-mail manualmente</span>
+    </div>
+  </div>
+
+  <div class="form-group col-sm-12" ng-show="$ctrl.model.Editable && !$ctrl.hideModelAttachments">
+    <div class="line-itens-left">
+      <attachment-upload file-upload-callback="$ctrl.fileUploadCallback" block-library-items="true" position="'left'">
+      </attachment-upload>
+      <div class="line-item light-badge neutral-content badge-border badge-deletable" href
+        ng-repeat="file in $ctrl.files">
+        <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+          <span class="align-middle">{{file.name}}</span>
+          <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" href
+            ng-click="$ctrl.removeAttachmentFile($index)">
+            <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2" href></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>

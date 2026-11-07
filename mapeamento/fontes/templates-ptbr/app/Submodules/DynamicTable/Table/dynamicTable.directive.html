@@ -1,0 +1,156 @@
+<div class="wrapper-big-side dynamic-table-wrapper">
+  <standard-loader margin-top="15" entity-page-layout="entityPageLoader" loading="!dynamicTableCtrl.can_load"></standard-loader>
+  <table id="dynamic-table" class="table table-reorder first-child-border table-hover white-table-with-header" ng-show="dynamicTableCtrl.can_load" ng-style="dynamicTableCtrl.opaque && {'opacity':'0.4', 'pointer-events': 'none'}" ng-class="{'table-no-access-level': !currentTab.Editable}">
+    <thead>
+      <tr dnd-list="dynamicTableCtrl.column_list" dnd-horizontal-list="true" dnd-dragover="dynamicTableCtrl.dragoverCallback(index, external, type)" dnd-drop="dynamicTableCtrl.dropColumn(event, index, item)">
+        <th class="table-options text-center" ng-if="allowRowSelect">
+          <input type="checkbox" ng-model="dynamicTableCtrl.selected_all_rows" ng-change="dynamicTableCtrl.onChangeSelectAllRows()">
+        </th>
+        <th class="dndPlaceholder"></th>
+        <th
+          ng-repeat="column in dynamicTableCtrl.column_list track by $index"
+          ng-if="!column.field.hidden"
+          dnd-draggable="column"
+          dnd-disable-if="!currentTab.Editable"
+          dnd-dragstart="dynamicTableCtrl._dragSourceIdx = $index; dynamicTableCtrl._headerDragActive = true; dynamicTableCtrl.dragover_index = $index"
+          dnd-dragend="dynamicTableCtrl.onDragEnd()"
+          dnd-moved="dynamicTableCtrl.moveColumn(column)"
+          dnd-effect-allowed="move"
+          class="small-cell nowrap"
+          ng-class="{'dnd-table-divider' : dynamicTableCtrl.dragover_index === $index, 'cancel-reorder' : dynamicTableCtrl.column_list[$index].field.multiple || dynamicTableCtrl.column_list[$index].field.dynamic || dynamicTableCtrl.column_list[$index].field.secondaryEntityId === dynamicTableCtrl.city_secondary_entity_id}"
+          ng-click="currentTab.Editable && !dynamicTableCtrl.column_list[$index].field.dynamic && !dynamicTableCtrl.column_list[$index].field.multiple && !dynamicTableCtrl.opaque && dynamicTableCtrl.can_load && dynamicTableCtrl.sortColumn($index)"
+          data-cy="{{'dynamic-table-column-' + column.field.key +'-'+ $index}}">
+
+          <div class="hbox">
+            <aside>
+              {{column.column_name}}
+            </aside>
+            <aside class="text-right mini-wrapper-left" ng-if="dynamicTableCtrl.dragover_index === -1 || dynamicTableCtrl.dragover_index < $index - 1 || dynamicTableCtrl.dragover_index > $index + 1">
+              <div class="display-inline-block text-muted"><i class="reorder-icon fas {{column.sorting ? (column.sorting === 'desc' ? 'fa-sort-amount-down' : 'fa-sort-amount-up') : ''}}"></i></div>
+            </aside>
+          </div>
+
+        </th>
+        <th 
+          class="table-options text-center" 
+          ng-if="dynamicTableCtrl.column_list.length > 0" 
+          href ng-click="!blockTableEdit && dynamicTableCtrl.openTableConfig()" 
+          tooltip-enable="!currentTab.Editable"
+          tooltip-placement="bottom"
+          uib-tooltip="Você não tem permissão para editar as colunas dessa aba"
+          tooltip-append-to-body="true"
+          data-cy="dynamic-table-fields-config"
+        >
+          <span class="text-muted">
+            <i ng-if="!blockTableEdit" class="fal fa-cog table-options-simple-line"></i>
+          </span>
+        </th>
+      </tr>
+    </thead>
+
+  <tr ng-if="dynamicTableCtrl.column_list.length === 0" class="neutral-line empty-table-config" href ng-click="dynamicTableCtrl.open_config = true">
+    <td class="text-center empty-results">
+      <span class="text-neutral">Clique aqui para configurar as colunas de sua tabela</span>
+    </td>
+  </tr>
+
+  <tr ng-if="dynamicTableCtrl.data.length === 0 && dynamicTableCtrl.column_list.length > 0" class="neutral-line empty-table-config">
+    <td colspan="{{dynamicTableCtrl.column_list.length + 1}}" class="text-center empty-results">
+      <span class=" text-muted" ng-if="!noItemFoundString" aria-label="Nenhum item encontrado" data-cy="dynamic-table-no-items-found-text">Nenhum item encontrado</span>
+      <span class=" text-muted" ng-if="noItemFoundString">{{noItemFoundString}}</span>
+    </td>
+  </tr>
+
+  <tbody ng-if="dynamicTableCtrl.column_list.length > 0">
+    <tr 
+      role="link"
+      data-cy="{{'dynamic-table-row-' + $index}}"
+      ng-repeat="row in dynamicTableCtrl.data track by $index" 
+      aria-label="{{ 'ARIA_LABELS.ENTER_ON_ITEM_BY_TABLE_VIEW' | translate_sentence_with_replace: { itemId: row.rowId } }}"
+      ng-class="{'disabled-table-row': row.disabled}"
+    >
+      <td class="table-options text-center" ng-if="allowRowSelect">
+        <input type="checkbox" ng-model="dynamicTableCtrl.selected_rows_ids[row.rowId]" ng-change="dynamicTableCtrl.selectedRow(row.rowId, row)">
+      </td>
+      <td
+        id="{{row.rowId}}"
+        ng-if="!dynamicTableCtrl.column_list[$index].field.hidden"
+        data-cy="{{'dynamic-table-cell-' + $parent.$parent.$index + '-' + $index}}"
+        ng-class="{'dnd-table-divider': dynamicTableCtrl.dragover_index === $index, 'dynamic-table-td--wide': dynamicTableCtrl.column_list[$index].field.key.includes('_email_addresses')}"
+        ng-click="dynamicTableCtrl.goToLink(row.rowId, false, row)"
+        ng-repeat="cell in row.row track by $index"
+        context-menu="dynamicTableCtrl.menuOptions(row)"
+        ng-right-click="rowRightClickCallback ? dynamicTableCtrl.rowRightClickCallback($event, row) : angular.noop"
+      >
+        <span
+          inline-edit
+          size="{{dynamicTableCtrl.column_list[$index].field.useRichTextEditor && dynamicTableCtrl.rich_text_editor_feature && 'md'}}"
+          is-on-library="isOnLibrary"
+          model="undefined"
+          not-trigger-formula="true"
+          properties="[dynamicTableCtrl.column_list[$index].field.key]"
+          has-dynamic-field="dynamicTableCtrl.column_list[$index].field.dynamic"
+          patch-api="entity.apiUrl"
+          submit-fn="dynamicTableCtrl.inlineEdit(item, field_key, $index)"
+          build-inline-fn="dynamicTableCtrl.buildInlineEditModel(row.model, dynamicTableCtrl.column_list[$index])"
+          non-editable="(cell.blockAlert && cell.blockAlert !== '') ||
+                        !row.model.Editable ||
+                        cell.editable === false ||
+                        dynamicTableCtrl.disableInlineEdit ||
+                        cell.editable === null ||
+                        !dynamicTableCtrl.column_list[$index].field.inlineEditable ||
+                        (entity.Id === 3 && row.model.CompanyId && (dynamicTableCtrl.column_list[$index].field.originFieldKey || dynamicTableCtrl.column_list[$index].field.key === 'lead_company_name')) ||
+                        (entity.Id === 3 && row.model.PersonId && (dynamicTableCtrl.column_list[$index].field.originFieldKey || dynamicTableCtrl.column_list[$index].field.key === 'lead_person_name')) ||
+                        (entity.Id === 2 && !row.model.Pipeline.EnableStatus && dynamicTableCtrl.column_list[$index].field.key === 'deal_field_status') ||
+                        dynamicTableCtrl.validMicrosoftBlockedField(dynamicTableCtrl.column_list[$index].field.key)
+                        "
+          ng-class="{'font-bold': dynamicTableCtrl.column_list[$index].featured}"
+          uib-tooltip="{{ dynamicTableCtrl.getCellTooltip(cell, dynamicTableCtrl.column_list[$index]) }}"
+          tooltip-append-to-body="true"
+          tooltip-placement="auto top"
+          tooltip-enable="dynamicTableCtrl.isCellTooltipEnabled(cell, dynamicTableCtrl.column_list[$index])"
+          show-expand-icon="dynamicTableCtrl.column_list[$index].field.typeId === 2"
+          expand-popover-content="cell.display"
+          cypress-string="{{'dynamic-table-cell-edit-' + $parent.$parent.$index + '-' + $index}}"
+          hide-pencil="(cell.blockAlert && cell.blockAlert !== '') || (dynamicTableCtrl.column_list[$index].field.key === 'quote_products' || dynamicTableCtrl.column_list[$index].field.key === 'contact_products') || dynamicTableCtrl.disableInlineEdit"
+          block-alert="cell.blockAlert"
+          class="v-overflow-hidden"
+        >
+          <dynamic-table-item
+            id="{{row.rowId}}-{{dynamicTableCtrl.column_list[$index].field.key}}"
+            display="cell.display"
+            column="dynamicTableCtrl.column_list[$index]"
+            white-display="!dynamicTableCtrl.can_load"
+            object="row.model"
+            cell="cell"
+            uib-tooltip-html="dynamicTableCtrl.new_sanitize_front ? dynamicTableCtrl.sanitizeHTML(cell.tooltipContent) : cell.tooltipContent"
+            tooltip-append-to-body="true"
+            tooltip-enable="dynamicTableCtrl.isTooltipEnabled(cell, row.rowId + '-' + dynamicTableCtrl.column_list[$index].field.key)"
+            tooltip-placement="auto left"
+            >
+          </dynamic-table-item>
+        </span>
+      </td>
+      <td id="{{row.rowId}}" class="options-column text-center">
+        <entity-tasks obj="row.model" entity="entity" ng-if="dynamicTableCtrl.can_load && !dynamicTableCtrl.opaque && entity && (entity.Id === 1 || entity.Id === 2)"></entity-tasks>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<dynamic-table-pagination
+  ng-if="dynamicTableCtrl.total_items > 0 && dynamicTableCtrl.can_load"
+  disable="dynamicTableCtrl.opaque"
+  items-per-page="itemsPerPage || currentTab.items_per_page"
+  current-page="dynamicTableCtrl.current_page"
+  total-items="dynamicTableCtrl.total_items">
+</dynamic-table-pagination>
+<dynamic-table-config
+  ng-if="dynamicTableCtrl.open_config"
+  current-tab="currentTab"
+  modal-id="table_config"
+  entity="entity"
+  add-column-callback-fn="dynamicTableCtrl.addColumnCallback(front_column)"
+  remove-column-callback-fn="dynamicTableCtrl.removeColumnCallback(front_column_index)"
+  column-reorder-callback-fn="dynamicTableCtrl.columnReorderCallback(front_column_index)"
+  toggle-modal="dynamicTableCtrl.open_config">
+</dynamic-table-config>

@@ -1,0 +1,48 @@
+<aside class="min-width-250 regular-background lighter-border-color" ng-style="{'width': 100/$parent.columnList.length + '%'}">
+  <div class="stage-wrapper regular-background b-b-1 position-relative height-52 lighter-border-color b-r-1">
+  	<div class="deal-stage-limiter">
+	    <div class="font-big ellipsis nowrap"
+        id="dynamic-funnel-column-name-{{columnIndex}}"
+        uib-tooltip="{{ column.Name }}"
+        tooltip-append-to-body="true"
+        tooltip-placement="top"
+        tooltip-enable="dynamicFunnelColCtrl.enableTooltip('dynamic-funnel-column-name-' + {{columnIndex}})">
+          {{ column.Name }}
+      </div>
+	    <div class="text-muted ellipsis nowrap" id="dynamic-funnel-column-description-{{columnIndex}}" tooltip-append-to-body="true" uib-tooltip="{{column.currency_grouped_amounts_text + column.total_cards}} {{column.total_cards === 1 ? pipeline.pipeline_singular_unit_name.toLowerCase() : pipeline.pipeline_plural_unit_name.toLowerCase()}}" tooltip-enable="dynamicFunnelColCtrl.enableTooltip('dynamic-funnel-column-description-' + {{columnIndex}})">
+	    	<span ng-show="column.has_value">{{column.currency_grouped_amounts_text}}</span> {{column.total_cards}} {{column.total_cards === 1 ? pipeline.pipeline_singular_unit_name.toLowerCase() : pipeline.pipeline_plural_unit_name.toLowerCase()}}
+	    </div>
+	</div>
+  </div>
+  <div class="dynamic-cols-wrapper regular-small-wrapper stretch regular-background b-r-1 lighter-border-color" ui-sortable="dynamicFunnelColCtrl.sortableOptions" ng-model="column.cards" column-index="{{columnIndex}}" ui-sortable-update="dynamicFunnelColCtrl.updateCol(column)">
+    <dynamic-funnel-card ng-repeat="card in column.cards track by card.Id" pipeline="pipeline" card="card" entity="entity" column="column" deal-edit-form="dealEditForm"></dynamic-funnel-card>
+    <div class="d-flex align-items-center justify-content-center" ng-if="column.has_error && !column.isRefetching">
+      <div class="text-center text-muted">
+        <span class="d-block h1">
+          <i class="fas fa-bomb"></i>
+        </span>
+        <h4 class="mt-10 font-bold">
+          {{ 'DYNAMIC_FUNNEL.FUNNEL_COLUMN_ERROR.TITLE' | translate }}
+        </h4>
+        <p class="small">
+          {{ 'DYNAMIC_FUNNEL.FUNNEL_COLUMN_ERROR.MESSAGE' | translate }}
+        </p>
+        <button type="button" class="button button-white-light-border" ng-click="dynamicFunnelColCtrl.retryFailedRequests()">
+          <span class="d-flex align-items-center justify-content-center gap-flex-5">
+            <i class="fal fa-sync"></i>
+            {{ 'DYNAMIC_FUNNEL.FUNNEL_COLUMN_ERROR.BUTTON_MESSAGE' | translate }}
+          </span>
+        </button>
+      </div>
+    </div>
+    <div ng-if="column.isRefetching">
+      <standard-loader
+        optionalclass="'funnel-loader'"
+        loading="column.isRefetching"
+      ></standard-loader>
+    </div>
+    <!--  -->
+  </div>
+
+  <div ng-show="dynamicFunnelColCtrl.hovered" class="list-placeholder"></div>
+</aside>

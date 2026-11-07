@@ -1,0 +1,42 @@
+<div class="form-group col-sm-12">
+  <div class="data-edit" ng-class="{'min-height-35': newTaskAttachmentsCtrl.files.length !== 0 || newTaskAttachmentsCtrl.items.length !== 0}">
+    <div class="pull-left">
+      <a ng-repeat="file in newTaskAttachmentsCtrl.files track by $index"
+        class="light-badge neutral-content badge-border nowrap badge-deletable" target="_blank">
+        <div class="light-neutral-text-color font-small font-bold table-cell-align-top">
+          <span
+            class="align-middle"
+            uib-tooltip="{{ file.FileName }}"
+            tooltip-append-to-body="true"
+            tooltip-enable="file.FileName.length > 20">{{file.FileName.length > 20 ? file.FileName.substring(0, 19) + '...' : file.FileName}}</span>
+          <div ng-click="newTaskAttachmentsCtrl.removeAttachment($index); $event.preventDefault();"
+            class="align-middle button-fixed-size button-fixed-size-small" href>
+            <i class="fas fa-times remove-button-class remove-button-class-2"></i>
+          </div>
+        </div>
+      </a>
+      <a ng-repeat="item in newTaskAttachmentsCtrl.items track by $index"
+        class="light-badge neutral-content badge-border nowrap badge-deletable" target="_blank">
+        <div class="light-neutral-text-color font-small font-bold table-cell-align-top">
+          <span
+            class="align-middle"
+            uib-tooltip="{{ item.Name }}"
+            tooltip-append-to-body="true"
+            tooltip-enable="item.Name.length > 20">{{item.Name.length > 20 ? item.Name.substring(0, 19) + '...' : item.Name}}</span>
+          <div ng-click="newTaskAttachmentsCtrl.removeAttachmentItem($index); $event.preventDefault();"
+            class="align-middle button-fixed-size button-fixed-size-small" href>
+            <i class="fas fa-times remove-button-class remove-button-class-2"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="height-40 pull-left">
+    <attachment-upload
+      file-upload-callback="newTaskAttachmentsCtrl.insertFiles"
+      save-selected-items-callback="newTaskAttachmentsCtrl.saveSelectedItemsCallback"
+      position="'left'"
+      items="newTaskAttachmentsCtrl.items">
+    </attachment-upload>
+  </div>
+</div>

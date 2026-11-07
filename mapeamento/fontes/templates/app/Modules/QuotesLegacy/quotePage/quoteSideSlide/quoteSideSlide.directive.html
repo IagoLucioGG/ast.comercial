@@ -1,0 +1,37 @@
+<div class="side-slide proposal-slide white-content b-l-1 hide-side-slide" id="side-slide-1" style="display: none;">
+  <div class="hbox stretch">
+    <aside>
+      <div class="vbox small-header">
+        <header class="regular-header b-b-1 new-header">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <div class="font-title font-thin text-left">{{quoteSideSlideCtrl.current_option_title}}</div>
+            </aside>
+            <aside class="v-middle text-right">
+              <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="quoteSideSlideCtrl.closeSideSlide()">
+                <i class="fal fa-times"></i>
+              </a>
+            </aside>
+          </div>
+        </header>
+
+        <section class="scrollable">
+          <div class="side-wrapper" ng-if="quoteSideSlideCtrl.current_option === 1">
+            <div class="activity-history hist-separator"></div>
+            <quote-side-slide-timeline deal-id="quote.DealId" quote-id="quote.Id"></quote-side-slide-timeline>
+          </div>
+          <shared-people-slide-content ng-if="quoteSideSlideCtrl.current_option === 6" entity-id="7" model-id="quote.Id" model-shared="quote.Shared" toggle-sharing-fn="quoteSideSlideCtrl.toggleSharing(shared, sharing_text, sender_type_id)"></shared-people-slide-content>
+          <side-slide-comments class="display-block stretch" ng-if="quoteSideSlideCtrl.current_option === 2" api-url="Quotes" get-comments-fn="quoteSideSlideCtrl.getComments" model-id="quote.Id"></side-slide-comments>
+          <side-slide-comments class="display-block stretch" ng-if="quoteSideSlideCtrl.current_option === 3" api-url="Quotes" get-comments-fn="quoteSideSlideCtrl.getExternalComments" external-comments="true" model-id="quote.Id"></side-slide-comments>
+          <quote-side-slide-details ng-if="quoteSideSlideCtrl.current_option === 7" quote="quote"></quote-side-slide-details>
+          <quote-side-slide-approvals ng-if="quoteSideSlideCtrl.current_option === 4" quote-id="quote.Id"></quote-side-slide-approvals>
+          <quote-side-slide-reviews ng-if="quoteSideSlideCtrl.current_option === 5" deal-id="quote.DealId" quote="quote"></quote-side-slide-reviews>
+          <dynamic-side-slide-content ng-if="quoteSideSlideCtrl.dynamic_option" model="quote" entity-id="7" option="quoteSideSlideCtrl.dynamic_option"></dynamic-side-slide-content>
+        </section>
+
+      </div>
+    </aside>
+    <aside class="width-105"></aside>
+  </div>
+</div>
+<div class="proposal-slide-backdrop fade" id="side-slide-1-backdrop" style="display: none;"></div>

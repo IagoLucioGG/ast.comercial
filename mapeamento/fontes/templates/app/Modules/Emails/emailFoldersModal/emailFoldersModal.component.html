@@ -1,0 +1,126 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="true"
+  footer="false"
+  dark="true"
+  modal-title="{{ 'EMAILS.FOLDERS_MODAL.TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="modal-body-no-padding">
+          <table class="table table-striped modal-table">
+            <thead>
+              <tr>
+                <th style="width: 39px"></th>
+                <th style="width: 179px">{{ 'EMAILS.FOLDERS_MODAL.NAME' | translate }}</th>
+                <th>{{ 'EMAILS.FOLDERS_MODAL.ICON' | translate }}</th>
+                <th>{{ 'EMAILS.FOLDERS_MODAL.COLOR' | translate }}</th>
+                <th>{{ 'EMAILS.FOLDERS_MODAL.NEST_IN' | translate }}</th>
+                <th></th>
+                <th></th>
+              </tr>
+              <tr>
+                <th class="width-20"></th>
+                <th>
+                  <input class="form-control input-sm" type="text" placeholder="{{ 'EMAILS.FOLDERS_MODAL.DESCRIPTION' | translate }}" ng-model="$ctrl.new_email_folder.name" data-cy="emails-new-folder-input">
+                </th>
+                <th class="text-center">
+                  <icon-selector
+                    select-icon-fn="$ctrl.selectIcon(icon, $ctrl.new_email_folder, true)"
+                    use-icon-as-label="true"
+                    icon-label="$ctrl.new_email_folder.icon.Class"
+                    toggle-fn="$ctrl.onToggleDropdown(open)">
+                  </icon-selector>
+                </th>
+                <th>
+                  <div class="position-relative">
+                    <input colorpicker-parent class="form-control input-sm" type="text" placeholder="{{ 'EMAILS.FOLDERS_MODAL.COLOR' | translate }}" colorpicker="hex" class="form-control input-sm" ng-style="{ 'background-color': $ctrl.new_email_folder.color }" ng-model="$ctrl.new_email_folder.color">
+                  </div>
+                </th>
+                <th>
+                  <select
+                    ng-options="email_folder as email_folder.name for email_folder in $ctrl.defaultFolders track by email_folder.folder_id"
+                    ng-model="$ctrl.new_email_folder.folder"
+                    class="form-control input-sm">
+                  </select>
+                </th>
+                <th></th>
+                <th class="text-center">
+                  <a class="button-fixed-size button-action button-fixed-size-big" ng-class="{ 'disabled': $ctrl.loading }" href ng-click="$ctrl.addEmailFolder()">
+                    <i class="fas fa-check"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <tbody ui-sortable="$ctrl.options" ng-model="$ctrl.emails_folders">
+              <tr ng-repeat="email_folder in $ctrl.emails_folders">
+                <td class="v-middle width-20 folder-drag" style="cursor: grab">
+                  <div class="fas fa-grip-vertical text-darkest-neutral"></div>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control input-sm"
+                    placeholder="{{ 'EMAILS.FOLDERS_MODAL.DESCRIPTION' | translate }}"
+                    ng-model="email_folder.name"
+                    ng-model-options="{ debounce: 500 }"
+                    ng-change="$ctrl.patchEmailFolder(email_folder, 'name')">
+                </td>
+                <td class="text-center">
+                  <icon-selector
+                    select-icon-fn="$ctrl.selectIcon(icon, email_folder)"
+                    use-icon-as-label="true"
+                    icon-label="email_folder.icon.Class"
+                    toggle-fn="$ctrl.onToggleDropdown(open)">
+                  </icon-selector>
+                </td>
+                <td>
+                  <div class="position-relative">
+                    <input
+                      type="text"
+                      placeholder="{{ 'EMAILS.FOLDERS_MODAL.COLOR' | translate }}"
+                      colorpicker="hex"
+                      class="form-control input-sm"
+                      ng-style="{ 'background-color': email_folder.color }"
+                      ng-model="email_folder.color"
+                      ng-model-options="{ debounce: 800 }"
+                      ng-change="$ctrl.patchEmailFolder(email_folder, 'color')"
+                      colorpicker-parent>
+                  </div>
+                </td>
+                <td>
+                  <select
+                    ng-options="email_folder as email_folder.name for email_folder in $ctrl.defaultFolders track by email_folder.folder_id"
+                    ng-model="email_folder.folder"
+                    ng-change="$ctrl.patchEmailFolder(email_folder, 'parent_folder_id')"
+                    class="form-control input-sm">
+                  </select>
+                </td>
+                <td class="text-center">
+                  <a uib-tooltip="{{ 'EMAILS.FOLDERS_MODAL.TOOLTIP_DELETE_FOLDER' | translate }}" tooltip-append-to-body="true" tooltip-placement="auto top" class="button-inherit button-fixed-size button-fixed-size-small" href ng-click-confirm="{{ 'EMAILS.FOLDERS_MODAL.DELETE_FOLDER' | translate_with_replace: { parent_folder: email_folder.folder.name } }}" reversible="false" ng-click="$ctrl.deleteEmailFolder(email_folder, true)">
+                    <i class="fal fa-trash"></i>
+                  </a>
+                </td>
+                <td class="text-center">
+                  <a uib-tooltip="{{ 'EMAILS.FOLDERS_MODAL.TOOLTIP_DELETE_FOLDER_AND_EMAILS' | translate }}" tooltip-append-to-body="true" tooltip-placement="auto top" class="button-inherit button-fixed-size button-fixed-size-small text-danger" href ng-click-confirm="{{ 'EMAILS.FOLDERS_MODAL.DELETE_FOLDER_AND_EMAILS' | translate }}" hard-check-message="" hard-check-word="{{ 'EMAILS.FOLDERS_MODAL.HARD_CHECK_WORD' | translate }}" reversible="false" ng-click="$ctrl.deleteEmailFolder(email_folder)">
+                    <i class="fal fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center text-muted font-very-big-title" ng-if="$ctrl.emails_folders.length === 0">
+            <div class="gap-30"></div>
+            <i class="font-monster-size fal fa-folder"></i>
+            <div class="gap-30"></div>
+            {{ 'EMAILS.FOLDERS_MODAL.NO_FOLDERS_FOUND' | translate }}
+            <div class="gap-50"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

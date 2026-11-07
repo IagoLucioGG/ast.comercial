@@ -1,0 +1,24 @@
+<div class="overflow-hidden dark-background b-b-1">
+  <div class="wizard rounded-regular">
+    <a ng-class="{'past-stage': $index <= funnelCtrl.current_order_stage_index, 'current-stage': $index === funnelCtrl.current_order_stage_index}" 
+      href 
+      ng-repeat="stage in funnelCtrl.stages track by $index" 
+      ng-click="funnelCtrl.changeOrderStage(stage)" 
+      tooltip-append-to-body="true"
+      uib-tooltip="{{stage.Name}}"
+      tooltip-placement="top"
+      tooltip-enable="funnelCtrl.isTooltipEnabled('order-page-funnel-stage-{{$index}}')"
+    >
+      <div></div>
+      <div class="stage-ball">
+        <div class="ball-form ball-1">
+          <div class="ball-form ball-2">
+            <div class="ball-form ball-3"></div>
+          </div>
+        </div>
+      </div>
+      <div class="gap-3"></div>
+      <div class="stage-name" id="order-page-funnel-stage-{{$index}}">{{stage.Name}}</div>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+
+<div class="bottom-side-wrapper">
+  <div 
+    class="text-ellipsis button left-align full-width button-white-light-border b-1 button-very-big" 
+    ng-click="dealSideMenuCtrl.openImportation()" 
+    ng-if="dealSideMenuCtrl.import_permission" 
+    data-cy="deal-side-menu-btn-deal-import-excel"
+    uib-tooltip="Importar (name:deal::p) pelo Excel"
+    tooltip-append-to-body="true"
+    tooltip-enable="dealSideMenuCtrl.isTooltipEnabled('deal-side-menu-excel-import')"
+    id="deal-side-menu-excel-import"
+    tooltip-placement="left"
+  >
+    <i class="fal fa-file-excel simple-line-space"></i>
+    <span class="text-regular semi-big">Importar (name:deal::p) pelo Excel</span>
+  </div>
+  <div>
+    <div
+      class="text-ellipsis button left-align full-width button-white-light-border b-1 semi-big button-very-big"
+      ng-click="dealSideMenuCtrl.state.go(dealSideMenuCtrl.state.current.name + '.newtag', {entity: $parent.$parent.dealsCtrl.main_entity})"
+      ng-if="dealSideMenuCtrl.tags_permission"
+      data-cy="deal-side-menu-btn-tag-config"
+      uib-tooltip="Configurar marcadores de (name:deal::p)"
+      tooltip-append-to-body="true"
+      tooltip-enable="dealSideMenuCtrl.isTooltipEnabled('deal-side-menu-tags-config')"
+      id="deal-side-menu-tags-config"
+      tooltip-placement="left"
+    >
+      <i class="fal fa-tag simple-line-space"></i>
+      <span class="text-regular">Configurar marcadores de (name:deal::p)</span>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="dealSideMenuCtrl.can_edit_pipeline && currentPipeline.Id" ng-click="dealSideMenuCtrl.state.go('pipelines.editpipeline', { pipelineid: currentPipeline.Id })" data-cy="deal-side-menu-btn-contact-form-config">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal simple-line-space" ng-class="currentPipeline.pipeline_icon.Class"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">Configurar (name:pipeline:aa:s)</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="button full-width button-white-light-border b-1 semi-big button-very-big"
+      ng-if="dealSideMenuCtrl.canEditExternalForm"
+      data-cy="deal-side-menu-btn-config-external-forms"
+      ng-click="dealSideMenuCtrl.openExternalFormsModal()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+          <i class="fal fa-pen-square simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">Configurar formulários externos</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

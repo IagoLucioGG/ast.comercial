@@ -1,0 +1,37 @@
+<div class="tab-pane" id="interaction-record">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.INTERACTION_RECORD_MODULE.CAN_EDIT' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordEditPermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordEditPermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.INTERACTION_RECORD_MODULE.CAN_DELETE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordDeletePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordDeletePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+  <div class="gap-50"></div>
+</div>

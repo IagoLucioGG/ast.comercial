@@ -1,0 +1,76 @@
+<dynamic-modal
+  modal-id="integrations"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="Integrações"
+  toggle-modal="integrationsAdmCtrl.toggle_modal"
+  is-fetching-modal-content="integrationsAdmCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="wrapper" ng-if="integrationsAdmCtrl.sandboxEnvironment">
+          <alert-message
+            status="'alert'"
+            message="'SANDBOX.INTEGRATIONS_WARNING.MESSAGE' | translate"
+          ></alert-message>
+        </div>
+        <table class="table first-child-border table-hover white-table">
+          <thead>
+            <tr>
+              <th class="width-40"></th>
+              <th class="small-cell">Integração</th>
+              <th class="small-cell">Situação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="contact-workplace-button open-size-slide"
+              ng-repeat="integration in integrationsAdmCtrl.integrations | filter: { Enabled: true }"
+              ng-click="integrationsAdmCtrl.openDynamicIntegrationSlide(integration)">
+              <td class="width-40 text-center">
+                <img class="user-avatar-select full-round" ng-src="{{integration.ImageUrl}}">
+              </td>
+              <td>
+                <div class="font-bold font-big">{{integration.Name}}</div>
+              </td>
+              <td>
+                <div ng-class="{'neutral-badge': integration.StatusId === 2 || !integration.StatusId, 'success-badge': integration.StatusId === 1, 'warning-badge': integration.StatusId === 3 }">
+                  <div class="font-big font-bold">
+                    {{ (integration.StatusId === 1 ? 'INTEGRATIONS.INTEGRATION_ON' : (integration.StatusId === 3 ? 'INTEGRATIONS.INTEGRATION_PENDING' : 'INTEGRATIONS.INTEGRATION_OFF')) | translate }}
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr ng-if="(integrationsAdmCtrl.integrations | filter: { Enabled: true }).length === 0" class="neutral-line empty-table-config">
+              <td colspan="3" class="text-center empty-results">
+                <div class="text-neutral" style="display:flex; flex-direction:column; align-items:center;">
+                  <i class="font-monster-size fad fa-empty-set"></i>
+                  <div class="gap-30"></div>
+                  <span>Nenhuma integração encontrada</span>
+                </div>
+              </td>
+            </tr>
+            <!-- <tr
+              ng-if="!integrationsAdmCtrl.accountGoogleCalendarIntegrationEnabled"
+              class="contact-workplace-button open-size-slide">
+              <td class="width-40 text-center">
+                <img class="user-avatar-select full-round" ng-src="{{integration.ImageUrl}}">
+              </td>
+              <td>
+                <div class="font-bold font-big">ATIVE A INTEGRAÇÂO DO CALENDAR PELA PÀGINA DE ADMINISTAÇÂO</div>
+              </td>
+              <td></td>
+            </tr> -->
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="integrations_slide" modal-side-slide-title="Integrações">
+    <integration-form-old ng-if="integrationsAdmCtrl.current_integration && !(integrationsAdmCtrl.current_integration.Id === 27) && !(integrationsAdmCtrl.current_integration.Id === 28)" account="integrationsAdmCtrl.account" integration-id="integrationsAdmCtrl.current_integration.Id" change-enabled-callback="integrationsAdmCtrl.changeEnabledCallback(status_id)"></integration-form-old>
+    <google-calendar-integration-form ng-if="integrationsAdmCtrl.current_integration && (integrationsAdmCtrl.current_integration.Id === 27)" account="integrationsAdmCtrl.account" change-enabled-callback="integrationsAdmCtrl.changeEnabledCallback(status_id)"></google-calendar-integration-form>
+    <outlook-integration-form ng-if="integrationsAdmCtrl.current_integration && (integrationsAdmCtrl.current_integration.Id === 28)" account="integrationsAdmCtrl.account" change-enabled-callback="integrationsAdmCtrl.changeEnabledCallback(status_id)"></outlook-integration-form>
+  </modal-side-slide>
+</dynamic-modal>

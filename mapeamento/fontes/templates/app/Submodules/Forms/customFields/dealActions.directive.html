@@ -1,0 +1,34 @@
+<div ng-if="dealActionsCtrl.can_show" class="win-lose-deal-actions-wrapper">
+  <span ng-if="!dealActionsCtrl.pending_quote_approval">
+    <a class="button"
+    ng-class="dealActionsCtrl.deal_pipeline.WinButton.Class"
+    ng-if="dealActionsCtrl.deal_status == 1 && dealActionsCtrl.self.Profile.DealsWinOrLosePermission && !dealActionsCtrl.checklist_invalid && dealActionsCtrl.win_permissions"
+    ng-click-confirm="{{ dealActionsCtrl.winWithoutCreateOrderPrompt }}"
+    disable-confirm="(!model.Pipeline.NewOrderOnWonDeal && !model.Pipeline.CreateOrderOnWonDeal) || model.Contact"
+    reversible="true"
+    ng-click="dealActionsCtrl.winDeal()">
+      <span>{{dealActionsCtrl.deal_pipeline.WinVerb.Name}}</span>
+    </a>
+
+    <a class="button" ng-class="dealActionsCtrl.deal_pipeline.LoseButton.Class" ng-if="dealActionsCtrl.deal_status === 1 && dealActionsCtrl.self.Profile.DealsWinOrLosePermission && dealActionsCtrl.lose_permissions" loss-reasons loss-reason-callback="dealActionsCtrl.loseDeal(reason)" loss-reason-pipeline-id="dealActionsCtrl.deal_pipeline.Id">
+      <span>{{dealActionsCtrl.deal_pipeline.LoseVerb.Name}}</span>
+    </a>
+
+    <a class="button button-neutral disabled no-action-available" ng-if="!dealActionsCtrl.hasAvaliableActions()">
+      <span>
+        {{ 'FORMS.NO_ACTION_AVAILABLE' | translate }}
+      </span>
+    </a>
+  </span>
+
+  <document-approval entity-id="7" document="(dealActionsCtrl.deal.LastQuote || quoteModel)" use-light-background="!quoteModel && true" on-init-entity="dealActionsCtrl.onInitEntity"></document-approval>
+
+  <span>
+    <a class="button button-white" ng-if="dealActionsCtrl.deal_status !== 1 && dealActionsCtrl.self.Profile.DealsReopenPermission" ng-click="dealActionsCtrl.reopenDeal()">
+      <span class="text-action"><i class="fal fa-redo button-icon"></i></span>
+      {{ 'FORMS.REOPEN' | translate }}
+    </a>
+  </span>
+
+  <standard-loader margin-top="15" optionalclass="'timeline-loader'" loading="!dealActionsCtrl.can_load" ng-if="!dealPage"></standard-loader>
+</div>

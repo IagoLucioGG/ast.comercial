@@ -1,0 +1,215 @@
+<div
+  class="answer-wrapper b-b-1 nowrap overflow-overlay"
+  ng-class="{ 'dark-content': $ctrl.isMiniChat, 'darkest-background': !$ctrl.isMiniChat }"
+  ng-if="$ctrl.answer_message">
+  <div class="main-badge-darker-border b-1 display-block">
+    <div class="hbox">
+      <aside class="width-25 v-middle text-center font-big text-very-darkest-neutral">
+        <i class="fal fa-reply top-fix-icon"></i>
+      </aside>
+      <aside class="v-middle mini-wrapper">
+        <div class="font-small text-darkest-neutral text-small">
+          <span ng-if="$ctrl.new_sanitize_front" ng-bind-html="('CHATS.MESSAGES.ANSWERING' | translate_with_replace : { name: $ctrl.sanitizeHTML($ctrl.answer_message.SenderUser.Name) }) | to_trusted"></span>
+          <span ng-if="!$ctrl.new_sanitize_front" ng-bind-html="('CHATS.MESSAGES.ANSWERING' | translate_with_replace : { name: $ctrl.answer_message.SenderUser.Name }) | to_trusted"></span>
+          <div class="text-very-darkest-neutral font-regular-size">
+            <div class="max-width-400 ellipsis">
+              {{$ctrl.answer_message.Content}}
+            </div>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle width-25">
+        <a class="button-background align-middle button-fixed-size button-fixed-size-small" href ng-click="$ctrl.removeAnswerMessage()">
+          <i class="fas fa-times text-darkest-neutral fixing-fixed-size-button"></i>
+        </a>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div
+  class="attach-container wrapper height-150 b-b-1 nowrap overflow-overlay"
+  ng-class="{ 'dark-content': $ctrl.isMiniChat, 'darkest-background': !$ctrl.isMiniChat }"
+  ng-if="$ctrl.file_attachments.length > 0 || $ctrl.image_attachments.length > 0">
+  <div class="attach-attached position-relative display-inline-block wrapper text-neutral panel medium-shadow v-top" ng-repeat="file in $ctrl.file_attachments track by $index">
+    <a class="chat-remove-attach panel medium-shadow" href ng-click="$ctrl.removeAtt($index, $ctrl.file_attachments)">
+      <i class="fal fa-trash fixing-fixed-size-button text-white"></i>
+    </a>
+    <i class="fad fa-file-alt"></i>
+    <div class="gap-15"></div>
+    <div class="text-darkest-neutral font-bold width-100 ellipsis nowrap">
+      {{file.name}}
+    </div>
+  </div>
+
+  <div class="image-attached position-relative display-inline-block v-top" ng-repeat="image in $ctrl.image_attachments track by $index">
+    <a class="chat-remove-attach panel medium-shadow" href ng-click="$ctrl.removeAtt($index, $ctrl.image_attachments)">
+      <i class="fal fa-trash text-white"></i>
+    </a>
+    <img class="panel small-shadow" ng-src="{{image.Url}}">
+  </div>
+</div>
+
+<div class="inside-links-container-wrapper b-b-1 darkest-background nowrap overflow-overlay" ng-if="$ctrl.inside_links.length > 0">
+  <div class="simple-inline-inline main-badge-darker-border b-1"
+    ng-repeat="inside_link in $ctrl.inside_links track by $index">
+    <div class="hbox">
+      <aside class="width-25 v-middle text-center font-big text-very-darkest-neutral">
+        <i class="activity-icon" ng-if="inside_link.Icon && !inside_link.AvatarUrl" ng-class="inside_link.Icon"></i>
+        <img class="medium-avatar" ng-if="inside_link.AvatarUrl" ng-src="{{inside_link.AvatarUrl}}">
+      </aside>
+      <aside class="v-middle mini-wrapper">
+        <div class="font-bold text-very-darkest-neutral">
+          <strong>{{inside_link.Label}}</strong>
+          <span class="text-darkest-neutral font-small">
+            {{item.Displayable.FormattedCNPJ || item.Displayable.FormattedCPF}}
+          </span>
+        </div>
+      </aside>
+      <aside class="v-middle width-25">
+        <a class="button-background align-middle button-fixed-size button-fixed-size-small" href
+          ng-click="$ctrl.removeInsideLink(inside_link, $index)">
+          <i class="fas fa-times text-darkest-neutral"></i>
+        </a>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="inside-links-container-wrapper b-b-1 dark-content nowrap overflow-overlay" ng-show="$ctrl.mini_chat_tools_open">
+  <div class="hbox">
+    <aside class="width-50">
+      <label href id="mini-chat-att-wrapper">
+        <span class="button button-dark button-short no-border">
+          <span class="font-regular-weight font-very-big">
+            <i class="far fa-paperclip font-very-big button-icon activity-icon"></i>
+          </span>
+        </span>
+        <input id="mini-chat-att" type="file" multiple style="display: none;" />
+      </label>
+    </aside>
+    <aside>
+      <message-gif-selector add-gif-callback-fn="$ctrl.addGifCallback(gif)" is-mini-chat="$ctrl.isMiniChat">
+      </message-gif-selector>
+    </aside>
+  </div>
+</div>
+
+<div class="hbox stretch height-50">
+  <aside class="v-middle left-wrapper width-50 nowrap" ng-if="!$ctrl.isMiniChat">
+    <label class="pull-right" href id="chat-att-wrapper">
+      <span
+        class="button button-darkest-background button-short no-border">
+        <span class="font-regular-weight font-very-big text-darkest-neutral">
+          <i class="far fa-paperclip font-very-big button-icon activity-icon"></i>
+        </span>
+      </span>
+      <input id="chat-att" type="file" multiple style="display: none;" />
+    </label>
+  </aside>
+  <aside class="v-middle left-wrapper width-50 nowrap" ng-if="!$ctrl.isMiniChat">
+    <message-gif-selector add-gif-callback-fn="$ctrl.addGifCallback(gif)" is-mini-chat="$ctrl.isMiniChat"></message-gif-selector>
+  </aside>
+  <aside class="v-middle left-wrapper width-50 nowrap" ng-if="$ctrl.isMiniChat">
+    <a class="button button-short no-border button-dark" href ng-click="$ctrl.toggleMiniChatTools()">
+      <span class="font-regular-weight font-very-big">
+        <i class="fad font-very-big" ng-class="{ 'fa-plus-circle': !$ctrl.mini_chat_tools_open, 'fa-times-circle': $ctrl.mini_chat_tools_open }"></i>
+      </span>
+    </a>
+  </aside>
+  <aside class="v-middle top-side-small-wrapper">
+    <textarea
+      id="{{$ctrl.isMiniChat ? 'mini-chat-message-input' : 'message-input'}}"
+      class="form-control white-content"
+      placeholder="Digite uma mensagem"
+      rows="{{$ctrl.number_of_lines > 5 ? 5 : $ctrl.number_of_lines}}"
+      style="resize: none"
+      ng-model="$ctrl.new_message"
+      ng-keydown="$ctrl.processKeyDown($event)"
+      ng-trim="false"
+      ng-change="$ctrl.processChange()"
+      mentio
+      mentio-typed-term="$ctrl.mentio_typed_term"
+      mentio-items="$ctrl.result"
+      mentio-search="$ctrl.mentioSearch(term)"
+      mentio-select="$ctrl.mentioSelect(item)"
+      mentio-require-leading-space="$ctrl.new_message.length > 1"
+      mentio-template-url="{{$ctrl.isMiniChat ? 'mini-chat-chat-mentions' : 'chat-mentions'}}">
+    </textarea>
+
+    <script type="text/ng-template" id="mini-chat-chat-mentions">
+      <ul class="list-group user-search width-300">
+        <li
+          mentio-menu-item="item"
+          ng-repeat="item in items" class="list-group-item"
+          ng-if="item !== undefined && item !== null">
+          <a class="approval-dropdown-link b-b-1" ng-if="item && item.CanShow">
+            <div class="hbox">
+              <aside class="width-40 v-middle">
+                <div>
+                  <img ng-if="item.EntityId === 6" class="avatar-quick-search" ng-src="{{item.AvatarUrl}}">
+                  <i ng-if="item.EntityId !== 6" class="{{item.Icon}} font-title v-bottom"></i>
+                </div>
+              </aside>
+              <aside class="v-middle">
+                <div class="font-bold">
+                  {{item.Label}}
+                </div>
+                <div class="text-muted font-small">
+                  {{item.Type}} <span ng-if="item.Parent">- {{item.ContactType}}
+                    <b>{{item.Parent}}</b></span> <span ng-if="item.ParentDeal">- {{item.ParentDealLabel}}
+                    <b>{{item.ParentDeal}}</b></span> <br>
+                  <span>
+                    {{item.Displayable.FormattedCNPJ || item.Displayable.FormattedCPF}}
+                  </span>
+                </div>
+              </aside>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </script>
+    <script type="text/ng-template" id="chat-mentions">
+      <ul class="list-group user-search width-300">
+        <li
+          mentio-menu-item="item"
+          ng-repeat="item in items" class="list-group-item"
+          ng-if="item !== undefined && item !== null">
+          <a class="approval-dropdown-link b-b-1" ng-if="item && item.CanShow">
+            <div class="hbox">
+              <aside class="width-40 v-middle">
+                <div>
+                  <img ng-if="item.EntityId === 6" class="avatar-quick-search" ng-src="{{item.AvatarUrl}}">
+                  <i ng-if="item.EntityId !== 6" class="{{item.Icon}} font-title v-bottom"></i>
+                </div>
+              </aside>
+              <aside class="v-middle">
+                <div class="font-bold">
+                  {{item.Label}}
+                </div>
+                <div class="text-muted font-small">
+                  {{item.Type}} <span ng-if="item.Parent">- {{item.ContactType}}
+                    <b>{{item.Parent}}</b></span> <span ng-if="item.ParentDeal">- {{item.ParentDealLabel}}
+                    <b>{{item.ParentDeal}}</b></span> <br>
+                  <span>
+                    {{item.Displayable.FormattedCNPJ || item.Displayable.FormattedCPF}}
+                  </span>
+                </div>
+              </aside>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </script>
+  </aside>
+  <aside class="v-middle right-wrapper width-40">
+    <div class="button button-action no-border" ng-click="$ctrl.postNewMessage()">
+      <span ng-if="$ctrl.isMiniChat">
+        <i class="fas fa-check"></i>
+      </span>
+      <span ng-if="!$ctrl.isMiniChat">
+        Enviar
+      </span>
+    </div>
+  </aside>
+</div>

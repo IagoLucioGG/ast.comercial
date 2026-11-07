@@ -1,0 +1,64 @@
+<div class="vbox small-header">
+  <header class="regular-header b-b-1 white-content new-header">
+    <div class="report-panel-wrapper">
+      <div class="report-panel-text-wrapper text-ellipsis" id="report-panel-text-wrapper" uib-tooltip="{{ panel.Name }}" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-enable="panelCtrl.isTooltipEnabled('report-panel-text-wrapper')">
+        <span class="font-thin font-title">
+          {{panel.Name}}
+        </span>
+        <span class="deprecated-alert">
+          <i class="fas fa-exclamation-triangle"></i>
+          Essa versão de relatórios será descontinuada e logo ficará indisponível.
+        </span>
+      </div>
+      <div ng-if="!panelCtrl.not_found">
+        <a class="button button-white-no-border pull-right" href ng-click="panelCtrl.openAdvancedFilters()" data-cy="reports-metric-filters-button">
+          <div class="hbox">
+            <aside class="v-middle width-25 text-center">
+              <span class="text-action">
+                <i class="button-icon" ng-class="{ 'fal fa-filter': !panelCtrl.has_applied_filter, 'fal fa-pen': panelCtrl.has_applied_filter }"></i>
+              </span>
+            </aside>
+            <aside class="v-middle">
+              {{ (panelCtrl.has_applied_filter ? 'REPORTS.EDIT_FILTER' : 'REPORTS.FILTERS') | translate }}
+            </aside>
+          </div>
+        </a>
+        <a class="button button-white-no-border pull-right" href ng-click="panelCtrl.clearAdvancedFilters()" ng-if="panelCtrl.has_applied_filter">
+          <div class="hbox text-danger">
+            <aside class="v-middle width-25 text-center text-action">
+              <i class="button-icon fal fa-trash"></i>
+            </aside>
+            <aside class="v-middle">
+              Limpar filtro
+            </aside>
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+  <section class="scrollable regular-background" ui-sortable="panelCtrl.options" ng-model="panel.Charts">
+    <report-chart-wrapper
+      ng-if="!panelCtrl.not_found"
+      ng-repeat="chart in panel.Charts track by chart.Id"
+      panel="panel"
+      chart="chart"
+      filters="panelCtrl.filters"
+      panel-entities-filter="panelCtrl.panel_entities">
+    </report-chart-wrapper>
+    <div class="text-center text-neutral-light font-very-big-title" ng-if="panelCtrl.not_found">
+      <div class="gap-90"></div>
+      <i class="font-monster-size fad fa-exclamation-triangle"></i>
+      <div class="gap-30"></div>
+      Nenhum painel selecionado
+    </div>
+    <div class="text-center text-neutral-light font-very-big-title" ng-if="panel && panel.Charts.length === 0">
+      <div class="gap-90"></div>
+      <i class="font-monster-size fad fa-exclamation-triangle"></i>
+      <div class="gap-30"></div>
+      Nenhum widget encontrado
+    </div>
+  </section>
+
+  <report-panel-filter panel-entities="panelCtrl.panel_entities" ng-if="panelCtrl.show_report_filters"></report-panel-filter>
+
+</div>

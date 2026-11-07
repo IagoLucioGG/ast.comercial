@@ -1,0 +1,5 @@
+<div class="component-with-height">
+  <contact-page ng-if="$ctrl.self.OldContactsPage && !$ctrl.changing" toggle-version="$ctrl.toggleVersion"></contact-page>
+  <new-contact-page ng-if="!$ctrl.self.OldContactsPage && !$ctrl.changing" toggle-version="$ctrl.toggleVersion" contact-id="$ctrl.contactId" on-contact-deleted="$ctrl.onContactDeleted" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page>
+  <standard-loader margin-top="'15'" optionalclass="'funnel-loader'" loading="$ctrl.changing"></standard-loader>
+</div>

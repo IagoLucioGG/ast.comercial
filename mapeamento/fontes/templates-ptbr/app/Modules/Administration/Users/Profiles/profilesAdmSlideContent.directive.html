@@ -1,0 +1,57 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container" ng-if="profilesAdmSlideContentCtrl.initial_load">
+    <div class="white-content b-b-1 top-wrapper">
+      <form class="clearfix">
+        <div class="form-group col-sm-12">
+          <label data-cy="administration-new-profile-name-input-label">Nome do perfil</label>
+          <input ng-disabled="isMicrosoftProfile" class="form-control input-sm" ng-model="model.Name">
+        </div>
+      </form>
+    </div>
+    <div class="wrapper">
+      <ul class="nav nav-tabs white-button-tabs-background no-borders text-center central-tabs">
+        <li ng-repeat="tab in profilesAdmSlideContentCtrl.tabs | filter:{ Active: true }" ng-class="{'active': tab.Key === profilesAdmSlideContentCtrl.current_tab.Key}" ng-click="profilesAdmSlideContentCtrl.changeTab(tab)" class="arrow-click mini-wrapper">
+          <a class="text-ellipsis profile-adm-slide-button-max-size button-short" href uib-tooltip="{{tab.Name}}" tooltip-append-to-body="true" tooltip-enable="profilesAdmSlideContentCtrl.isTooltipEnabled('profiles-adm-slide-content-entity-button-' + $index)" id="profiles-adm-slide-content-entity-button-{{$index}}">
+            <span class="font-regular-weight font-regular-size">{{tab.Name}}</span>
+          </a>
+          <!-- <div class="tab-arrow arrow-style"></div> -->
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <contacts-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'contacts'"></contacts-module-options>
+      <leads-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'leads'"></leads-module-options>
+      <deals-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'deals'"></deals-module-options>
+      <quotes-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'quotes'"></quotes-module-options>
+      <documents-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'documents'"></documents-module-options>
+      <orders-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'orders'"></orders-module-options>
+      <products-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'products'"></products-module-options>
+      <users-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'users'"></users-module-options>
+      <goals-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'goals'"></goals-module-options>
+      <fields-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'fields'"></fields-module-options>
+      <integrations-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'integrations'"></integrations-module-options>
+      <lib-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'library'"></lib-module-options>
+      <external-forms-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'external_forms'"></external-forms-module-options>
+      <interaction-record-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'interaction_record'"></interaction-record-module-options>
+      <other-module-options model="model" editing="editing" ng-show="profilesAdmSlideContentCtrl.current_tab.Key === 'other'"></other-module-options>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle">
+      <a href class="button button-white" ng-if="editing && !isMicrosoftProfile" mini-modal mini-modal-title="Transferir usuários para perfil" mini-modal-fields="profilesAdmSlideContentCtrl.delete_profile_fields" mini-modal-callback="profilesAdmSlideContentCtrl.deleteProfile(model)">
+        <span class="font-big text-muted">
+          <i class="fal fa-trash text-darkest-neutral"></i>
+        </span>
+      </a>
+    </aside>
+    <aside class="v-middle text-right">
+      <a class="button button-action pull-right" href ng-click="profilesAdmSlideContentCtrl.submitControl()">
+        <i class="button-icon fas fa-save"></i>
+        {{ (editing ? 'ADMINISTRATION.USERS.PROFILES_MODAL.PROFILES_ADM_SIDE_SLIDE.SAVE_EDIT' : 'ADMINISTRATION.USERS.PROFILES_MODAL.PROFILES_ADM_SIDE_SLIDE.CREATE_PROFILE') | translate }}
+      </a>
+      <loading-tooltip loading="profilesAdmSlideContentCtrl.loading" form="team_form"></loading-tooltip>
+    </aside>
+  </div>
+</div>

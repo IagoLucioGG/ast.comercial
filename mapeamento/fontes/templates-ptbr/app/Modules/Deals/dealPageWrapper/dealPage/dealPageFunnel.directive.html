@@ -1,0 +1,14 @@
+<div class="overflow-hidden dark-background b-b-1">
+  <div class="wizard-open rounded-regular" ng-if="funnelCtrl.current_pipeline" ng-class="{'wizard-open': mainDealCtrl.deal_view.StatusId === 1, 'wizard-lost': mainDealCtrl.deal_view.StatusId === 3, 'wizard-won': mainDealCtrl.deal_view.StatusId === 2}">
+    <a ng-class="{'past-stage': $index <= funnelCtrl.current_deal_stage_index, 'current-stage': $index === funnelCtrl.current_deal_stage_index, 'disabled-wizard': mainDealCtrl.deal_view.StatusId !== 1 || (funnelCtrl.original_pipeline.MustPassAllStages && $index > funnelCtrl.current_deal_stage_index + 1) || (funnelCtrl.original_pipeline.ForbiddenStageReturn && $index < funnelCtrl.current_deal_stage_index)}" href ng-repeat="stage in funnelCtrl.current_pipeline.Stages track by $index" ng-click="$index !== funnelCtrl.current_deal_stage_index && funnelCtrl.changeDealStage(stage)" uib-tooltip="{{'Você não pode alterar o estágio de um negócio finalizado.'}}" tooltip-append-to-body="true" tooltip-enable="mainDealCtrl.deal_view.StatusId !== 1">
+      <div class="stage-name">{{stage.Name}}</div>
+    </a>
+  </div>
+  <div class="wizard rounded-regular" ng-if="!funnelCtrl.current_pipeline">
+    <a class="disabled-wizard" href>
+      <div class="gap-10"></div>
+      <div class="font-regular">O funil deste negócio foi excluído. Selecione outro funil no menu superior direito.</div>
+      <div class="gap-10"></div>
+    </a>
+  </div>
+</div>

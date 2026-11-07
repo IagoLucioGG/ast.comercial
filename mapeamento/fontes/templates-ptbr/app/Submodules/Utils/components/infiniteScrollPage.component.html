@@ -1,0 +1,6 @@
+<div class="{{$ctrl.defaultClassName}} scrollable scroll-shadow-container {{$ctrl.className}}">
+  <div ng-transclude></div>
+  <div ng-if="$ctrl.useStandardLoader" ng-show="$ctrl.loading">
+    <standard-loader margin-top="15" loading="true" optionalclass="'timeline-loader product-select-loader'"></standard-loader>
+  </div>
+</div>

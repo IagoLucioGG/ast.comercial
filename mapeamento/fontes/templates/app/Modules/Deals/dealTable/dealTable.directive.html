@@ -1,0 +1,13 @@
+<standard-loader margin-top="15" loading="!dealTableCtrl.can_load"></standard-loader>
+<dynamic-tabs
+    ng-if="$parent.dealsCtrl.initial_load && dealTableCtrl.initial_load && dealTableCtrl.can_load"
+    entity="$parent.dealsCtrl.main_entity"
+    filter="dealTableCtrl.table_filter"
+    tabs="dealTableCtrl.tabs"
+    current-tab="dealTableCtrl.current_tab"
+    toggle-sidebar="$parent.dealsCtrl.table_sidebar"
+    no-item-found-string="dealTableCtrl.no_item_found_string"
+    applied-filter="$parent.dealsCtrl.applied_filter"
+    cypress-prefix="deals-table"
+    pipeline="$parent.dealsCtrl.current_pipeline.pipeline"
+></dynamic-tabs>

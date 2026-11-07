@@ -1,0 +1,16 @@
+<div class="wrapper regular-background min-height-100-percent">
+  <input class="form-control input-sm" placeholder="Pesquise por um modelo..." ng-model="$ctrl.document_template_filter" >
+  <div ng-repeat="template in $ctrl.documentTemplates | filter: { Name: $ctrl.document_template_filter }">
+    <div class="gap-20"></div>
+    <div
+      class="panel button button-white-no-border-light-hover medium-shadow full-width button-height drag-button show-invisible-button"
+      ng-click="$ctrl.selectDocumentTemplateCallback(template)">
+      <div class="hbox">
+        <aside class="v-middle font-semi-big text-left">
+          {{::template.Name}}
+          <div class="gap-3"></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

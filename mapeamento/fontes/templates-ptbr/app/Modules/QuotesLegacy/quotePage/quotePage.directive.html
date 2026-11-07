@@ -1,0 +1,246 @@
+<div class="vbox small-header">
+  <div ng-class="{'mt-15-percent': !quotePageCtrl.can_load || quotePageCtrl.loadingHtmlGeneration}">
+    <loader
+      loading="!quotePageCtrl.can_load || quotePageCtrl.loadingHtmlGeneration"
+      title="quotePageCtrl.loadingHtmlGeneration ? ('QUOTES.QUOTE_PAGE.LOADING_HTML_GENERATION.TITLE' | translate) : undefined"
+      message="quotePageCtrl.loadingHtmlGeneration ? ('QUOTES.QUOTE_PAGE.LOADING_HTML_GENERATION.MESSAGE' | translate) : undefined"
+      ng-if="!quotePageCtrl.not_found">
+    </loader>
+  </div>
+  <header class="regular-header new-header b-b-1" ng-if="quotePageCtrl.can_load && !quotePageCtrl.loadingHtmlGeneration && !quotePageCtrl.not_found">
+    <div class="hbox stretch" ng-show="quotePageCtrl.can_load && !quotePageCtrl.loadingHtmlGeneration">
+      <aside class="v-middle">
+        <a class="btn-invisible" ng-click="quotePageCtrl.goToDeal()">
+          <div style="display: flex">
+            <div style="display: flex; flex-direction: row; width: 20px; justify-content: flex-start; font-size: 10px; align-items: center;">
+              <i class="fal fa-arrow-left"></i>
+            </div>
+            <span class="font-title font-thin">
+              {{ ('GENERICS.VISUALIZE' | translate) + ' ' + quotePageCtrl.pipelineSingularUnitName.toLowerCase()}}
+            </span>
+          </div>
+        </a>
+      </aside>
+      <aside class="v-middle">
+        <a
+          class="button button-action pull-right"
+          ui-sref="quote.share"
+          ng-if="quotePageCtrl.quote.ApprovalStatusId === 2 || quotePageCtrl.quote.ApprovalStatusId === null"
+          ng-class="{ 'disabled' : !quotePageCtrl.hasSharePermission }"
+          ng-disabled="!quotePageCtrl.hasSharePermission"
+          uib-tooltip="Você não tem permissão para realizar o compartilhamento."
+          tooltip-append-to-body="true"
+          tooltip-placement="bottom"
+          tooltip-enable="!quotePageCtrl.hasSharePermission">
+          <i class="button-icon fas fa-paper-plane"></i>
+          Compartilhar
+        </a>
+        <span ng-if="quotePageCtrl.quote.LastReview">
+          <div class="dropdown display-inline-block pull-right" ng-if="(!quotePageCtrl.quote.Shared && (quotePageCtrl.self.Profile.QuotesEditPermission || quotePageCtrl.self.Profile.QuotesDeletePermission)) && (!quotePageCtrl.wide_buttons_docusign)">
+            <a class="dropdown-toggle button button-white-no-border pull-right bottom-menu-button" id="edit-list" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span>
+                <span class="text-action"><i class="button-icon fal fa-pen"></i></span>
+                Editar<i class="fal fa-angle-down dropdown-sign"></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+              <li ng-if="quotePageCtrl.self.Profile.QuotesEditPermission">
+                <a class="white-dropdown-link" href ng-click-confirm="atualizar dados e modelo?" reversible="false" ng-click="quotePageCtrl.updateQuote()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-file-image"></i>
+                      </span>
+                    </aside>
+                    <aside>Atualizar dados e modelo</aside>
+                  </div>
+                </a>
+              <li ng-if="quotePageCtrl.self.Profile.QuotesEditPermission">
+                <a class="white-dropdown-link new-proposal-pane-example" href ng-click="quotePageCtrl.goToQuoteEdit()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-pen-square"></i>
+                      </span>
+                    </aside>
+                    <aside>Editar valores preenchidos</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="quotePageCtrl.cpq_beta_button_enabled && quotePageCtrl.self.Profile.QuotesEditPermission">
+                <a class="white-dropdown-link new-proposal-pane-example" href ng-click="quotePageCtrl.goToBetaQuoteEdit()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-pen-square"></i>
+                      </span>
+                    </aside>
+                    <aside>Editar valores preenchidos&nbsp;BETA</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="quotePageCtrl.self.Profile.QuotesEditPermission">
+                <a class="ck-editor-pane-example white-dropdown-link" ng-if="!quotePageCtrl.hasBusinessRules && quotePageCtrl.quote.ApprovalStatusId === null && quotePageCtrl.quote.Editable && !quotePageCtrl.quote.Template.NewFormat" ng-click="quotePageCtrl.goToEditor()">
+                    <div class="hbox">
+                      <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                        <span>
+                          <i class="fal fa-file-edit"></i>
+                        </span>
+                      </aside>
+                      <aside>Modificação visual</aside>
+                    </div>
+                </a>
+              </li>
+              <li ng-if="quotePageCtrl.self.Profile.QuotesEditPermission">
+                <a class="ck-editor-pane-example white-dropdown-link" ng-if="!quotePageCtrl.hasBusinessRules && quotePageCtrl.quote.ApprovalStatusId === null && quotePageCtrl.quote.Editable && quotePageCtrl.quote.Template.NewFormat" ui-sref="{{'docgenerator({ editing_html: true, editing_html_model: quotePageCtrl.quote, editing_html_entity: \'quote\' })'}}">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-file-edit"></i>
+                      </span>
+                    </aside>
+                    <aside>Modificação visual</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="quotePageCtrl.self.Profile.QuotesEditPermission && quotePageCtrl.show_legacy_duplicate_quote_button" ng-class="{disabled: !quotePageCtrl.hasActivePipeline}">
+                <a class="ck-editor-pane-example white-dropdown-link"
+                  ng-click="quotePageCtrl.duplicateQuote()"
+                  uib-tooltip="{{ quotePageCtrl.duplicateQuoteButtonTooltip }}" 
+                  tooltip-placement="left" 
+                  ng-disabled="!quotePageCtrl.hasActivePipeline"
+                  ng-class="{disabled: !quotePageCtrl.hasActivePipeline}"
+                >
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-copy"></i>
+                      </span>
+                    </aside>
+                    <aside>{{ (quotePageCtrl.action_duplicates_quote_and_deal ? 'QUOTES.QUOTE_PAGE.DUPLICATE_QUOTE_AND_DEAL' : 'QUOTES.QUOTE_PAGE.DUPLICATE_QUOTE') | translate_sentence  : quotePageCtrl.pipelineId }}</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="quotePageCtrl.cpq_beta_button_enabled && quotePageCtrl.self.Profile.QuotesEditPermission">
+                <a class="ck-editor-pane-example white-dropdown-link" ng-click="quotePageCtrl.betaDuplicateQuote()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-copy"></i>
+                      </span>
+                    </aside>
+                    <aside>Duplicar proposta BETA</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="(quotePageCtrl.cpq_beta_button_enabled || quotePageCtrl.disable_angular_cpq_forms) && quotePageCtrl.self.Profile.QuotesEditPermission && quotePageCtrl.duplicate_quote_and_deal_beta" ng-class="{disabled: !quotePageCtrl.hasActivePipeline}">
+                <a class="ck-editor-pane-example white-dropdown-link"
+                  ng-click="quotePageCtrl.betaDuplicateQuoteAndDeal()"
+                  uib-tooltip="{{ quotePageCtrl.duplicateQuoteButtonTooltip }}" 
+                  tooltip-placement="left" 
+                  ng-disabled="!quotePageCtrl.hasActivePipeline"
+                  ng-class="{disabled: !quotePageCtrl.hasActivePipeline}"
+                >
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-copy"></i>
+                      </span>
+                    </aside>
+                    <aside>Duplicar proposta e (name:deal::s) {{ quotePageCtrl.disable_angular_cpq_forms ? '' : 'GENERICS.BETA_UPPER' | translate  }}</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="(quotePageCtrl.quote.ApprovalStatusId === 2 || quotePageCtrl.quote.ApprovalStatusId === null) && quotePageCtrl.self.Profile.QuotesDeletePermission">
+                <a class="ck-editor-pane-example white-dropdown-link" ng-click="quotePageCtrl.deleteQuote()" ng-click-confirm="deletar a proposta &quot;#{{quotePageCtrl.quote.QuoteNumber}}&quot;?" reversible="false">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="fal fa-trash"></i>
+                      </span>
+                    </aside>
+                    <aside>Excluir proposta</aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a class="new-proposal-pane-example button button-white-no-border pull-right bottom-menu-button" ng-click="quotePageCtrl.goToBetaQuoteReview()" ng-if="quotePageCtrl.cpq_beta_button_enabled && (quotePageCtrl.self.Profile.QuotesEditPermission && (quotePageCtrl.quote.ApprovalStatusId === 2 || quotePageCtrl.quote.ApprovalStatusId === null)) && !(quotePageCtrl.wide_buttons_docusign)">
+            <span class="text-action">
+              <i class="fal fa-code-branch button-icon"></i>
+            </span>
+            Revisar&nbsp;BETA
+          </a>
+          <a class="new-proposal-pane-example button button-white-no-border pull-right bottom-menu-button" ng-click="quotePageCtrl.goToQuoteReview()" ng-if="(quotePageCtrl.self.Profile.QuotesEditPermission && (quotePageCtrl.quote.ApprovalStatusId === 2 || quotePageCtrl.quote.ApprovalStatusId === null)) && !(quotePageCtrl.wide_buttons_docusign)">
+            <span class="text-action">
+              <i class="fal fa-code-branch button-icon"></i>
+            </span>
+            Revisar
+          </a>
+        </span>
+        <document-share-status-bar ng-if="quotePageCtrl.quote.LastReview" model="quotePageCtrl.quote" api-url="Quotes" entity-id="7"></document-share-status-bar>
+        <span ng-if="!quotePageCtrl.quote.LastReview">
+          <a class="new-proposal-pane-example button button-white-no-border pull-right bottom-menu-button" ui-sref="{{'quote({quoteid: quotePageCtrl.quote.LastReviewId})'}}" ui-sref-opts="{notify: false}">
+            <span class="text-action">
+              <i class="fal fa-clock button-icon"></i>
+            </span>
+            Ir para a última revisão
+          </a>
+        </span>
+        <div class="pull-right" ng-if="quotePageCtrl.quote.LastReview">
+          <deal-actions model="quotePageCtrl.quote.Deal" deal-page="true" get-deal-when-win="true" quote-model="quotePageCtrl.quote" watch-model="true"></deal-actions>
+        </div>
+        <div
+          class="d-flex ai-center jc-center space-gap-5 pull-right margin-right-5"
+          ng-if="quotePageCtrl.sankhyaIntegrationModule && quotePageCtrl.sankhyaIntegration.Active"
+        >
+          <sankhya-entity-status-modal
+            entity-id="7"
+            item-id="quotePageCtrl.quote.QuoteNumber"
+            item-value="quotePageCtrl.quote"
+            modal-width="490"
+            update-cod-sankhya-on-angular="quotePageCtrl.updateSankhyaNunota">
+          </sankhya-entity-status-modal>
+          <sankhya-confirm-and-invoice-modal
+            nunota="quotePageCtrl.sankhyaNunota"
+            item-id="quotePageCtrl.quote.QuoteNumber"
+            pipeline-id="quotePageCtrl.pipelineId"
+            rule-id="7"
+          >
+          </sankhya-confirm-and-invoice-modal>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <quote-side-slide quote="quotePageCtrl.quote" ng-if="!quotePageCtrl.not_found"></quote-side-slide>
+  <section ng-show="quotePageCtrl.can_load && !quotePageCtrl.not_found">
+    <div class="hbox stretch">
+      <aside class="dark-background">
+        <div class="vbox">
+          <section class="scrollable">
+            <div class="wrapper dark-background">
+              <div ng-class="{'mt-15-percent': quotePageCtrl.changing_review || quotePageCtrl.loadingHtmlGeneration}">
+                <loader
+                  loading="quotePageCtrl.changing_review || quotePageCtrl.loadingHtmlGeneration"
+                  title="quotePageCtrl.loadingHtmlGeneration ? ('QUOTES.QUOTE_PAGE.LOADING_HTML_GENERATION.TITLE' | translate) : undefined"
+                  message="quotePageCtrl.loadingHtmlGeneration ? ('QUOTES.QUOTE_PAGE.LOADING_HTML_GENERATION.MESSAGE' | translate) : undefined">
+                </loader>
+              </div>
+              <div class="full-width" ng-show="!quotePageCtrl.changing_review && !quotePageCtrl.loadingHtmlGeneration">
+                <div class="width-800 margin-auto">
+                  <iframe id="preview-ifr" frameborder="0" scrolling="no" style="width: 100%;" height="0"></iframe>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+      <quote-side-slide-options ng-if="quotePageCtrl.hasFetchedQuote" quote="quotePageCtrl.quote" show-external-comments="quotePageCtrl.shouldDisplayExternalComments"></quote-side-slide-options>
+    </div>
+  </section>
+  <section ng-if="quotePageCtrl.not_found">
+    <page-not-found></page-not-found>
+  </section>
+  <!-- MODALS -->
+  <edit-quote-modal ng-if="quotePageCtrl.state.current.name.includes('.edit') || quotePageCtrl.state.current.name.includes('.review')"></edit-quote-modal>
+</div>

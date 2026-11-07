@@ -1,0 +1,63 @@
+<div>
+  <div class="darkest-background top-wrapper b-1 rounded-regular">
+    <div class="clearfix">
+      <table class="table modal-table table-smaller-header double-header">
+        <thead>
+          <tr>
+            <th>
+              {{ 'GENERICS.FIELD' | translate }}
+            </th>
+            <th></th>
+            <th>{{ 'GENERICS.DEFAULT_VALUE' | translate }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="mappedFieldObj in $ctrl.mappedFieldObjs | filter: $ctrl.filterStage" ng-if="mappedFieldObj.field.key !== 'contact_zipcode_country'">
+            <td>
+              <field-selection
+                is-checklist="false"
+                field-path-selection-fn="$ctrl.selectField(field, field_path_id, mappedFieldObj)"
+                allowed="$ctrl.allowedEntities"
+                blocked-field-types="$ctrl.blockedFieldTypes"
+                dynamic-label="mappedFieldObj.fieldLabel || ('GENERICS.SELECT_A_FIELD' | translate)"
+                skip-pull-right="true"
+                custom-filter-function-fn="$ctrl.filterField(field)"
+                disable-stage="true"
+                >
+              </field-selection>
+            </td>
+            <td>
+              <i class="fas fa-arrows-h text-muted"></i>
+            </td>
+            <td ng-class="{ 'invalid-input': mappedFieldObj.error }">
+              <new-field
+                ng-if="mappedFieldObj.field"
+                field="mappedFieldObj.field"
+                model="mappedFieldObj.model"
+                property="mappedFieldObj.field.key"
+                hide-label="true"
+                outside-form="true"
+                show-zip-code-mask="true"
+                not-trigger-formula="true"
+                model-change-callback="$ctrl.modelChangeCallback(new_val, old_val, first_trigger, mappedFieldObj)">
+              </new-field>
+            </td>
+            <td>
+              <a class="button-inherit button-fixed-size button-fixed-size-small" ng-click="$ctrl.removeMappedFieldObj($index)">
+                <i class="fad fa-trash text-darkest-neutral fixing-fixed-size-button"></i>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <div class="button button-action" ng-click="$ctrl.addMappedFieldObj()">
+                {{ 'INTEGRATIONS.DYNAMIC_FIELDS_MAPPING.ADD_COMBINATION' | translate }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

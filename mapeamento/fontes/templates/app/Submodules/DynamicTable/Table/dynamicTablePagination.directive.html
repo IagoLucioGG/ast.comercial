@@ -1,0 +1,21 @@
+<div class="text-neutral top-wrapper">
+  {{ 'DYNAMIC_TABLE.PAGINATION.SHOWING' | translate }} {{(itemsPerPage*(currentPage - 1)) + 1}} - {{itemsPerPage*currentPage > totalItems ? totalItems : itemsPerPage*currentPage}} {{ 'DYNAMIC_TABLE.PAGINATION.OF' | translate }} {{totalItems}}
+</div>
+<ul
+  uib-pagination
+  ng-model="currentPage"
+  ng-disabled="disable"
+  total-items="totalItems"
+  class="pagination-sm"
+  num-pages="numPages"
+  boundary-links="!disableBoundaryLinks"
+  items-per-page="itemsPerPage"
+  rotate="true"
+  max-size="5"
+  force-ellipses="true"
+  first-text="{{ 'DYNAMIC_TABLE.PAGINATION.FIRST' | translate }}"
+  previous-text="{{ 'DYNAMIC_TABLE.PAGINATION.PREVIOUS' | translate }}"
+  next-text="{{ 'DYNAMIC_TABLE.PAGINATION.NEXT' | translate }}"
+  last-text="{{ 'DYNAMIC_TABLE.PAGINATION.LAST' | translate }}"
+  ng-change="dynamicTablePaginationCtrl.changePageCallback()">
+</ul>

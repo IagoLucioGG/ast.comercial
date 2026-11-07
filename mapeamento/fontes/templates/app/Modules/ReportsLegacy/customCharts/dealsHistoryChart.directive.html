@@ -1,0 +1,163 @@
+<div class="panel white-content widget-panel reports-widget-panel big-widget">
+  <header class="widget-header regular-header b-b-1 white-content new-header">
+    <div class="hbox stretch fixed-size">
+      <aside class="v-middle fixed-size-small-screen ellipsis width-400 nowrap">
+        <span class="font-big font-thin">{{chart.Name}}</span>
+      </aside>
+      <aside class="v-middle">
+        <div class="no-drag dropdown pull-right">
+          <filters-menu filters="filters" applied-filter="dealsHistoryChartCtrl.applied_filter" filter-actions-fn="dealsHistoryChartCtrl.filterActions"></filters-menu>
+        </div>
+        <div class="no-drag dropdown pull-right">
+          <a href class="dropdown-toggle button button-white-no-border pull-right" type="button" id="deal_views" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span class="text-action"><i class="button-icon fal fa-eye"></i></span>
+              {{dealsHistoryChartCtrl.current_visualization.Name}}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+            <li ng-repeat="visualization in dealsHistoryChartCtrl.visualizations" ng-hide="dealsHistoryChartCtrl.current_visualization.Id === visualization.Id">
+              <a href class="white-dropdown-link" ng-click="dealsHistoryChartCtrl.changeVisualization(visualization)">
+                <span>{{visualization.Name}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="no-drag dropdown pull-right left-wrapper">
+          <div class="input-group mtop5">
+            <div class="input-group-btn">
+              <span class="right-wrapper">
+                <span class="font-regular-size" uib-tooltip="Ao marcar essa opção, o intervalo irá considerar o mês atual (dia 1º até hoje)" tooltip-append-to-body="true">
+                  {{ 'REPORTS.DEAL_HISTORY_CHART.INCLUDE_CURRENT_MONTH?' | translate }}
+                </span>
+              </span>
+            </div>
+            <input class="checkbox-4" type="checkbox" ng-model="dealsHistoryChartCtrl.include_current_month"
+              ng-model-options="{ debounce: 300 }" ng-change="dealsHistoryChartCtrl.changedNumberOfMonths()"/>
+          </div>
+        </div>
+        <div class="no-drag dropdown pull-right">
+          <div class="input-group width-260">
+            <div class="input-group-btn">
+              <span class="right-wrapper">
+                <span class="font-regular-size">
+                  {{ 'REPORTS.DEAL_HISTORY_CHART.SHOW_LAST_N_MONTHS' | translate }}:
+                </span>
+              </span>
+            </div>
+            <input type="number" class="form-control input-sm " style="max-width: 55px; border-radius: 3px;" ng-model="dealsHistoryChartCtrl.number_of_months"
+              ng-model-options="{ debounce: 300 }" ng-change="dealsHistoryChartCtrl.changedNumberOfMonths()" />
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle text-right width-40">
+        <div class="no-drag dropdown display-inline-block">
+          <a class="button button-white-no-border" ng-if="dealsHistoryChartCtrl.can_edit_chart" ui-sref="{{'reportslegacy.panel.editchart({chartid: chart.Id})'}}">
+            <span class="font-regular-weight text-action">
+              <i class="fal fa-pen top-fix-icon"></i>
+            </span>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <standard-loader margin-top="0" loading="dealsHistoryChartCtrl.loading" optionalclass="'timeline-loader'"></standard-loader>
+  <table class="table white-table-with-header" ng-show="!dealsHistoryChartCtrl.loading" ng-style="dealsHistoryChartCtrl.opaque && {'opacity':'0.4'}">
+    <thead>
+      <tr>
+        <td></td>
+        <td>
+          <div class="font-bold">
+            {{ 'REPORTS.DEAL_HISTORY_CHART.STAGE' | translate }}
+          </div>
+        </td>
+        <td>
+          <div class="font-bold">{{dealsHistoryChartCtrl.current_visualization.Name}}</div>
+        </td>
+        <td>
+          <div class="font-bold">
+            {{ 'REPORTS.DEAL_HISTORY_CHART.ADVANCED' | translate }}
+          </div>
+        </td>
+        <td>
+          <div class="font-bold">
+            {{ 'REPORTS.DEAL_HISTORY_CHART.WON' | translate_sentence }}
+          </div>
+        </td>
+        <td>
+          <div class="font-bold">
+            {{ 'REPORTS.DEAL_HISTORY_CHART.LOST' | translate_sentence }}
+          </div>
+        </td>
+        <td>
+          <div class="font-bold">
+            {{ 'REPORTS.DEAL_HISTORY_CHART.TIME_IN_DAYS' | translate }}
+          </div>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="stage in dealsHistoryChartCtrl.structure">
+        <td class="width-200">
+          <div class="height-10 margin-auto current-deals-widget-percentage-bar gray-content" ng-style="{'width': stage.Percentage + '%'}"></div>
+        </td>
+        <td>
+          {{stage.Name}}
+        </td>
+        <td>
+          {{stage.ShowCount}}
+        </td>
+        <td>
+          <span class="font-bold">{{stage.ShowAdvanced}}</span>
+          <span class="font-small">({{ stage.ShowAdvancedRate | to_locale_string : { maximumFractionDigits: 2} }}%)</span>
+        </td>
+        <td class="text-success">
+          <span class="font-bold">{{stage.ShowWon}}</span>
+          <span class="font-small">({{ stage.ShowWonRate | to_locale_string : { maximumFractionDigits: 2} }}%)</span>
+        </td>
+        <td class="text-danger">
+          <span class="font-bold">{{stage.ShowLost}}</span>
+          <span class="font-small">({{ stage.ShowLostRate | to_locale_string : { maximumFractionDigits: 2} }}%)</span>
+        </td>
+        <td>
+          {{ stage.AvgDays | to_locale_string : { maximumFractionDigits: 2} }} {{ 'REPORTS.DEAL_HISTORY_CHART.DAYS' | translate }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="hbox widgets-hbox white-content border-bottom-fix" ng-show="!dealsHistoryChartCtrl.loading">
+    <aside class="width-33-percent b-r-1 white-content border-bottom-fix">
+      <div class="wrapper text-center">
+        <div class="font-semi-big">
+          {{ 'REPORTS.DEAL_HISTORY_CHART.DEALS_ANALYZED' | translate_sentence }}
+        </div>
+        <div class="gap-3"></div>
+        <div class="font-very-big-title font-thin nowrap">{{dealsHistoryChartCtrl.num_of_deals}}</div>
+      </div>
+    </aside>
+    <aside class="width-34-percent b-r-1 white-content border-bottom-fix">
+      <div class="wrapper text-center">
+        <div class="font-semi-big">
+          {{ 'REPORTS.DEAL_HISTORY_CHART.CONVERSION_RATE' | translate }}
+        </div>
+        <div class="gap-3"></div>
+        <div class="font-very-big-title font-thin nowrap" ng-if="dealsHistoryChartCtrl.current_visualization.Id === 1">
+          {{ dealsHistoryChartCtrl.won_rate.quantity | to_locale_string : { maximumFractionDigits: 2} }}%
+        </div>
+        <div class="font-very-big-title font-thin nowrap" ng-if="dealsHistoryChartCtrl.current_visualization.Id === 2">
+          {{ dealsHistoryChartCtrl.won_rate.amount | to_locale_string : { maximumFractionDigits: 2} }}%
+        </div>
+      </div>
+    </aside>
+    <aside class="width-33-percent white-content border-bottom-fix">
+      <div class="wrapper text-center">
+        <div class="font-semi-big">
+          {{ 'REPORTS.DEAL_HISTORY_CHART.AVG_TIME_TO_WIN' | translate }}
+        </div>
+        <div class="gap-3"></div>
+        <div class="font-very-big-title font-thin nowrap">
+          {{dealsHistoryChartCtrl.avg_days_rate}} {{ 'REPORTS.DEAL_HISTORY_CHART.DAYS' | translate }}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

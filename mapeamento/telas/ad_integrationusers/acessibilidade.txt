@@ -1,0 +1,1492 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - img
+    - text: Seu CRM totalmente personalizado! Sua conta já possui 2 construções com IA, continue gerando.
+    - button "Consumo de IA"
+    - button "Ver construções"
+    - complementary:
+      - text: Geral
+      - link "":
+        - /url: /system-modules
+        - text: 
+        - complementary: 
+        - complementary: Módulos do sistema
+      - link "":
+        - /url: /formconfig
+        - text: 
+        - complementary: 
+        - complementary: Campos e formulários
+      - text: 
+      - complementary: 
+      - complementary: Opções pré-cadastradas
+      - text: 
+      - complementary: 
+      - complementary: Dados da empresa
+      - text: 
+      - complementary: 
+      - complementary: Configurações do sistema
+      - link "":
+        - /url: /administration/automations
+        - text: 
+        - complementary: 
+        - complementary: Automações
+      - text: 
+      - complementary: 
+      - complementary: Ploo Store
+      - link "":
+        - /url: /administration/processingqueue
+        - text: 
+        - complementary: 
+        - complementary: Fila de Processamento
+    - complementary:
+      - text: Usuários
+      - link "":
+        - /url: /Users/table
+        - text: 
+        - complementary: 
+        - complementary: Tabela de usuários
+      - text: 
+      - complementary: 
+      - complementary: Equipes de usuários
+      - text: 
+      - complementary: 
+      - complementary: Perfis de usuário
+      - text: 
+      - complementary: 
+      - complementary: Permissão ao Suporte Ploomes
+      - link "":
+        - /url: /Logs/changes
+        - text: 
+        - complementary: 
+        - complementary: Registros
+    - complementary:
+      - text: Propostas e vendas
+      - link "":
+        - /url: /templates
+        - text: 
+        - complementary: 
+        - complementary: Modelos de documento
+      - text: 
+      - complementary: 
+      - complementary: Fluxos de aprovação
+    - complementary:
+      - text: Integrações 
+      - complementary: 
+      - complementary: Integrações plug-and-play
+      - text: 
+      - complementary: 
+      - complementary: Usuários de integração
+      - text: 
+      - complementary: 
+      - complementary: Formulários externos
+    - complementary:
+      - text: Pagamentos 
+      - complementary: 
+      - complementary: Dados de pagamento
+      - text: 
+      - complementary: 
+      - complementary: Histórico de fatura
+      - link "":
+        - /url: /administration/aiconsumption
+        - text: 
+        - complementary: 
+        - complementary: Créditos de IA
+    - complementary: Usuários
+    - complementary:
+      - complementary
+      - complementary
+      - complementary: 
+    - complementary:
+      - textbox "Busca usuário"
+      - text: 
+    - complementary:  Novo usuário
+    - table:
+      - rowgroup:
+        - row "Nome E-mail Ativo?":
+          - columnheader "Nome"
+          - columnheader "E-mail"
+          - columnheader "Ativo?"
+      - rowgroup:
+        - row "PARISI email.mascarado@exemplo.test Sim":
+          - cell "PARISI":
+            - img
+            - text: PARISI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Bimer email.mascarado@exemplo.test Sim":
+          - cell "Bimer":
+            - img
+            - text: Bimer
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "S S PARISI MANUTENçãO E INFORMáTICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "S S PARISI MANUTENçãO E INFORMáTICA LTDA":
+            - img
+            - text: S S PARISI MANUTENçãO E INFORMáTICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TECNOLOGIA EM INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+            - img
+            - text: ALTERDATA TECNOLOGIA EM INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - PETROPOLIS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - PETROPOLIS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - PETROPOLIS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - UBERLANDIA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - UBERLANDIA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - UBERLANDIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - ARACAJU email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - ARACAJU":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - ARACAJU
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - SÃO PAULO email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - SÃO PAULO":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - SÃO PAULO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - SALVADOR email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - SALVADOR":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - SALVADOR
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - VITORIA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - VITORIA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - VITORIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - MANAUS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - MANAUS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - MANAUS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - BELEM email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - BELEM":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - BELEM
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - RECIFE email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - RECIFE":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - RECIFE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ANGRADATA INFORMATICA E COMUNICACAO LTDA email.mascarado@exemplo.test Sim":
+          - cell "ANGRADATA INFORMATICA E COMUNICACAO LTDA":
+            - img
+            - text: ANGRADATA INFORMATICA E COMUNICACAO LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERSOFT RIO SUL INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERSOFT RIO SUL INFORMATICA LTDA":
+            - img
+            - text: ALTERSOFT RIO SUL INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - GOIANIA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - GOIANIA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - GOIANIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - CURITIBA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - CURITIBA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - CURITIBA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - CABO FRIO email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - CABO FRIO":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - CABO FRIO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - CAMPOS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - CAMPOS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - CAMPOS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - FORTALEZA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - FORTALEZA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - FORTALEZA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERSYSTEM SOFTWARE ALAGOAS LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERSYSTEM SOFTWARE ALAGOAS LTDA":
+            - img
+            - text: ALTERSYSTEM SOFTWARE ALAGOAS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "D ROSE COSTA DE ASSIS SILVA email.mascarado@exemplo.test Sim":
+          - cell "D ROSE COSTA DE ASSIS SILVA":
+            - img
+            - text: D ROSE COSTA DE ASSIS SILVA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "H2L INFORMATICA E SERVICOS EIRELI email.mascarado@exemplo.test Sim":
+          - cell "H2L INFORMATICA E SERVICOS EIRELI":
+            - img
+            - text: H2L INFORMATICA E SERVICOS EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "COSTA SOLUCOES E MANUTENCAO DE INFORMATICA EIRELI email.mascarado@exemplo.test Sim":
+          - cell "COSTA SOLUCOES E MANUTENCAO DE INFORMATICA EIRELI":
+            - img
+            - text: COSTA SOLUCOES E MANUTENCAO DE INFORMATICA EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "LUIZ FERMIANO MESONES email.mascarado@exemplo.test Sim":
+          - cell "LUIZ FERMIANO MESONES":
+            - img
+            - text: LUIZ FERMIANO MESONES
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "LF POPE LTDA email.mascarado@exemplo.test Sim":
+          - cell "LF POPE LTDA":
+            - img
+            - text: LF POPE LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - PORTO ALEGRE email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - PORTO ALEGRE":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - PORTO ALEGRE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "A4 - SISTEMAS E SOLUCOES EM INFORMATICA LTDA - ME email.mascarado@exemplo.test Sim":
+          - cell "A4 - SISTEMAS E SOLUCOES EM INFORMATICA LTDA - ME":
+            - img
+            - text: A4 - SISTEMAS E SOLUCOES EM INFORMATICA LTDA - ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - BELO HORIZONTE email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - BELO HORIZONTE":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - BELO HORIZONTE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GRANDE RIO MANUTENCAO EM EQUIPAMENTOS DE INFORMATI email.mascarado@exemplo.test Sim":
+          - cell "GRANDE RIO MANUTENCAO EM EQUIPAMENTOS DE INFORMATI":
+            - img
+            - text: GRANDE RIO MANUTENCAO EM EQUIPAMENTOS DE INFORMATI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - RIBEIRAO PRETO email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - RIBEIRAO PRETO":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - RIBEIRAO PRETO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "DTC SISTEMAS DE INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "DTC SISTEMAS DE INFORMATICA LTDA":
+            - img
+            - text: DTC SISTEMAS DE INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - MACAE email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - MACAE":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - MACAE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "S S DE OLIVEIRA SISTEMAS - ME email.mascarado@exemplo.test Sim":
+          - cell "S S DE OLIVEIRA SISTEMAS - ME":
+            - img
+            - text: S S DE OLIVEIRA SISTEMAS - ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - FILIAL RIO email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - FILIAL RIO":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - FILIAL RIO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "NORTHDATA TECNOLOGIA EIRELI email.mascarado@exemplo.test Sim":
+          - cell "NORTHDATA TECNOLOGIA EIRELI":
+            - img
+            - text: NORTHDATA TECNOLOGIA EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - CAMPO GRANDE email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - CAMPO GRANDE":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - CAMPO GRANDE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - BRASÍLIA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - BRASÍLIA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - BRASÍLIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - LONDRINA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - LONDRINA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - LONDRINA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GAMMIX TECNOLOGIA E GESTAO LTDA - ME email.mascarado@exemplo.test Sim":
+          - cell "GAMMIX TECNOLOGIA E GESTAO LTDA - ME":
+            - img
+            - text: GAMMIX TECNOLOGIA E GESTAO LTDA - ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "W.L. PALMEIRA email.mascarado@exemplo.test Sim":
+          - cell "W.L. PALMEIRA":
+            - img
+            - text: W.L. PALMEIRA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "COSTA E SOUTO M E M EQUIPAMENTOS INFORMÁTICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "COSTA E SOUTO M E M EQUIPAMENTOS INFORMÁTICA LTDA":
+            - img
+            - text: COSTA E SOUTO M E M EQUIPAMENTOS INFORMÁTICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SGS PARISI ATENDIMENTO EM SOFTWARE LTDA email.mascarado@exemplo.test Sim":
+          - cell "SGS PARISI ATENDIMENTO EM SOFTWARE LTDA":
+            - img
+            - text: SGS PARISI ATENDIMENTO EM SOFTWARE LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ROMA INFORMÁTICA email.mascarado@exemplo.test Sim":
+          - cell "ROMA INFORMÁTICA":
+            - img
+            - text: ROMA INFORMÁTICA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "H L REBELLO & D J SANTOS LTDA ME email.mascarado@exemplo.test Sim":
+          - cell "H L REBELLO & D J SANTOS LTDA ME":
+            - img
+            - text: H L REBELLO & D J SANTOS LTDA ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SMS PRESTACAO DE SERVICOS LTDA. email.mascarado@exemplo.test Sim":
+          - cell "SMS PRESTACAO DE SERVICOS LTDA.":
+            - img
+            - text: SMS PRESTACAO DE SERVICOS LTDA.
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - CUIABA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - CUIABA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - CUIABA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERVALE - ALTERDATA VALE DO PARAIBA email.mascarado@exemplo.test Sim":
+          - cell "ALTERVALE - ALTERDATA VALE DO PARAIBA":
+            - img
+            - text: ALTERVALE - ALTERDATA VALE DO PARAIBA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "S.G.S PARISI ATENDIMENTO EM SOFTWARES LTDA - ME email.mascarado@exemplo.test Sim":
+          - cell "S.G.S PARISI ATENDIMENTO EM SOFTWARES LTDA - ME":
+            - img
+            - text: S.G.S PARISI ATENDIMENTO EM SOFTWARES LTDA - ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "MIRANDA TECNOLOGIA LTDA - SETE LAGOAS email.mascarado@exemplo.test Sim":
+          - cell "MIRANDA TECNOLOGIA LTDA - SETE LAGOAS":
+            - img
+            - text: MIRANDA TECNOLOGIA LTDA - SETE LAGOAS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "INFOALTER INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "INFOALTER INFORMATICA LTDA":
+            - img
+            - text: INFOALTER INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - TERESINA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - TERESINA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - TERESINA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "COSTA E MOREIRA MANUTENCAO EM EQUIPAMENTOS DE INFO email.mascarado@exemplo.test Sim":
+          - cell "COSTA E MOREIRA MANUTENCAO EM EQUIPAMENTOS DE INFO":
+            - img
+            - text: COSTA E MOREIRA MANUTENCAO EM EQUIPAMENTOS DE INFO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - ITABUNA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - ITABUNA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - ITABUNA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "MATOS SANTOS LICENC. DE PROG. E SOL. COORP LTDA ME email.mascarado@exemplo.test Sim":
+          - cell "MATOS SANTOS LICENC. DE PROG. E SOL. COORP LTDA ME":
+            - img
+            - text: MATOS SANTOS LICENC. DE PROG. E SOL. COORP LTDA ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "COSTA E ASSIS MANUTENCAO DE EQUIPAMENTOS DE INFORM email.mascarado@exemplo.test Sim":
+          - cell "COSTA E ASSIS MANUTENCAO DE EQUIPAMENTOS DE INFORM":
+            - img
+            - text: COSTA E ASSIS MANUTENCAO DE EQUIPAMENTOS DE INFORM
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "OLGON PC TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTD email.mascarado@exemplo.test Sim":
+          - cell "OLGON PC TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTD":
+            - img
+            - text: OLGON PC TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTD
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - IMPERATRIZ email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - IMPERATRIZ":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - IMPERATRIZ
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - UBERABA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - UBERABA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - UBERABA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - BAURU email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - BAURU":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - BAURU
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - JUIZ DE FORA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - JUIZ DE FORA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - JUIZ DE FORA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PONTE TECNOLOGIA LTDA email.mascarado@exemplo.test Sim":
+          - cell "PONTE TECNOLOGIA LTDA":
+            - img
+            - text: PONTE TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SGS - SAO JOÃO DEL REI - MG email.mascarado@exemplo.test Sim":
+          - cell "SGS - SAO JOÃO DEL REI - MG":
+            - img
+            - text: SGS - SAO JOÃO DEL REI - MG
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - SOROCABA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - SOROCABA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - SOROCABA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "EFIX SERVICOS DE INFORMATICA LTDA - ME email.mascarado@exemplo.test Sim":
+          - cell "EFIX SERVICOS DE INFORMATICA LTDA - ME":
+            - img
+            - text: EFIX SERVICOS DE INFORMATICA LTDA - ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "FRANCA TECNOLOGIA EM INFORMATICA EIRELI email.mascarado@exemplo.test Sim":
+          - cell "FRANCA TECNOLOGIA EM INFORMATICA EIRELI":
+            - img
+            - text: FRANCA TECNOLOGIA EM INFORMATICA EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "POPE TREINAMENTOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "POPE TREINAMENTOS LTDA":
+            - img
+            - text: POPE TREINAMENTOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - SANTOS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - SANTOS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - SANTOS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - P. PRUDENTE email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - P. PRUDENTE":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - P. PRUDENTE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - PATOS DE MINAS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - PATOS DE MINAS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - PATOS DE MINAS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "TREEDATA SOLUÇÕES INTELIGENTES LTDA email.mascarado@exemplo.test Sim":
+          - cell "TREEDATA SOLUÇÕES INTELIGENTES LTDA":
+            - img
+            - text: TREEDATA SOLUÇÕES INTELIGENTES LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "LCF MANUTENCAO EM EQUIPAMENTOS ELETRONICOS LTDA-ME email.mascarado@exemplo.test Sim":
+          - cell "LCF MANUTENCAO EM EQUIPAMENTOS ELETRONICOS LTDA-ME":
+            - img
+            - text: LCF MANUTENCAO EM EQUIPAMENTOS ELETRONICOS LTDA-ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "MACRO VISAO - ASSESS E CONSULT DE SOFTWARE LTDA ME email.mascarado@exemplo.test Sim":
+          - cell "MACRO VISAO - ASSESS E CONSULT DE SOFTWARE LTDA ME":
+            - img
+            - text: MACRO VISAO - ASSESS E CONSULT DE SOFTWARE LTDA ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALOISIO DE SOUZA NASCIMENTO JUNIOR EIRELI email.mascarado@exemplo.test Sim":
+          - cell "ALOISIO DE SOUZA NASCIMENTO JUNIOR EIRELI":
+            - img
+            - text: ALOISIO DE SOUZA NASCIMENTO JUNIOR EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "BUSCHMANN & BUSCHMANN LTDA - ME email.mascarado@exemplo.test Sim":
+          - cell "BUSCHMANN & BUSCHMANN LTDA - ME":
+            - img
+            - text: BUSCHMANN & BUSCHMANN LTDA - ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "LOGIN SISTEMAS DE INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "LOGIN SISTEMAS DE INFORMATICA LTDA":
+            - img
+            - text: LOGIN SISTEMAS DE INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - CAMPINAS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - CAMPINAS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - CAMPINAS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SILVIA KELES GARCIA DE MOURA email.mascarado@exemplo.test Sim":
+          - cell "SILVIA KELES GARCIA DE MOURA":
+            - img
+            - text: SILVIA KELES GARCIA DE MOURA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERSOFT TECNOLOGIA EM INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERSOFT TECNOLOGIA EM INFORMATICA LTDA":
+            - img
+            - text: ALTERSOFT TECNOLOGIA EM INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - VARGINHA email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - VARGINHA":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - VARGINHA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "INFOTHEC DO BRASIL LTDA email.mascarado@exemplo.test Sim":
+          - cell "INFOTHEC DO BRASIL LTDA":
+            - img
+            - text: INFOTHEC DO BRASIL LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - SÃO JOSÉ DO RIO PRETO email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - SÃO JOSÉ DO RIO PRETO":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - SÃO JOSÉ DO RIO PRETO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GAMMIX TECNOLOGIA E GESTAO LTDA - ME. email.mascarado@exemplo.test Sim":
+          - cell "GAMMIX TECNOLOGIA E GESTAO LTDA - ME.":
+            - img
+            - text: GAMMIX TECNOLOGIA E GESTAO LTDA - ME.
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "TREINACOACH GESTAO E TREINAMENTOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "TREINACOACH GESTAO E TREINAMENTOS LTDA":
+            - img
+            - text: TREINACOACH GESTAO E TREINAMENTOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - ABC email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - ABC":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - ABC
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "CARIRI TECNOLOGIA EM INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "CARIRI TECNOLOGIA EM INFORMATICA LTDA":
+            - img
+            - text: CARIRI TECNOLOGIA EM INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SERV & SYSTEM SERVICOS EM INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "SERV & SYSTEM SERVICOS EM INFORMATICA LTDA":
+            - img
+            - text: SERV & SYSTEM SERVICOS EM INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PB DATA REPRESENTACOES LTDA email.mascarado@exemplo.test Sim":
+          - cell "PB DATA REPRESENTACOES LTDA":
+            - img
+            - text: PB DATA REPRESENTACOES LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "J P BRITO SOLUCOES INTELIGENTES email.mascarado@exemplo.test Não":
+          - cell "J P BRITO SOLUCOES INTELIGENTES":
+            - img
+            - text: J P BRITO SOLUCOES INTELIGENTES
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "COSEBELLE CONSULTORIA E INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "COSEBELLE CONSULTORIA E INFORMATICA LTDA":
+            - img
+            - text: COSEBELLE CONSULTORIA E INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GFB CONSULT EM ORG E IMPLANTACAO DE SISTEMA LTDA email.mascarado@exemplo.test Sim":
+          - cell "GFB CONSULT EM ORG E IMPLANTACAO DE SISTEMA LTDA":
+            - img
+            - text: GFB CONSULT EM ORG E IMPLANTACAO DE SISTEMA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "NELIO DE SIQUEIRA email.mascarado@exemplo.test Sim":
+          - cell "NELIO DE SIQUEIRA":
+            - img
+            - text: NELIO DE SIQUEIRA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "YOUTECH SOLUTIONS INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "YOUTECH SOLUTIONS INFORMATICA LTDA":
+            - img
+            - text: YOUTECH SOLUTIONS INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "E.L. DE ALMEIDA MESQUITA SOUSA email.mascarado@exemplo.test Sim":
+          - cell "E.L. DE ALMEIDA MESQUITA SOUSA":
+            - img
+            - text: E.L. DE ALMEIDA MESQUITA SOUSA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "DILMA DE SOUZA AZEVEDO EIRELI email.mascarado@exemplo.test Sim":
+          - cell "DILMA DE SOUZA AZEVEDO EIRELI":
+            - img
+            - text: DILMA DE SOUZA AZEVEDO EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "A L DE A PEREIRA TECNOLOGIA DA INFORMACAO email.mascarado@exemplo.test Não":
+          - cell "A L DE A PEREIRA TECNOLOGIA DA INFORMACAO":
+            - img
+            - text: A L DE A PEREIRA TECNOLOGIA DA INFORMACAO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "MIRANDA TECNOLOGIA LTDA - TERESINA email.mascarado@exemplo.test Sim":
+          - cell "MIRANDA TECNOLOGIA LTDA - TERESINA":
+            - img
+            - text: MIRANDA TECNOLOGIA LTDA - TERESINA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERSYSTEM SOFTWARE RN LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERSYSTEM SOFTWARE RN LTDA":
+            - img
+            - text: ALTERSYSTEM SOFTWARE RN LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ROBERT PINHEIRO DA SILVA email.mascarado@exemplo.test Sim":
+          - cell "ROBERT PINHEIRO DA SILVA":
+            - img
+            - text: ROBERT PINHEIRO DA SILVA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "DIOGO BRANCO LEAL email.mascarado@exemplo.test_OLD Não":
+          - cell "DIOGO BRANCO LEAL":
+            - img
+            - text: DIOGO BRANCO LEAL
+          - cell "email.mascarado@exemplo.test_OLD"
+          - cell "Não"
+        - row "Consulta dados da empresa e PF email.mascarado@exemplo.test Sim":
+          - cell "Consulta dados da empresa e PF":
+            - img
+            - text: Consulta dados da empresa e PF
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Contatos.Marketing email.mascarado@exemplo.test Sim":
+          - cell "Contatos.Marketing":
+            - img
+            - text: Contatos.Marketing
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Engatilhar Contatos email.mascarado@exemplo.test Sim":
+          - cell "Engatilhar Contatos":
+            - img
+            - text: Engatilhar Contatos
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Importação Contratos email.mascarado@exemplo.test Sim":
+          - cell "Importação Contratos":
+            - img
+            - text: Importação Contratos
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "BimerAlt email.mascarado@exemplo.test Sim":
+          - cell "BimerAlt":
+            - img
+            - text: BimerAlt
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Integrador Bimer >> Ploomes email.mascarado@exemplo.test Sim":
+          - cell "Integrador Bimer >> Ploomes":
+            - img
+            - text: Integrador Bimer >> Ploomes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Preenchimento de Campos email.mascarado@exemplo.test Sim":
+          - cell "Preenchimento de Campos":
+            - img
+            - text: Preenchimento de Campos
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PowerBi email.mascarado@exemplo.test Sim":
+          - cell "PowerBi":
+            - img
+            - text: PowerBi
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Limpar Campos email.mascarado@exemplo.test Sim":
+          - cell "Limpar Campos":
+            - img
+            - text: Limpar Campos
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Proposta aceita externamente email.mascarado@exemplo.test Sim":
+          - cell "Proposta aceita externamente":
+            - img
+            - text: Proposta aceita externamente
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "INTELIGENSYS SOLUCOES EM SISTEMAS LTDA email.mascarado@exemplo.test Sim":
+          - cell "INTELIGENSYS SOLUCOES EM SISTEMAS LTDA":
+            - img
+            - text: INTELIGENSYS SOLUCOES EM SISTEMAS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PRONTO.COM SOFTWARES MANUTENCAO DE COMPUTADORES LT email.mascarado@exemplo.test Sim":
+          - cell "PRONTO.COM SOFTWARES MANUTENCAO DE COMPUTADORES LT":
+            - img
+            - text: PRONTO.COM SOFTWARES MANUTENCAO DE COMPUTADORES LT
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "CENTRO DE TREINAMENTO ADMINISTRATIVO LTDA email.mascarado@exemplo.test Sim":
+          - cell "CENTRO DE TREINAMENTO ADMINISTRATIVO LTDA":
+            - img
+            - text: CENTRO DE TREINAMENTO ADMINISTRATIVO LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROAR TECNOLOGIA LTDA email.mascarado@exemplo.test Sim":
+          - cell "PROAR TECNOLOGIA LTDA":
+            - img
+            - text: PROAR TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "UNIZOTTO NEGOCIOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "UNIZOTTO NEGOCIOS LTDA":
+            - img
+            - text: UNIZOTTO NEGOCIOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PISTA TECNOLOGIA LTDA email.mascarado@exemplo.test Sim":
+          - cell "PISTA TECNOLOGIA LTDA":
+            - img
+            - text: PISTA TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GERSON NESTOR MARQUES GUIMARAES email.mascarado@exemplo.test Sim":
+          - cell "GERSON NESTOR MARQUES GUIMARAES":
+            - img
+            - text: GERSON NESTOR MARQUES GUIMARAES
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "CENTER DATA INFORMATICA EIRELI email.mascarado@exemplo.test Sim":
+          - cell "CENTER DATA INFORMATICA EIRELI":
+            - img
+            - text: CENTER DATA INFORMATICA EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "CENTRO DE TREINAMENTO ADMINISTRATIVO LTDA. email.mascarado@exemplo.test Sim":
+          - cell "CENTRO DE TREINAMENTO ADMINISTRATIVO LTDA.":
+            - img
+            - text: CENTRO DE TREINAMENTO ADMINISTRATIVO LTDA.
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PSRIO INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "PSRIO INFORMATICA LTDA":
+            - img
+            - text: PSRIO INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - CURITIBA email.mascarado@exemplo.test Sim":
+          - cell "PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - CURITIBA":
+            - img
+            - text: PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - CURITIBA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - FLORIANOPOLIS email.mascarado@exemplo.test Sim":
+          - cell "PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - FLORIANOPOLIS":
+            - img
+            - text: PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - FLORIANOPOLIS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - PORTO ALEGRE email.mascarado@exemplo.test Sim":
+          - cell "PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - PORTO ALEGRE":
+            - img
+            - text: PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - PORTO ALEGRE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROSK8 LESTE LTDA email.mascarado@exemplo.test Não":
+          - cell "PROSK8 LESTE LTDA":
+            - img
+            - text: PROSK8 LESTE LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "ALTERDATA TEC EM INF LTDA - TERESÓPOLIS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - TERESÓPOLIS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - TERESÓPOLIS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)ALTERDATA TEC EM INF LTDA - SÃO PAULO email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)ALTERDATA TEC EM INF LTDA - SÃO PAULO":
+            - img
+            - text: (NÃO USAR)ALTERDATA TEC EM INF LTDA - SÃO PAULO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "ALTERDATA TEC EM INF LTDA - S.J.DOS CAMPOS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - S.J.DOS CAMPOS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - S.J.DOS CAMPOS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - OSASCO email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - OSASCO":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - OSASCO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - EXPRESS JOINVILLE email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - EXPRESS JOINVILLE":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - EXPRESS JOINVILLE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)ALTERDATA TEC EM INF LTDA - IMPERATRIZ email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)ALTERDATA TEC EM INF LTDA - IMPERATRIZ":
+            - img
+            - text: (NÃO USAR)ALTERDATA TEC EM INF LTDA - IMPERATRIZ
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "ALTERDATA TEC EM INF LTDA - NOVA FRIBURGO email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - NOVA FRIBURGO":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - NOVA FRIBURGO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - CAXIAS DO SUL email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - CAXIAS DO SUL":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - CAXIAS DO SUL
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)ALTERDATA TEC EM INF LTDA - BRASÍLIA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)ALTERDATA TEC EM INF LTDA - BRASÍLIA":
+            - img
+            - text: (NÃO USAR)ALTERDATA TEC EM INF LTDA - BRASÍLIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "REPRESENTACOES LISBOA LTDA email.mascarado@exemplo.test Sim":
+          - cell "REPRESENTACOES LISBOA LTDA":
+            - img
+            - text: REPRESENTACOES LISBOA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PRUDENTE DATA SOFTWARE LTDA email.mascarado@exemplo.test Sim":
+          - cell "PRUDENTE DATA SOFTWARE LTDA":
+            - img
+            - text: PRUDENTE DATA SOFTWARE LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "NEL SYS SOLUTIONS LTDA - ME email.mascarado@exemplo.test Sim":
+          - cell "NEL SYS SOLUTIONS LTDA - ME":
+            - img
+            - text: NEL SYS SOLUTIONS LTDA - ME
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ITAUTEC SA - GRUPO ITAUTEC email.mascarado@exemplo.test Sim":
+          - cell "ITAUTEC SA - GRUPO ITAUTEC":
+            - img
+            - text: ITAUTEC SA - GRUPO ITAUTEC
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GERIR GENTE CONSULTORIA E TREINAMENTOS EM GESTAO D email.mascarado@exemplo.test Sim":
+          - cell "GERIR GENTE CONSULTORIA E TREINAMENTOS EM GESTAO D":
+            - img
+            - text: GERIR GENTE CONSULTORIA E TREINAMENTOS EM GESTAO D
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)POPE TREINAMENTOS LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)POPE TREINAMENTOS LTDA":
+            - img
+            - text: (NÃO USAR)POPE TREINAMENTOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "PLUS TECNOLOGIA SOFTWARE E CONSULTORIA LTDA email.mascarado@exemplo.test Não":
+          - cell "PLUS TECNOLOGIA SOFTWARE E CONSULTORIA LTDA":
+            - img
+            - text: PLUS TECNOLOGIA SOFTWARE E CONSULTORIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "MARCOS ANTONIO XAVIER DO CARMO 96579676272 email.mascarado@exemplo.test Sim":
+          - cell "MARCOS ANTONIO XAVIER DO CARMO 96579676272":
+            - img
+            - text: MARCOS ANTONIO XAVIER DO CARMO 96579676272
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERSYSTEM AUTOMACAO COMERCIAL E DIGITACAO LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERSYSTEM AUTOMACAO COMERCIAL E DIGITACAO LTDA":
+            - img
+            - text: ALTERSYSTEM AUTOMACAO COMERCIAL E DIGITACAO LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)MYSECURITY TECNOLOGIA LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)MYSECURITY TECNOLOGIA LTDA":
+            - img
+            - text: (NÃO USAR)MYSECURITY TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "S S PARISI OCEANICA email.mascarado@exemplo.test Sim":
+          - cell "S S PARISI OCEANICA":
+            - img
+            - text: S S PARISI OCEANICA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GIGASYS SOLUCOES EM SISTEMAS LTDA email.mascarado@exemplo.test Sim":
+          - cell "GIGASYS SOLUCOES EM SISTEMAS LTDA":
+            - img
+            - text: GIGASYS SOLUCOES EM SISTEMAS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "BRUNO FIORANTE ROQUE email.mascarado@exemplo.test Sim":
+          - cell "BRUNO FIORANTE ROQUE":
+            - img
+            - text: BRUNO FIORANTE ROQUE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "COMERCIO COMPUCHOA INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "COMERCIO COMPUCHOA INFORMATICA LTDA":
+            - img
+            - text: COMERCIO COMPUCHOA INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROSK8 VALE INFORMATICA LTDA. email.mascarado@exemplo.test Sim":
+          - cell "PROSK8 VALE INFORMATICA LTDA.":
+            - img
+            - text: PROSK8 VALE INFORMATICA LTDA.
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROSK8 VALE INFORMATICA LTDA. email.mascarado@exemplo.test Sim":
+          - cell "PROSK8 VALE INFORMATICA LTDA.":
+            - img
+            - text: PROSK8 VALE INFORMATICA LTDA.
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROSK8 LESTE LTDA email.mascarado@exemplo.test Não":
+          - cell "PROSK8 LESTE LTDA":
+            - img
+            - text: PROSK8 LESTE LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "PROSK8 INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "PROSK8 INFORMATICA LTDA":
+            - img
+            - text: PROSK8 INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "UNIZOTTO NEGOCIOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "UNIZOTTO NEGOCIOS LTDA":
+            - img
+            - text: UNIZOTTO NEGOCIOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)TREINACOACH GESTAO E TREINAMENTOS LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)TREINACOACH GESTAO E TREINAMENTOS LTDA":
+            - img
+            - text: (NÃO USAR)TREINACOACH GESTAO E TREINAMENTOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "SANARA DIAS ALMEIDA LTDA email.mascarado@exemplo.test Sim":
+          - cell "SANARA DIAS ALMEIDA LTDA":
+            - img
+            - text: SANARA DIAS ALMEIDA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)MIRANDA TECNOLOGIA LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)MIRANDA TECNOLOGIA LTDA":
+            - img
+            - text: (NÃO USAR)MIRANDA TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "ALTERDATA LESTE DE MINAS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA LESTE DE MINAS":
+            - img
+            - text: ALTERDATA LESTE DE MINAS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "OLGON TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "OLGON TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTDA":
+            - img
+            - text: OLGON TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "MIRANDA TECNOLOGIA LTDA - PATOS DE MINAS email.mascarado@exemplo.test Sim":
+          - cell "MIRANDA TECNOLOGIA LTDA - PATOS DE MINAS":
+            - img
+            - text: MIRANDA TECNOLOGIA LTDA - PATOS DE MINAS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "CONSULTAR TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS EI email.mascarado@exemplo.test Não":
+          - cell "CONSULTAR TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS EI":
+            - img
+            - text: CONSULTAR TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS EI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "LEGACY SOFTWARES E SERVIÇOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "LEGACY SOFTWARES E SERVIÇOS LTDA":
+            - img
+            - text: LEGACY SOFTWARES E SERVIÇOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "GAMMIX TECNOLOGIA E GESTAO LTDA. email.mascarado@exemplo.test Sim":
+          - cell "GAMMIX TECNOLOGIA E GESTAO LTDA.":
+            - img
+            - text: GAMMIX TECNOLOGIA E GESTAO LTDA.
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERSUP INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERSUP INFORMATICA LTDA":
+            - img
+            - text: ALTERSUP INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)ALOISIO DE SOUZA NASCIMENTO JUNIOR EIRELI email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)ALOISIO DE SOUZA NASCIMENTO JUNIOR EIRELI":
+            - img
+            - text: (NÃO USAR)ALOISIO DE SOUZA NASCIMENTO JUNIOR EIRELI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "(NÃO USAR)PB DATA REPRESENTACOES LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)PB DATA REPRESENTACOES LTDA":
+            - img
+            - text: (NÃO USAR)PB DATA REPRESENTACOES LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "(NÃO USAR)DTC SISTEMAS DE INFORMATICA LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)DTC SISTEMAS DE INFORMATICA LTDA":
+            - img
+            - text: (NÃO USAR)DTC SISTEMAS DE INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "(NÃO USAR)LOGIN SISTEMAS DE INFORMATICA LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)LOGIN SISTEMAS DE INFORMATICA LTDA":
+            - img
+            - text: (NÃO USAR)LOGIN SISTEMAS DE INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "FILIPE MATEUS CARVALHO AVELINO email.mascarado@exemplo.test Sim":
+          - cell "FILIPE MATEUS CARVALHO AVELINO":
+            - img
+            - text: FILIPE MATEUS CARVALHO AVELINO
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)MIRANDA TECNOLOGIA LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)MIRANDA TECNOLOGIA LTDA":
+            - img
+            - text: (NÃO USAR)MIRANDA TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "B E B REPRESENTACOES LTDA email.mascarado@exemplo.test Sim":
+          - cell "B E B REPRESENTACOES LTDA":
+            - img
+            - text: B E B REPRESENTACOES LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)ANGRADATA INFORMATICA E COMUNICACAO LTDA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)ANGRADATA INFORMATICA E COMUNICACAO LTDA":
+            - img
+            - text: (NÃO USAR)ANGRADATA INFORMATICA E COMUNICACAO LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "GCS DA S VELOSO - GILVANIA email.mascarado@exemplo.test Sim":
+          - cell "GCS DA S VELOSO - GILVANIA":
+            - img
+            - text: GCS DA S VELOSO - GILVANIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)GRANDE RIO MANUTENCAO EM EQUIPAMENTOS DE INFORMATI email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)GRANDE RIO MANUTENCAO EM EQUIPAMENTOS DE INFORMATI":
+            - img
+            - text: (NÃO USAR)GRANDE RIO MANUTENCAO EM EQUIPAMENTOS DE INFORMATI
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "ALEXANDRE RIBEIRO INACIO ALVES SERVICOS ADMINISTRA email.mascarado@exemplo.test Sim":
+          - cell "ALEXANDRE RIBEIRO INACIO ALVES SERVICOS ADMINISTRA":
+            - img
+            - text: ALEXANDRE RIBEIRO INACIO ALVES SERVICOS ADMINISTRA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "AUREO - CONSULTORIA, REPRESENTACOES E PARTICIPACOE email.mascarado@exemplo.test Sim":
+          - cell "AUREO - CONSULTORIA, REPRESENTACOES E PARTICIPACOE":
+            - img
+            - text: AUREO - CONSULTORIA, REPRESENTACOES E PARTICIPACOE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "manutencao ploomes email.mascarado@exemplo.test Sim":
+          - cell "manutencao ploomes":
+            - img
+            - text: manutencao ploomes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "OLGON RP TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTD email.mascarado@exemplo.test Sim":
+          - cell "OLGON RP TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTD":
+            - img
+            - text: OLGON RP TECNOLOGIA EM SOFTWARE E EQUIPAMENTOS LTD
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Bimer integração consulta parcial email.mascarado@exemplo.test Sim":
+          - cell "Bimer integração consulta parcial":
+            - img
+            - text: Bimer integração consulta parcial
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "VTR SOLUCOES EM INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "VTR SOLUCOES EM INFORMATICA LTDA":
+            - img
+            - text: VTR SOLUCOES EM INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "AFILIADO TESTE LTDA email.mascarado@exemplo.test Não":
+          - cell "AFILIADO TESTE LTDA":
+            - img
+            - text: AFILIADO TESTE LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "BLIMAX TECNOLOGIA LTDA email.mascarado@exemplo.test Sim":
+          - cell "BLIMAX TECNOLOGIA LTDA":
+            - img
+            - text: BLIMAX TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "LEO COALHADA GASTRONOMIA LTDA email.mascarado@exemplo.test Sim":
+          - cell "LEO COALHADA GASTRONOMIA LTDA":
+            - img
+            - text: LEO COALHADA GASTRONOMIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PROGESCONT CONTABILIDADE, GESTAO E PROCESSOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "PROGESCONT CONTABILIDADE, GESTAO E PROCESSOS LTDA":
+            - img
+            - text: PROGESCONT CONTABILIDADE, GESTAO E PROCESSOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "47.354.102 GUILHERME DE SENE email.mascarado@exemplo.test Sim":
+          - cell "47.354.102 GUILHERME DE SENE":
+            - img
+            - text: 47.354.102 GUILHERME DE SENE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "AFILIADO TESTE REPRESENTANTE email.mascarado@exemplo.test Não":
+          - cell "AFILIADO TESTE REPRESENTANTE":
+            - img
+            - text: AFILIADO TESTE REPRESENTANTE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "BRIGHT TECH SOFTWARE SOLUTION LTDA email.mascarado@exemplo.test Sim":
+          - cell "BRIGHT TECH SOFTWARE SOLUTION LTDA":
+            - img
+            - text: BRIGHT TECH SOFTWARE SOLUTION LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "YANDRA ASSESSORIA E TECNOLOGIA DE SISTEMAS LTDA email.mascarado@exemplo.test Sim":
+          - cell "YANDRA ASSESSORIA E TECNOLOGIA DE SISTEMAS LTDA":
+            - img
+            - text: YANDRA ASSESSORIA E TECNOLOGIA DE SISTEMAS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ADALGISA CRISTINA COUTINHO FREITAS email.mascarado@exemplo.test Sim":
+          - cell "ADALGISA CRISTINA COUTINHO FREITAS":
+            - img
+            - text: ADALGISA CRISTINA COUTINHO FREITAS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "21.865.934 FABIANO REIS DA SILVA email.mascarado@exemplo.test Sim":
+          - cell "21.865.934 FABIANO REIS DA SILVA":
+            - img
+            - text: 21.865.934 FABIANO REIS DA SILVA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SIDSYSTEM LTDA email.mascarado@exemplo.test Sim":
+          - cell "SIDSYSTEM LTDA":
+            - img
+            - text: SIDSYSTEM LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PRO&EN CONSULTORIA EMPRESARIAL LTDA email.mascarado@exemplo.test Sim":
+          - cell "PRO&EN CONSULTORIA EMPRESARIAL LTDA":
+            - img
+            - text: PRO&EN CONSULTORIA EMPRESARIAL LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "CANDIDATO A AFILIADOS - CANAIS email.mascarado@exemplo.test Sim":
+          - cell "CANDIDATO A AFILIADOS - CANAIS":
+            - img
+            - text: CANDIDATO A AFILIADOS - CANAIS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "EPI SOFTWARE LTDA email.mascarado@exemplo.test Sim":
+          - cell "EPI SOFTWARE LTDA":
+            - img
+            - text: EPI SOFTWARE LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "BI.DASH TECNOLOGIA E INTELIGENCIA DE NEGOCIOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "BI.DASH TECNOLOGIA E INTELIGENCIA DE NEGOCIOS LTDA":
+            - img
+            - text: BI.DASH TECNOLOGIA E INTELIGENCIA DE NEGOCIOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "S L L A SILVA email.mascarado@exemplo.test Sim":
+          - cell "S L L A SILVA":
+            - img
+            - text: S L L A SILVA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ART COMERCIO E SERVICOS LTDA email.mascarado@exemplo.test Sim":
+          - cell "ART COMERCIO E SERVICOS LTDA":
+            - img
+            - text: ART COMERCIO E SERVICOS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ECONNECT CERTIFICACAO DIGITAL E AUTOMACAO COMERCIA email.mascarado@exemplo.test Sim":
+          - cell "ECONNECT CERTIFICACAO DIGITAL E AUTOMACAO COMERCIA":
+            - img
+            - text: ECONNECT CERTIFICACAO DIGITAL E AUTOMACAO COMERCIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SANTOS E SA SOLUCOES EMPRESARIAL LTDA email.mascarado@exemplo.test Sim":
+          - cell "SANTOS E SA SOLUCOES EMPRESARIAL LTDA":
+            - img
+            - text: SANTOS E SA SOLUCOES EMPRESARIAL LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Fórmula integrada produto do cliente Fóemailemail.mascarado@exemplo.test Sim":
+          - cell "Fórmula integrada produto do cliente":
+            - img
+            - text: Fórmula integrada produto do cliente
+          - cell "Fóemailemail.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)ECONNECT CERTIFICACAO DIGITAL E AUTOMACAO COMERCIA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)ECONNECT CERTIFICACAO DIGITAL E AUTOMACAO COMERCIA":
+            - img
+            - text: (NÃO USAR)ECONNECT CERTIFICACAO DIGITAL E AUTOMACAO COMERCIA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "Integrador Ploomes email.mascarado@exemplo.test Sim":
+          - cell "Integrador Ploomes":
+            - img
+            - text: Integrador Ploomes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERDATA TEC EM INF LTDA - PALMAS email.mascarado@exemplo.test Sim":
+          - cell "ALTERDATA TEC EM INF LTDA - PALMAS":
+            - img
+            - text: ALTERDATA TEC EM INF LTDA - PALMAS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PRIORI INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "PRIORI INFORMATICA LTDA":
+            - img
+            - text: PRIORI INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "(NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - PORTO ALEGRE email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - PORTO ALEGRE":
+            - img
+            - text: (NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - PORTO ALEGRE
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "(NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - CURITIBA email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - CURITIBA":
+            - img
+            - text: (NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - CURITIBA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "(NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - FLORIANOPOLIS email.mascarado@exemplo.test Não":
+          - cell "(NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - FLORIANOPOLIS":
+            - img
+            - text: (NÃO USAR)PROSOFT-RS PROCESSAMENTO DE DADOS LTDA - FLORIANOPOLIS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Não"
+        - row "Extrair produtos de clientes email.mascarado@exemplo.test Sim":
+          - cell "Extrair produtos de clientes":
+            - img
+            - text: Extrair produtos de clientes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "PloomesEventos email.mascarado@exemplo.test Sim":
+          - cell "PloomesEventos":
+            - img
+            - text: PloomesEventos
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Proposta Ploomes email.mascarado@exemplo.test Sim":
+          - cell "Proposta Ploomes":
+            - img
+            - text: Proposta Ploomes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "JUSTUS INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "JUSTUS INFORMATICA LTDA":
+            - img
+            - text: JUSTUS INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ALTERFOCUS TECNOLOGIA EM INFORMATICA LTDA email.mascarado@exemplo.test Sim":
+          - cell "ALTERFOCUS TECNOLOGIA EM INFORMATICA LTDA":
+            - img
+            - text: ALTERFOCUS TECNOLOGIA EM INFORMATICA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "ANALISEVENDASPACK email.mascarado@exemplo.test Sim":
+          - cell "ANALISEVENDASPACK":
+            - img
+            - text: ANALISEVENDASPACK
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "TRES SERRAS TECNOLOGIA LTDA email.mascarado@exemplo.test Sim":
+          - cell "TRES SERRAS TECNOLOGIA LTDA":
+            - img
+            - text: TRES SERRAS TECNOLOGIA LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Usuario integração Josué email.mascarado@exemplo.test Sim":
+          - cell "Usuario integração Josué":
+            - img
+            - text: Usuario integração Josué
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Facileads email.mascarado@exemplo.test Sim":
+          - cell "Facileads":
+            - img
+            - text: Facileads
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Teste não encontrado email.mascarado@exemplo.test Sim":
+          - cell "Teste não encontrado":
+            - img
+            - text: Teste não encontrado
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Duplicação de Conta email.mascarado@exemplo.test Sim":
+          - cell "Duplicação de Conta":
+            - img
+            - text: Duplicação de Conta
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "RL DATA SISTEMAS LTDA email.mascarado@exemplo.test Sim":
+          - cell "RL DATA SISTEMAS LTDA":
+            - img
+            - text: RL DATA SISTEMAS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Duplicação de Conta - Ploomes Novo email.mascarado@exemplo.test Sim":
+          - cell "Duplicação de Conta - Ploomes Novo":
+            - img
+            - text: Duplicação de Conta - Ploomes Novo
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Suporte Ploomes email.mascarado@exemplo.test Sim":
+          - cell "Suporte Ploomes":
+            - img
+            - text: Suporte Ploomes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "LOPES SISTEMAS E TECNOLOGIAS LTDA email.mascarado@exemplo.test Sim":
+          - cell "LOPES SISTEMAS E TECNOLOGIAS LTDA":
+            - img
+            - text: LOPES SISTEMAS E TECNOLOGIAS LTDA
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Suporte Ploomes email.mascarado@exemplo.test Sim":
+          - cell "Suporte Ploomes":
+            - img
+            - text: Suporte Ploomes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "SITEAFILIADOS email.mascarado@exemplo.test Sim":
+          - cell "SITEAFILIADOS":
+            - img
+            - text: SITEAFILIADOS
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "Transbordo email.mascarado@exemplo.test Sim":
+          - cell "Transbordo":
+            - img
+            - text: Transbordo
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "UserCSPloomes email.mascarado@exemplo.test Sim":
+          - cell "UserCSPloomes":
+            - img
+            - text: UserCSPloomes
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"
+        - row "prometheus - iago email.mascarado@exemplo.test Sim":
+          - cell "prometheus - iago":
+            - img
+            - text: prometheus - iago
+          - cell "email.mascarado@exemplo.test"
+          - cell "Sim"

@@ -1,0 +1,11 @@
+<dynamic-tabs
+  ng-if="$ctrl.initial_load"
+  entity="$ctrl.mainEntity"
+  filter="$ctrl.table_filter"
+  tabs="$ctrl.tabs"
+  current-tab="$ctrl.currentTab"
+  change-tab-callback="$ctrl.changeTabCallback(current_tab)"
+  toggle-sidebar="$ctrl.tableSidebar"
+  toggle-sidebar-callback="$ctrl.toggleSidebarCallback(toggle)"
+  cypress-prefix="tasks-table"
+></dynamic-tabs>

@@ -1,0 +1,50 @@
+<div>
+    <div class="input-group" ng-class="{ 'invalid-input': foreignZipCodeCtrl.hasValidationError }">
+      <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+        <button class="btn button button-white all-in-center-flex" uib-dropdown-toggle ng-disabled="disabled">
+          <img
+            ng-src="{{foreignZipCodeCtrl.rootUrl + '/assets/images/paises/' + (parentModel.contact_zipcode_country && parentModel.contact_zipcode_country[0] ? parentModel.contact_zipcode_country[0].Short2.toLowerCase() : 'none') + '.png'}}"
+            width="15">
+        </button>
+        <ul class="dropdown-menu dropdown-max-height-small white-dropdown-menu" uib-dropdown-menu style="z-index: 10000;">
+          <li>
+            <a href class="white-dropdown-link" ng-click="!disabled && foreignZipCodeCtrl.changeCountry(null, parentModel)">
+              <img ng-src="{{foreignZipCodeCtrl.rootUrl + '/assets/images/paises/none.png'}}" width="15" />
+              <span>Sem máscara</span>
+            </a>
+          </li>
+          <li ng-repeat="country in foreignZipCodeCtrl.zipCodeCountries">
+            <a href class="white-dropdown-link" ng-click="!disabled && foreignZipCodeCtrl.changeCountry(country, parentModel)">
+              <img
+                ng-src="{{foreignZipCodeCtrl.rootUrl + '/assets/images/paises/' + (country.Short2 ? country.Short2.toLowerCase() : 'none') + '.png'}}"
+                width="15" />
+              <span>{{country.ForeignZipCodeMask.replace('?','')}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Input with a mask -->
+      <input ng-if="parentModel.contact_zipcode_country[0] && parentModel.contact_zipcode_country[0].ForeignZipCodeMask"
+      name="{{::field.key}}" class="form-control input-sm text-uppercase" id="foreign-zip-code-field"
+      ui-mask="{{parentModel.contact_zipcode_country[0].ForeignZipCodeMask}}" 
+      ui-options="{{foreignZipCodeCtrl.ui_options}}" model-view-value="true" 
+      ng-model="model" ng-model-options="{ 'debounce': 300 }" maxlength="80" ng-required="required"
+      ng-disabled="disabled" ng-focus="foreignZipCodeCtrl.updateZipCodeMask(parentModel.contact_zipcode_country[0], true)"
+      check-uniqueness check-uniqueness-field="field"
+      check-uniqueness-model="parentModel" check-uniqueness-disable="false" ng-change="foreignZipCodeCtrl.updateModel(model)"
+      foreign-zipcode-validation
+      aria-label="{{ 'ARIA_LABELS.FIELD.FOREIGN_ZIPCODE' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}">
+
+      <!-- Input without a mask -->
+      <input ng-if="!parentModel.contact_zipcode_country[0] || !parentModel.contact_zipcode_country[0].ForeignZipCodeMask"
+      name="{{::field.key}}" class="form-control input-sm text-uppercase" id="foreign-zip-code-field-no-mask"
+      model-view-value="true" 
+      ng-model="model" ng-model-options="{ 'debounce': 300 }" maxlength="80" ng-required="required"
+      ng-disabled="disabled" ng-focus="foreignZipCodeCtrl.updateZipCodeMask(parentModel.contact_zipcode_country[0], true)"
+      check-uniqueness check-uniqueness-field="field"
+      check-uniqueness-model="parentModel" check-uniqueness-disable="false" ng-change="foreignZipCodeCtrl.updateModel(model)"
+      foreign-zipcode-validation
+      aria-label="{{ 'ARIA_LABELS.FIELD.FOREIGN_ZIPCODE' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}">
+    </div>
+  </div>

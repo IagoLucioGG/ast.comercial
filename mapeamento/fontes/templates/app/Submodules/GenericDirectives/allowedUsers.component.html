@@ -1,0 +1,86 @@
+<div title="{{ $ctrl.title }}" ng-class="{'col-sm-12': !$ctrl.removeSideWrapper}" ng-if="$ctrl.can_load">
+  <label ng-if="$ctrl.title">{{ $ctrl.title }}</label>
+  <div 
+    class="input-group full-width allowed-user-select" 
+    ng-class="{ 'border-none': $ctrl.model && ($ctrl.model.allowed_mode === 'All' || ($ctrl.model.allowed_views && $ctrl.model.allowed_views.length > 0)) }"
+  >
+    <div class="input-group-btn">
+      <a 
+        class="btn button button-white dropdown-toggle" 
+        data-cy="allowed-users-btn-dropdown-toggle"
+        ng-class="{ 'disabled': $ctrl.disableSelector }" 
+        aria-label="{{ 'DYNAMIC_TABLE.TAB_VIEW_PERMISSION' | translate }}"
+        data-toggle="dropdown"
+        aria-haspopup="true" 
+        aria-expanded="false" 
+      >
+        <span ng-if="$ctrl.current_allowed_mode === 'All'">
+          <i class="far fa-globe-americas simple-line list-simple-line"></i> {{ $ctrl.texts.viewAll }}
+        </span>
+        <span ng-if="$ctrl.current_allowed_mode === 'Users'">
+          <i class="far fa-user simple-line list-simple-line"></i> {{ $ctrl.texts.viewUser }}
+        </span>
+        <span ng-if="$ctrl.current_allowed_mode === 'Teams'">
+          <i class="far fa-users simple-line list-simple-line"></i> {{ $ctrl.texts.viewTeam }}
+        </span>
+        <span ng-if="$ctrl.current_allowed_mode === 'Users@Profiles'">
+          <i class="far fa-user-unlock simple-line list-simple-line"></i> {{ $ctrl.texts.viewProfile }}
+        </span>
+        <i class="fal fa-angle-down dropdown-sign" ng-if="$ctrl.has_more_than_one_option"></i>
+      </a>
+      <ul class="dropdown-menu left-menu white-dropdown-menu" ng-if="!$ctrl.blockEdit && $ctrl.has_more_than_one_option">
+        <li>
+          <a 
+            class="white-dropdown-link" 
+            ng-if="$ctrl.current_allowed_mode !== 'Users' && !$ctrl.blockUsersSelect"
+            data-cy="allowed-users-user" 
+            ng-click="$ctrl.changeCurrentMode(1)" 
+            aria-label="{{ 'ARIA_LABELS.FILTER.ONE_OR_MORE_USERS_OPTION' | translate }}"
+          >
+            <div class="hbox">
+              <aside class="v-middle text-center width-25 min-width-25 max-width-25"><i class="far fa-user simple-line list-simple-line"></i></aside>
+              <aside class="v-middle">{{ $ctrl.texts.viewUser }}</aside>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a 
+            class="white-dropdown-link" 
+            ng-if="$ctrl.current_allowed_mode !== 'Teams' && !$ctrl.blockTeamsSelect"
+            data-cy="allowed-users-team" 
+            ng-click="$ctrl.changeCurrentMode(2)" 
+            aria-label="{{ 'ARIA_LABELS.FILTER.ONE_OR_MORE_TEAMS_OPTION' | translate }}"
+          >
+            <div class="hbox">
+              <aside class="v-middle text-center width-25 min-width-25 max-width-25"><i class="far fa-users simple-line list-simple-line"></i></aside>
+              <aside class="v-middle">{{ $ctrl.texts.viewTeam }}</aside>
+            </div>
+          </a>
+        </li>
+        <li ng-if="$ctrl.model.has_profile_option">
+          <a data-cy="allowed-users-profile" class="white-dropdown-link" ng-click="$ctrl.changeCurrentMode(3)"  ng-if="$ctrl.current_allowed_mode !== 'Users@Profiles' && !$ctrl.blockUserProfileSelect">
+            <div class="hbox">
+              <aside class="v-middle text-center width-25 min-width-25 max-width-25"><i class="far fa-user-unlock simple-line list-simple-line"></i></aside>
+              <aside class="v-middle">{{ $ctrl.texts.viewProfile }}</aside>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a 
+            class="white-dropdown-link" 
+            ng-if="$ctrl.current_allowed_mode !== 'All' && !$ctrl.blockViewAllSelect"
+            data-cy="allowed-users-all" 
+            ng-click="$ctrl.changeCurrentMode(4)"  
+            aria-label="{{ 'ARIA_LABELS.FILTER.EVERYONE_IN_COMPANY_OPTION' | translate }}"
+          >
+            <div class="hbox">
+              <aside class="v-middle text-center width-25 min-width-25 max-width-25"><i class="far fa-globe-americas simple-line list-simple-line"></i></aside>
+              <aside class="v-middle">{{ $ctrl.texts.viewAll }}</aside>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <new-field ng-if="$ctrl.current_allowed_mode !== 'All'" field="$ctrl.allowed_views_field" model="$ctrl.model" property="'allowed_views'" required="false" disabled="$ctrl.blockEdit" wide="true" hide-label="true" model-change-callback="$ctrl.modelChangeCallback(new_val)"></new-field>
+  </div>
+</div>

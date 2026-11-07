@@ -1,0 +1,34 @@
+<div class="tab-content stretch-40">
+  <div class="tab-pane active stretch">
+    <deal-page-timeline ng-if="$ctrl.currentTab.Key === 'timeline'" model="$ctrl.model" deal-field-status="$ctrl.dealFieldStatus"></deal-page-timeline>
+    <page-attachments
+      ng-if="$ctrl.currentTab.Key === 'attachments_list'"
+      model="$ctrl.model"
+      api-url="'Deals'"
+      query-fn="$ctrl.currentTab.QueryFn"
+      actions="$ctrl.currentTab.Actions",
+      create-new-label="$ctrl.currentTab.CreateNewLabel"
+      attachments-count="$ctrl.attachmentsCount"
+      change-attachments-count-fn="$ctrl.currentTab.CounterChangeFn">
+    </page-attachments>
+    <page-external-forms
+      ng-if="$ctrl.currentTab.Key === 'external_forms_list'"
+      model="$ctrl.model"
+      api-url="'Deals'"
+      can-create-new="$ctrl.model.Editable"
+      external-forms-count="$ctrl.currentTab.Counter"
+      change-external-forms-count-fn="$ctrl.currentTab.CounterChangeFn">
+    </page-external-forms>
+    <deal-page-entity-table
+      ng-if="$ctrl.currentTab.Key !== 'timeline' && $ctrl.currentTab.Key !== 'attachments_list' && $ctrl.currentTab.Key !== 'external_forms_list'"
+      model="$ctrl.model"
+      main-entity-id="$ctrl.currentTab.MainEntityId"
+      entities="$ctrl.currentTab.AvailableEntities"
+      modes="$ctrl.currentTab.AvailableModes"
+      query-fn="$ctrl.currentTab.QueryFn"
+      actions="$ctrl.currentTab.Actions"
+      reload-deal-fn="$ctrl.reloadDealFn"
+      prevent-action-navigations="$ctrl.preventActionNavigations">
+    </deal-page-entity-table>
+  </div>
+</div>

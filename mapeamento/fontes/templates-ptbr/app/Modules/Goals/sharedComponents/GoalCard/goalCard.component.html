@@ -1,0 +1,119 @@
+<div 
+  class="panel white-content widget-hover position-relative b-1"
+  ng-mouseover="$ctrl.displayGoalButtons = true"
+  ng-mouseleave="$ctrl.displayGoalButtons = false"
+>
+  <div class="white-content b-b-1 rectangular-wrapper border-top-fix move-goal">
+    <div class="move-goal-card">
+      <div class="font-semi-big move-goal-card-mw-w-50">
+        <ellipsis-text text-tooltip="{{$ctrl.goal.Name}}">
+          {{$ctrl.goal.Name}}
+        </ellipsis-text>
+      </div>
+      <div class="text-right goal-actions">
+        <div class="dropdown display-inline-block goal-date">
+          <a class="button button-white-no-border button-super-small dropdown-toggle" data-toggle="dropdown">
+            <span class="font-regular-weight font-semi-big content">
+              <span class="text-action"><i class="fal fa-calendar button-icon"></i></span>
+              {{$ctrl.active_interval.Display}}
+              <i class="fal fa-angle-down dropdown-sign dropdown-sign-special"></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu no-padding-top">
+            <li>
+              <div class="dropdown-subtitle">Filtro de data - Intervalo {{$ctrl.goal.Interval.Name}}</div>
+            </li>
+            <li ng-repeat="interval in $ctrl.intervals">
+              <a class="white-dropdown-link" ng-click="$ctrl.changeInterval(interval)">
+                <div class="hbox">
+                  <aside class="width-20 v-middle">
+                    <span ng-show="interval.Active">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </aside>
+                  <aside class="font-semi-big v-middle">
+                    {{interval.Display}}
+                  </aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="goal-buttons-container" ng-show="$ctrl.displayGoalButtons">
+          <div
+            class="display-inline-block"
+            uib-tooltip="{{ $ctrl.last_update_label }}"
+            tooltip-append-to-body="true"
+            tooltip-placement="auto top"
+            tooltip-enable="!$ctrl.loading"
+          >
+            <button class="button button-white button-super-small" ng-click="$ctrl.getCurrentIntervalGoalValue(false)" ng-disabled="$ctrl.loading">
+              <span class="font-regular-weight text-action font-semi-big">
+                <i class="fal fa-sync" ng-class="{ 'fa-spin': $ctrl.loading }"></i>
+              </span>
+            </button>
+          </div>
+          <div class="display-inline-block goal-edit" ng-if="$ctrl.goal.Editable">
+            <a class="button button-white button-super-small" ui-sref="{{state.current.name + '.editgoal({ goalid: $ctrl.goal.Id' + ($ctrl.panelId ? ', goalpanelid: ' + $ctrl.panelId : '') + ' })'}}">
+              <span class="font-regular-weight text-action font-semi-big">
+                <i class="fal fa-pen"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrapper min-height-85">
+    <div>
+      <div class="goal-evolution" ng-show="!$ctrl.loading">
+        <div class="hbox goal-numbers ellipsis-container" >
+          <aside 
+            class="nowrap font-semi-big current-value"
+          >
+            <div
+              class="ellipsis"
+              uib-tooltip="{{$ctrl.goal.ShowPercentage ? '': $ctrl.formatted_current_value}} ({{$ctrl.formatted_goal_percentage + '%'}})"
+              tooltip-append-to-body="true"
+              tooltip-placement="auto top"
+              tooltip-enable="$ctrl.isCurrentValueTooltipEnabled()"
+            >
+              <span>
+                {{$ctrl.goal.ShowPercentage ? '': $ctrl.formatted_current_value}} ({{$ctrl.formatted_goal_percentage + '%'}})
+              </span>
+            </div>
+          </aside>
+
+          <aside
+            class="nowrap text-right font-semi-big"
+          >
+            <div 
+              class="ellipsis"
+              uib-tooltip="{{$ctrl.goal.ShowPercentage ? '' : $ctrl.formatted_goal_value}} (100%)"
+              tooltip-append-to-body="true"
+              tooltip-placement="auto top"
+              tooltip-enable="$ctrl.isGoalValueTooltipEnabled()"
+            >
+              <span>
+                {{$ctrl.goal.ShowPercentage ? '' : $ctrl.formatted_goal_value}} (100%)
+              </span>
+            </div>
+          </aside>
+        </div>
+        <div class="gap-5"></div>
+        <div class="progress table-progress goal-bar" ng-click="$ctrl.openDetailedGoal()">
+          <div class="progress-bar" ng-style="{ 'width': $ctrl.goal_percentage + '%', 'background-color': $ctrl.goal.Color }"></div>
+        </div>
+      </div>
+      <div class="gap-10" ng-show="$ctrl.loading"></div>
+      <standard-loader margin-top="0" loading="$ctrl.loading" optionalclass="'timeline-loader'"></standard-loader>
+      <div ng-if="$ctrl.errorLoadingGoal" class="p-10 text-center font-big">
+        <span class="text-danger">
+          <i class="fad fa-exclamation-circle"></i>
+        </span>
+        &nbsp;
+        Erro de processamento do gráfico
+      </div>
+    </div>
+  </div>
+</div>

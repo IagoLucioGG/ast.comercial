@@ -1,0 +1,234 @@
+<div class="tab-pane" id="d">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Tem acesso ao módulo de (name:deal::p)?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsModule" ng-value="true"><strong>Sim</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsModule" ng-value="false"><strong>Não</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        (name:deal::p) que pode visualizar
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsView" ng-value="1">
+          <strong>
+            Todos
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsView" ng-value="2">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION_OR_TEAM_MEMBERS' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsView" ng-value="3">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="gap-10"></div>
+      <div class="checkbox" ng-class="{'checkbox-disabled': model.DealsView === 1}">
+        <label>
+          <input class="inline-option" type="checkbox" ng-model="model.DealsContactsView" ng-disabled="model.DealsView === 1">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION' | translate }}
+          </strong>
+          <small class="checkbox-info" uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION_INFO' | translate }}" tooltip-append-to-body="true">
+            <i class="fas fa-info-circle"></i>
+          </small>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        (name:deal::p) que pode editar
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION_OR_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="3">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="4">
+          <strong>
+            Nenhum
+          </strong>
+        </label>
+      </div>
+      <div class="gap-10"></div>
+      <div class="checkbox" ng-class="{'checkbox-disabled': model.DealsEdit === 1 || model.DealsEdit === 4}">
+        <label>
+          <input class="inline-option" type="checkbox" ng-model="model.DealsContactsEdit" ng-disabled="model.DealsEdit === 1 ||  model.DealsEdit === 4">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION' | translate }}
+          </strong>
+          <small
+            class="checkbox-info"
+            uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION_INFO' | translate }}"
+            tooltip-append-to-body="true"
+          >
+            <i class="fas fa-info-circle"></i>
+          </small>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="dealsModuleOptionsCtrl.pipeline_merge_feature">
+      <div class="font-thin font-title">
+        (name:deal::p) que pode mesclar
+        <i class="fa fa-info-circle merge-permission-tooltip" tooltip-append-to-body="true" uib-tooltip="Esta opção será desativada caso o usuário não tenha permissão para editar (name:deal::p)."></i>
+      </div>
+      <div class="line"></div>
+      <div>
+        <span class="merge-permission-details-text">
+          Se você tiver permissão de editar (um:deal:aa:s) (name:deal::s) e for o responsável, poderá mesclar com (outro:deal:aa:p) (name:deal::p) (do:pipeline:aa:s) (name:pipeline:aa:s), desde que (o:pipeline:aa:s) (name:pipeline:aa:s) em questão esteja com essa função habilitada.
+        </span>
+      </div>
+      <div class="radio" class="block-content-text">
+        <label class="merge-permission-disabled-inputs">
+          <input class="inline-option"
+            id="merge-only-view-responsibility-permission"
+            type="radio"
+            ng-model="model.DealsEdit"
+            ng-change="{{dealsModuleOptionsCtrl.verifyPermissionModelValue(model.DealsEdit)}}" 
+            ng-disabled="true"
+          >
+          Sob sua responsabilidade
+        </label>
+      </div>
+      <div class="radio" class="block-content-text">
+        <label class="merge-permission-disabled-inputs">
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="4" ng-disabled="true">
+          Nenhum
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        (name:deal::p) que pode excluir
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION_OR_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="3">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="4">
+          <strong>
+            Nenhum
+          </strong>
+        </label>
+      </div>
+      <div class="gap-10"></div>
+      <div class="checkbox" ng-class="{'checkbox-disabled': model.DealsDelete === 1 || model.DealsDelete === 4}">
+        <label>
+          <input class="inline-option" type="checkbox" ng-model="model.DealsContactsDelete" ng-disabled="model.DealsDelete === 1 || model.DealsDelete === 4">
+          <strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION' | translate }}</strong>
+          <small
+            class="checkbox-info"
+            uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION_INFO' | translate }}"
+            tooltip-append-to-body="true"
+          >
+            <i class="fas fa-info-circle"></i>
+          </small>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Pode criar novos (name:deal::p)?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsCreatePermission" ng-value="true"><strong>Sim</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsCreatePermission" ng-value="false"><strong>Não</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Pode ganhar e perder (name:deal::p)?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsWinOrLosePermission" ng-value="true"><strong>Sim</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsWinOrLosePermission" ng-value="false"><strong>Não</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+         Pode reabrir (name:deal::p)?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsReopenPermission" ng-value="true"><strong>Sim</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsReopenPermission" ng-value="false"><strong>Não</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,548 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - textbox "Busque usuários pelo nome ou e-mail"
+      - text: 
+    - complementary:
+      - link " Novo usuário":
+        - /url: ""
+      - link "Dropdown de 'Ações de filtros'" [expanded]:
+        - /url: ""
+        - text:  Filtros 
+    - complementary:
+      - complementary: Abas
+      - complementary: Nova aba
+      - 'button "botão para selecionar aba: Usuários ativos"':
+        - complementary: Usuários ativos
+        - complementary: 
+      - 'button "botão para selecionar aba: Usuários inativos"':
+        - complementary: Usuários inativos
+        - complementary: 
+      - 'button "botão para selecionar aba: Representações"':
+        - complementary: Representações
+        - complementary: 
+      - 'button "botão para selecionar aba: Bases"':
+        - complementary: Bases
+        - complementary: 
+      - 'button "botão para selecionar aba: Edita Usuários Colaboradores"':
+        - complementary: Edita Usuários Colaboradores
+        - complementary: 
+      - 'button "botão para selecionar aba: Equipe x Produto"':
+        - complementary: Equipe x Produto
+        - complementary: 
+      - 'button "botão para selecionar aba: Usuários Acessando"':
+        - complementary: Usuários Acessando
+        - complementary: 
+      - 'button "botão para selecionar aba: Nos"':
+        - complementary: Nos
+        - complementary: 
+    - complementary: 
+    - complementary:
+      - table:
+        - rowgroup:
+          - row "":
+            - columnheader:
+              - complementary: Último acesso
+              - complementary
+            - columnheader:
+              - complementary: Nome Completo
+              - complementary
+            - columnheader:
+              - complementary: Identificador
+              - complementary
+            - columnheader:
+              - complementary: E-mail
+              - complementary
+            - columnheader:
+              - complementary: Departamento
+              - complementary
+            - columnheader:
+              - complementary: Nome
+              - complementary
+            - columnheader:
+              - complementary: Id
+              - complementary
+            - columnheader:
+              - complementary: Perfil
+              - complementary
+            - columnheader:
+              - complementary: Equipes
+              - complementary
+            - columnheader:
+              - complementary: Equipes Nome
+              - complementary
+            - columnheader:
+              - complementary: Telefone
+              - complementary
+            - columnheader:
+              - complementary: Identificador
+              - complementary
+            - columnheader:
+              - complementary: Categoria
+              - complementary
+            - columnheader:
+              - complementary: Inativado por
+              - complementary
+            - columnheader:
+              - complementary: Cargo
+              - complementary
+            - columnheader:
+              - complementary: Último acesso
+              - complementary
+            - columnheader:
+              - complementary: Access token
+              - complementary
+            - columnheader:
+              - complementary: Equipe do Usuário
+              - complementary
+            - columnheader:
+              - complementary: Gestor
+              - complementary
+            - columnheader:
+              - complementary: Inativo
+              - complementary
+            - columnheader ""
+        - rowgroup
+        - rowgroup:
+          - 'link "linha da tabela selecionável do item: 70001139"':
+            - cell
+            - cell "ABRAO ELIAS SLIBA "
+            - cell ""
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL FORTALEZA "
+            - cell "ABRAO.FORTALEZA "
+            - cell "70001139"
+            - cell "Gestor Representação "
+            - cell "FILIAL FORTALEZA ":
+              - link "FILIAL FORTALEZA":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "Funcionário "
+            - cell ""
+            - cell ""
+            - cell
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000189"':
+            - cell "27/10/2026"
+            - cell "Abrão Elias "
+            - cell "0010000BKQ "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL RIO "
+            - cell "ABRAO.RIO "
+            - cell "70000189"
+            - cell "Vendedor Filial "
+            - cell "FILIAL RIO FILIAL FORTALEZA ":
+              - link "FILIAL RIO":
+                - /url: ""
+              - link "FILIAL FORTALEZA":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000BKQ "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "27/10/2026"
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000105"':
+            - cell "Hoje"
+            - cell "Ademilson Rodrigues "
+            - cell "0010000BAT "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL ABC "
+            - cell "ADEMILSON.ABC "
+            - cell "70000105"
+            - cell "Vendedor Filial "
+            - cell "FILIAL ABC ":
+              - link "FILIAL ABC":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000BAT "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70001075"':
+            - cell "Hoje"
+            - cell "ADRIANA FERRARI CATALANI CRISTOFOLI "
+            - cell "0010000DTI "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL CAMPINAS "
+            - cell "ADRIANA.CAMPINAS "
+            - cell "70001075"
+            - cell "Vendedor Filial "
+            - cell "FILIAL CAMPINAS ":
+              - link "FILIAL CAMPINAS":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000DTI "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000225"':
+            - cell "Hoje"
+            - cell "Adriana Silvestre "
+            - cell "00100003L0 "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL RECIFE "
+            - cell "ADRIANA.RECIFE "
+            - cell "70000225"
+            - cell "Vendedor Filial "
+            - cell "FILIAL RECIFE ":
+              - link "FILIAL RECIFE":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "81 99972.2367 "
+            - cell "00100003L0 "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000550"':
+            - cell "Hoje"
+            - cell "Adriano José dos Santos "
+            - cell "0010000CS7 "
+            - cell "email.mascarado@exemplo.test "
+            - cell "REPR RN - MOSSORÓ "
+            - cell "ADRIANO.MOSSORO "
+            - cell "70000550"
+            - cell "Gestor Filial "
+            - cell "REPR RN - MOSSORÓ ":
+              - link "REPR RN - MOSSORÓ":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000CS7 "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Gerente "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70001105"':
+            - cell "Ontem"
+            - cell "REINALDO DA SILVA ADRIANO "
+            - cell "0010000DWQ "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL SALVADOR "
+            - cell "ADRIANO.SALVADOR "
+            - cell "70001105"
+            - cell "Vendedor Filial "
+            - cell "FILIAL SALVADOR ":
+              - link "FILIAL SALVADOR":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000DWQ "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Ontem"
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000307"':
+            - cell "Ontem"
+            - cell "Alan Mello "
+            - cell "00100002PJ "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL BELO HORIZONTE "
+            - cell "ALAN.BH "
+            - cell "70000307"
+            - cell "Vendedor Filial "
+            - cell "FILIAL BELO HORIZONTE ":
+              - link "FILIAL BELO HORIZONTE":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "00100002PJ "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Ontem"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000673"':
+            - cell "Hoje"
+            - cell "ALAN SANTOS ALMEIDA "
+            - cell "00100005GW "
+            - cell "email.mascarado@exemplo.test "
+            - cell "REPR BA-V. CONQUISTA "
+            - cell "ALAN.CUBO "
+            - cell "70000673"
+            - cell "Vendedor Filial "
+            - cell "REPR BA-V. CONQUISTA REPR BA - LAURO DE FREITAS ":
+              - link "REPR BA-V. CONQUISTA":
+                - /url: ""
+              - link "REPR BA - LAURO DE FREITAS":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "00100005GW "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70001030"':
+            - cell "Hoje"
+            - cell "ALAN DECKEN "
+            - cell "0010000DQK "
+            - cell "email.mascarado@exemplo.test "
+            - cell "PROSOFT RS - PORTO ALEGRE "
+            - cell "ALAN.PLANOA "
+            - cell "70001030"
+            - cell "Vendedor Representação "
+            - cell "PROSOFT RS - PORTO ALEGRE ":
+              - link "PROSOFT RS - PORTO ALEGRE":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000DQK "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70001136"':
+            - cell
+            - cell "ALCINDO OLIVEIRA LOPES "
+            - cell ""
+            - cell "email.mascarado@exemplo.test "
+            - cell "REPR SC - CHAPECÓ "
+            - cell "ALCINDO.CHAPECO "
+            - cell "70001136"
+            - cell "Vendedor Representação "
+            - cell "REPR SC - CHAPECÓ ":
+              - link "REPR SC - CHAPECÓ":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "Funcionário "
+            - cell ""
+            - cell ""
+            - cell
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000828"':
+            - cell "Hoje"
+            - cell "ALESSANDRA MONTENEGRO DE MEDEIROS "
+            - cell "0010000D91 "
+            - cell "email.mascarado@exemplo.test "
+            - cell "COMERCIAL MATRIZ "
+            - cell "ALEMEDEIROS.VENDAS "
+            - cell "70000828"
+            - cell "Vendedor Matriz "
+            - cell "ALTERDATA MATRIZ ALTERDATA MATRIZ - Vertical Contábil ":
+              - link "ALTERDATA MATRIZ":
+                - /url: ""
+              - link "ALTERDATA MATRIZ - Vertical Contábil":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000D91 "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 70000544"':
+            - cell "Hoje"
+            - cell "ALESSANDRA ALVES "
+            - cell "0010000CFX "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL BELO HORIZONTE "
+            - cell "ALESSANDRA.BH "
+            - cell "70000544"
+            - cell "Vendedor Filial "
+            - cell "FILIAL BELO HORIZONTE ":
+              - link "FILIAL BELO HORIZONTE":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "0010000CFX "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 103453"':
+            - cell "Ontem"
+            - cell "Alessandra de Souza "
+            - cell "00100002LG "
+            - cell "email.mascarado@exemplo.test "
+            - cell "COMERCIAL MATRIZ "
+            - cell "ALESSANDRA.VENDAS "
+            - cell "103453"
+            - cell "Vendedor Matriz "
+            - cell "ALTERDATA MATRIZ ALTERDATA MATRIZ - Vertical Contábil ":
+              - link "ALTERDATA MATRIZ":
+                - /url: ""
+              - link "ALTERDATA MATRIZ - Vertical Contábil":
+                - /url: ""
+              - text: 
+            - cell "ALTERDATA MATRIZ "
+            - cell ""
+            - cell "00100002LG "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Ontem"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+          - 'link "linha da tabela selecionável do item: 112360"':
+            - cell "Hoje"
+            - cell "Alessandro Cardoso "
+            - cell "001000056E "
+            - cell "email.mascarado@exemplo.test "
+            - cell "FILIAL ITABUNA "
+            - cell "ALESSANDRO.ITABUNA "
+            - cell "112360"
+            - cell "Vendedor Filial "
+            - cell "FILIAL ITABUNA ":
+              - link "FILIAL ITABUNA":
+                - /url: ""
+              - text: 
+            - cell "FILIAL ITABUNA "
+            - cell ""
+            - cell "001000056E "
+            - cell "Funcionário "
+            - cell ""
+            - cell "Vendedor "
+            - cell "Hoje"
+            - cell "TOKEN-OAUTH-GOOGLE-REDIGIDO "
+            - cell ""
+            - cell ""
+            - cell "Não"
+            - cell
+      - text: Mostrando 1 - 15 de 449
+      - menu:
+        - menuitem "Primeira":
+          - link "Primeira":
+            - /url: ""
+        - menuitem "Anterior":
+          - link "Anterior":
+            - /url: ""
+        - menuitem "1":
+          - link "1":
+            - /url: ""
+        - menuitem "2":
+          - link "2":
+            - /url: ""
+        - menuitem "3":
+          - link "3":
+            - /url: ""
+        - menuitem "4":
+          - link "4":
+            - /url: ""
+        - menuitem "5":
+          - link "5":
+            - /url: ""
+        - menuitem "...":
+          - link "...":
+            - /url: ""
+        - menuitem "Próxima":
+          - link "Próxima":
+            - /url: ""
+        - menuitem "Última":
+          - link "Última":
+            - /url: ""

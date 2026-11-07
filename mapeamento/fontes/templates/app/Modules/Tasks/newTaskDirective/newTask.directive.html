@@ -1,0 +1,68 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'TASKS.NEW_TASK_MODAL.TITLE' | translate }}"
+  toggle-modal="taskCtrl.toggle_modal"
+  ng-form
+  name="new_task_form"
+  editable-form
+  cypress-prefix="tasks-new-task-modal"
+  is-fetching-modal-content="taskCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="hbox stretch">
+      <aside class="overflow-hidden width-400 white-content">
+        <div class="activities arrange-mid">
+          <a ng-repeat="task_type in taskCtrl.all_types"
+            class="{{task_type.Id == taskCtrl.newTask.task_type.Id ? 'chosen' : ''}}" href
+            ng-style="{ 'width': taskCtrl.widthPercentage, 'background-color': task_type.Id == taskCtrl.newTask.task_type.Id ? task_type.Color : '' }"
+            ng-click="taskCtrl.changeType(taskCtrl.newTask, task_type)" uib-tooltip="{{task_type.Name}}"
+            tooltip-append-to-body="true">
+            <div class="font-big {{task_type.Id == taskCtrl.newTask.task_type.Id ? 'text-muted' : 'text-regular-color'}}">
+              <i ng-style="{ 'color': task_type.Id == taskCtrl.newTask.task_type.Id ? '#fff' : '' }"
+                class="fal {{task_type.Icon}}"></i>
+            </div>
+          </a>
+        </div>
+        <div class="line line-border arrange-top"></div>
+
+        <div class="vbox deals-vbox scroll-shadow white-content" scroll-shadow>
+          <section class="scrollable scroll-shadow-container">
+            <div class="gap-15"></div>
+            <forms model="taskCtrl.newTask" fields="taskCtrl.forms[0]" form="new_task_form"></forms>
+            <div class="form-group col-sm-12">
+              <div class="line line-no-margins"></div>
+            </div>
+            <new-task-attachments upload-files-fn="taskCtrl.setUploadFilesFn"></new-task-attachments>
+          </section>
+        </div>
+      </aside>
+      <aside class="b-l-1 overflow-hidden white-content">
+        <div class="sub-header b-b-1 scroll-shadow arrange-mid">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <span class="font-thin font-title">{{ 'TASKS.NEW_TASK_MODAL.BONDS' | translate }}</span>
+            </aside>
+          </div>
+        </div>
+        <div class="vbox deals-vbox scroll-shadow neutral-shadow" scroll-shadow>
+          <section class="scrollable scroll-shadow-container">
+            <div class="gap-15"></div>
+            <forms model="taskCtrl.newTask" fields="taskCtrl.forms[1]" form="new_task_form"></forms>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <aside class="v-middle">
+      <button class="button button-action pull-right" ng-disabled="taskCtrl.loading"
+        ng-click="taskCtrl.submitControl(taskCtrl.newTask, new_task_form)">
+        {{ 'GENERICS.SAVE' | translate }}
+      </button>
+      <loading-tooltip loading="taskCtrl.loading" form="new_task_form"></loading-tooltip>
+    </aside>
+  </modal-footer>
+</dynamic-modal>

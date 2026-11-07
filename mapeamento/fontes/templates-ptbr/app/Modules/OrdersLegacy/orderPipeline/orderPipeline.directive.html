@@ -1,0 +1,67 @@
+<dynamic-modal modal-id="{{::modalId}}" 
+  wide="true"
+  footer="false" 
+  dark="true"
+  modal-title="Estágios de Vendas"
+  toggle-modal="orderPipelineCtrl.toggle_modal"
+  ng-form
+  name="new_contact_form"
+  is-fetching-modal-content="orderPipelineCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="gap-15"></div>
+        <div class="side-wrapper">
+          <span class="font-thin font-title">Estágios</span>
+          <br>
+          <span class="text-muted">Defina as etapas do seu processo de vendas</span>
+          <div class="gap-5"></div>
+          <div class="side-scroll darkest-background b-t-1 b-r-1 b-b-1 b-l-1">
+            <div class="side-scroll-container light-background wrapper nowrap">
+              <div class="darkest-background width-200 b-t-1 b-b-1 b-r-1 b-l-1 simple-inline smaller-vertical-wrapper panel v-top">
+                <label class="font-regular-weight">Novo estágio</label>
+                <span class="align-limited-characters">
+                  <span class="text-muted font-small">
+                    {{(orderPipelineCtrl.newStage.Name.length || '0') + '/' + orderPipelineCtrl.maxLengthStageName}}  
+                  </span>
+                </span>
+                <input class="form-control input-sm" ng-model="orderPipelineCtrl.newStage.Name" maxlength="{{orderPipelineCtrl.maxLengthStageName}}" placeholder="Nome do estágio">
+                <div class="gap-5"></div>
+                <a href class="btn button button-action btn-sm full-width" ng-click="orderPipelineCtrl.createNewStage(orderPipelineCtrl.newStage)">
+                  Salvar
+                </a>
+              </div>
+              <ul class="m0 funnel-stages-config display-inline-block" ui-sortable="orderPipelineCtrl.options" ng-model="orderPipelineCtrl.stages">
+                <li class="width-200 simple-inline v-top" ng-repeat="stage in orderPipelineCtrl.stages">
+                  <div class="b-1 wrapper panel darkest-background">
+                    <div class="hbox">
+                      <aside>
+                        <div>
+                          <div class="new-pipeline-stage-card width-130" id="order-pipeline-stage-{{stage.Id}}" uib-tooltip="{{stage.Name}}" tooltip-append-to-body="true" tooltip-enable="orderPipelineCtrl.isTooltipEnabled('order-pipeline-stage-{{stage.Id}}')">
+                            <strong class="font-very-big" ng-show="!orderPipelineCtrl.editing_stage || (orderPipelineCtrl.editing_stage && orderPipelineCtrl.editing_stage.Id !== stage.Id)" ng-click="orderPipelineCtrl.startStageNameEdit(stage)">{{stage.Name}}</strong>
+                            <input class="form-control input-sm" ng-show="orderPipelineCtrl.editing_stage && orderPipelineCtrl.editing_stage.Id === stage.Id" ng-keyup="$event.keyCode === 13 && orderPipelineCtrl.patchOrderStage(stage) && orderPipelineCtrl.endStageNameEdit(stage, true)" ng-blur="orderPipelineCtrl.endStageNameEdit(stage)" ng-model="orderPipelineCtrl.editing_name" placeholder="Nome do estágio">
+                          </div>
+                        </div>
+                      </aside>
+                      <aside ng-if="orderPipelineCtrl.stages.length > 1">
+                        <a class="btn-close-proposal button-fixed-size button-fixed-size-medium button-darkest-background pull-right" ng-click="orderPipelineCtrl.removeStage(stage)" ng-click-confirm="excluir esse estágio" reversible="false" >
+                          <i class="fal fa-trash fixing-fixed-size-button"></i>
+                        </a>
+                      </aside>
+                    </div>
+                    <div class="gap-5"></div>
+                    <div class="line"></div>
+                    <div class="gap-3"></div>
+                  </div>
+                </li>
+              </ul>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

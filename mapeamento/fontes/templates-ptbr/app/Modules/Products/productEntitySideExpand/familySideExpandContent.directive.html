@@ -1,0 +1,64 @@
+<div class="vbox deals-vbox scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container dark-background">
+    <div class="gap-15"></div>
+    <standard-loader margin-top="30" loading="!familyContentCtrl.initial_load"></standard-loader>
+    <div ng-if="familyContentCtrl.initial_load">
+      <div class="side-wrapper">
+        <a class="button button-action full-width"
+          ng-if="familyContentCtrl.self.Profile.ProductsCreatePermission"
+          ng-click="familyContentCtrl.popover_open = !familyContentCtrl.popover_open"
+          uib-popover-template="familyContentCtrl.popoverTemplate"
+          popover-append-to-body="true"
+          popover-enable="familyContentCtrl.popover_open"
+          popover-is-open="familyContentCtrl.popover_open"
+          popover-trigger="none"
+          popover-placement="auto right"
+          popover-title="Criar">
+          Criar grupo
+        </a>
+      </div>
+      <div class="gap-15"></div>
+      <div class="side-wrapper">
+        <input class="form-control input-sm light-background" placeholder="Buscar grupos desta família" ng-if="editing" ng-model="familyContentCtrl.current_query" ng-model-options="{ debounce: 300 }" ng-change="familyContentCtrl.filterProductEntity()">
+      </div>
+      <div class="gap-40"></div>
+      <div class="mini-side-wrapper" infinite-scroll='familyContentCtrl.loadProducts()' infinite-scroll-disabled="familyContentCtrl.reached_end">
+        <div class="contact-page-person-list">
+          <div ng-repeat="group in familyContentCtrl.groups">
+            <div class="short-side-bottom-wrapper">
+              <div class="font-big text-break-word display-flex justify-between">
+                <a class="inline-link-regular" href>{{group.Name}}</a>
+                <div class="display-flex align-self-start">
+                  <a class="button button-light-background-border button-plus pull-right" href ng-if="!editing" ng-click="familyContentCtrl.removeProductEntity($index)">
+                    <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                  </a>
+                  <a class="button button-light-background-border button-plus pull-right" href ng-if="editing && familyContentCtrl.self.Profile.ProductsDeletePermission"  mini-modal mini-modal-title="Transferir produtos de grupo" mini-modal-fields="familyContentCtrl.delete_group_fields" mini-modal-callback="familyContentCtrl.deleteGroup(model, $index)">
+                    <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                  </a>
+                  <a class="button button-light-background-border button-plus pull-right" href ng-click="group.open_collapse = !group.open_collapse">
+                    <i class="fa font-super-super-small text-neutral" ng-class="{'fa-arrow-up-right-and-arrow-down-left-from-center': !group.open_collapse, 'fa-arrow-down-left-and-arrow-up-right-to-center': group.open_collapse}"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="gap-15"></div>
+              <infos-widget ng-if="group.open_collapse" form-key="product_group_form" entity-type="Product" patch-fn="familyContentCtrl.patchFn(model)" model="group"></infos-widget>
+            </div>
+          </div>
+          <standard-loader ng-if="!familyContentCtrl.can_load" optionalclass="'timeline-loader'" loading="!familyContentCtrl.can_load"></standard-loader>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="text/ng-template" id="new-product-for-family-template">
+  <div ng-form name="quick_new_group_form">
+    <forms model="familyContentCtrl.new_group_model" is-popover="true" fields="familyContentCtrl.new_group_form" form="quick_new_group_form"></forms>
+
+    <button type="button" class="button button-action mleft15" ng-disabled="!familyContentCtrl.can_create_load" ng-click="familyContentCtrl.submitControl(familyContentCtrl.new_group_model, quick_new_group_form)" title="Submit" aria-label="Submit">Salvar</button>
+
+    <button type="button" class="button button-white" ng-disabled="!familyContentCtrl.can_create_load" ng-click="familyContentCtrl.closePopover()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <span class="text-danger font-very-big" ng-if="quick_new_group_form.$submitted && quick_new_group_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="Existem campos obrigatórios não preenchidos"><i class="fad fa-exclamation-triangle"></i></span>
+    <div class="loader" ng-if="!familyContentCtrl.can_create_load"></div>
+  </div>
+</script>

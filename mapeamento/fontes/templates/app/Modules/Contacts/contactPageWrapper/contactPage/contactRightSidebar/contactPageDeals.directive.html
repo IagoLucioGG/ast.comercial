@@ -1,0 +1,64 @@
+<div>
+  <div class="short-side-bottom-wrapper">
+    <div class="hbox font-big">
+      <aside>
+        <span>Negócios</span>
+        <a class="inline-link-neutral font-small" href ng-if="contactDealsCtrl.view_open" ng-click="contactDealsCtrl.getOpenDeals()" style="margin-left: 20px">Ver negócios em aberto</a>
+        <a class="inline-link-neutral font-small" href ng-if="!contactDealsCtrl.view_open" ng-click="contactDealsCtrl.getClosedDeals()" style="margin-left: 20px">Ver negócios finalizados</a>
+      </aside>
+      <aside class="text-right width-10 v-middle" ng-if="contactDealsCtrl.self.Profile.DealsCreatePermission">
+        <a class="button button-light-background-border button-plus pull-right" ng-if="contactModel.TypeId === 1 || (contactModel.TypeId === 2 && !contactModel.CompanyId)" ui-sref="{{'contact.newdeal({contact: contactModel})'}}">
+          <i class="fad fa-plus font-super-super-small text-neutral"></i>
+        </a>
+        <div uib-dropdown ng-if="contactModel.TypeId === 2 && contactModel.CompanyId">
+          <a class="button button-white button-short nowrap" uib-dropdown-toggle>
+            {{"novo" | parseWord : contactDealsCtrl.customizables.deals_module.gender_id : "Aa" : "s"}}
+            {{contactDealsCtrl.customizables.deals_module.singular_unit_name.toLowerCase()}}
+            <i class="fal fa-angle-down dropdown-sign"></i>
+          </a>
+          <ul class="white-dropdown-menu pull-right" uib-dropdown-menu>
+            <li>
+              <a class="white-dropdown-link" href ng-click="contactDealsCtrl.openNewDeal(true)">
+                <div class="hbox">
+                  <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                    <span class="text-darkest-neutral">
+                      <i class="fal fa-industry list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    Para Empresa e Pessoa
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" href ng-click="contactDealsCtrl.openNewDeal()">
+                <div class="hbox">
+                  <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                    <span class="text-darkest-neutral">
+                      <i class="fad fa-user list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    Para Pessoa
+                  </aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background">
+      <div class="gap-5"></div>
+      <div class="deals-scroll">
+        <standard-loader margin-top="'15'" optionalclass="'timeline-loader'" loading="!contactDealsCtrl.can_load"></standard-loader>
+        <dynamic-funnel-card ng-if="contactDealsCtrl.can_load" ng-if="contactDealsCtrl.cards.length > 0" ng-repeat="card in contactDealsCtrl.cards track by $index" card="card" entity="contactDealsCtrl.deals_entity" show-stage="true"></dynamic-funnel-card>
+        <div class="contact-card panel no-quote" ng-if="contactDealsCtrl.cards.length === 0 && contactDealsCtrl.can_load && contactDealsCtrl.self.Profile.DealsCreatePermission">
+          <div class="font-semi-big">{{'Nenhum negócio ' + (!contactDealsCtrl.view_open ? 'aberto' : 'finalizado') + '.'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

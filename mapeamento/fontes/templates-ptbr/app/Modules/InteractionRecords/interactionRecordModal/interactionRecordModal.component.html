@@ -1,0 +1,46 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="Registros de interação"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <loading-tooltip loading="!$ctrl.can_load"></loading-tooltip>
+    <div class="hbox stretch" ng-if="!$ctrl.not_found && $ctrl.can_load">
+
+      <aside class="overflow-hidden width-400 white-content">
+        <interaction-record-modal-infos model="$ctrl.model" class="hbox stretch"></interaction-record-modal-infos>
+      </aside>
+
+      <aside class="overflow-hidden width-400 white-content b-l-1">
+        <interaction-record-modal-tabs model="$ctrl.model" class="hbox stretch"></interaction-record-modal-tabs>
+      </aside>
+
+    </div>
+    <div class="hbox stretch" ng-if="$ctrl.not_found">
+      <page-not-found></page-not-found>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="hbox stretch" ng-if="!$ctrl.not_found">
+      <aside class="v-middle text-left flex-align-center-gap-5">
+        <a href class="button button-white" ng-click="$ctrl.deleteInteractionRecord()" ng-click-confirm="excluir esse registro de interação?" reversible="false">
+          <span class="font-big"><i class="fal fa-trash"></i></span>
+        </a>
+        <div class="ia-background-automaticregister ia-gradient-border-automaticregister ai-generated-record-badge" ng-if="$ctrl.model.AiGenerated">
+          <img src="assets/images/ai-pencil.svg" width="25" height="20" style="margin-top: 2px;" />
+          <span class="ia-text text-semibold">Registro automático</span>
+        </div>
+      </aside>
+      <aside class="v-middle text-right">
+        <neppo-complete-history other-properties="$ctrl.model.OtherProperties" ></neppo-complete-history>
+      </aside>
+    </div>
+  </modal-footer>
+  <modal-side-slide slide-id="map_slide" modal-side-slide-title="Localização" side-slide-wider="true">
+    <google-maps ng-if="$ctrl.map_markers" markers="$ctrl.map_markers" skip-animate="true" map-id="interaction_record_modal_map"></google-maps>
+  </modal-side-slide>
+</dynamic-modal>

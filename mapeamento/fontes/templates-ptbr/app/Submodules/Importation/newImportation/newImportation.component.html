@@ -1,0 +1,113 @@
+<dynamic-modal
+  helper-key="newImportationCtrl.helperKey"
+  disable-close-modal="newImportationCtrl.disableDefaultModalClose"
+  aux-buttons="newImportationCtrl.auxButtons"
+  modal-id="{{::modalId}}"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="Importação"
+  toggle-modal="newImportationCtrl.toggle_modal"
+  has-general-slide="mdm_rules_slide"
+  cypress-prefix="new-importation"
+  is-fetching-modal-content="newImportationCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="hbox stretch" ng-if="!newImportationCtrl.otherImportationRunning">
+      <div class="navigation arrange-mid" ng-if="newImportationCtrl.current_step !== 'importing'">
+        <span class="past-stage" wizard-step="1" ng-style="{ width: newImportationCtrl.enterprise_new_importation ? '25%' : '33.33%' }">
+          Upload
+        </span>
+        <span
+          ng-class="{'past-stage': newImportationCtrl.current_step === 'mapping' || newImportationCtrl.current_step === 'settings' || newImportationCtrl.current_step === 'confirm'}"
+          wizard-step="3" ng-style="{ width: newImportationCtrl.enterprise_new_importation ? '25%' : '33.33%' }">
+          Mapeamento
+        </span>
+        <span
+          ng-if="newImportationCtrl.enterprise_new_importation"
+          ng-class="{'past-stage': newImportationCtrl.current_step === 'settings' || newImportationCtrl.current_step === 'confirm'}"
+          wizard-step="5" style="width: 25%">
+          Configurações
+        </span>
+        <span ng-class="{'past-stage': newImportationCtrl.current_step === 'confirm'}" wizard-step="7"
+          ng-style="{ width: newImportationCtrl.enterprise_new_importation ? '25%' : '33.33%' }">
+          Resumo
+        </span>
+      </div>
+      <div class="line line-border arrange-top"></div>
+      <div class="vbox deals-vbox scroll-shadow neutral-shadow">
+        <section class="scrollable scroll-shadow-container">
+          <importation-upload ng-if="newImportationCtrl.current_step === 'upload'"
+            set-next-step-fn="newImportationCtrl.setNextStep(fn)" entity="newImportationCtrl.entity">
+          </importation-upload>
+          <importation-mapping ng-if="newImportationCtrl.current_step === 'mapping'"
+            set-next-step-fn="newImportationCtrl.setNextStep(fn)" sheet-preview="newImportationCtrl.sheet_preview"
+            entity="newImportationCtrl.entity" mapped-fields="newImportationCtrl.map_fields" import-product-parts="newImportationCtrl.importProductParts"></importation-mapping>
+          <importation-settings ng-if="newImportationCtrl.current_step === 'settings'"
+            set-next-step-fn="newImportationCtrl.setNextStep(fn)"
+            importation-id="newImportationCtrl.current_importation_id"
+            fire-webhook="newImportationCtrl.settings_fireWebhook"
+            generate-html="newImportationCtrl.settings_generateHtml"></importation-settings>
+          <importation-confirm ng-if="newImportationCtrl.current_step === 'confirm'"
+            set-next-step-fn="newImportationCtrl.setNextStep(fn)" map-fields="newImportationCtrl.map_fields"
+            sheet-errors="newImportationCtrl.sheet_errors" entity="newImportationCtrl.entity" too-many-errors="newImportationCtrl.tooManyErrors"></importation-confirm>
+          <importation-progress ng-if="newImportationCtrl.current_step === 'importing'"
+            set-next-step-fn="newImportationCtrl.setNextStep(fn)"
+            importation-finished="newImportationCtrl.importationFinished(reload_table)"
+            entity="newImportationCtrl.entity" importation="newImportationCtrl.importation"></importation-progress>
+        </section>
+      </div>
+    </div>
+    <div class="hbox stretch" ng-if="newImportationCtrl.otherImportationRunning">
+      <div class="margin-auto width-400">
+        <div class="gap-50"></div>
+        <div class="text-neutral text-center page-not-found font-big-title">
+          <i class="fad fa-exclamation-triangle font-monster-size"></i>
+          <div class="gap-30"></div>
+          {{ 'IMPORTATION.ALREADY_IN_PROGRESS' | translate_with_replace: { entity_name:
+          newImportationCtrl.otherImportationEntityName } }}
+        </div>
+        <div class="gap-10"></div>
+        <div class="text-muted text-center">Por favor, aguarde o término da importação anterior, antes de realizar uma nova.</div>
+        <div class="gap-10"></div>
+        <div class="f-1 jc-center">
+          <a class="button button-white" href ng-if="newImportationCtrl.otherImportationRunning.Finished || newImportationCtrl.otherImportationRunning.Cancelled || newImportationCtrl.otherImportationRunning.Failed" ng-click="newImportationCtrl.finishOtherImportation()"
+            ng-click-confirm="finalizar a outra importação? Os detalhes de processamento da importação serão perdidos. Deseja continuar" reversible="false"><span
+              class="text-danger"><i class="fal fa-times button-icon"></i></span>
+              {{ 'IMPORTATION.FINISH_OTHER_IMPORTATION' | translate_with_replace: {entity: newImportationCtrl.otherImportationEntityName } }}</a>
+          <a class="button button-white" href ng-if="!(newImportationCtrl.otherImportationRunning.Finished || newImportationCtrl.otherImportationRunning.Cancelled || newImportationCtrl.otherImportationRunning.Failed)" ng-click="newImportationCtrl.cancelOtherImportation()"
+            ng-click-confirm="cancelar a outra importação? As linhas que já foram importadas serão mantidas. Deseja continuar" reversible="false"><span
+              class="text-danger"><i class="fal fa-times button-icon"></i></span>
+              {{ 'IMPORTATION.CANCEL_OTHER_IMPORTATION' | translate_with_replace: {entity: newImportationCtrl.otherImportationEntityName } }}</a>
+        </div>
+      </div>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <aside class="v-middle text-left">
+      <a class="button button-white wizard-back-step" href ng-if="newImportationCtrl.can_cancel_importation && newImportationCtrl.current_step !== 'importing'"
+        ng-click="newImportationCtrl.cancelImportation()"
+        ng-click-confirm="deseja cancelar a importação?" reversible="false">
+        <span class="text-danger"><i class="fal fa-times button-icon"></i></span>
+        Cancelar Importação</a>
+    </aside>
+    <aside class="v-middle">
+      <a class="button button-white" href ng-if="newImportationCtrl.can_cancel_importation && !newImportationCtrl.can_finish_importation && newImportationCtrl.current_step === 'importing'"
+      ng-click="newImportationCtrl.cancelImportation()"
+      ng-click-confirm="deseja cancelar a importação?" reversible="false">
+      <span class="text-danger"><i class="fal fa-times button-icon"></i></span>
+        Cancelar Importação
+      </a>
+
+      <a class="button button-action wizard-next-step pull-right importation-bottom-button" href ng-class="{ 'disabled' : !newImportationCtrl.can_load || newImportationCtrl.finishedByUser }" ng-style="{ 'pointer-events': !newImportationCtrl.can_load ? 'none' : 'auto' }" ng-disabled="!newImportationCtrl.can_load" ng-if="newImportationCtrl.can_go_next_step || newImportationCtrl.can_finish_importation"
+        ng-click="newImportationCtrl.goToNextStep()">{{newImportationCtrl.next_step_button_label}}</a>
+
+      <a class="button button-white wizard-back-step pull-right importation-bottom-button" href ng-class="{ 'disabled' : !newImportationCtrl.can_load }" ng-disabled="!newImportationCtrl.can_load" ng-if="newImportationCtrl.can_return_status"
+        ng-click="newImportationCtrl.goToPreviousStep()">Etapa anterior</a>
+      <loading-tooltip loading="!newImportationCtrl.can_load"></loading-tooltip>
+    </aside>
+  </modal-footer>
+  <modal-side-slide slide-id="mdm_rules_slide" modal-side-slide-title="Gestão de Dados" side-slide-wider="true" cypress-prefix="new-importation-mdm-rules">
+    <importation-data-treatment></importation-data-treatment>
+  </modal-side-slide>
+</dynamic-modal>

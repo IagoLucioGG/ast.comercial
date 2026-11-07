@@ -1,0 +1,5 @@
+<div class="stretch">
+  <deal-page ng-if="$ctrl.self.OldDealsPage && !$ctrl.changing"></deal-page>
+  <new-deal-page ng-if="!$ctrl.self.OldDealsPage && !$ctrl.changing" class="stretch" on-deal-deleted="$ctrl.onDealDeleted"></new-deal-page>
+  <standard-loader margin-top="15" optionalclass="'funnel-loader'" loading="$ctrl.changing"></standard-loader>
+</div>

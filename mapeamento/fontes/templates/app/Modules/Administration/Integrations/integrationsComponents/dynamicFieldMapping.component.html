@@ -1,0 +1,102 @@
+<div class="form-group col-sm-12">
+  <div class="darkest-background top-wrapper b-1 rounded-regular">
+    <div class="font-big side-wrapper">
+      <strong>
+        {{
+          $ctrl.dynamicMapEntity ?
+            $ctrl.dynamicMapEntity.Name
+            :
+            ('INTEGRATIONS.DYNAMIC_FIELDS_MAPPING.MAP_FIELDS' | translate_with_replace: { integration: $ctrl.accountIntegration.Integration.Name, entity: $ctrl.root_entity_name })
+        }}
+      </strong>
+    </div>
+    <div class="gap-10"></div>
+    <standard-loader loading="!$ctrl.can_load" optionalclass="timeline-loader" ng-if="!$ctrl.can_load"></standard-loader>
+    <div class="clearfix" ng-if="$ctrl.can_load">
+      <table class="table modal-table table-smaller-header double-header">
+        <thead>
+          <tr>
+            <th>
+              {{ $ctrl.accountIntegration.Integration.Name }}
+            </th>
+            <th></th>
+            <th>{{ 'INTEGRATIONS.DYNAMIC_FIELDS_MAPPING.PLOOMES' | translate }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="default_mapped in $ctrl.default_mapped">
+            <td>
+              <select class="form-control input-sm" disabled>
+                <option>{{default_mapped.ExternalFieldName}}</option>
+              </select>
+            </td>
+            <td>
+              <i class="fas fa-arrows-h text-muted"></i>
+            </td>
+            <td
+              uib-tooltip="{{ default_mapped.TooltipName }}"
+              tooltip-append-to-body="true"
+              tooltip-enable="default_mapped.FieldName.length >= 21">
+              <select class="form-control input-sm" disabled>
+                <option>{{default_mapped.FieldName}}</option>
+              </select>
+            </td>
+            <td></td>
+          </tr>
+          <tr ng-repeat="mapped_field in $ctrl.mapped_fields">
+            <td
+              uib-tooltip="{{ mapped_field.integration_field.Name }}"
+              tooltip-append-to-body="true"
+              tooltip-enable="mapped_field.integration_field.Name.length >= 25">
+              <integrations-field-mapping-selection
+                index="{{ $ctrl.dynamicMapEntity.Id }}-{{ $index }}"
+                dynamic-label="$ctrl.buildIntegrationFieldLabel(mapped_field.integration_field) || (('INTEGRATIONS.DYNAMIC_FIELDS_MAPPING.SELECT_A_FIELD') | translate )"
+                custom-root-entity-name="$ctrl.accountIntegration.Integration.Name"
+                field-selection-fn="$ctrl.selectDynamicField(field, field_path_id, mapped_field)"
+                remove-field-selection-fn="$ctrl.removeDynamicField(mapped_field)" 
+                fields="$ctrl.integration_fields"
+                custom-filter-fn="$ctrl.filterDynamicFields(field, mapped_field.ploomes_field)"
+                on-click-callback="$ctrl.onClickFieldMappingSelection"
+              >
+              </integrations-field-mapping-selection>
+            </td>
+            <td>
+              <i class="{{ $ctrl.buildIconName(mapped_field) }} text-muted"></i>
+            </td>
+            <td
+              class="max-width-200"
+              uib-tooltip="{{ mapped_field.ploomes_field_name }}"
+              tooltip-append-to-body="true"
+              tooltip-enable="mapped_field.ploomes_field_name.length >= 25">
+              <field-path-selection
+                index="{{ $ctrl.dynamicMapEntity.Id }}-{{ $index }}"
+                field-selection-fn="$ctrl.selectField(field, field_path_id, mapped_field)"
+                start-entity-id="$ctrl.rootEntityId || 2"
+                custom-root-entity-name="$ctrl.dynamicMapEntity.EntityName"
+                dynamic-label="$ctrl.buildDynamicLabel(mapped_field) || (('INTEGRATIONS.DYNAMIC_FIELDS_MAPPING.SELECT_A_FIELD') | translate )"
+                remove-field-selection-fn="$ctrl.removeField(mapped_field)"
+                custom-filter-fn="$ctrl.filterFields(field, mapped_field.integration_field, parentField)"
+                filter-field-type-fn="$ctrl.filterFieldType(fieldType, mapped_field.integration_field)"
+                on-click-callback="$ctrl.onClickFieldPathSelection"
+              >
+              </field-path-selection>
+            </td>
+            <td>
+              <a class="button-inherit button-fixed-size button-fixed-size-small" ng-click="$ctrl.removeMappedField($index)">
+                <i class="fad fa-trash text-darkest-neutral fixing-fixed-size-button"></i>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <div class="button button-action" ng-click="$ctrl.addMappedField()">
+                {{ 'INTEGRATIONS.DYNAMIC_FIELDS_MAPPING.ADD_COMBINATION' | translate }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1767 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - textbox "Pesquisar"
+      - button "Nome "
+    - complementary:
+      - text:  Novo   Menu
+      - link " Produtos " [expanded]:
+        - /url: ""
+      - link "Dropdown de 'Ações de filtros'" [expanded]:
+        - /url: ""
+        - text:  Filtros 
+    - complementary:
+      - complementary: Abas
+      - complementary: Nova aba
+      - 'button "botão para selecionar aba: Todos Produtos"':
+        - complementary: Todos Produtos
+        - complementary: 
+      - 'button "botão para selecionar aba: Pacotes"':
+        - complementary: Pacotes
+        - complementary: 
+      - 'button "botão para selecionar aba: Produtos Avulsos"':
+        - complementary: Produtos Avulsos
+        - complementary: 
+      - 'button "botão para selecionar aba: Marcadores"':
+        - complementary: Marcadores
+        - complementary: 
+      - 'button "botão para selecionar aba: Textos Descritivos"':
+        - complementary: Textos Descritivos
+        - complementary: 
+      - 'button "botão para selecionar aba: Produtos"':
+        - complementary: Produtos
+        - complementary: 
+      - 'button "botão para selecionar aba: Sem Tipo de Movimento de Cobraçnça"':
+        - complementary: Sem Tipo de Movimento de Cobraçnça
+        - complementary: 
+      - 'button "botão para selecionar aba: NF-EASY - Emissor de MDF-e - Por CNPJ"':
+        - complementary: NF-EASY - Emissor de MDF-e - Por CNPJ
+        - complementary: 
+      - 'button "botão para selecionar aba: Sem url"':
+        - complementary: Sem url
+        - complementary: 
+      - 'button "botão para selecionar aba: URL Drive"':
+        - complementary: URL Drive
+        - complementary: 
+      - 'button "botão para selecionar aba: Produtos com complemento do item informado"':
+        - complementary: Produtos com complemento do item informado
+        - complementary: 
+      - 'button "botão para selecionar aba: Carga de produtos"':
+        - complementary: Carga de produtos
+        - complementary: 
+      - 'button "botão para selecionar aba: TESTE PLOOMES"':
+        - complementary: TESTE PLOOMES
+        - complementary: 
+      - 'button "botão para selecionar aba: Produtos caracteristicas - 001000007F"':
+        - complementary: Produtos caracteristicas - 001000007F
+        - complementary: 
+      - 'button "botão para selecionar aba: Teste IAgo"':
+        - complementary: Teste IAgo
+        - complementary: 
+      - 'button "botão para selecionar aba: Produtos Spice Iago"':
+        - complementary: Produtos Spice Iago
+        - complementary: 
+      - 'button "botão para selecionar aba: testeprod"':
+        - complementary: testeprod
+        - complementary: 
+      - 'button "botão para selecionar aba: quantidade 2"':
+        - complementary: quantidade 2
+        - complementary: 
+      - 'button "botão para selecionar aba: sql"':
+        - complementary: sql
+        - complementary: 
+      - 'button "botão para selecionar aba: composição"':
+        - complementary: composição
+        - complementary: 
+      - 'button "botão para selecionar aba: [Cópia] - Todos Produtos"':
+        - complementary: "[Cópia] - Todos Produtos"
+        - complementary: 
+      - 'button "botão para selecionar aba: Incluir tipo de venda"':
+        - complementary: Incluir tipo de venda
+        - complementary: 
+      - 'button "botão para selecionar aba: Produto Composição"':
+        - complementary: Produto Composição
+        - complementary: 
+    - complementary: 
+    - complementary:
+      - table:
+        - rowgroup:
+          - row "":
+            - columnheader:
+              - complementary: Código
+              - complementary
+            - columnheader:
+              - complementary: Nome
+              - complementary
+            - columnheader:
+              - complementary: Marcadores
+              - complementary
+            - columnheader:
+              - complementary: Tipo de Venda
+              - complementary
+            - columnheader:
+              - complementary: Grupo
+              - complementary
+            - columnheader:
+              - complementary: Grupo Produto Sintético
+              - complementary
+            - columnheader:
+              - complementary: Composição do Produto
+              - complementary
+            - columnheader:
+              - complementary: Quantidade Módulos Individuais
+              - complementary
+            - columnheader:
+              - complementary: ID Produto ERP
+              - complementary
+            - columnheader:
+              - complementary: Grupo
+              - complementary
+            - columnheader:
+              - complementary: Ativo
+              - complementary
+            - columnheader:
+              - complementary: Códigos
+              - complementary
+            - columnheader:
+              - complementary: Características
+              - complementary
+            - columnheader:
+              - complementary: ID Caracteristica Master
+              - complementary
+            - columnheader:
+              - complementary: Tipo de Movimento de Cobrança
+              - complementary
+            - columnheader:
+              - complementary: Descrição
+              - complementary
+            - columnheader:
+              - complementary: Tipo de Venda
+              - complementary
+            - columnheader:
+              - complementary: Criador
+              - complementary: 
+            - columnheader:
+              - complementary: Complemento 2 do item
+              - complementary
+            - columnheader:
+              - complementary: Horário de Atendimento
+              - complementary
+            - columnheader:
+              - complementary: Implantação
+              - complementary
+            - columnheader:
+              - complementary: Composição
+              - complementary
+            - columnheader:
+              - complementary: Quantidade Módulos Individuais
+              - complementary
+            - columnheader:
+              - complementary: Empresas
+              - complementary
+            - columnheader:
+              - complementary: Tipo de Movimento de Cobrança
+              - complementary
+            - columnheader:
+              - complementary: Tabela de preço teste
+              - complementary
+            - columnheader:
+              - complementary: Complemento do item
+              - complementary
+            - columnheader:
+              - complementary: Id
+              - complementary
+            - columnheader ""
+        - rowgroup
+        - rowgroup:
+          - 'link "linha da tabela selecionável do item: 3869749"':
+            - cell "002521 "
+            - cell "ERP4ME.Bimer - Controle orçamentário "
+            - cell " Produtos Avulsos  Campanha Individuais  Gestao e Moda  Responsável Legal ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - text: 
+            - cell "Conexão Excedente Adesão Assinatura Doada Assinatura Cobrada Adesão Doada Adesão Cobrada Conexão Excedente Doação Adesão Conexão Excedente Assinatura ":
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000BSW\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - 'cell "[ { \"IdMaster\": \"0010000BSW\", \"NomeMaster\": \"ERP4ME.Bimer - Controle orçamentário\", \"Flexivel\": 0, \"ProdutoCombo\": 0, \"ProdutosRelacionados\": null }]  "'
+            - cell ""
+            - cell "0010000BSW "
+            - cell "001 -Bimer- Diver- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Bimer - Financeiro Controle Orçamentário Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Bimer - Financeiro Controle Orçamentário":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Conexão Excedente Adesão Assinatura Doada Assinatura Cobrada Adesão Doada Adesão Cobrada Conexão Excedente Doação Adesão Conexão Excedente Assinatura ":
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869749"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869750"':
+            - cell "002522 "
+            - cell "ERP4ME.Bimer - Liberador de pagamentos "
+            - cell " Produtos Avulsos  Quantidade 2  Campanha Individuais  Gestao e Moda ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Quantidade 2":
+                - /url: ""
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - text: 
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Assinatura Conexão Excedente Adesão Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000BSX\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - 'cell "[ { \"IdMaster\": \"0010000BSX\", \"NomeMaster\": \"ERP4ME.Bimer - Liberador de pagamentos\", \"Flexivel\": 0, \"ProdutoCombo\": 0, \"ProdutosRelacionados\": null }]  "'
+            - cell ""
+            - cell "0010000BSX "
+            - cell "001 -Bimer- Diver- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Assinatura Conexão Excedente Adesão Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869750"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869751"':
+            - cell "001724 "
+            - cell "ERP4ME.Bimer - PDV Alterdata "
+            - cell " Produtos Avulsos  Campanha Individuais  Gestao e Moda  Responsável Legal ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - text: 
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000B20\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell
+            - cell ""
+            - cell "0010000B20 "
+            - cell "001 -Bimer- Diver- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869751"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869752"':
+            - cell "000758 "
+            - cell "PMO - Horas Pacotes - ERP4ME.Bimer "
+            - cell " Produtos Avulsos  implantação  Produto Diferenciado  PMO  Gestao e Moda  Sem modalidade ass ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " implantação":
+                - /url: ""
+              - link " Produto Diferenciado":
+                - /url: ""
+              - link " PMO":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Sem modalidade ass":
+                - /url: ""
+              - text: 
+            - cell "Implantação/PMO/visita ":
+              - link "Implantação/PMO/visita":
+                - /url: ""
+              - text: 
+            - cell "024 - PMO "
+            - cell
+            - 'cell "[ { \"IdMaster\": \"0010000ARN\", \"NomeMaster\": \"PMO - Horas Pacotes - ERP4ME.Bimer\", \"Flexivel\": 0, \"ProdutoCombo\": 0, \"ProdutosRelacionados\": null }]  "'
+            - cell ""
+            - cell "0010000ARN "
+            - cell "024 - PMO "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial PMO Gestão e Moda ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial PMO Gestão e Moda":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000045 - Implantação VIP Configuração de prog.de computação 000169 - Conexão Excedente - Cessão temporária de uso ":
+              - link "000045 - Implantação VIP Configuração de prog.de computação":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - text: 
+            - cell "Acreditamos que uma garantia de prestação de serviços de qualidade é a chave para toda empresa que deseja crescer e reter sua carteira de clientes. O foco do trabalho está na melhor utilização dos produtos Alterdata, oferecendo ganho de produtividade e qualidade, consequentemente, maximizando os resultados financeiros. Para essa consultoria, a Alterdata disponibiliza profissionais capacitados com conhecimento profundo na utilização das nossas soluções. Os serviços são personalizados e atendem cada empresa especificamente, incluindo a implantação acompanhada em novos clientes.  "
+            - cell "Implantação/PMO/visita ":
+              - link "Implantação/PMO/visita":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - 'cell "Nossa equipe está disponível nos seguintes dias e horários: De segunda a sexta - de 08:00 às 18:00  "'
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 207 - ALTERDATA MANUTENCAO EM INFORMATICA LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "207 - ALTERDATA MANUTENCAO EM INFORMATICA LTDA":
+                - /url: ""
+              - text: 
+            - cell "000045 - Implantação VIP Configuração de prog.de computação 000169 - Conexão Excedente - Cessão temporária de uso ":
+              - link "000045 - Implantação VIP Configuração de prog.de computação":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Qtd de horas contratadas "
+            - cell "3869752"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869753"':
+            - cell "006452 "
+            - cell "Integrador ERP4ME.Bimer x WMS Navitas "
+            - cell ""
+            - cell ""
+            - cell "001 -Bimer- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000DGB\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell ""
+            - cell ""
+            - cell "0010000DGB "
+            - cell "001 -Bimer- Diver- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer ":
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869753"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869754"':
+            - cell "000854 "
+            - cell "ERP4ME.Bimer - CRM - Customer Relationship Management "
+            - cell " Produtos Avulsos  Campanha Individuais  Gestao e Moda  Responsável Legal ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - text: 
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Princ- Ven "
+            - 'cell "[ { \"Produto\": \"0010000AGC\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell
+            - cell ""
+            - cell "0010000AGC "
+            - cell "001 -Bimer- Princ- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer Produtos - JOB Maternidade ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - link "Produtos - JOB Maternidade":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869754"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869755"':
+            - cell "000862 "
+            - cell "ERP4ME.Bimer - Enterprise Suite "
+            - cell " Pacotes  Campanha Pacotes  Gestao e Moda  Ocultar Quantidade  Obrigatório Preenchimento de Opcionais  Responsável Legal  Rede de Lojas ":
+              - link " Pacotes":
+                - /url: ""
+              - link " Campanha Pacotes":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Ocultar Quantidade":
+                - /url: ""
+              - link " Obrigatório Preenchimento de Opcionais":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - link " Rede de Lojas":
+                - /url: ""
+              - text: 
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Princ- Ven "
+            - 'cell "[ { \"Produto\": \"0010000AGK\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell
+            - cell ""
+            - cell "0010000AGK "
+            - cell "001 -Bimer- Princ- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Bimer - Completo Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer Produtos - JOB Maternidade ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Bimer - Completo":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - link "Produtos - JOB Maternidade":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso 000045 - Implantação VIP Configuração de prog.de computação ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - link "000045 - Implantação VIP Configuração de prog.de computação":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais, como a gestão de estoque / compras, até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso 000045 - Implantação VIP Configuração de prog.de computação ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - link "000045 - Implantação VIP Configuração de prog.de computação":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "3869755"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869756"':
+            - cell "000942 "
+            - cell "ERP4ME.Bimer - Estoque "
+            - cell " Produtos Avulsos  Campanha Individuais  Gestao e Moda  Responsável Legal ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - text: 
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Princ- Ven "
+            - 'cell "[ { \"Produto\": \"0010000AIK\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell
+            - cell ""
+            - cell "0010000AIK "
+            - cell "001 -Bimer- Princ- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Bimer - Estoque Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer Produtos - JOB Maternidade ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Bimer - Estoque":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - link "Produtos - JOB Maternidade":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais, como a gestão de estoque / compras, até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869756"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869757"':
+            - cell "000943 "
+            - cell "ERP4ME.Bimer - Faturamento Comercial "
+            - cell " Campanha Individuais  Gestao e Moda  Responsável Legal ":
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - text: 
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Princ- Ven "
+            - 'cell "[ { \"Produto\": \"0010000AIM\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell
+            - cell ""
+            - cell "0010000AIM "
+            - cell "001 -Bimer- Princ- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Bimer - Faturamento Comercial Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer Produtos - JOB Maternidade ":
+              - link "Bimer - Faturamento Comercial":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - link "Produtos - JOB Maternidade":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Adesão Cobrada Adesão Doada Assinatura Cobrada Assinatura Doada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869757"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869758"':
+            - cell "000869 "
+            - cell "ERP4ME.Bimer - Financeiro "
+            - cell " Produtos Avulsos  Campanha Individuais  Gestao e Moda  Responsável Legal ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - text: 
+            - cell "Assinatura Doada Assinatura Cobrada Adesão Doada Adesão Cobrada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell "001 -Bimer- Princ- Ven "
+            - 'cell "[ { \"Produto\": \"0010000AGR\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell
+            - cell ""
+            - cell "0010000AGR "
+            - cell "001 -Bimer- Princ- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Bimer - Financeiro Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer Produtos - JOB Maternidade ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Bimer - Financeiro":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - link "Produtos - JOB Maternidade":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Assinatura Doada Assinatura Cobrada Adesão Doada Adesão Cobrada Conexão Excedente Adesão Conexão Excedente Assinatura Conexão Excedente Doação Adesão ":
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Conexão Excedente Adesão":
+                - /url: ""
+              - link "Conexão Excedente Assinatura":
+                - /url: ""
+              - link "Conexão Excedente Doação Adesão":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869758"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869759"':
+            - cell "002888 "
+            - cell "ERP4ME.Bimer - Conciliare "
+            - cell " Produtos Avulsos  Produto Parceiro  Gestao e Moda  Não Campanha  Responsável Legal  Sem autonomia assinatura ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Produto Parceiro":
+                - /url: ""
+              - link " Gestao e Moda":
+                - /url: ""
+              - link " Não Campanha":
+                - /url: ""
+              - link " Responsável Legal":
+                - /url: ""
+              - link " Sem autonomia assinatura":
+                - /url: ""
+              - text: 
+            - cell "Adesão Cobrada Assinatura Cobrada ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - text: 
+            - cell "001 -BimerUP "
+            - 'cell "[ { \"Produto\": \"0010000C3M\", \"GrupoSintetico\": \"001 -Bimer\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"001 -Bimer- Diver\" }, { \"NmGrupoProduto\": \"001 -Bimer- Manut\" }, { \"NmGrupoProduto\": \"001 -Bimer- Princ\" }, { \"NmGrupoProduto\": \"001 -BimerUP\" }, { \"NmGrupoProduto\": \"001 -Bimer- Atualização\" }, { \"NmGrupoProduto\": \"001 -Bimer- Conexão Excedente\" }, { \"NmGrupoProduto\": \"127 -Bimer Cotação Web\" } ] }]  "'
+            - cell
+            - cell ""
+            - cell "0010000C3M "
+            - cell "001 -BimerUP "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Grupo Master Bimer Integ. Prod. Ploomes Grupo Master Bimer_2022 PRODUTOS ALTERDATA Meta Comercial Bimer Produto com faixa S/ COMISSIONAMENTO CONEXÃO ERP ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Grupo Master Bimer":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Bimer_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Bimer":
+                - /url: ""
+              - link "Produto com faixa":
+                - /url: ""
+              - link "S/ COMISSIONAMENTO CONEXÃO ERP":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O ERP4ME BIMER é um sistema integrado de gestão ERP que abrange desde as rotinas operacionais até as decisões estratégicas, oferecendo rastreabilidade dos processos. A ferramenta da Alterdata atende médias e grandes empresas, fornecendo informações seguras para tomadas de decisões.  "
+            - cell "Adesão Cobrada Assinatura Cobrada ":
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda á Sábado de 08:00 às 18:00  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Transações/mês até "
+            - cell "3869759"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869760"':
+            - cell "004294 "
+            - cell "Alterdata Prime Varejo e Food "
+            - cell " Produtos Avulsos  Varejo  Campanha Individuais  Sem modalidade ass ":
+              - link " Produtos Avulsos":
+                - /url: ""
+              - link " Varejo":
+                - /url: ""
+              - link " Campanha Individuais":
+                - /url: ""
+              - link " Sem modalidade ass":
+                - /url: ""
+              - text: 
+            - cell "Assinatura Doada Assinatura Cobrada Adesão Doada Adesão Cobrada Implantação/PMO/visita Conversão Cobrada Conversão Doada ":
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Implantação/PMO/visita":
+                - /url: ""
+              - link "Conversão Cobrada":
+                - /url: ""
+              - link "Conversão Doada":
+                - /url: ""
+              - text: 
+            - cell "003 -Shop- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000D83\", \"GrupoSintetico\": \"003 -Shop\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"003 -Shop- Diver\" }, { \"NmGrupoProduto\": \"003 -Shop- Manut\" }, { \"NmGrupoProduto\": \"003 -Shop- Princ\" }, { \"NmGrupoProduto\": \"003 -Shop- Atualização\" }, { \"NmGrupoProduto\": \"003 -Shop- Conexão Excedente\" } ] }]  "'
+            - 'cell "[ { \"IdMaster\": \"0010000D83\", \"NomeMaster\": \"Alterdata Prime Varejo e Food\", \"Flexivel\": 0, \"ProdutoCombo\": 0, \"ProdutosRelacionados\": null }]  "'
+            - cell ""
+            - cell "0010000D83 "
+            - cell "003 -Shop- Diver- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Produto usado na venda Grupo Master Shop Integ. Prod. Ploomes Grupo Master Shop Outros_2022 PRODUTOS ALTERDATA Meta Comercial Shop ":
+              - link "Produto usado na venda":
+                - /url: ""
+              - link "Grupo Master Shop":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Shop Outros_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Shop":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000172 - Doação de Licença Temporária de Uso SEM contrato ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000172 - Doação de Licença Temporária de Uso SEM contrato":
+                - /url: ""
+              - text: 
+            - 'cell "A decisão por um sistema para administrar todos os aspectos do negocio e uma escolha importante para sua empresa. A Alterdata acredita que uma parceria bem sucedida e aquela em que se fornece um atendimento diferenciado. Por esse motivo, oferecemos o Atendimento Prime: um canal de apoio especialmente desenvolvido para o seu negocio. O setor de atendimento Prime, possui uma equipe de profissionais especializados para atender as suas demandas, com um atendimento exclusivo.  "'
+            - cell "Assinatura Doada Assinatura Cobrada Adesão Doada Adesão Cobrada Implantação/PMO/visita Conversão Cobrada Conversão Doada ":
+              - link "Assinatura Doada":
+                - /url: ""
+              - link "Assinatura Cobrada":
+                - /url: ""
+              - link "Adesão Doada":
+                - /url: ""
+              - link "Adesão Cobrada":
+                - /url: ""
+              - link "Implantação/PMO/visita":
+                - /url: ""
+              - link "Conversão Cobrada":
+                - /url: ""
+              - link "Conversão Doada":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000172 - Doação de Licença Temporária de Uso SEM contrato ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000172 - Doação de Licença Temporária de Uso SEM contrato":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869760"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869761"':
+            - cell "010201 "
+            - cell "Implantação/Visita técnica - ERP4ME.Shop "
+            - cell " implantação  Varejo  Imp.Hora/Dia  Implantação/Visita  Sem modalidade ass ":
+              - link " implantação":
+                - /url: ""
+              - link " Varejo":
+                - /url: ""
+              - link " Imp.Hora/Dia":
+                - /url: ""
+              - link " Implantação/Visita":
+                - /url: ""
+              - link " Sem modalidade ass":
+                - /url: ""
+              - text: 
+            - cell "Implantação/PMO/visita ":
+              - link "Implantação/PMO/visita":
+                - /url: ""
+              - text: 
+            - cell "003 -Shop- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000AAI\", \"GrupoSintetico\": \"003 -Shop\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"003 -Shop- Diver\" }, { \"NmGrupoProduto\": \"003 -Shop- Manut\" }, { \"NmGrupoProduto\": \"003 -Shop- Princ\" }, { \"NmGrupoProduto\": \"003 -Shop- Atualização\" }, { \"NmGrupoProduto\": \"003 -Shop- Conexão Excedente\" } ] }]  "'
+            - cell ""
+            - cell ""
+            - cell "0010000AAI "
+            - cell "003 -Shop- Diver- Ven "
+            - cell "Não "
+            - cell ""
+            - cell "Grupo Master Shop Integ. Prod. Ploomes Grupo Master Shop Outros_2022 PRODUTOS ALTERDATA Meta Comercial Shop ":
+              - link "Grupo Master Shop":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Shop Outros_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Shop":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000064 - Implantação de sistema ":
+              - link "000064 - Implantação de sistema":
+                - /url: ""
+              - text: 
+            - cell
+            - cell "Implantação/PMO/visita ":
+              - link "Implantação/PMO/visita":
+                - /url: ""
+              - text: 
+            - cell
+            - cell ""
+            - cell "Segunda a sexta-feira, de 8h as 18h. O atendimento ao cliente é feito via chat, acesso remoto ou visita pessoal (mediante prévia avaliação da necessidade por parte da Alterdata).  "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA 207 - ALTERDATA MANUTENCAO EM INFORMATICA LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - link "207 - ALTERDATA MANUTENCAO EM INFORMATICA LTDA":
+                - /url: ""
+              - text: 
+            - cell "000064 - Implantação de sistema ":
+              - link "000064 - Implantação de sistema":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell ""
+            - cell "3869761"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869762"':
+            - cell "002474 "
+            - cell "Shop - Universo SPED "
+            - cell ""
+            - cell ""
+            - cell "003 -Shop- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000BRF\", \"GrupoSintetico\": \"003 -Shop\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"003 -Shop- Diver\" }, { \"NmGrupoProduto\": \"003 -Shop- Manut\" }, { \"NmGrupoProduto\": \"003 -Shop- Princ\" }, { \"NmGrupoProduto\": \"003 -Shop- Atualização\" }, { \"NmGrupoProduto\": \"003 -Shop- Conexão Excedente\" } ] }]  "'
+            - cell ""
+            - cell ""
+            - cell "0010000BRF "
+            - cell "003 -Shop- Diver- Ven "
+            - cell "Não "
+            - cell ""
+            - cell "Grupo Master Shop Integ. Prod. Ploomes ":
+              - link "Grupo Master Shop":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O sistema Alterdata SHOP foi feito com o objetivo de ser um aliado nas operações diárias, fornecendo os dados necessários para que o empresário possa tomar as melhores decisões para o seu negócio. Uma solução completa que conjuga o que há de mais moderno em gestão empresarial, com tecnologia de ponta e valores compatíveis com a realidade das empresas brasileiras de pequeno e médio porte. Analise gráficos de vendas realizadas por período, visualize os históricos dos produtos mais vendidos e os melhores vendedores de sua empresa.  "
+            - cell ""
+            - cell
+            - cell ""
+            - cell "Segunda a Sexta-feira, de 8h às 22h Sábado, de 9h às 19h Domingo, de 9h às 18h  "
+            - cell "A Alterdata Software está comprometida em oferecer o treinamento adequado para que sua equipe utilize o sistema de Automação Comercial com total excelência. Com isso, nossos profissionais de atendimento seguem um roteiro de implantação detalhado para garantir uma utilização eficaz do sistema em sua empresa. Cabe ao cliente prover toda a infraestrutura para suportar as ações da implantação, tais como microcomputadores ligados em rede com acesso aos servidores, acesso à internet, impressora, linha telefônica, entre outras necessidades. Quando a implantação for realizada em cidades onde a Alterdata não atue com filial ou representação, haverá o custo adicional para o deslocamento, hospedagem e alimentação do analista Alterdata no local. O setor comercial informará, caso haja esta necessidade.  "
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869762"
+            - cell
+          - 'link "linha da tabela selecionável do item: 3869763"':
+            - cell "004170 "
+            - cell "ERP4ME.Shop Community "
+            - cell ""
+            - cell ""
+            - cell "003 -Shop- Diver- Ven "
+            - 'cell "[ { \"Produto\": \"0010000D4J\", \"GrupoSintetico\": \"003 -Shop\", \"GruposFilhos\": [ { \"NmGrupoProduto\": \"003 -Shop- Diver\" }, { \"NmGrupoProduto\": \"003 -Shop- Manut\" }, { \"NmGrupoProduto\": \"003 -Shop- Princ\" }, { \"NmGrupoProduto\": \"003 -Shop- Atualização\" }, { \"NmGrupoProduto\": \"003 -Shop- Conexão Excedente\" } ] }]  "'
+            - cell ""
+            - cell ""
+            - cell "0010000D4J "
+            - cell "003 -Shop- Diver- Ven "
+            - cell "Sim "
+            - cell ""
+            - cell "Shop - Shop Community Grupo Master Shop Integ. Prod. Ploomes Grupo Master Shop Outros_2022 PRODUTOS ALTERDATA Meta Comercial Shop ":
+              - link "Shop - Shop Community":
+                - /url: ""
+              - link "Grupo Master Shop":
+                - /url: ""
+              - link "Integ. Prod. Ploomes":
+                - /url: ""
+              - link "Grupo Master Shop Outros_2022":
+                - /url: ""
+              - link "PRODUTOS ALTERDATA":
+                - /url: ""
+              - link "Meta Comercial Shop":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell "O sistema Alterdata SHOP foi feito com o objetivo de ser um aliado nas operações diárias, fornecendo os dados necessários para que o empresário possa tomar as melhores decisões para o seu negócio. Uma solução completa que conjuga o que há de mais moderno em gestão empresarial, com tecnologia de ponta e valores compatíveis com a realidade das empresas brasileiras de pequeno e médio porte. Analise gráficos de vendas realizadas por período, visualize os históricos dos produtos mais vendidos e os melhores vendedores de sua empresa.  "
+            - cell ""
+            - cell
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell ""
+            - cell "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA 2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA ":
+              - link "1 - ALTERDATA TECNOLOGIA EM INFORMATICA LTDA":
+                - /url: ""
+              - link "2 - ALTERDATA COM.E DISTRIB.DE SIST.E PROD.DE INF.LTDA":
+                - /url: ""
+              - text: 
+            - cell "000176 - Cessão temporária de uso (Adesão) 000177 - Licença temporária de uso (Assinatura) 000179 - Doação de Cessão Temporária de uso (Adesão) 000181 - Doação de licença temporária de uso (Assinatura) 000169 - Conexão Excedente - Cessão temporária de uso 000189 - Doação Conexão Excedente -Cessão temporária de uso 000190 - Doação Conexão Excedente - Licença de uso ":
+              - link "000176 - Cessão temporária de uso (Adesão)":
+                - /url: ""
+              - link "000177 - Licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000179 - Doação de Cessão Temporária de uso (Adesão)":
+                - /url: ""
+              - link "000181 - Doação de licença temporária de uso (Assinatura)":
+                - /url: ""
+              - link "000169 - Conexão Excedente - Cessão temporária de uso":
+                - /url: ""
+              - link "000189 - Doação Conexão Excedente -Cessão temporária de uso":
+                - /url: ""
+              - link "000190 - Doação Conexão Excedente - Licença de uso":
+                - /url: ""
+              - text: 
+            - cell ""
+            - cell "Usuário/Conexão Simultânea "
+            - cell "3869763"
+            - cell
+      - text: Mostrando 1 - 15 de 920
+      - menu:
+        - menuitem "Primeira":
+          - link "Primeira":
+            - /url: ""
+        - menuitem "Anterior":
+          - link "Anterior":
+            - /url: ""
+        - menuitem "1":
+          - link "1":
+            - /url: ""
+        - menuitem "2":
+          - link "2":
+            - /url: ""
+        - menuitem "3":
+          - link "3":
+            - /url: ""
+        - menuitem "4":
+          - link "4":
+            - /url: ""
+        - menuitem "5":
+          - link "5":
+            - /url: ""
+        - menuitem "...":
+          - link "...":
+            - /url: ""
+        - menuitem "Próxima":
+          - link "Próxima":
+            - /url: ""
+        - menuitem "Última":
+          - link "Última":
+            - /url: ""

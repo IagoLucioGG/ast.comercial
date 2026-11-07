@@ -1,0 +1,58 @@
+<div class="overflow-hidden white-content b-b-1">
+  <div class="lead-minimal rounded-regular">
+    <a href ng-style="{'width': (100/leadStatusCtrl.dynamic_status.length + 3) + '%'}" ng-repeat="dynamic_status in leadStatusCtrl.dynamic_status" ng-class="{'current-stage': dynamic_status.Id === model.StatusId, 'disabled-wizard': model.StatusId === 5 || model.StatusId === 6}" ng-click="model.StatusId !== 5 && model.StatusId !== 6 && leadStatusCtrl.changeToDynamicStatus(dynamic_status)">
+      <div class="stage-ball">
+        <div class="ball-form ball-1">
+          <div class="fal" ng-class="dynamic_status.Icon || 'fa-funnel-dollar'"></div>
+        </div>
+      </div>
+      <div class="gap-3"></div>
+      <div class="stage-name">{{dynamic_status.Name}}</div>
+    </a>
+    <a class="lead-scheduled" ng-class="{'current-stage': model.StatusId === 2, 'disabled-wizard': model.StatusId === 5 || model.StatusId === 6}" href ng-style="{'width': (100/leadStatusCtrl.dynamic_status.length + 3) + '%'}" uib-popover-template="leadStatusCtrl.contactPopoverTemplate" popover-title="Agendar" popover-append-to-body="true" popover-placement="auto bottom" popover-is-open="leadStatusCtrl.contact_lead_popover_open" popover-enable="leadStatusCtrl.contact_lead_popover_open" popover-trigger="none" ng-click="model.StatusId !== 5 && model.StatusId !== 6 && leadStatusCtrl.togglePopover(2)">
+      <div class="stage-ball">
+        <div class="ball-form ball-1">
+          <div class="fal fa-calendar"></div>
+        </div>
+      </div>
+      <div class="gap-3"></div>
+      <div class="stage-name">Agendado para {{leadStatusCtrl.scheduled_lead_contact}}</div>
+    </a>
+    <a class="lead-discarded" ng-class="{'current-stage': model.StatusId === 4, 'disabled-wizard': model.StatusId === 5 || model.StatusId === 6}" href ng-style="{'width': (100/leadStatusCtrl.dynamic_status.length + 3) + '%'}" uib-popover-template="leadStatusCtrl.discardPopoverTemplate" popover-title="Descartar" popover-append-to-body="true" popover-placement="auto bottom" popover-is-open="leadStatusCtrl.discard_lead_popover_open" popover-enable="leadStatusCtrl.discard_lead_popover_open" popover-trigger="none" ng-click="model.StatusId !== 4 && model.StatusId !== 5 && model.StatusId !== 6 && leadStatusCtrl.togglePopover(4)">
+      <div class="stage-ball">
+        <div class="ball-form ball-1">
+          <div class="fal fa-trash"></div>
+        </div>
+      </div>
+      <div class="gap-3"></div>
+      <div class="stage-name">Descartado</div>
+    </a>
+    <a class="lead-converted" ng-class="{'current-stage': model.StatusId === 5 || model.StatusId === 6}" href ng-style="{'width': (100/leadStatusCtrl.dynamic_status.length + 3) + '%'}" ng-click="model.StatusId !== 5 && model.StatusId !== 6 && leadStatusCtrl.convertLead()">
+      <div class="stage-ball">
+        <div class="ball-form ball-1">
+          <div class="fal fa-fire"></div>
+        </div>
+      </div>
+      <div class="gap-3"></div>
+      <div class="stage-name">Convertido</div>
+    </a>
+  </div>
+</div>
+
+<script type="text/ng-template" id="contact_lead_popover">
+  <div ng-if="leadStatusCtrl.contact_lead_popover_open" ng-form name="contact_lead_form">
+    <forms model="leadStatusCtrl.contact_lead_model" fields="leadStatusCtrl.contact_lead_form" form="contact_lead_form"></forms>
+    <button class="button button-action mleft15" ng-disabled="leadStatusCtrl.loading" ng-click="leadStatusCtrl.submit(contact_lead_form, leadStatusCtrl.contact_lead_form, leadStatusCtrl.contact_lead_model, leadStatusCtrl.scheduleLeadContact); $event.stopPropagation()" title="Submit" aria-label="Submit">Salvar</button>
+    <button class="button button-white" ng-disabled="leadStatusCtrl.loading" ng-click="leadStatusCtrl.togglePopover(2); $event.stopPropagation()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <loading-tooltip loading="leadStatusCtrl.loading" form="contact_lead_form"></loading-tooltip>
+  </div>
+</script>
+
+<script type="text/ng-template" id="discard_lead_popover">
+  <div ng-if="leadStatusCtrl.discard_lead_popover_open" ng-form name="discard_lead_form">
+    <forms model="leadStatusCtrl.discard_lead_model" fields="leadStatusCtrl.discard_lead_form" form="discard_lead_form"></forms>
+    <button class="button button-action mleft15" ng-disabled="leadStatusCtrl.loading" ng-click="leadStatusCtrl.submit(discard_lead_form, leadStatusCtrl.discard_lead_form, leadStatusCtrl.discard_lead_model, leadStatusCtrl.discardLead); $event.stopPropagation()" title="Submit" aria-label="Submit">Salvar</button>
+    <button class="button button-white" ng-disabled="leadStatusCtrl.loading" ng-click="leadStatusCtrl.togglePopover(4); $event.stopPropagation()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <loading-tooltip loading="leadStatusCtrl.loading" form="discard_lead_form"></loading-tooltip>
+  </div>
+</script>

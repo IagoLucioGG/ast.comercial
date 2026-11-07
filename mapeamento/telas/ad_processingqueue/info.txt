@@ -1,0 +1,7 @@
+passo: ad_processingqueue
+url: https://app10.ploomes.com/administration/processingqueue
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

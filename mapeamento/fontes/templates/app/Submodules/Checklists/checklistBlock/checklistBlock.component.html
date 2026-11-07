@@ -1,0 +1,27 @@
+<div class="checklist-god">
+  <div class="wrapper-checklist-block-content" ng-repeat="checklist in $ctrl.checklists" ng-class="{'overflow-hidden': !$ctrl.can_load, 'rectangular-wrapper': !$ctrl.can_load }" ng-style="{ height: !$ctrl.can_load && $ctrl.getHeightChecklistWrapper(checklist.Id) }">
+    <checklist-skeleton
+      checklist="checklist"
+      info-checklist-block-content="$ctrl.info_checklist_block_content[checklist.Id]"
+      ng-if="checklist.Available && !$ctrl.can_load"
+    ></checklist-skeleton>
+    <div ng-if="checklist.Available && $ctrl.can_load">
+      <checklist-block-content
+      checklist="checklist"
+      deal="$ctrl.deal"
+      new-layout="$ctrl.newLayout"
+      checklist-filled-callback-fn="$ctrl.checklistFilledCallback(filled, checklist_id)"
+      deal-contact="$ctrl.deal_contact"
+      deal-person="$ctrl.deal_person"
+      class="checklist-son-of-god">
+      </checklist-block-content>
+    </div>
+  </div>
+  
+  <div class="text-center wrapper next-stage-button-wrapper" ng-if="$ctrl.all_checklists_filled && !$ctrl.deal.Stage.LastPipelineStage && $ctrl.should_show_advance_stage_button && $ctrl.can_load">
+    <div class="button button-action button-full-width button-big position-relative panel medium-shadow button-next-stage" ng-class="{ 'disabled': $ctrl.next_step_loading }" ng-click="$ctrl.goToNextStage()">
+      {{ 'CHECKLISTS.BLOCK.PROCEED_TO_NEXT_STEP' | translate }} <i class="fas fa-chevron-right dropdown-sign"></i>
+      <div class="loader modal-loader button-loader" ng-if="$ctrl.next_step_loading"></div>
+    </div>
+  </div>
+</div>

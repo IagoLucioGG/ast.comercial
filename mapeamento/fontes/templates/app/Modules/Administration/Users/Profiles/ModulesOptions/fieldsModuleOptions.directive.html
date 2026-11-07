@@ -1,0 +1,51 @@
+
+<div class="tab-pane" id="pr">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.FIELDS_MODULE_OPTIONS.FIELDS_CREATE' | translate }}</div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.FieldsCreatePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.FieldsCreatePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.FIELDS_MODULE_OPTIONS.FIELDS_EDIT' | translate }}</div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.FieldsEditPermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.FieldsEditPermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.FIELDS_MODULE_OPTIONS.FIELDS_DELETE' | translate }}</div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.FieldsDeletePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.FieldsDeletePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

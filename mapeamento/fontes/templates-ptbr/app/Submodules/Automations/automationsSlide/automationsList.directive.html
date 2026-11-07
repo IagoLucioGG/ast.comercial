@@ -1,0 +1,149 @@
+<div class="vbox d-block" ng-class="{'big-header-or-footer': !topLayout, 'small-header': topLayout}">
+  <header class="regular-header new-header side-wrapper b-b-1 b-t-1" ng-if="topLayout">
+    <div class="hbox stretch automations-list__header">
+      <div 
+        class="automations-list__header-title-container"
+        tooltip-enable="{{automationsListCtrl.tooltip_enable}}"            
+        uib-tooltip="{{ 'AUTOMATIONS.ENTITY_AUTOMATIONS' | translate_with_replace : { entity_name: entity.Name } }}"
+        tooltip-append-to-body="true"
+        id="title"
+        >
+        <span class="font-thin font-title">
+          {{ 'AUTOMATIONS.ENTITY_AUTOMATIONS' | translate_with_replace : { entity_name: entity.Name } }}
+        </span>
+      </div>
+      <div class="automations-list__header-actions-container">
+        <div class="automations-list__active-automations-counter-container" uib-tooltip="{{ 'AUTOMATIONS.AUTOMATION_CREATION_LIMIT_LABEL' | translate_with_replace: { entityName: entity.Name } }}" tooltip-append-to-body="true">
+          <span class="v-middle" ng-class="{'text-danger': automationsListCtrl.activeAutomationsCount >= automationsListCtrl.max_automations }">{{automationsListCtrl.activeAutomationsCount}}</span><span class="text-muted v-middle">/{{automationsListCtrl.max_automations}}</span>
+        </div>
+        <div class="automations-list__header-search-container">
+          <div class="input-group" tooltip-placement="left" uib-tooltip="Buscar automações por nome">
+            <input class="form-control input-sm light-background" placeholder="Buscar por nome" ng-model="automationsListCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? automationsListCtrl.quickFilter(automationsListCtrl.quick_filter) : automationsListCtrl.onTypeQuickFilter(automationsListCtrl.quick_filter)">
+            <div class="input-group-btn width-10">
+              <a class="btn button button-neutral-gray special-search-button" ng-click="automationsListCtrl.quickFilter(automationsListCtrl.quick_filter)" style="top: -1px; position: relative;">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+        </div>      
+        <div class="automations-list__header-button-container">
+          <a class="button button-action nowrap" href ng-click="automationsListCtrl.can_load && automationsListCtrl.newAutomation()" data-cy="administration-automations-new-button">
+            <i class="button-icon fas fa-robot"></i>
+            Nova automação
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="scrollable">
+    <standard-loader margin-top="15" loading="!automationsListCtrl.can_load"></standard-loader>
+    <div ng-if="automationsListCtrl.can_load">
+      <ul class="fake-ul" ng-if="automationsListCtrl.automations.length > 0" ui-sortable="automationsListCtrl.options" ng-model="automationsListCtrl.automations">
+        <li class="button button-full-width button-white-no-border-semi-light-hover text-left drag-button button-square no-border button-very-big" ng-repeat="automation in automationsListCtrl.automations track by automation.Id" data-cy="automation-{{automation.Id}}">
+          <div class="hbox font-regular-weight">
+            <aside class="v-middle width-20">
+              <div class="token-drag-indicator muted-token"></div>
+            </aside>
+            <aside class="width-30 v-middle">
+              <span class="font-small display-block">
+                <div class="text-darkest-neutral font-bold">
+                  <span class="font-big" ng-class="{'text-danger': automation.DisabledDueToError, 'text-success': automation.Enabled}">
+                    <i class="fal fa-lightbulb regular-fa"></i>
+                  </span>
+                </div>
+              </span>
+            </aside>
+            <aside class="v-middle" ng-click="automationsListCtrl.editAutomation(automation)">
+              <span uib-tooltip="{{ automation.Name }}" tooltip-enable="automation.Name.length > 87" tooltip-append-to-body="true" class="font-regular-weight font-regular-size">
+                {{automation.Name.length <= 87 ? automation.Name : automation.Name.substring(0, 86) + '...' }}
+              </span>
+            </aside>
+            <aside class="width-40 position-relative">
+              <a class="options-column-button" id="more_options" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="hbox stretch">
+                  <aside class="v-middle">
+                    <i class="fal fa-cog table-options-simple-line"></i>
+                  </aside>
+                </div>
+              </a>
+              <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+                <li>
+                  <a class="white-dropdown-link" href ng-click-confirm="{{ (automation.Enabled ? 'AUTOMATIONS.DISABLE_CONFIRM' : 'AUTOMATIONS.ENABLE_CONFIRM') | translate }}" reversible="true" ng-click="automationsListCtrl.toggleEnableAutomation(automation)">
+                    <div class="hbox">
+                      <aside class="width-35 text-center v-middle">
+                        <i class="simple-line-big fal" ng-class="{ 'fa-lightbulb': !automation.Enabled, 'fa-lightbulb-slash': automation.Enabled }"></i>
+                      </aside>
+                      <aside class="v-middle">{{ (automation.Enabled ? 'AUTOMATIONS.DISABLE' : 'AUTOMATIONS.ENABLE') | translate }}</aside>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="white-dropdown-link" href ng-click="automationsListCtrl.duplicateAutomation(automation)">
+                    <div class="hbox">
+                      <aside class="width-35 text-center v-middle">
+                        <i class="simple-line-big fal fa-clone"></i>
+                      </aside>
+                      <aside class="v-middle">
+                        Duplicar
+                      </aside>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="white-dropdown-link" href ng-click-confirm="excluir essa automação?" reversible="false" ng-click="automationsListCtrl.deleteAutomation(automation)">
+                    <div class="hbox">
+                      <aside class="width-35 text-center v-middle">
+                        <i class="simple-line-big fal fa-trash"></i>
+                      </aside>
+                      <aside class="v-middle">
+                        Excluir
+                      </aside>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+          </div>
+        </li>
+      </ul>
+      <div ng-if="automationsListCtrl.automations.length > 0 && stage">
+        <div class="gap-30"></div>
+        <div class="text-center page-not-found font-big-title text-muted">
+          <i class="fal fa-arrow-circle-down font-giant-title"></i>
+        </div>
+        <div class="gap-15"></div>
+        <div class="text-muted text-center page-not-found font-big side-wrapper">
+          As automações são executadas de forma ordenada do primeiro ao último item. Se duas automações alteram o mesmo dado, a mais abaixo terá prioridade.
+        </div>
+        <div class="gap-30"></div>
+      </div>
+      <div class="text-muted text-center page-not-found font-big-title" ng-if="automationsListCtrl.automations.length === 0" data-cy="administration-automations-not-found">
+        <div class="gap-50"></div>
+        <i class="fal fa-robot font-giant-title"></i>
+        <div class="gap-30"></div>
+        {{ stage ? ('AUTOMATIONS.NO_AUTOMATIONS_IN_STAGE' | translate) : ('AUTOMATIONS.NO_ENTITY_AUTOMATIONS' | translate_with_replace : { entity_name: entity.Name })}}
+      </div>
+    </div>
+    <dynamic-table-pagination
+      ng-if="automationsListCtrl.can_load && automationsListCtrl.automations.length > 0 && !stage"
+      items-per-page="automationsListCtrl.items_per_page"
+      current-page="automationsListCtrl.current_page"
+      total-items="automationsListCtrl.total_automations"
+      change-page-callback-fn="automationsListCtrl.changePageCallback(page, automationsListCtrl.quick_filter)">
+    </dynamic-table-pagination>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper" ng-if="!topLayout">
+  <div class="hbox stretch">
+    <aside class="v-middle text-right" ng-if="automationsListCtrl.can_load">
+      <a class="button button-white-no-border" ng-if="automationsListCtrl.automations.length > 0 && stage" href mini-modal mini-modal-title="Duplicar automações em outro estágio" mini-modal-fields="automationsListCtrl.stage_fields" mini-modal-callback="automationsListCtrl.duplicateAllAutomations(model)">
+        <span class="text-action"><i class="fal fa-clone button-icon"></i></span>
+        Duplicar automações em outro estágio
+      </a>
+      <a class="button button-action pull-right" href ng-click="automationsListCtrl.newAutomation()">
+        <i class="fas fa-robot button-icon"></i>
+        Nova automação
+      </a>
+    </aside>
+  </div>
+</div>

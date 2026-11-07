@@ -1,0 +1,97 @@
+<div>
+  <div>
+    <div class="regular-header new-header white-content b-b-1 d-flex jc-between">
+      <div class="display-inline">
+        <aside class="v-middle" ng-if="$ctrl.activeLibraryModule">
+          <ul class="nav nav-tabs b-b-1 border-tabs customer-tabs-density">
+            <li ng-class="{ 'active': !$ctrl.libraryModuleMode }">
+              <a href ng-click="$ctrl.toggleMode(false)">Anexos
+                <div
+                  ng-if="$ctrl.attachmentsCount.attachments > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">
+                  {{ $ctrl.attachmentsCount.attachments }}
+                </div>
+              </a>
+            </li>
+            <li ng-class="{ 'active': $ctrl.libraryModuleMode }">
+              <a href ng-click="$ctrl.toggleMode(true)">{{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.LIBRARY_ITEMS' |
+                translate_sentence_with_replace : { library: $ctrl.library_module_name } }}
+                <div ng-if="$ctrl.attachmentsCount.library > 0"
+                  class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">
+                  {{ $ctrl.attachmentsCount.library }}
+                </div>
+              </a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+      <div ng-repeat="action in $ctrl.actions">
+        <div class="pull-right text-right display-inline v-middle page-attachments__new-attachment-bnt" ng-show="action.CanCreateNew && !$ctrl.libraryModuleMode">
+          <label class="button button-action nowrap m0" href id="att-wrapper">
+            <i class="button-icon fas fa-paperclip"></i>
+            {{ action.CreateNewLabel || ('GENERICS.NEW' | translate) }}
+            <input id="deal-att" type="file" multiple style="display: none;" />
+          </label>
+        </div>
+        <div class="f-1 align-items-center height-max pull-right" ng-show="action.CanCreateNew && $ctrl.libraryModuleMode">
+          <div class="input-group pull-left width-250 mright10">
+            <input
+              class="form-control input-sm light-background"
+              placeholder="Pesquisar"
+              ng-model="$ctrl.quick_filter"
+              ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)">
+            <div class="input-group-btn width-10">
+              <a ng-click="$ctrl.quickFilter($ctrl.quick_filter)" class="btn button button-neutral-gray special-search-button">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+          <button class="button button-action" ng-click="$ctrl.toggleItemQuickSelect()">
+            {{ ($ctrl.attachments.length ? 'GENERIC_DIRECTIVES.ENTITY_PAGE.EDIT_LIBRARY_ITEMS' : 'GENERIC_DIRECTIVES.ENTITY_PAGE.ADD_LIBRARY_ITEMS') | translate_sentence }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content">
+      <div class="tab-pane active">
+        <div class="wrapper-big-side">
+          <table class="table table-reorder first-child-border table-hover white-table-with-header infos-widget-table" ng-if="$ctrl.initialLoad">
+            <tr ng-repeat="attachment in $ctrl.attachments" ng-click="$ctrl.downloadAttachment(attachment)">
+              <td class="width-40">
+                <i ng-class="attachment.Icon"></i>
+              </td>
+              <td 
+                inline-edit
+                non-editable="false"
+                button-after-text="true"
+                model="attachment"
+                custom-fields="[$ctrl.name_field]"
+                patch-api="Attachments"
+                submit-fn="$ctrl.submitInlineAttachmentEdit(item)"
+                no-update-model="true"
+              >
+                <div class="font-regular-weight font-regular-size overflow-hidden ellipsis">
+                  {{attachment.FileName}}
+                </div>
+              </td>
+              <td class="width-40 v-middle" ng-if="!$ctrl.libraryModuleMode" ng-click-confirm="excluir esse anexo?" reversible="false" ng-click="$event.stopPropagation(); $ctrl.deleteAttachment($index)">
+                <i class="fal fa-trash"></i>
+              </td>
+            </tr>
+            <tr ng-if="$ctrl.attachments.length === 0 && $ctrl.initialLoad" class="empty-table-config">
+              <td colspan="3" class="text-center empty-results">
+                <span class="text-muted">Nenhum item encontrado</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<item-quick-select-angular-wrapper
+  ng-if="$ctrl.item_quick_select_open"
+  save-selected-items-callback="$ctrl.saveSelectedItemsCallback"
+  cancel-selected-items-callback="$ctrl.cancelSelectedItemsCallback"
+  current-selected-items="$ctrl.attachments">
+</item-quick-select-angular-wrapper>

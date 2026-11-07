@@ -1,0 +1,196 @@
+<!-- <div class="deal-or-contact-domain">
+
+</div> -->
+<div class="tab-container-flex small-header white-content contact-entity-preview">
+  <header class="white-content b-b-1 pl-10 pr-10 regular-header new-header contact-entity-preview__header" ng-if="$ctrl.initial_load">
+    <div class="hbox">
+      <aside class="white-content">
+        <ul class="nav nav-tabs border-tabs borderless-nav-tabs">
+          <li ng-class="{ 'active': $ctrl.current_tab === 'data' }">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('data', true)" href>
+              {{ 'CONTACTS.CONTACT_PAGE.CONTACT_DATA' | translate }}
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'timeline' }">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('timeline')" href>
+              {{ 'CONTACTS.CONTACT_PAGE.TIMELINE' | translate }}
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'companies_list' }">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('companies_list')" href ng-if="$ctrl.model.TypeId === 1">
+              {{ 'CONTACTS.CONTACT_PAGE.RELATED_COMPANIES' | translate }} <div ng-if="$ctrl.counters.companies > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.companies}}</div>
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'people_list' }">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('people_list')" href ng-if="$ctrl.model.TypeId === 1">
+              {{ 'CONTACTS.CONTACT_PAGE.PEOPLE' | translate }} <div ng-if="$ctrl.counters.people > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.people}}</div>
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'deals_list' }" ng-if="$ctrl.activeDealsModule">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('deals_list')" href>
+              {{ 'CONTACTS.CONTACT_PAGE.DEALS' | translate_sentence }} <div ng-if="$ctrl.counters.deals > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.deals}}</div>
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'quotes_list' }"
+            ng-if="$ctrl.activeQuoteModule && $ctrl.self.Profile.QuotesModule">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('quotes_list')" href>
+              {{ 'CONTACTS.CONTACT_PAGE.QUOTES' | translate }} <div ng-if="$ctrl.counters.quotes > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.quotes}}</div>
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'documents_list' }"
+            ng-if="$ctrl.activeDocumentModule && $ctrl.self.Profile.DocumentsModule">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('documents_list')" href>
+              {{ 'CONTACTS.CONTACT_PAGE.DOCUMENTS' | translate }} <div ng-if="$ctrl.counters.documents > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.documents}}</div>
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'orders_list' }"
+            ng-if="$ctrl.activeOrderModule && $ctrl.self.Profile.OrdersModule">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('orders_list')" href>
+              {{ 'CONTACTS.CONTACT_PAGE.ORDERS' | translate }} <div ng-if="$ctrl.counters.orders > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.orders}}</div>
+            </a>
+          </li>
+          <li ng-class="{ 'active': $ctrl.current_tab === 'contact_products_list' }"
+            ng-if="$ctrl.activeContactsProductsModule && $ctrl.self.Profile.ContactsProductsViewPermission">
+            <a class="text-muted" ng-click="$ctrl.toggleTab('contact_products_list')" href>
+              {{ 'CONTACTS.CONTACT_PAGE.CONTACT_PRODUCTS' | translate_sentence }} <div ng-if="$ctrl.counters.contact_products > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.contact_products}}</div>
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <aside class="white-content v-middle">
+        <a class="close-side-slide button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" href ng-click="$ctrl.closeEntityPreview()">
+          <i class="fal fa-times"></i>
+        </a>
+      </aside>
+    </div>
+  </header>
+  <section class="scrollable tab-section contact-entity-preview__section">
+    <standard-loader margin-top="'15'" optionalclass="'funnel-loader'" loading="!$ctrl.initial_load"></standard-loader>
+    <div class="tab-content stretch" ng-if="$ctrl.initial_load">
+      <div class="tab-pane active light-background stretch" id="data" ng-if="$ctrl.current_tab === 'data'">
+        <new-contact-page-side-menu model="$ctrl.model" hide-options="true" block-edit="true"></new-contact-page-side-menu>
+      </div>
+
+      <div class="tab-pane active regular-background stretch" id="timeline" ng-if="$ctrl.current_tab === 'timeline'">
+        <new-contact-page-timeline model="$ctrl.model" is-contact-preview="true"></new-contact-page-timeline>
+      </div>
+
+    <div class="tab-pane active" id="companies_list" ng-if="$ctrl.model.TypeId === 1 && $ctrl.current_tab === 'companies_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.companies">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold">
+          <i class="fal fa-store font-monster-size"></i>
+          <div>{{ 'CONTACTS.CONTACT_PAGE.NO_RELATED_COMPANIES_FOUND' | translate }}</div>
+          <!-- <div class="gap-50"></div>
+          <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewCompany()">
+            <div class="font-very-big">Nova empresa</div>
+          </a> -->
+        </div>
+      </div>
+      <new-contact-page-companies ng-if="$ctrl.counters.companies" model="$ctrl.model" block-create="true"></new-contact-page-companies>
+    </div>
+
+      <div class="tab-pane active" id="people_list" ng-if="$ctrl.current_tab === 'people_list' && $ctrl.can_load">
+        <div class="big-wrapper" ng-if="!$ctrl.counters.people">
+          <div class="gap-50"></div>
+          <div class="text-center font-very-big-title font-bold">
+            <i class="fal fa-user font-monster-size"></i>
+            <div>{{ 'CONTACTS.CONTACT_PAGE.NO_PEOPLE_FOUND' | translate }}</div>
+            <!-- <div class="gap-50"></div>
+            <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewPerson()">
+              <div class="font-very-big">Nova pessoa</div>
+            </a> -->
+          </div>
+        </div>
+        <new-contact-page-people ng-if="$ctrl.counters.people" model="$ctrl.model" block-create="true" is-contact-preview="true"></new-contact-page-people>
+      </div>
+
+      <div class="tab-pane active" id="deals_list" ng-if="$ctrl.current_tab === 'deals_list' && $ctrl.can_load">
+        <div class="big-wrapper" ng-if="!$ctrl.counters.deals">
+          <div class="gap-50"></div>
+          <div class="text-center font-very-big-title font-bold text-neutral-light">
+            <i class="font-monster-size" ng-class="$ctrl.customizables.deals_module.icon_class"></i>
+            <div>{{ 'CONTACTS.CONTACT_PAGE.NO_DEALS_FOUND' | translate_sentence }}</div>
+            <!-- <div class="gap-50"></div>
+            <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewDeal()">
+              <div class="font-very-big">Novo negócio</div>
+            </a> -->
+          </div>
+        </div>
+        <new-contact-page-deals ng-if="$ctrl.counters.deals" model="$ctrl.model" block-create="true" is-contact-preview="true"></new-contact-page-deals>
+      </div>
+
+      <div class="tab-pane active" id="quotes_list" ng-if="$ctrl.current_tab === 'quotes_list' && $ctrl.can_load">
+        <div class="big-wrapper" ng-if="!$ctrl.counters.quotes">
+          <div class="gap-50"></div>
+          <div class="text-center font-very-big-title font-bold">
+            <i class="fal fa-file-invoice-dollar font-monster-size"></i>
+            <div>{{ 'CONTACTS.CONTACT_PAGE.NO_QUOTES_FOUND' | translate }}</div>
+            <!-- <div class="gap-50"></div>
+            <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewQuote()">
+              <div class="font-very-big">Nova proposta</div>
+            </a> -->
+          </div>
+        </div>
+        <new-contact-page-quotes ng-if="$ctrl.counters.quotes" model="$ctrl.model" block-create="true" is-contact-preview="true"></new-contact-page-quotes>
+      </div>
+
+      <div class="tab-pane active" id="documents_list" ng-if="$ctrl.current_tab === 'documents_list' && $ctrl.can_load">
+        <div class="big-wrapper" ng-if="!$ctrl.counters.documents">
+          <div class="gap-50"></div>
+          <div class="text-center font-very-big-title font-bold">
+            <i class="fal fa-file-alt font-monster-size"></i>
+            <div>{{ 'CONTACTS.CONTACT_PAGE.NO_DOCUMENTS_FOUND' | translate }}</div>
+            <!-- <div class="gap-50"></div>
+            <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewDocument()">
+              <div class="font-very-big">Novo documento</div>
+            </a> -->
+          </div>
+        </div>
+        <new-contact-page-documents ng-if="$ctrl.counters.documents" model="$ctrl.model" block-create="true" is-contact-preview="true"></new-contact-page-documents>
+      </div>
+
+      <div class="tab-pane active" id="orders_list" ng-if="$ctrl.current_tab === 'orders_list' && $ctrl.can_load">
+        <div class="big-wrapper" ng-if="!$ctrl.counters.orders">
+          <div class="gap-50"></div>
+          <div class="text-center font-very-big-title font-bold">
+            <i class="fal fa-money-check-edit-alt font-monster-size"></i>
+            <div>{{ 'CONTACTS.CONTACT_PAGE.NO_ORDERS_FOUND' | translate }}</div>
+            <!-- <div class="gap-50"></div>
+            <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewOrder()">
+              <div class="font-very-big">Nova venda</div>
+            </a> -->
+          </div>
+        </div>
+        <new-contact-page-orders ng-if="$ctrl.counters.orders" model="$ctrl.model" block-create="true" is-contact-preview="true"></new-contact-page-orders>
+      </div>
+
+      <div class="tab-pane active" id="orders_list" ng-if="$ctrl.current_tab === 'contact_products_list' && $ctrl.can_load">
+        <div class="big-wrapper" ng-if="!$ctrl.counters.contact_products">
+          <div class="gap-50"></div>
+          <div class="text-center font-very-big-title font-bold">
+            <i class="fal {{ $ctrl.customizables.contacts_products_module.icon_class }} font-monster-size"></i>
+            <div>{{ 'CONTACTS.CONTACT_PAGE.NO_CONTACT_PRODUCTS_FOUND' | translate_sentence }}</div>
+            <!-- <div class="gap-50"></div>
+            <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewContactProduct()">
+              <div class="font-very-big">Novo produto do cliente</div>
+            </a> -->
+          </div>
+        </div>
+        <new-contact-page-products
+        ng-if="$ctrl.counters.contact_products"
+        model="$ctrl.model"
+          fields="$ctrl.fields"   
+          select-row-callback="true"
+          block-create="true"
+          is-contact-preview="true"
+          web-worker="$ctrl.webWorker"
+          close-side-slide-fn="$ctrl.closeEntityPreview"
+          should-fetch-product-part="$ctrl.shouldFetchProductPart"
+          should-fetch-product="$ctrl.shouldFetchProduct"
+          should-fetch-contact-product="$ctrl.shouldFetchContactProduct"
+        ></new-contact-page-products>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,39 @@
+<div ng-show="isPopoverOpen" ng-form name="field_translation_form">
+  <form class="field-description-popover-min-height">
+    <div class="form-group col-sm-12" ng-repeat="field_translation in ctrl.model track by $index">
+      <label>
+        {{ field_translation.Label }}
+      </label>
+
+      <span class="align-limited-characters" 
+        uib-tooltip="{{ 'FORMS.FIELD_VALUE_TOO_LONG' | translate }}"
+        tooltip-append-to-body="true"
+        tooltip-is-open="(field_translation.FieldDescription && field_translation.FieldDescription.length || 0) > maxDescriptionLength"
+        tooltip-enable="(field_translation.FieldDescription && field_translation.FieldDescription.length || 0) > maxDescriptionLength">
+        <span class="field-remaining-text"
+          ng-class="{'text-danger font-bold': (field_translation.FieldDescription && field_translation.FieldDescription.length || 0) > maxDescriptionLength }">
+          {{ (field_translation.FieldDescription && field_translation.FieldDescription.length || 0) + '/' +
+          (maxDescriptionLength || 250) }}
+        </span>
+      </span>
+
+      <div class="display-flex" ng-click="ctrl.removeInvalidInputClass($event.target)">
+        <textarea 
+          style="height: 6rem;"
+          id="field_description_{{ field_translation.LanguageId }}" 
+          class="form-control field-description-field-height"
+          placeholder="{{ 'FIELD_CONFIG_MODAL.FIELD_HELPER_TEXT_PLACEHOLDER' | translate }}"
+          ng-model="field_translation.FieldDescription" ng-required="true"
+          ng-change="ctrl.handleChange(field_translation)"></textarea>
+      </div>
+    </div>
+
+  </form>
+  <button class="button button-action mleft15" ng-disabled="ctrl.loading || parentLoading" ng-click="ctrl.submitForm()"
+    title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+  <button class="button button-white" ng-disabled="ctrl.loading || parentLoading"
+    ng-click="ctrl.closePopover(); $event.stopPropagation()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' |
+    translate }}</button>
+
+  <loading-tooltip loading="ctrl.loading || parentLoading" form="field_translation_form"></loading-tooltip>
+</div>

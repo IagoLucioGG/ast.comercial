@@ -1,0 +1,88 @@
+f<div class="component-with-height">
+  <div class="vbox small-header">
+    <header class="regular-header new-header b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <documents-nav active="orders"></documents-nav>
+          <div class="display-inline-block height-40 pull-left">
+            <div class="input-group width-170 mtop5 special-size-search-button" tooltip-placement="right" uib-tooltip="{{ ordersCtrl.quickSearchTooltipText }}">
+              <input class="form-control input-sm light-background" placeholder="{{ ordersCtrl.quickSearchPlaceholderText }}" ng-model="ordersCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? ordersCtrl.quickFilter(ordersCtrl.quick_filter) : ordersCtrl.onTypeQuickFilter(ordersCtrl.quick_filter)">
+              <div class="input-group-btn width-10">
+                <a class="btn button button-neutral-gray special-search-button" ng-click="ordersCtrl.quickFilter(ordersCtrl.quick_filter)">
+                  <i class="fas fa-search text-neutral"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <a class="button button-action pull-right" ng-click="ordersCtrl.openBetaNewOrder()" ng-if="ordersCtrl.cpq_beta_button_enabled && ordersCtrl.self.Profile.OrdersCreatePermission" data-cy="documents-orders-new-order-button">
+            <i class="button-icon fas fa-money-check-edit-alt"></i>
+            {{ 'ORDERS.NEW_ORDER_BETA' | translate }}
+          </a>
+          <a class="button button-action pull-right" ng-click="ordersCtrl.openNewOrder()" ng-if="ordersCtrl.self.Profile.OrdersCreatePermission">
+            <i class="button-icon fas fa-money-check-edit-alt"></i>
+            {{ 'ORDERS.NEW_ORDER' | translate }}
+          </a>
+          <a id="orders-menu-button" class="button button-white-no-border pull-right" open-side-menu side-menu-id="order_side_menu" ng-if="ordersCtrl.self.Profile.Administrator">
+            <span class="text-action"><i class="fal fa-cog button-icon"></i></span> {{ 'GENERICS.MENU' | translate }}
+          </a>
+          <div class="dropdown pull-right">
+            <filters-menu filters="ordersCtrl.filters" applied-filter="ordersCtrl.applied_filter" filter-actions-fn="ordersCtrl.filterActions"></filters-menu>
+          </div>
+
+          <div class="dropdown pull-right">
+            <a class="dropdown-toggle button button-white-no-border pull-right" id="approvals" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span>
+                <span class="text-action"><i class="button-icon-margin" ng-class="ordersCtrl.current_mode.Icon"></i></span>
+                {{ 'ORDERS.SEGMENT_BY' | translate }} {{ordersCtrl.current_mode.Name.toLowerCase()}}<i class="fal fa-angle-down dropdown-sign"></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+              <div class="dropdown-subtitle">
+                {{ 'ORDERS.VISUALIZATION_MODE' | translate }}
+              </div>
+              <li ng-repeat="mode in ordersCtrl.modes|filter:{ Active: false }">
+                <a class="white-dropdown-link" href ng-click="ordersCtrl.changeMode(mode.EntityId)">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="button-icon-margin" ng-class="mode.Icon"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'ORDERS.SEGMENT_BY' | translate }} {{mode.Name.toLowerCase()}}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </header>
+    <section>
+      <div class="vbox">
+        <!-- CONTEÚDO DA TELA -->
+        <section ui-view="orders-view"></section>
+      </div>
+    </section>
+
+    <!--MODALS-->
+    <order-pipeline ng-if="ordersCtrl.state.current.name.includes('.orderpipeline')"></order-pipeline>
+    <filters-modal
+        ng-if="ordersCtrl.state.current.name.endsWith('filter')"
+        modal-id="filter_modal"
+        entity="ordersCtrl.current_mode.EntityId === 4 ? ordersCtrl.main_entity : ordersCtrl.current_mode.EntityId === 20 ? ordersCtrl.product_entity : ordersCtrl.part_entity"
+        remove-simple-filter="true"
+        filter-actions-fn="ordersCtrl.filterActions">
+    </filters-modal>
+
+    <!--SIDE-MENU-->
+    <side-menu side-menu-id="order_side_menu">
+      <order-side-menu></order-side-menu>
+    </side-menu>
+    <!--END OF SIDE-MENU-->
+
+  </div>
+</div>

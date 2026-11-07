@@ -1,0 +1,41 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="false"
+  footer="false"
+  dark="true"
+  modal-title="{{ 'TASKS.TASK_TYPES_MODAL.TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="modal-body-no-padding">
+          <table class="table table-striped modal-table">
+            <thead>
+              <tr>
+                <th colspan="2">{{ 'TASKS.TASK_TYPES_MODAL.TYPE_NAME' | translate }}</th>
+                <th>{{ 'TASKS.TASK_TYPES_MODAL.TYPE_ACTIVE' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="type in $ctrl.task_types">
+                <td class="width-20 font-very-big text-center">
+                  <i class="fal" ng-class="type.Icon" ng-style="{ color: type.Color }"></i>
+                </td>
+                <td>{{ type.Name }}</td>
+                <td class="text-left">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="{{ type.Id }}" type="checkbox"
+                      ng-model="type.Listable" ng-change="$ctrl.patchTaskType(type)">
+                    <label class="pull-right" for="{{ type.Id }}"></label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

@@ -1,0 +1,39 @@
+<dynamic-modal
+  modal-id="users"
+  footer="false"
+  dark="true"
+  modal-title="Selecione uma proposta como base"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll">
+          <section class="scrollable">
+            <div>
+              <table class="table  table-hover white-table">
+                <thead>
+                  <tr>
+                    <th class="small-cell">Código</th>
+                    <th class="small-cell">Modelo</th>
+                    <th class="small-cell"># de produtos</th>
+                    <th class="small-cell">Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="contact-workplace-button" ng-repeat="quote in $ctrl.quotes" ng-click="$ctrl.selectQuote(quote)" data-cy="select-quote-{{quote.Id}}">
+                    <td>#{{quote.QuoteNumber}}</td>
+                    <td>{{(quote.Template.Name ? quote.Template.Name : "")}}</td>
+                    <td>{{quote.Products.length}} produtos</td>
+                    <td>{{(quote.Currency.Symbol || ('DEFAULT_CURRENCY' | translate)) + " " + (quote.Amount | to_locale_string : { minimumFractionDigits: 2}) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

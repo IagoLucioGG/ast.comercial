@@ -1,0 +1,126 @@
+
+<div class="tab-pane" id="pr">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.WHICH_USERS_CAN_VISUALIZE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.UsersView" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.UsersView" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ONLY_FOR_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.UsersView" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.WHICH_TEAMS_CAN_VISUALIZE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.TeamsView" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.TeamsView" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ONLY_YOUR_TEAMS' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.WHICH_NAVIGATION_TIMELINE_CAN_VISUALIZE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LogsViewPermission" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LogsViewPermission" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.YOURS_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LogsViewPermission" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ONLY_YOURS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LogsViewPermission" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="usersModuleOptionsCtrl.self.Account.ChatModule">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.WITH_WHICH_USERS_CAN_CHAT' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ChatPermission" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ChatPermission" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ONLY_FOR_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ChatPermission" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ONLY_SPECIFIC_USERS' | translate }}</strong>
+        </label>
+      </div>
+      <div>
+        <label class="font-bold">
+          {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.SELECT_USERS_TO_CHAT' | translate }}
+        </label>
+        <new-field
+          model="model"
+          field="usersModuleOptionsCtrl.allowed_chat_users_field"
+          property="usersModuleOptionsCtrl.allowed_chat_users_field.key"
+          wide="true"
+          required="false"
+          disabled="model.ChatPermission === 1"
+          ignore-default-values="true"
+          model-change-callback="usersModuleOptionsCtrl.chatUsersCallback(new_val)"
+          not-trigger-formula="true">
+        </new-field>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.FOR_WHO_CAN_SEND_MESSEGES_IN_HOME_SCREEN_MURAL' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.HomeMessagesCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.NOBODY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.HomeMessagesCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ONLY_YOUR_TEAMS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.HomeMessagesCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.USERS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

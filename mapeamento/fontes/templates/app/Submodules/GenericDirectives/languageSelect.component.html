@@ -1,0 +1,16 @@
+<div class="form-group col-sm-12">
+  <label>
+    <span class="font-semi-big">
+      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.LANGUAGE_LABEL' | translate }}
+    </span>
+    <br>
+    <small class="text-muted" ng-if="$ctrl.isChangingForAccount">
+      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.LANGUAGE_HELPER' | translate }}
+    </small>
+    <small class="text-muted" ng-if="!$ctrl.isChangingForAccount">
+      {{ 'USERS.USER_CONFIG_MODAL.LANGUAGE_HELPER' | translate }}
+    </small>
+  </label>
+  <select class="form-control input-sm" ng-options="language.Name for language in $ctrl.languages"
+    ng-model="$ctrl.selected_language" ng-change="$ctrl.languageSelectCallback()"></select>
+</div>

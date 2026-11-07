@@ -1,0 +1,174 @@
+<div class="vbox width-200">
+  <header class="dark-content">
+    <ul class="nav nav-tabs b-b-1 darker-tabs full-width">
+      <li class="width-50-percent" ng-repeat="tab in $ctrl.tabs | filter : { Enabled: true }"
+        ng-class="{ 'active': tab.Id === $ctrl.selected_tab.Id }" ng-click="$ctrl.changeTab(tab)">
+        <a class="text-muted" href>
+          <i class="fad simple-line-header symbol-version" ng-class="tab.Icon"></i>
+          <span class="description-version">
+            {{tab.Name}}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </header>
+  <section class="scrollable users-online-list">
+    <div class="tab-content">
+
+      <div class="tab-pane width-200" ng-class="{ 'active': $ctrl.selected_tab.Id === 1 }">
+        <div class="users-live">
+          <div class="gap-15 user-status"></div>
+          <div class="text-muted darker-background font-thin font-big small-wrapper user-status">
+            ONLINE - {{$ctrl.online_users.length}}
+          </div>
+          <a
+            href
+            class="chat-item mini-top-right-wrapper regular-background"
+            ng-repeat="user in $ctrl.online_users | limitTo: $ctrl.limit_users"
+            ng-click="$ctrl.selectUser(user, $event)"
+            context-menu="$ctrl.userOptions(user)">
+            <div class="hbox">
+              <aside class="width-45 text-center v-middle" uib-tooltip="{{user.Name}}" tooltip-append-to-body="true" tooltip-placement="left" tooltip-enable="!$ctrl.users_sidebar_extended">
+                <div class="position-relative mini-wrapper-left">
+                  <div class="chat-status">
+                    <div class="online"></div>
+                  </div>
+                  <img class="chat-avatar" ng-src="{{user.AvatarUrl}}">
+                </div>
+              </aside>
+              <aside class="v-middle mini-wrapper-left user-details">
+                <div class="mini-wrapper-left">
+                  <div class="width-90 ellipsis nowrap font-bold text-white">{{user.Name}}</div>
+                  <div class="width-90 ellipsis nowrap text-muted font-small">
+                    <span>{{user.FormattedLastSeenRoute}}</span>
+                  </div>
+                </div>
+              </aside>
+            </div>
+            <div class="chat-separator">
+              <div class="line-chat-separator"></div>
+            </div>
+          </a>
+          <div class="text-center full-width wrapper" ng-if="$ctrl.limit_users <= $ctrl.online_users.length">
+            <div class="button button-dark text-muted" ng-click="$ctrl.showMoreUsers()">
+              {{$ctrl.users_sidebar_extended ? ('USERS_SIDEBAR.LOAD_MORE' | translate) : '+'}}
+            </div>
+          </div>
+          <div class="gap-15 user-status"></div>
+          <div class="text-muted darker-background font-thin font-big small-wrapper user-status">OFFLINE -
+            {{$ctrl.offline_users.length}}</div>
+          <a
+            href
+            class="chat-item mini-top-right-wrapper"
+            ng-repeat="user in $ctrl.offline_users | limitTo: $ctrl.limit_users"
+            ng-click="$ctrl.selectUser(user, $event)"
+            context-menu="$ctrl.userOptions(user)">
+            <div class="hbox offline-chat-item">
+              <aside class="width-45 text-center v-middle" uib-tooltip="{{user.Name}}" tooltip-append-to-body="true" tooltip-placement="left" tooltip-enable="!$ctrl.users_sidebar_extended">
+                <div class="position-relative mini-wrapper-left">
+                  <div class="chat-status">
+                    <div class="offline"></div>
+                  </div>
+                  <img class="chat-avatar" ng-src="{{user.AvatarUrl}}">
+                </div>
+              </aside>
+              <aside class="v-middle mini-wrapper-left user-details">
+                <div class="mini-wrapper-left">
+                  <div class="width-90 ellipsis nowrap font-bold text-white">{{user.Name}}</div>
+                  <div class="width-90 ellipsis nowrap text-muted">
+                    <span>{{user.FormattedLastSeen}}</span>
+                  </div>
+                </div>
+              </aside>
+            </div>
+            <div class="chat-separator">
+              <div class="line-chat-separator"></div>
+            </div>
+          </a>
+          <div class="text-center full-width wrapper" ng-if="$ctrl.limit_users <= $ctrl.offline_users.length">
+            <div class="button button-dark text-muted" ng-click="$ctrl.showMoreUsers()">
+              {{$ctrl.users_sidebar_extended ? ('USERS_SIDEBAR.LOAD_MORE' | translate) : '+'}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane width-200" ng-class="{ 'active': $ctrl.selected_tab.Id === 2 }">
+        <div class="users-live">
+          <div class="gap-10"></div>
+          <div class="mini-wrapper text-center">
+            <div class="button-dark-with-borders button button-full-width full-screen-button"
+              ng-click="$ctrl.goToFullScreenChats()">
+              <span class="font-regular-weight opacity-05">
+                <i class="fas fa-arrow-up-right-and-arrow-down-left-from-center-wide button-icon-2"></i>
+                <span class="button-content">
+                  Tela cheia
+                </span>
+              </span>
+            </div>
+          </div>
+          <a
+            href
+            class="chat-item mini-top-right-wrapper regular-background"
+            ng-repeat="chat in $ctrl.chats | filter:$ctrl.filterChats"
+            ng-click="$ctrl.openSpecificChat(chat)">
+            <div class="hbox">
+              <aside class="width-45 text-center v-middle" uib-tooltip="{{chat.IsGroup ? chat.Name : chat.TargetUser.Name}}" tooltip-append-to-body="true" tooltip-placement="left" tooltip-enable="!$ctrl.users_sidebar_extended">
+                <div class="position-relative mini-wrapper-left">
+                  <div class="chat-status" ng-if="$ctrl.self.Account.UsersOnlineModule && !chat.IsGroup">
+                    <div ng-class="{ 'online': chat.TargetUser.Online, 'offline': !chat.TargetUser.Online }"></div>
+                  </div>
+                  <img class="chat-avatar" ng-src="{{chat.IsGroup ? (chat.AvatarUrl || 'images/avatar_default.jpg') : (chat.TargetUser.AvatarUrl || 'images/avatar_default.jpg')}}">
+                  <div class="chat-conversation-counter small-counter font-shadow panel strong-small-shadow" ng-if="chat.HasUnreadMessages">
+                    <i class="fad fa-bells"></i>
+                  </div>
+                </div>
+              </aside>
+              <aside class="v-middle mini-wrapper-left user-details">
+                <div class="mini-wrapper-left">
+                  <div class="width-90 ellipsis nowrap font-bold text-white">{{chat.IsGroup ? chat.Name : chat.TargetUser.Name}}</div>
+                  <div class="width-90 ellipsis nowrap font-small text-muted"
+                    ng-class="{ 'font-bold': chat.HasUnreadMessages }">
+                    <span ng-if="chat.LastMessage && chat.LastMessage.IsDeletedForUser">
+                      Mensagem apagada
+                    </span>
+                    <span ng-if="!chat.LastMessage || (chat.LastMessage && !chat.LastMessage.IsDeletedForUser)">
+                      {{chat.LastMessageSenderUserId === $ctrl.self.Id ? 'Você: ' : ''}}{{chat.LastMessageContent || ''}}
+                    </span>
+                  </div>
+                </div>
+              </aside>
+              <aside class="widht-50 v-middle wrapper-right-small">
+                <div class="font-semi-big text-muted nowrap">
+                  <i class="fal fa-volume-mute top-fix-icon" ng-if="chat.IsMuted"></i>
+                  <chat-options chat="chat" ng-click="$event.stopPropagation()" is-users-sidebar="true"></chat-options>
+                </div>
+              </aside>
+            </div>
+            <div class="chat-separator">
+              <div class="line-chat-separator"></div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <div class="footer dark-content b-t-1 height-45">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="mini-side-wrapper">
+          <a
+            class="button-fixed-size button-fixed-size-big button-dark cursor-pointer"
+            ng-class="{ 'expand-size-slide': !$ctrl.users_sidebar_extended, 'compress-size-slide': $ctrl.users_sidebar_extended }"
+            ng-click="$ctrl.toggleCompressUsersSidebar()">
+            <i
+              class="fas text-muted"
+              ng-class="{ 'fa-arrow-up-right-and-arrow-down-left-from-center': !$ctrl.users_sidebar_extended, 'fa-arrow-down-left-and-arrow-up-right-to-center': $ctrl.users_sidebar_extended }">
+            </i>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

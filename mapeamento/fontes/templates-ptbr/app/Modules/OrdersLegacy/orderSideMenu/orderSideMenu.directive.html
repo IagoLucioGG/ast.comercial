@@ -1,0 +1,27 @@
+
+<div class="bottom-side-wrapper">
+  <div class="button full-width button-white-light-border b-1 button-very-big" ng-if="orderSideMenuCtrl.administrator_permission" ui-sref="{{'templates.orders'}}">
+    <div class="hbox">
+      <aside class="v-middle width-35 text-center">
+        <span>
+          <i class="fal fa-file-image simple-line-space"></i>
+        </span>
+      </aside>
+      <aside class="text-left">
+        <span class="text-regular semi-big"> Configurar modelos de venda</span>
+      </aside>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="orderSideMenuCtrl.administrator_permission" ui-sref="{{'orders.table.orderpipeline'}}">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-list-ol simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">Editar estágios de vendas</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="form-group col-sm-12" style="font-size: 14px;">
+  <label class="font-regular-weight">
+    {{ 'PRODUCTS.PART_UTILS.SELECT_LINK_TYPE' | translate_with_replace: { name: $ctrl.selected_type.Name.toLowerCase() } }}
+  </label>
+  <div class="input-group full-width">
+    <div class="input-group-btn">
+      <a class="btn button button-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span>
+          <i class="fad simple-line list-simple-line" ng-class="$ctrl.selected_type.Icon"></i>
+          {{$ctrl.selected_type.Name}}
+          <i class="fal fa-angle-down dropdown-sign"></i>
+        </span>
+      </a>
+      <ul class="dropdown-menu left-menu white-dropdown-menu no-padding-top">
+        <div class="dropdown-subtitle">
+          Tipos de vínculo
+        </div>
+        <li ng-repeat="type in $ctrl.link_types" ng-if="type.Key !== $ctrl.selected_type.Key">
+          <a class="white-dropdown-link" ng-click="$ctrl.changeType(type)">
+            <div class="hbox">
+              <aside class="v-middle text-center width-25 min-width-25 max-width-25">
+                <i class="fad simple-line list-simple-line" ng-class="type.Icon"></i>
+              </aside>
+              <aside class="v-middle">
+                {{type.Name}}
+              </aside>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <new-field field="$ctrl.selected_type.Field" model="$ctrl.part_model" property="'part'" required="$ctrl.selected_type.Field.required"
+      disabled="blockEdit" wide="true" hide-label="true" model-change-callback="$ctrl.modelChangeCallback(new_val)">
+    </new-field>
+  </div>
+  <div class="gap-15"></div>
+  <div class="text-darkest-neutral">
+    {{$ctrl.selected_type.Description}}
+  </div>
+</div>

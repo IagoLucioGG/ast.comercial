@@ -1,0 +1,20 @@
+﻿<div ng-if="!disabled" class="form-group">
+  <div class="hbox">
+    <aside class="v-middle" ng-hide="hideLabel">
+      <span class="font-semi-big">
+        Adicionar contatos relacionados à tarefa da integração
+      </span>
+      <br>
+      <span class="text-muted font-small">
+        Com esta opção ativa, seus contatos relacionados serão enviados ao Google / Outlook como convidados e serão notificados.
+      </span>
+    </aside>
+    <aside class="v-middle">
+      <div class="switch">
+        <input id="cmn-toggle-5" ng-click="calendarInviteCtrl.setInvite()" ng-checked="model === true"
+          class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+        <label class="pull-right" for="cmn-toggle-5"></label>
+      </div>
+    </aside>
+  </div>
+</div>

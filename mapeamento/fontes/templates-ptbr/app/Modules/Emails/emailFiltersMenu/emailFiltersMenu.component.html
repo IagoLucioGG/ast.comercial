@@ -1,0 +1,92 @@
+<div class="dropdown pull-right" ng-class="{'filter-button-border': emailFiltersMenuCtrl.current_filter || emailFiltersMenuCtrl.no_save_filter}" data-cy="emails-filter-button">
+  <a href class="dropdown-toggle button button-white-no-border" type="button" id="filter-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <span class="text-action" ng-if="!(emailFiltersMenuCtrl.current_filter.filter_name || emailFiltersMenuCtrl.no_save_filter)">
+      <i class="fal fa-filter button-icon"></i>
+    </span>
+     <span class="text-action" ng-if="emailFiltersMenuCtrl.current_filter.filter_name || emailFiltersMenuCtrl.no_save_filter">
+      <i class="fas fa-filter" uib-tooltip="Alerta de filtro ativo" tooltip-append-to-body="true"></i>
+    </span>
+    <span uib-tooltip="{{emailFiltersMenuCtrl.current_filter.filter_name}}" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-enable="emailFiltersMenuCtrl.current_filter.filter_name.length > 35">
+      <span ng-if="emailFiltersMenuCtrl.current_filter || emailsFilterMenuCtrl.no_save_filter" class="font-bold">
+        Filtro: {{ emailFiltersMenuCtrl.short_filter_name || (emailFiltersMenuCtrl.no_save_filter ? ('FILTERS.CUSTOM_FILTER' | translate) : '') }}
+      </span>
+      <span ng-if="!emailFiltersMenuCtrl.current_filter && !emailsFilterMenuCtrl.no_save_filter">
+        Filtros
+      </span>
+      <i class="fal fa-angle-down dropdown-sign"></i>
+    </span>
+  </a>
+
+  <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top field-pick" aria-labelledby="filter-list">
+    <div class="dropdown-subtitle">
+      {{ (!emailFiltersMenuCtrl.blockNewFilter ? 'FILTERS.FILTER_ACTIONS' : 'FILTERS.SAVED_FILTERS') | translate }}
+    </div>
+    <li ng-if="!blockNewFilter">
+      <a href ng-click="emailFiltersMenuCtrl.goToLink('.newfilter')" class="white-dropdown-link" data-cy="emails-new-filter-button">
+        <div class="hbox">
+          <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+            <span class="text-darkest-neutral">
+              <i class="fal fa-plus-circle simple-line list-simple-line"></i>
+            </span>
+          </aside>
+          <aside class="v-middle">
+            <strong>Novo filtro</strong>
+          </aside>
+        </div>
+      </a>
+    </li>
+    <li ng-if="emailFiltersMenuCtrl.current_filter || emailFiltersMenuCtrl.no_save_filter">
+      <a href class="white-dropdown-link" ng-click="emailFiltersMenuCtrl.clearFilter()">
+        <div class="hbox">
+          <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+            <span class="text-darkest-neutral">
+              <i class="fal fa-eraser simple-line list-simple-line"></i>
+            </span>
+          </aside>
+          <aside class="v-middle">
+              <strong>Limpar filtro</strong>
+          </aside>
+        </div>
+      </a>
+    </li>
+    <li ng-if="emailFiltersMenuCtrl.current_filter && !emailFiltersMenuCtrl.blockNewFilter">
+      <a href ng-click="emailFiltersMenuCtrl.goToLink('.editfilter', { id: emailFiltersMenuCtrl.current_filter.filter_id })" class="white-dropdown-link" data-cy="emails-edit-filter-button">
+        <div uib-tooltip="Editar filtro &quot;{{emailFiltersMenuCtrl.current_filter.filter_name}}&quot;"
+              tooltip-placement="auto right"
+              tooltip-append-to-body="true"
+              tooltip-enable="emailFiltersMenuCtrl.current_filter.filter_name.length > 15"
+              class="hbox">
+          <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+            <span class="text-darkest-neutral">
+              <i class="fal fa-pen simple-line list-simple-line"></i>
+            </span>
+          </aside>
+          <aside class="v-middle">
+              <strong>Editar filtro &quot;{{emailFiltersMenuCtrl.current_filter.filter_name.length > 15 ? emailFiltersMenuCtrl.current_filter.filter_name.substring(0, 14) + '...' : emailFiltersMenuCtrl.current_filter.filter_name }}&quot; </strong>
+          </aside>
+        </div>
+      </a>
+    </li>
+    <div class="dropdown-subtitle" ng-if="(emailFiltersMenuCtrl.filters.length > 1 || (emailFiltersMenuCtrl.filters.length === 1 && !emailFiltersMenuCtrl.current_filter)) && !emailFiltersMenuCtrl.blockNewFilter">
+      Filtros salvos
+    </div>
+    <li ng-repeat="filter in emailFiltersMenuCtrl.filters | orderBy: 'filter_name' track by $index">
+      <a ng-if="!emailFiltersMenuCtrl.current_filter.filter_id || filter.filter_id !== emailFiltersMenuCtrl.current_filter.filter_id" href ng-click="emailFiltersMenuCtrl.changeAppliedFilter(filter)" class="white-dropdown-link" data-cy="emails-filter-{{filter.filter_id}}">
+        <div class="hbox"
+            uib-tooltip="{{ filter.filter_name }}"
+            tooltip-placement="auto left"
+            tooltip-append-to-body="true"
+            tooltip-enable="filter.filter_name.length > 20">
+          <aside class="v-middle width-25 text-center min-width-25 max-width-25">
+            <span class="text-darkest-neutral">
+              <i class="simple-line list-simple-line fal fa-user"></i>
+            </span>
+          </aside>
+          <aside class="v-middle">
+            {{filter.filter_name.length > 20 ? filter.filter_name.substring(0, 19) + '...' : filter.filter_name}}
+          </aside>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

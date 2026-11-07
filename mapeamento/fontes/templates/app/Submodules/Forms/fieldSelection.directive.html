@@ -1,0 +1,69 @@
+<div class="input-group-btn dropdown v-top">
+  <div class="dropdown">
+    <a class="btn button button-white dropdown-toggle border-left-square" data-toggle="dropdown" aria-expanded="false"
+    ng-click="fieldSelectionCtrl.buildFieldSelection()">
+    <span class="text-action"><i class="fal fa-mouse-pointer button-icon"></i></span>
+      {{dynamicLabel || fieldSelectionCtrl.label || label || ('FORMS.FIELD_SELECTION.FIELDS' |translate) }}
+      <i class="fal fa-angle-down dropdown-sign"></i>
+    </a>
+    <ul class="dropdown-menu no-wrapper min-width-350 stop-propagation" ng-class="{'pull-right': !skipPullRight}">
+      <div class="panel super-shadow overflow-hidden white-content" ng-class="{'pull-right': !skipPullRight}">
+        <div class="input-group full-width window-search has-feedback">
+          <input class="form-control input-sm" type="text"
+            placeholder="{{ 'FORMS.FIELD_SELECTION.SEARCH_FIELD' | translate }}"
+            ng-model="fieldSelectionCtrl.field_filtering.label">
+        </div>
+        <div class="text-left">
+          <div class="white-content">
+            <div class="no-padding-top">
+              <div ng-repeat="(entity_name, entity) in fieldSelectionCtrl.field_structure"
+                ng-if="(entity.fields | filter:fieldSelectionCtrl.field_filtering).length > 0">
+                <a class="button button-full-width button-white button-very-big text-left button-square collapsed lighter-border-color"
+                  ng-click="entity.collapsed = !entity.collapsed; $event.stopPropagation();">
+                  <span class="font-regular-weight font-regular-size">
+                    <span class="font-big">
+                      {{ 'FORMS.FIELD_SELECTION.FIELDS_OF' | translate_with_replace : { entity_name: entity_name } }}
+                    </span>
+                  </span>
+                  <span class="pull-right">
+                    <i class="fal fa-angle-down dropdown-sign"></i>
+                  </span>
+                </a>
+
+                <div ng-show="!isChecklist" class="short-wrapper regular-background deals-scroll" uib-collapse="!entity.collapsed">
+                  <a class="button button-full-width button-background button-very-big text-left" href ng-repeat="field in entity.fields | filter:fieldSelectionCtrl.field_filtering" ng-click="fieldSelectionCtrl.callFieldSelection(field, entity)">
+                    {{field.label}}
+                    <div class="text-muted text-small">
+                      {{field.entity.Name}} - {{ (field.typeId === 4 || field.typeId === 5 || field.typeId === 6 || field.typeId === 13 ? 'FORMS.FIELD_SELECTION.NUMERIC_VARIABLE' : 'FORMS.FIELD_SELECTION.TEXT_VARIABLE') | translate }}
+                    </div>
+                  </a>
+                </div>
+
+                <div ng-show="isChecklist" class="short-wrapper regular-background deals-scroll new-padding-dropdown" uib-collapse="!entity.collapsed">
+                  <div class="f-1" href ng-repeat="field in entity.fields | filter:fieldSelectionCtrl.field_filtering" ng-click="fieldSelectionCtrl.callFieldSelection(field, entity)">
+                    <div class="data-edit button text-left button-background button-full-width button-very-big width-max field-container-inline-edit">
+                      <div class="height-max width-max">
+                        {{field.label}}
+                        <div class="text-muted text-small">
+                          {{field.entity.Name}} - {{ (field.typeId === 4 || field.typeId === 5 || field.typeId === 6 ||
+                          field.typeId === 13 ? 'FORMS.FIELD_SELECTION.NUMERIC_VARIABLE' :
+                          'FORMS.FIELD_SELECTION.TEXT_VARIABLE') | translate }}
+                        </div>
+                      </div>
+                      <div class="icon-edit-position y-overflow-hidden">
+                        <span class="button-fixed-size button-fixed-size-small inline-edit-icon position-edit-icon"
+                        ng-click="fieldSelectionCtrl.editField(field, entity); $event.stopPropagation()">
+                          <i style="top: 0;" class="fal fa-pen activity-icon-top-3"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,185 @@
+<dynamic-modal modal-id="'share-modal'"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="Compartilhar"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow share-modal">
+      <section class="scrollable scroll-shadow-container" ng-if="$ctrl.can_load">
+        <div class="only-top-wrapper">
+          <ul class="nav nav-tabs button-tabs-background no-borders text-center central-tabs">
+            <li
+              class="arrow-click {{tab.CustomClass}}"
+              ng-repeat="tab in $ctrl.share_tabs | filter: { Available: true }"
+              ng-class="{ 'active': $ctrl.selected_tab.Key === tab.Key, disabled: tab.Disabled }"
+              ng-click="$ctrl.selectTab(tab)"
+              ng-style="{ 'width': ((100/$ctrl.available_share_tabs_length) - 0.5) + '%' }"
+              tooltip-append-to-body="true"
+              uib-tooltip="{{ tab.tooltipText }}"
+              tooltip-enable="tab.tooltipEnable"
+              >
+              <a class="button-short width-90-percent" href>
+                <span class="font-big-title">
+                  <i ng-class="tab.Icon"></i>
+                </span>
+                <div class="gap-3"></div>
+                <span class="font-regular-weight font-regular-size">
+                  {{tab.Name}}
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content" ng-class="{ 'share-document-modal': $ctrl.selected_tab.Key === 'link_web' || $ctrl.selected_tab.Key === 'clicksign' || $ctrl.selected_tab.Key === 'docusign'}">
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === 'pdf'">
+            <div class="wrapper">
+              <div class="gap-50"></div>
+              <div class="button button-action button-full-width button-big position-relative" ng-click="$ctrl.downloadPdf()">
+                <div class="font-big">
+                  Fazer download em PDF
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === 'email'">
+            <new-email-content submit-callback-fn="$ctrl.emailSubmitCallback(send)"></new-email-content>
+          </div>
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === 'link_web'">
+            <shared-people-slide-content
+              model-id="$ctrl.item_id"
+              model-shared="$ctrl.model.Shared"
+              entity-id="$ctrl.entity_id"
+              toggle-sharing-fn="$ctrl.toggleSharingCallback(shared, sharing_text, sender_type_id)"
+              enable-sharing-callback-fn="$ctrl.enableSharingCallback()"
+              disable-sharing-callback-fn="$ctrl.disableSharingCallback()"
+              has-sharing-people-callback-fn="$ctrl.hasSharingPeopleCallback"
+              >
+            </shared-people-slide-content>
+          </div>
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === 'whatsapp'">
+            <whats-app-share-content
+              item-id="$ctrl.item_id"
+              entity-api-url="$ctrl.entity_api_url"
+              entity-id="$ctrl.entity_id"
+              entity-key="$ctrl.entity_key"
+              submit-callback-fn="$ctrl.whatsAppSubmitCallback(send)">
+            </whats-app-share-content>
+          </div>
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === 'clicksign'">
+            <clicksign-sidebar-content
+              model="$ctrl.model"
+              entity-id="$ctrl.entity_id"
+              account-integration="$ctrl.selected_tab.AccountIntegration"
+              fire-signing-callback-fn="$ctrl.fireSigningCallback(sign_fired)"
+              check-signing-status-callback-fn="$ctrl.checkSigningStatusCallback(sign_fired, signing_open)">
+            </clicksign-sidebar-content>
+          </div>
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === 'docusign'">
+            <docusign-sidebar-content
+              model="$ctrl.model"
+              entity-id="$ctrl.entity_id"
+              account-integration="$ctrl.selected_tab.AccountIntegration"
+              fire-signing-callback-fn="$ctrl.fireSigningCallback(sign_fired)"
+              check-signing-status-callback-fn="$ctrl.checkSigningStatusCallback(sign_fired, signing_open)">
+            </docusign-sidebar-content>
+          </div>
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === $ctrl.try_tab_key">
+            <lexdocs-sidebar-content
+              model="$ctrl.model"
+              entity-id="$ctrl.entity_id"
+              has-digital-certificate="$ctrl.hasDigitalCertificate"
+              account-integration="$ctrl.selected_tab.AccountIntegration"
+              fire-signing-callback-fn="$ctrl.fireSigningCallback(sign_fired)"
+              check-signing-status-callback-fn="$ctrl.checkSigningStatusCallback(sign_fired, signing_open)">
+            </lexdocs-sidebar-content>
+          </div>
+          <div class="tab-pane active" ng-if="$ctrl.selected_tab.Key === 'd4sign'">
+            <d4sign-sidebar-content
+              model="$ctrl.model"
+              entity-id="$ctrl.entity_id"
+              has-digital-certificate="$ctrl.hasDigitalCertificate"
+              account-integration="$ctrl.selected_tab.AccountIntegration"
+              fire-signing-callback-fn="$ctrl.fireSigningCallback(sign_fired)"
+              check-signing-status-callback-fn="$ctrl.checkSigningStatusCallback(sign_fired, signing_open)">
+            </d4sign-sidebar-content>
+          </div>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle" ng-if="$ctrl.selected_tab.Key === 'email'">
+          <button
+            href
+            class="button button-action pull-right"
+            ng-disabled="$ctrl.loading_email"
+            ng-click="$ctrl.sendEmail()">
+            <i class="button-icon fas fa-paper-plane"></i>
+            Enviar
+          </button>
+          <button
+            href
+            class="button button-white pull-right"
+            ng-disabled="$ctrl.loading_email"
+            ng-click="$ctrl.saveDraft()">
+            <i class="fas fa-pencil button-icon"></i>
+            Salvar rascunho
+          </button>
+          <loading-tooltip loading="$ctrl.loading_email"></loading-tooltip>
+        </aside>
+        <aside class="v-middle" ng-if="$ctrl.selected_tab.Key === 'whatsapp'">
+          <button
+            href
+            class="button button-action pull-right"
+            ng-click="$ctrl.sendWhatsApp()">
+            <i class="button-icon fas fa-paper-plane"></i>
+            Enviar
+          </button>
+        </aside>
+        <aside class="v-middle" ng-if="$ctrl.selected_tab.Key === 'link_web'">
+          <button
+            class="button button-action pull-right"
+            ng-class="{'disabled': $ctrl.isLinkShareButtonDisabled()}"
+            ng-if="!$ctrl.model.Shared"
+            ng-disabled="$ctrl.isLinkShareButtonDisabled()"
+            mini-modal
+            mini-modal-title="Mensagem"
+            mini-modal-fields="$ctrl.custom_message_fields"
+            mini-modal-model="$ctrl.message_model"
+            mini-modal-callback="$ctrl.enableSharing()">
+            <i class="button-icon fas fa-paper-plane"></i>
+            Compartilhar com destinatários
+          </button>
+          <button
+            class="button button-white pull-right"
+            ng-if="$ctrl.model.Shared"
+            ng-disabled="$ctrl.sharing_loading"
+            ng-click="$ctrl.disableSharing()">
+            <div class="text-danger">
+              <i class="button-icon fal fa-pause"></i>
+              <span class="text-regular">Desligar compartilhamento</span>
+            </div>
+          </button>
+          <loading-tooltip loading="$ctrl.sharing_loading"></loading-tooltip>
+        </aside>
+        <aside class="v-middle" ng-if="$ctrl.selected_tab.Key === 'clicksign' || $ctrl.selected_tab.Key === $ctrl.try_tab_key ||  $ctrl.selected_tab.Key === 'docusign' ||  $ctrl.selected_tab.Key === 'd4sign'">
+          <button
+            href
+            class="button button-action pull-right"
+            ng-if="!$ctrl.sign_fired && $ctrl.signing_open"
+            ng-disabled="$ctrl.signing_loading"
+            ng-click="$ctrl.fireSigningConfirmationModal($ctrl.fireSigning, $ctrl.selected_tab.Key)">
+            <i class="button-icon fas fa-paper-plane"></i>
+            Enviar para assinatura
+          </button>
+          <loading-tooltip loading="$ctrl.signing_loading"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

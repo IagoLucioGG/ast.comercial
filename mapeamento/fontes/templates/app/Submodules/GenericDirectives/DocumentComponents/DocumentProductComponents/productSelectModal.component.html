@@ -1,0 +1,53 @@
+<dynamic-modal
+  modal-id="select_product"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.SELECT_PRODUCT' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  block-back-state="true"
+  ng-form
+  name="new_contact_form"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <ul class="nav nav-tabs b-b-1 gray-border-tabs arrange-mid">
+          <li ng-repeat="product_source in $ctrl.product_sources"
+            ng-class="{'active': product_source.Id === $ctrl.selected_product_source.Id }"
+            ng-click="$ctrl.selectProductSource(product_source)">
+            <a class="text-muted" href>{{product_source.Name}}</a>
+          </li>
+        </ul>
+        <product-select
+          ng-if="$ctrl.selected_product_source"
+          select-callback-fn="$ctrl.selectProduct"
+          product-field-filter-url="$ctrl.productFieldFilterUrl"
+
+          allowed-group-ids="$ctrl.sectionField.sectionProductGroupIds"
+          allowed-family-ids="$ctrl.sectionField.sectionProductFamilyIds"
+          allowed-list-ids="$ctrl.sectionField.sectionProductListIds"
+
+          entity-id="$ctrl.selected_product_source.EntityId"
+          entity-name="$ctrl.selected_product_source.EntityName"
+          entity-endpoint="$ctrl.selected_product_source.EntityEndpoint"
+          entity-custom-expands="$ctrl.selected_product_source.EntityCustomExpands"
+          entity-custom-filter="$ctrl.selected_product_source.EntityCustomFilter"
+          get-showing-table-fields-fn="$ctrl.selected_product_source.ShowingTableFieldsFn">
+        </product-select>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button class="button button-action pull-right" ng-disabled="$ctrl.loading" ng-click="$ctrl.confirmSelectProduct()">
+            {{ 'GENERICS.SELECT' | translate }}
+          </button>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

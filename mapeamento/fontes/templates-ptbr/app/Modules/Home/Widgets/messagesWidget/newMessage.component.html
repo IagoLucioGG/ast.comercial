@@ -1,0 +1,136 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  footer="true"
+  modal-title="Crie uma publicação"
+  toggle-modal="$ctrl.toggle_modal"
+  custom-height="400"
+  ng-form="compose_message_form"
+  feature-key="new_message_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="wrapper">
+          <div class="form-group">
+            <div class="hbox fixed-size">
+              <aside class="width-55">
+                <div class="gap-3"></div>
+                <img
+                  ng-src="{{$ctrl.self.AvatarUrl}}"
+                  class="chat-avatar">
+              </aside>
+              <aside class="v-middle">
+                <div class="font-bold font-big">
+                  {{$ctrl.self.Name}}
+                </div>
+                <div class="gap-3"></div>
+                <div
+                  uib-tooltip="Selecione uma ou mais equipes para enviar a mensagem"
+                  tooltip-is-open="$ctrl.teams_warning_tooltip"
+                  tooltip-append-to-body="true"
+                  tooltip-trigger="none"
+                  class="width-150">
+                  <a
+                    class="button button-white button-short nowrap"
+                    uib-popover-template="$ctrl.popoverTemplate"
+                    popover-enable="$ctrl.isOpen"
+                    popover-is-open="$ctrl.isOpen"
+                    popover-trigger="none"
+                    popover-append-to-body="true"
+                    popover-placement="auto right"
+                    popover-title="Escolher equipes"
+                    ng-click="$ctrl.isOpen = !$ctrl.isOpen">
+                    <span class="text-action">
+                      <i class="button-icon"
+                        ng-class="{'fal fa-globe-americas': !$ctrl.content_model.message_teams || $ctrl.content_model.message_teams.length === 0, 'fal fa-users': $ctrl.content_model.message_teams.length > 0}">
+                      </i>
+                    </span>
+                    <span ng-show="!$ctrl.content_model.message_teams || $ctrl.content_model.message_teams.length === 0">
+                      Todos da empresa
+                    </span>
+                    <span ng-show="!(!$ctrl.content_model.message_teams || $ctrl.content_model.message_teams.length === 0)">
+                      Limitado para equipes
+                    </span>
+                    <i class="fal fa-angle-down dropdown-sign"></i>
+                  </a>
+                </div>
+                <div class="gap-15"></div>
+                <textarea
+                  ng-model="$ctrl.content_model.message_content"
+                  ng-required="true"
+                  class="form-control new-message-textarea"
+                  rows="5"
+                  placeholder="No que você está pensando?"
+                  data-cy="new-message-input">
+                </textarea>
+                <div class="gap-5"></div>
+                <label href id="message-att-wrapper" class="m0 pointer">
+                  <span class="text-action">
+                    <i class="fal fa-cloud-upload-alt clickable-icon clickable-icon-align-middle font-super-super-small"></i>
+                  </span>
+                  <input id="message-att" type="file" multiple style="display: none;" />
+                </label>
+
+                <div
+                  class="attach-container wrapper height-150 b-1 nowrap overflow-overlay white-content panel"
+                  ng-if="$ctrl.file_attachments.length > 0 || $ctrl.image_attachments.length > 0">
+                  <div
+                    class="attach-attached position-relative display-inline-block wrapper v-top white-content break-all white-content b-1 panel small-shadow"
+                    ng-repeat="file in $ctrl.file_attachments track by $index">
+                    <a class="chat-remove-attach panel medium-shadow" href ng-click="$ctrl.removeAtt($index, $ctrl.file_attachments)">
+                      <i class="fal fa-trash fixing-fixed-size-button"></i>
+                    </a>
+                    <div class="gap-10"></div>
+                    <i class="fal fa-file-alt"></i>
+                    <div class="gap-15"></div>
+                    <div class="font-bold width-90 ellipsis nowrap">
+                      {{file.name}}
+                    </div>
+                  </div>
+
+                  <div
+                    class="image-attached position-relative display-inline-block v-top"
+                    ng-repeat="image in $ctrl.image_attachments track by $index">
+                    <a class="chat-remove-attach panel medium-shadow" href ng-click="$ctrl.removeAtt($index, $ctrl.image_attachments)">
+                      <span class="text-regular">
+                        <i class="fal fa-trash"></i>
+                      </span>
+                    </a>
+                    <img class="panel small-shadow white-content b-1" ng-src="{{image.Url}}">
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button class="button button-action pull-right" ng-disabled="$ctrl.loading" ng-click="$ctrl.submitControl(compose_message_form)">
+            <i class="fas fa-comment-alt-edit button-icon"></i>
+            Publicar
+          </button>
+          <loading-tooltip loading="$ctrl.loading"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>
+
+<script type="text/ng-template" id="teams-template">
+    <div ng-show="$ctrl.isOpen" ng-form name="teams_form">
+      <forms model="$ctrl.content_model" fields="[$ctrl.allowed_teams_field]" form="teams_form"></forms>
+      <button type="button" class="button button-action mleft15" ng-click="$ctrl.selectTeams()" title="Submit" aria-label="Submit">
+        Salvar
+      </button>
+      <button type="button" class="button button-white" ng-disabled="$ctrl.loading" ng-click="$ctrl.isOpen = false" title="Cancel" aria-label="Cancel">
+        Cancelar
+      </button>
+    </div>
+  </script>

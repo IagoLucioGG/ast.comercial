@@ -1,0 +1,54 @@
+<dynamic-modal
+  helper-key="'REPORTS_LEGACY_NEW_PANEL'"
+  modal-id="report-panel"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{ (reportPanelModalCtrl.editing ? 'REPORTS.EDIT_PANEL' : 'REPORTS.NEW_PANEL') | translate }}"
+  toggle-modal="reportPanelModalCtrl.toggle_modal"
+  ng-form="panel_form"
+  is-fetching-modal-content="reportPanelModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container" ng-if="reportPanelModalCtrl.can_load">
+        <div class="modal-body-no-padding">
+          <div class="gap-15"></div>
+          <form class="clearfix">
+            <div class="form-group col-sm-12">
+              <label>
+                {{ 'REPORTS.PANEL_NAME' | translate }}
+              </label>
+              <span class="align-limited-characters">
+                <span class="text-muted font-small">
+                  {{ reportPanelModalCtrl.panel_name.length || 0 }}/{{ reportPanelModalCtrl.panel_name_max_length }}
+                </span>
+              </span>
+              <input maxlength="{{reportPanelModalCtrl.panel_name_max_length}}" class="form-control input-sm" placeholder="" ng-model="reportPanelModalCtrl.panel_name"
+                ng-required="true">
+            </div>
+            <allowed-users ng-if="reportPanelModalCtrl.allowed_users_object" model="reportPanelModalCtrl.allowed_users_object" title="('REPORTS.ALLOWED_USERS' | translate)">
+            </allowed-users>
+          </form>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+
+    <aside class="v-middle text-left" ng-if="reportPanelModalCtrl.editing">
+      <a href class="button button-white" ng-click="reportPanelModalCtrl.deletePanel()" ng-click-confirm="{{ 'REPORTS.CONFIRM_PANEL_DELETE' | translate }}" reversible="false">
+        <span class="font-big">
+          <i class="fal fa-trash"></i>
+        </span>
+      </a>
+    </aside>
+    <aside class="v-middle">
+      <button ng-click="reportPanelModalCtrl.submitControl(panel_form)" href class="btn button button-action btn-sm pull-right">
+        <i class="fas fa-save button-icon"></i>
+        {{ 'GENERICS.SAVE' | translate }}
+      </button>
+      <loading-tooltip loading="reportPanelModalCtrl.loading" form="panel_form"></loading-tooltip>
+    </aside>
+  </modal-footer>
+</dynamic-modal>

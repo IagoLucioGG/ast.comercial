@@ -1,0 +1,137 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  footer="true"
+  dark="true"
+  modal-title="Edição em massa"
+  toggle-modal="massEditCtrl.toggle_modal"
+  cypress-prefix="mass-edit-modal"
+  is-fetching-modal-content="massEditCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <section class="scrollable scroll-shadow-container" ng-if="!massEditCtrl.loop_started">
+      <standard-loader margin-top="30" loading="!massEditCtrl.initial_load"></standard-loader>
+      <table class="table table-striped modal-table" ng-if="massEditCtrl.initial_load">
+        <thead ng-if="!massEditCtrl.block_modifications">
+          <tr>
+            <th class="width-200">Campo</th>
+            <th class="width-150">Operação</th>
+            <th>Valor</th>
+            <th></th>
+          </tr>
+          <tr>
+            <th>
+              <select ng-options="field.label for field in massEditCtrl.fields" class="form-control input-sm" ng-model="massEditCtrl.selected_field" ng-change="massEditCtrl.selectedField()" data-cy="mass-edit-field-select">
+                <option ng-repeat="field in massEditCtrl.fields track by fields.Id" label="{{field.label}}" ng-value="{{field}}" data-cy="{{'mass-edit-field-option-' + field.key}}">{{field.label}}</option>
+              </select>
+            </th>
+            <th>
+              <select class="form-control input-sm" ng-model="massEditCtrl.selected_operation" ng-disabled="!massEditCtrl.selected_field" ng-change="massEditCtrl.selectedOperation()" data-cy="mass-edit-operation-select">
+                <option ng-if="operation.Avaliable" ng-repeat="operation in massEditCtrl.operations track by operation.Id" label="{{operation.Name}}" ng-value="{{operation}}" data-cy="{{'mass-edit-operation-option-' + operation.Id}}">{{operation.Name}}</option>
+              </select>
+            </th>
+            <th>
+              <new-field ng-if="massEditCtrl.selected_operation && !massEditCtrl.selected_operation.block_select_value && !massEditCtrl.selected_field.multiField && massEditCtrl.selected_field.typeId !== 22" field="massEditCtrl.selected_field" model="massEditCtrl.model" property="massEditCtrl.selected_field.key" required="false" disabled="false" wide="false" outside-form="true" hide-label="true"></new-field>
+              <new-multi-field ng-if="massEditCtrl.selected_operation && !massEditCtrl.selected_operation.block_select_value && massEditCtrl.selected_field.multiField && massEditCtrl.selected_field.typeId !== 22" ng-class="{'is-button': field.isButton}" field="massEditCtrl.selected_field" model="massEditCtrl.model" property="massEditCtrl.selected_field.key" required="massEditCtrl.selected_field.required" disabled="massEditCtrl.selected_field.disabled" wide="massEditCtrl.selected_field.wide" hide-label="true"></new-multi-field>
+              <button
+                ng-if="massEditCtrl.selected_field.typeId === 22"
+                href
+                ng-disabled="!massEditCtrl.selected_operation || massEditCtrl.selected_operation.block_select_value"
+                class="button button-white nowrap"
+                ng-class="{ 'disabled': !massEditCtrl.selected_operation || massEditCtrl.selected_operation.block_select_value }"
+                ng-click="massEditCtrl.openDevFieldConfig(massEditCtrl.selected_field)">
+                <span class="text-action"><i class="fal fa-code button-icon"></i></span>
+                Configurar
+              </button>
+              <span ng-if="massEditCtrl.selected_field.typeId !== 22 && (!massEditCtrl.selected_operation || massEditCtrl.selected_operation.block_select_value)">
+                <input disabled="true" class="form-control input-sm" />
+              </span>
+            </th>
+            <th class="text-center" ng-class="{'disabled-option': massEditCtrl.selected_field.disabled || !massEditCtrl.selected_field.valueEditable}">
+              <a class="button-fixed-size button-action button-fixed-size-big" href ng-click="massEditCtrl.addModification()" ng-class="{disabled: massEditCtrl.selected_field.disabled || !massEditCtrl.selected_field.valueEditable}" data-cy="mass-edit-add-modification">
+                <i class="fas fa-check"></i>
+              </a>
+            </th>
+          </tr>
+        </thead>
+        <thead ng-if="massEditCtrl.block_modifications">
+          <tr>
+            <th colspan="4" class="width-200">Ação especial selecionada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="modification in massEditCtrl.modifications track by $index" data-cy="{{ 'mass-edit-modification-' + $index }}">
+            <td>
+              {{modification.field.label}}
+              <br>
+              <small class="text-muted">{{massEditCtrl.current_entity.Name}}</small>
+            </td>
+            <td>
+              {{modification.operation.Name}}
+            </td>
+            <td ng-if="modification.field.typeId !== 22">
+              {{modification.display}}
+            </td>
+            <td ng-if="modification.field.typeId === 22">
+              <iframe id="{{'preview_' + modification.field.key}}" class="developer-field max-width-200"></iframe>
+            </td>
+            <td class="text-center">
+              <a class="button-inherit button-fixed-size button-fixed-size-small" href ng-click="massEditCtrl.removeModification($index)" data-cy="{{ 'mass-edit-remove-modification-' + $index }}">
+                <i class="fal fa-trash fixing-fixed-size-button"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <div class="hbox stretch" ng-if="massEditCtrl.loop_started">
+      <aside class="v-middle">
+        <div class="margin-auto width-400">
+          <div class="font-title font-bold" ng-if="massEditCtrl.loop_progression < 1">
+            Em andamento...
+          </div>
+          <div class="font-title font-bold" ng-if="massEditCtrl.loop_progression === 1">
+            Concluído!
+          </div>
+          <div class="gap-10"></div>
+          <div class="font-big" ng-if="massEditCtrl.loop_progression < 1">Esse processo pode demorar alguns minutos.</div>
+          <div class="gap-10"></div>
+          <div class="progress" ng-class="{'ongoing-importation': massEditCtrl.loop_progression < 1, 'success-importation': massEditCtrl.loop_progression === 1}">
+            <div class="progress-bar" aria-valuenow="{{massEditCtrl.loop_progression * 100}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width': (massEditCtrl.loop_progression * 100) + '%'}" data-cy="mass-edit-progress-bar"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="dev_field_config_slide" modal-side-slide-title="Configuração do campo de desenvolvedor" side-slide-wider="false">
+    <dev-field-config-slide has-trigger-config="false"></dev-field-config-slide>
+  </modal-side-slide>
+  <modal-footer>
+    <div class="side-wrapper stretch" ng-if="!massEditCtrl.loop_started">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <a href
+            class="button button-delete pull-left"
+            data-cy="mass-edit-btn-bulk-delete"
+            ng-if="massEditCtrl.canMassDelete"
+            ng-click="massEditCtrl.bulkDelete()"
+            ng-click-confirm="excluir todos os itens?"
+            reversible="false"
+            hard-check-message="massEditCtrl.current_entity.PropagationAlert"
+            hard-check-word="EXCLUIR"
+            high-alert="true">
+            Excluir itens
+          </a>
+        </aside>
+        <aside class="v-middle">
+          <div class="loader modal-loader" ng-if="massEditCtrl.loading"></div>
+        </aside>
+        <aside class="v-middle">
+          <div class="simple-inline" ng-if="massEditCtrl.num_of_changes">{{ 'MASS_EDIT.ITEMS_WILL_CHANGE' | translate_with_replace : { count: massEditCtrl.num_of_changes } }}</div>
+          <a class="button button-action" href ng-click="massEditCtrl.bulkEdit()" ng-click-confirm="realizar as modificações?" reversible="false" data-cy="mass-edit-btn-save">
+            Confirmar alterações
+          </a>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

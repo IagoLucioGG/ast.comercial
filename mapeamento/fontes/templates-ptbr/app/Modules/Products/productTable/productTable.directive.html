@@ -1,0 +1,10 @@
+<dynamic-tabs
+  ng-if="$parent.productsCtrl.initial_load && productTableCtrl.initial_load"
+  entity="$parent.productsCtrl.main_entity"
+  filter="productTableCtrl.table_filter"
+  tabs="productTableCtrl.tabs"
+  current-tab="productTableCtrl.current_tab"
+  toggle-sidebar="$parent.productsCtrl.table_sidebar"
+  applied-filter="$parent.productsCtrl.applied_filter"
+  cypress-prefix="{{productTableCtrl.cypressPrefix + '-table'}}"
+></dynamic-tabs>

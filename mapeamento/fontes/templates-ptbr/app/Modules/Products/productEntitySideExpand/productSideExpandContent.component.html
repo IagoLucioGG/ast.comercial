@@ -1,0 +1,105 @@
+<div class="vbox deals-vbox">
+  <section class="scrollable white-content">
+    <div class="gap-15"></div>
+    <standard-loader margin-top="30" loading="!$ctrl.initial_load"></standard-loader>
+    <div ng-if="$ctrl.initial_load">
+      <modal-section name="'PRODUCTS.SIDE_EXPAND.PRODUCT.MODAL_SECTION_NAME_PRODUCTS' | translate" section-id="10" product-table-select="true" ng-if="($ctrl.editing && $ctrl.self.Profile.ProductsEditPermission) || !$ctrl.editing">
+        <product-table-select
+          main-model="$ctrl.model"
+          main-entity="$ctrl.product_entity"
+          entity="$ctrl.product_entity"
+          selected-items="$ctrl.productParts"
+          part-group-id="$ctrl.partGroupId">
+        </product-table-select>
+      </modal-section>
+      <div class="gap-15" ng-if="($ctrl.editing && $ctrl.self.Profile.ProductsEditPermission) || !$ctrl.editing"></div>
+      <modal-section name="'PRODUCTS.SIDE_EXPAND.PRODUCT.MODAL_SECTION_NAME_GROUPS' | translate" section-id="2" product-table-select="true" ng-if="($ctrl.editing && $ctrl.self.Profile.ProductsEditPermission) || !$ctrl.editing">
+        <product-table-select
+          main-model="$ctrl.model"
+          main-entity="$ctrl.product_entity"
+          entity="$ctrl.group_entity"
+          selected-items="$ctrl.productParts"
+          part-group-id="$ctrl.partGroupId">
+        </product-table-select>
+      </modal-section>
+      <div class="gap-15" ng-if="($ctrl.editing && $ctrl.self.Profile.ProductsEditPermission) || !$ctrl.editing"></div>
+      <modal-section name="'PRODUCTS.SIDE_EXPAND.PRODUCT.MODAL_SECTION_NAME_TAG_FILTERED_PRODUCTS' | translate" section-id="3" product-table-select="true" ng-if="($ctrl.editing && $ctrl.self.Profile.ProductsEditPermission) || !$ctrl.editing">
+        <product-table-select
+          main-model="$ctrl.model"
+          main-entity="$ctrl.product_entity"
+          entity="$ctrl.list_entity"
+          selected-items="$ctrl.productParts"
+          part-group-id="$ctrl.partGroupId">
+        </product-table-select>
+      </modal-section>
+      <div class="gap-15" ng-if="($ctrl.editing && $ctrl.self.Profile.ProductsEditPermission) || !$ctrl.editing"></div>
+      <div class="side-wrapper">
+        <input class="form-control input-sm light-background" placeholder="Buscar vínculos deste produto" ng-if="$ctrl.editing" ng-model="$ctrl.current_query" ng-model-options="{ debounce: 300 }">
+      </div>
+      <div class="gap-40"></div>
+      <div class="mini-side-wrapper">
+        <div id="parts-container" class="contact-page-person-list" ui-sortable="$ctrl.options" ng-model="$ctrl.local_parts">
+          <div ng-repeat="product_part in $ctrl.local_parts | filter:{$: $ctrl.current_query}" class="product__part-wrapper">
+            <div class="wrapper" id="wrapper-{{product_part.Id}}">
+              <div class="product__part-container">
+                <div
+                  class="product__part-product" 
+                  show-tooltip-on-ellipsis
+                  callback-tooltip="$ctrl.setTooltipProductNameStatus"
+                  index="$index"
+                >
+                  <div
+                    class="ellipsis-container"
+                    uib-tooltip="{{ product_part.Name ? product_part.Name : (product_part.ProductPart ? product_part.ProductPart.Name : (product_part.GroupPart ? product_part.GroupPart.Name : product_part.ListPart.Name)) }}"
+                    tooltip-append-to-body="true"
+                    tooltip-placement="auto top"
+                    tooltip-enable="product_part.tooltipActive"
+                  >
+                    <div class="ellipsis">{{ product_part.Name ? product_part.Name : (product_part.ProductPart ? product_part.ProductPart.Name : (product_part.GroupPart ? product_part.GroupPart.Name : product_part.ListPart.Name)) }}</div>
+                  </div>
+                  <div>
+                    <span class="text-neutral">{{ (product_part.ProductPart ? 'PRODUCTS.PRODUCT' : (product_part.GroupPart ? 'PRODUCTS.GROUP' : 'PRODUCTS.LIST')) | translate }}</span>
+                  </div>
+                  <div class="text-neutral font-small">{{product_part.ProductPart ? product_part.ProductPart.Code : ''}}</div>
+                  <div class="text-neutral font-small" ng-if="product_part.ProductPart.Name && product_part.Name && !product_part.Name.includes(product_part.ProductPart.Name)">Nome original do produto: {{ product_part.ProductPart.Name || '' }}</div>
+                </div>
+                <div class="product__part-actions">
+                  <a
+                    href
+                    ng-if="($ctrl.editing && $ctrl.self.Profile.ProductsEditPermission) || !$ctrl.editing" ng-click="$ctrl.removeProductEntity(product_part)"
+                    uib-tooltip="Remover vínculo"
+                    tooltip-append-to-body="true"
+                    ng-click-confirm="remover este vínculo?" reversible="false"
+                    class="product__part-action"
+                    >
+                    <i class="fal font-super-super-small clickable-icon small-clickable-icon fa-trash"></i>
+                  </a>
+                  <a
+                    href
+                    ng-if="$ctrl.editing"
+                    ng-click="$ctrl.openPartModal(product_part)"
+                    uib-tooltip="Ver informações completas do vínculo"
+                    tooltip-append-to-body="true"
+                    class="product__part-action"
+                    >
+                    <i class="fal fa-arrow-up-right-and-arrow-down-left-from-center font-super-super-small clickable-icon small-clickable-icon"></i>
+                  </a>
+                  <a
+                    href
+                    ng-click="$ctrl.toggleCollapse(product_part)"
+                    uib-tooltip="Editar informações do vínculo"
+                    tooltip-append-to-body="true"
+                    class="product__part-action"
+                    >
+                    <i class="fal font-super-super-small clickable-icon small-clickable-icon" ng-class="{'fa-layer-plus': !product_part.open_collapse, 'fa-layer-minus': product_part.open_collapse}"></i>
+                  </a>
+                </div>
+              </div>
+              <infos-widget ng-if="product_part.open_collapse" form-key="product_quick_form" entity-type="Product" patch-fn="$ctrl.patchFn(model)" model="product_part" replace-form="$ctrl.part_form"></infos-widget>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

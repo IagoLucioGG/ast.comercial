@@ -1,0 +1,130 @@
+<div class="tab-pane" id="l">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.LEADS_MODULE_ACCESS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsModule" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsModule" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.LEADS_VISUALIZE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsView" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsView" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsView" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.UNDER_TEAM_MEMBERS_RESPONSIBILITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsView" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.LEADS_EDIT' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsEdit" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsEdit" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsEdit" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.UNDER_TEAM_MEMBERS_RESPONSIBILITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsEdit" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.LEADS_DELETE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsDelete" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsDelete" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsDelete" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.UNDER_TEAM_MEMBERS_RESPONSIBILITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsDelete" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.LEADS_CREATE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsCreatePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsCreatePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.LEADS_MODULE_OPTIONS.LEADS_NOTES_INSERT' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsUpdateStatusPermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.LeadsUpdateStatusPermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

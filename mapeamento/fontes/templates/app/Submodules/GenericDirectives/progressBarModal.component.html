@@ -1,0 +1,37 @@
+<dynamic-modal
+  modal-id="'progress-bar-modal'"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{ ($ctrl.progress < 100 ? 'GENERIC_DIRECTIVES.PROGRESS_BAR_MODAL.WAIT_PLEASE' : 'GENERIC_DIRECTIVES.PROGRESS_BAR_MODAL.FINISHED') | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  block-back-state="true"
+  disable-close-modal="true">
+  <modal-content>
+      <div class="vbox deals-vbox scroll-shadow neutral-shadow">
+        <section class="scrollable scroll-shadow-container">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <div class="margin-auto width-400">
+                <div class="font-title font-bold" ng-if="$ctrl.progress < 100">
+                  {{ 'GENERIC_DIRECTIVES.PROGRESS_BAR_MODAL.ONGOING' | translate }}
+                </div>
+                <div class="font-title font-bold" ng-if="$ctrl.progress === 100">
+                  {{ 'GENERIC_DIRECTIVES.PROGRESS_BAR_MODAL.FINISHED' | translate }}
+                </div>
+                <div class="gap-10"></div>
+                <div class="font-big" ng-if="$ctrl.progress < 100">
+                  {{ 'GENERIC_DIRECTIVES.PROGRESS_BAR_MODAL.ONGOING_WARN' | translate }}
+                </div>
+                <div class="gap-10"></div>
+                <div class="progress" ng-class="{'ongoing-importation': $ctrl.progress < 100, 'success-importation': $ctrl.progress === 100, 'failed-importation': $ctrl.importation_failed}">
+                  <div class="progress-bar" aria-valuenow="{{$ctrl.progress}}" aria-valuemin="0" aria-valuemax="100" ng-style="{'width': $ctrl.progress + '%'}"></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </div>
+  </modal-content>
+</dynamic-modal>

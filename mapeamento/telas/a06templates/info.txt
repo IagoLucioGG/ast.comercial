@@ -1,0 +1,7 @@
+passo: a06templates
+url: https://app10.ploomes.com/templates/quotes
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

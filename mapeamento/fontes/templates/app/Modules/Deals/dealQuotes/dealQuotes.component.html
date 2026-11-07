@@ -1,0 +1,39 @@
+<dynamic-modal
+  modal-id="users"
+  footer="false"
+  dark="true"
+  modal-title="{{ 'DEALS.DEAL_QUOTES.TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll">
+          <section class="scrollable">
+            <div>
+              <table class="table  table-hover white-table">
+                <thead>
+                  <tr>
+                    <th class="small-cell">{{ 'DEALS.DEAL_QUOTES.CODE' | translate }}</th>
+                    <th class="small-cell">{{ 'DEALS.DEAL_QUOTES.TEMPLATE' | translate }}</th>
+                    <th class="small-cell">{{ 'DEALS.DEAL_QUOTES.NUMBER_OF_PRODUCTS' | translate }}</th>
+                    <th class="small-cell">{{ 'DEALS.DEAL_QUOTES.VALUE' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="contact-workplace-button" ng-repeat="quote in $ctrl.quotes" ng-click="$ctrl.selectQuote(quote)" data-cy="select-quote-{{quote.Id}}">
+                    <td>#{{quote.QuoteNumber}}</td>
+                    <td>{{(quote.Template.Name ? quote.Template.Name : "")}}</td>
+                    <td>{{quote.Products.length}} {{ 'DEALS.DEAL_PAGE.PRODUCTS' | translate }}</td>
+                    <td>{{(quote.Currency.Symbol || ('DEFAULT_CURRENCY' | translate)) + " " + (quote.Amount | to_locale_string : { minimumFractionDigits: 2}) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

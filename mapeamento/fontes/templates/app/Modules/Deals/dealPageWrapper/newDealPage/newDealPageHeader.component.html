@@ -1,0 +1,244 @@
+<div>
+  <div>
+    <div class="white-content b-b-1">
+      <div class="wrapper">
+        <div class="hbox">
+          <aside class="width-75">
+            <div class="font-very-big-title display-inline-block text-neutral mini-top-wrapper panel dark-background b-3 width-60 height-60 overflow-hidden text-center" ng-style="{ 'background-color': $ctrl.invertColor($ctrl.currentPipeline.Color), 'border-color': $ctrl.invertColor($ctrl.currentPipeline.Color) }">
+              <i class="fal semi-giant-icon" style="color: white;" ng-class="$ctrl.currentPipeline.Icon.Class"></i>
+            </div>
+          </aside>
+          <aside>
+            <div class="font-very-big preserve-duplicate-spaces" >{{$ctrl.deal.Title}}</div>
+            <div class="gap-10"></div>
+            <div class="font-big simple-inline" ng-if="$ctrl.currentPipeline">
+              <a class="button-white-light-border font-bold button button-short button-rounded" ui-sref="deals({ pipelineid: $ctrl.currentPipeline.Id })">
+                <div class="hbox">
+                  <aside class="v-middle width-25 text-center text-action">
+                    <i class="simple-line-space-small fal fa-folder"></i>
+                  </aside>
+                  <aside class="v-middle">
+                      {{$ctrl.currentPipeline.Name}}
+                  </aside>
+                </div>
+              </a>
+            </div>
+            <div class="font-big simple-inline" ng-if="$ctrl.deal.Amount">
+              <div class="button-white-light-border font-bold button button-short button-rounded cancel-button-background">
+                <div class="hbox">
+                    <aside class="v-middle width-25 text-center text-action">
+                      <i class="simple-line-space-small fal fa-sack-dollar"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ $ctrl.deal.Currency.Symbol + " " + ($ctrl.deal.Amount | to_locale_string : { minimumFractionDigits: 2}) }}
+                    </aside>
+                  </div>
+              </div>
+            </div>
+            <div class="font-big simple-inline" ng-if="$ctrl.deal.Contact && $ctrl.deal.Contact.TypeId">
+              <a class="button-white-light-border font-bold button button-short button-rounded" ui-sref="contact({ contactid: $ctrl.deal.ContactId })">
+                <div class="hbox">
+                  <aside class="v-middle width-25 text-center text-action">
+                    <i class="simple-line-space-small" ng-class="{ 'fal fa-industry': $ctrl.deal.Contact.TypeId === 1, 'fal fa-user': $ctrl.deal.Contact.TypeId === 2, 'far fa-lock': !$ctrl.deal.Contact}"></i>
+                  </aside>
+                  <aside class="v-middle">
+                    {{$ctrl.deal.ContactName}}
+                  </aside>
+                </div>
+              </a>
+            </div>
+            <div class="font-big simple-inline" ng-if="!$ctrl.deal.Contact && $ctrl.deal.ContactName">
+              <a class="button-white-light-border font-bold button button-short button-rounded not-allowed" tooltip-placement="right" uib-tooltip="{{ 'DEALS.DEAL_PAGE.CONTACT_UNAVAILABLE_TOOLTIP' | translate_sentence }}">
+                <div class="hbox">
+                  <aside class="v-middle width-25 text-center text-action">
+                    <i class="simple-line-space-small far fa-lock"></i>
+                  </aside>
+                  <aside class="v-middle">
+                    {{ 'DEALS.DEAL_PAGE.CONTACT_UNAVAILABLE' | translate }}
+                  </aside>
+                </div>
+              </a>
+            </div>
+            <div class="font-big simple-inline" ng-if="$ctrl.deal.Person">
+              <a class="button-white-light-border font-bold button button-short button-rounded" ui-sref="contact({ contactid: $ctrl.deal.PersonId })">
+                <div class="hbox">
+                  <aside class="v-middle width-25 text-center text-action">
+                    <i class="simple-line-space-small fal fa-user"></i>
+                  </aside>
+                  <aside class="v-middle">
+                    {{$ctrl.deal.PersonName}}
+                  </aside>
+                </div>
+              </a>
+            </div>
+            <div class="dropdown font-big simple-inline" ng-if="$ctrl.isDealStatusHeaderFieldEnabled && $ctrl.fieldStatusDropdownHasToHide && $ctrl.deal.FieldStatusId && $ctrl.deal.StatusId === 1">
+              <a href
+                class="button button-short button-rounded button-white-light-border font-bold dropdown-toggle nowrap float-right no-pointer-events" 
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="text-action mr-5">
+                  <i class="button-icon fal fa-flag"></i>
+                </span>
+                <span class="mr-5">{{$ctrl.deal.FieldStatus.Name}}</span>
+              </a>
+            </div>
+            <div class="dropdown font-big simple-inline" ng-if="$ctrl.isDealStatusHeaderFieldEnabled && !$ctrl.fieldStatusDropdownHasToHide && $ctrl.deal.FieldStatusId && $ctrl.deal.StatusId === 1">
+              <a href
+                class="button button-short button-rounded button-white-light-border font-bold dropdown-toggle nowrap float-right"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="text-action mr-5">
+                  <i class="button-icon fal fa-flag"></i>
+                </span>
+                <span class="mr-5">{{$ctrl.deal.FieldStatus.Name}}</span><i class="fal fa-angle-down dropdown-sign"></i>
+              </a>
+              <ul class="dropdown-menu white-dropdown-menu field-status-list-container">
+                <li class="field-status-list w-100" ng-repeat="fieldStatus in $ctrl.dealFieldStatus track by fieldStatus.DealFieldStatusId">
+                  <a role="button" class="field-status-option" ng-click="$ctrl.changeDealFieldStatus(fieldStatus.DealFieldStatusId)">
+                    {{fieldStatus.Name}}
+                    <i class="fal fa-check button-icon pull-right" ng-if="fieldStatus.DealFieldStatusId === $ctrl.deal.FieldStatusId"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </aside>
+          <aside>
+            <div class="hbox">
+              <div class="v-middle nowrap text-right d-flex justify-content-end gap-flex-5">
+                <deal-actions model="$ctrl.deal" deal-page="true"></deal-actions>
+                <contact-neppo deal-item-value="$ctrl.deal" is-angular-height="true" ></contact-neppo>
+              </div>
+              <aside class="v-middle width-25 text-right" ng-if="$ctrl.deal.StatusId === 1">
+                <a class="button button-white-light-border dropdown-toggle nowrap pull-right" href ng-if="($ctrl.pipelines | filter: { Archived: false }).length > 1" ng-click="$ctrl.relocateDeal()">
+                  <span class="text-action"><i class="button-icon fal fa-arrows"></i></span>
+                  {{ 'DEALS.DEAL_PAGE.RELOCATE_DEAL' | translate_sentence : $ctrl.currentPipeline.Id }}
+                </a>
+              </aside>
+              <aside class="v-middle width-25 text-right" ng-if="$ctrl.deal.Editable || $ctrl.deal.Deletable" ng-click="$ctrl.getMergeRules()">
+                <div class="mini-side-wrapper">
+                  <div class="dropdown pull-right">
+                    <a href
+                      role="button"
+                      class="button button-white-light-border dropdown-toggle nowrap" 
+                      aria-label="{{ 'ARIA_LABELS.DEAL.ACTIONS_BUTTON' | translate_sentence }}"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                      data-cy="deal-actions-button"
+                    >
+                      <span class="text-action"><i class="button-icon fal fa-pen"></i></span>
+                      {{ 'DEALS.DEAL_PAGE.OPTIONS' | translate }}<i class="fal fa-angle-down dropdown-sign"></i>
+                    </a>
+                    <ul class="dropdown-menu white-dropdown-menu pull-right">
+                      <li ng-if="$ctrl.deal_read_status_feature && $ctrl.currentPipeline.EnableDealsRead && !$ctrl.deal.IsRead">
+                        <a class="white-dropdown-link" ng-if="$ctrl.deal.Editable" ng-click="$ctrl.postDealRead()">
+                          <div class="hbox">
+                            <aside class="v-middle max-width-25 width-25 text-center">
+                              <span class="text-darkest-neutral">
+                                <i class="fal fa-eye simple-line list-simple-line"></i>
+                              </span>
+                            </aside>
+                            <aside class="v-middle">
+                              {{ 'DYNAMIC_TABLE.SET_AS_READ' | translate_sentence }}
+                            </aside>
+                          </div>
+                        </a>
+                      </li>
+                      <li ng-if="$ctrl.deal_read_status_feature && $ctrl.currentPipeline.EnableDealsRead && $ctrl.deal.IsRead">
+                        <a class="white-dropdown-link" ng-if="$ctrl.deal.Editable" ng-click="$ctrl.postDealUnread()">
+                          <div class="hbox">
+                            <aside class="v-middle max-width-25 width-25 text-center">
+                              <span class="text-darkest-neutral">
+                                <i class="fal fa-eye-slash simple-line list-simple-line"></i>
+                              </span>
+                            </aside>
+                            <aside class="v-middle">
+                              {{ 'DYNAMIC_TABLE.SET_AS_UNREAD' | translate_sentence }}
+                            </aside>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="white-dropdown-link" 
+                          ng-if="$ctrl.deal.Editable" 
+                          ng-click="$ctrl.editDealFn()"
+                          aria-label="{{ 'ARIA_LABELS.DEAL.EDIT_BUTTON' | translate_sentence }}" 
+                          data-cy="deal-edit-button"
+                        >
+                          <div class="hbox">
+                            <aside class="v-middle width-25 text-center">
+                              <span class="text-darkest-neutral">
+                                <i class="fal fa-pen simple-line list-simple-line"></i>
+                            </span></aside>
+                            <aside class="v-middle">
+                              {{ 'DEALS.DEAL_PAGE.EDIT_DEAL' | translate_sentence : $ctrl.currentPipeline.Id }}
+                            </aside>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="white-dropdown-link" ng-if="$ctrl.deal.Editable" ng-click="$ctrl.duplicateDealFn()">
+                          <div class="hbox">
+                            <aside class="v-middle width-25 text-center">
+                              <span class="text-darkest-neutral">
+                                <i class="fal fa-clone simple-line list-simple-line"></i>
+                            </span></aside>
+                            <aside class="v-middle">
+                              {{ 'DEALS.DEAL_PAGE.DUPLICATE_DEAL' | translate_sentence : $ctrl.currentPipeline.Id }}
+                            </aside>
+                          </div>
+                        </a>
+                      </li>
+                      <li ng-if="$ctrl.pipeline_merge_feature && $ctrl.currentPipeline.CanMergeDeals"
+                        ng-class="{'disabled': !$ctrl.isMergeEnabled}"
+                        uib-tooltip-html="htmlTooltip"
+                        tooltip-enable="!$ctrl.isMergeEnabled"
+                        tooltip-placement="left"
+                        tooltip-append-to-body="true"
+                      >
+                        <a class="white-dropdown-link" ng-if="$ctrl.deal.Editable" ng-click="$ctrl.openMergeModal()">
+                          <div class="hbox">
+                            <aside class="v-middle width-25 text-center">
+                              <span class="text-darkest-neutral">
+                                <i class="fal fa-exchange simple-line list-simple-line"></i>
+                              </span>
+                            </aside>
+                            <aside class="v-middle">
+                              {{ 'MERGE_FEATURE.MERGE_BUTTON' | translate_sentence }}
+                            </aside>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="white-dropdown-link" 
+                          role="option"
+                          ng-if="$ctrl.deal.Deletable" 
+                          ng-click="$ctrl.deleteDealFn()"
+                          reversible="false"
+                          aria-label="{{ 'ARIA_LABELS.DEAL.DELETE_BUTTON' | translate_sentence }}"
+                          ng-click-confirm="{{ 'DEALS.DEAL_PAGE.DELETE_DEAL_CONFIRM' | translate_with_replace : { name: $ctrl.deal.Title } }}" 
+                        >
+                          <div class="hbox">
+                            <aside class="v-middle width-25 text-center">
+                              <span class="text-darkest-neutral">
+                                <i class="fal fa-trash simple-line list-simple-line"></i>
+                            </span></aside>
+                            <aside class="v-middle">
+                              {{ 'DEALS.DEAL_PAGE.DELETE_DEAL' | translate_sentence : $ctrl.currentPipeline.Id }}
+                            </aside>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <new-deal-page-funnel ng-if="$ctrl.pipelines.length > 0" deal="$ctrl.deal" current-pipeline="$ctrl.currentPipeline" extend-deal-fn="$ctrl.extendDealFn"></new-deal-page-funnel>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<span ng-repeat="condition in emailFilterContainerCtrl.condition_list">
+  <email-filter-generator remove-or-condition="emailFilterContainerCtrl.removeOrCondition" condition-list-state="emailFilterContainerCtrl.condition_list" entity="entity" query-object="condition" skip-wrapper="skipWrapper" email-preferences="emailPreferences"></email-filter-generator>
+  <div class="text-center" ng-if="condition.query_object.length > 0">
+    <h2 class="text-muted font-thin">{{ 'FILTERS.OR' | translate }}</h2>
+  </div>
+</span>
+<div class="text-center wrapper" ng-if="emailFilterContainerCtrl.condition_list[emailFilterContainerCtrl.condition_list.length - 1].query_object.length > 0">
+	<a class="button button-white" ng-click="emailFilterContainerCtrl.addEmptyCondition()">
+		<span class="text-action">
+			<i class="fal fa-arrow-up-right-and-arrow-down-left-from-center-arrows button-icon"></i>
+		</span>
+		{{ 'FILTERS.EXPAND_RESULTS' | translate }}
+	</a>
+</div>

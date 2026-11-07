@@ -1,0 +1,160 @@
+<div class="white-content top-wrapper b-1 rounded-regular neutral-background-rgba">
+  <form class="clearfix" ui-sortable="$ctrl.options" ng-model="$ctrl.mappedFields">
+    <div class="form-group col-sm-12" ng-repeat="fieldObj in $ctrl.mappedFields" ng-if="fieldObj.FieldKey !== 'contact_zipcode_country'" ng-style="fieldObj.Field.typeId === 7 && {'cursor': 'move'}">
+      <div class="external-form-field-edit">
+        <aside class="text-right wrapper-right-small" ng-if="fieldObj.Field.typeId === 7 && fieldObj.Options.length === 0 && fieldObj.Field.key !== 'contact_phones' && fieldObj.Field.key !== 'contact_email_addresses'">
+          <a
+            href
+            uib-tooltip="Inserir todas as opções pré-cadastradas"
+            tooltip-append-to-body="true"
+            class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+            ng-click-confirm="inserir todas as opções pré-cadastradas desse campo? Prosseguir"
+            reversible="false"
+            ng-click="$ctrl.insertAllOptions(fieldObj)">
+            <i class="fas fa-check-square fixing-fixed-size-button"></i>
+          </a>
+        </aside>
+        <aside class="text-right wrapper-right-small" ng-if="fieldObj.Field.typeId === 7 && fieldObj.Field.key !== 'contact_phones' && fieldObj.Field.key !== 'contact_email_addresses'">
+          <a
+            href
+            uib-tooltip="Limpar opções pré-cadastradas selecionadas"
+            tooltip-append-to-body="true"
+            class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+            ng-click-confirm="limpar as opções pré-cadastradas selecionadas desse campo"
+            reversible="false"
+            ng-click="$ctrl.modelChangeCallback([], null, null, fieldObj)">
+            <i class="fas fa-minus-square fixing-fixed-size-button"></i>
+          </a>
+        </aside>
+        <aside class="text-right wrapper-right-small">
+          <a
+            href
+            uib-tooltip="Campo obrigatório"
+            tooltip-append-to-body="true"
+            class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+            ng-class="{ 'selected-external-form-field': fieldObj.Required }"
+            ng-click="$ctrl.toggleFieldObjRequired(fieldObj)">
+            <i class="fas fa-exclamation-circle fixing-fixed-size-button"></i>
+          </a>
+        </aside>
+        <aside class="text-right wrapper-right-small" ng-if="(fieldObj.Field.key !== 'contact_foreign_zipcode' && ((!fieldObj.multiple && fieldObj.Field.typeId !== 7) || fieldObj.Unique))">
+          <a
+            href
+            uib-tooltip="Campo chave"
+            tooltip-append-to-body="true"
+            class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+            ng-class="{ 'selected-external-form-field': fieldObj.Unique }"
+            ng-click="$ctrl.toggleFieldObjUnique(fieldObj)">
+            <i class="fas fa-key fixing-fixed-size-button"></i>
+          </a>
+        </aside>
+        <aside class="width-10 text-right">
+          <a
+            href
+            uib-tooltip="Remover campo do formulário"
+            tooltip-append-to-body="true"
+            class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+            ng-click-confirm="remover esse campo do formulário?"
+            reversible="true"
+            ng-click="$ctrl.removeField(fieldObj, $index)">
+            <i class="far fa-trash fixing-fixed-size-button"></i>
+          </a>
+        </aside>
+      </div>
+      <label class="m-0"
+        uib-tooltip="{{ fieldObj.Label }}"
+        tooltip-append-to-body="true"
+        tooltip-enable="fieldObj.Label.length > $ctrl.maxStringLength">
+        <span
+          inline-edit
+          model="undefined"
+          not-trigger-formula="true"
+          custom-fields="$ctrl.inlineEditFields"
+          submit-fn="$ctrl.inlineEdit(item, field_key, fieldObj)"
+          build-inline-fn="$ctrl.buildInlineEditModel(fieldObj)">
+          {{ $ctrl.getDisplayLabel(fieldObj.Label, $ctrl.maxStringLength) }}
+          <a
+            href
+            ng-if="$ctrl.editOnly && fieldObj.Unique"
+            class="caution-alert-icon"
+            uib-tooltip="{{ 'ADMINISTRATION.EXTERNAL_FORMS.SIDE_SLIDE.FORM_FIELD_GENERATES_DUPLICITY_ALERT' | translate_with_replace: { entity: fieldObj.Field.entity.Name } }}"
+            tooltip-append-to-body="true">
+            <i class="fas fa-exclamation-triangle"></i>
+          </a>
+        </span>
+      </label>
+      <div class="text-muted font-small break-words" ng-if="$ctrl.getOriginalFieldLabel(fieldObj)">
+        <span class="external-field-description-wrapper">Nome original do campo: {{ $ctrl.getOriginalFieldLabel(fieldObj) }}</span>
+      </div>
+      <div class="gap-5" ng-if="$ctrl.getOriginalFieldLabel(fieldObj)"></div>
+      <div class="text-muted font-small break-words" ng-if="fieldObj.Description">
+        <span class="external-field-description-wrapper">Descrição do campo: {{ fieldObj.Description }}</span>
+      </div>
+      <div class="gap-5"></div>
+
+      <div style="position: relative" ng-if="::(!$ctrl.allowOptions(fieldObj.internalUniqueId, fieldObj.FieldKey))">
+        <div class="move-field external-form-move-field"></div>
+        <input class="form-control input-sm disabled-background-white" disabled>
+      </div>
+
+      <div
+        style="position: relative"
+        ng-if="::($ctrl.allowOptions(fieldObj.internalUniqueId, fieldObj.FieldKey))"
+        ng-class="{
+          'invalid-input-ploomes-host': fieldObj.Field.secondaryEntityId !== 25 && fieldObj.Field.typeId === 7 && (fieldObj.Options.length === 0 || !fieldObj.Options),
+          'input-placeholder-expand': !fieldObj.Options.length && fieldObj.Field.typeId === 7
+        }">
+        <div class="input-group">
+          <new-field
+            ng-if="fieldObj.Field"
+            field="fieldObj.Field"
+            model="$ctrl.optionModel[fieldObj.internalUniqueId]"
+            property="fieldObj.FieldKey"
+            display-property="Name"
+            hide-label="true"
+            placeholder="{{ !fieldObj.Options.length ? (fieldObj.Field.secondaryEntityId !== 25 ? 'ADMINISTRATION.EXTERNAL_FORMS.SIDE_SLIDE.ADD_PRE_REGISTERED' : 'ADMINISTRATION.EXTERNAL_FORMS.SIDE_SLIDE.ADD_LIMIT_CITIES' | translate) : '' }}"
+            outside-form="true"
+            not-trigger-formula="true"
+            ignore-default-values="true"
+            model-change-callback="$ctrl.modelChangeCallback(new_val, old_val, first_trigger, fieldObj)">
+          </new-field>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" style="display: flex; justify-content: center;">
+      <checklist-select-or-create-field
+        is-checklist="false"
+        quick-field-creation="true"
+        allowed-entities="$ctrl.allowedEntities"
+        select-field-fn="$ctrl.selectField"
+        filter-field-fn="$ctrl.filterField"
+        custom-filter-by-entity-functions="$ctrl.customFilterByEntityFunctions"
+        custom-build-group-name-fn="$ctrl.customBuildGroupName"
+        mapped-fields="$ctrl.mappedFields">
+      </checklist-select-or-create-field>
+    </div>
+  </form>
+</div>
+
+<script type="text/ng-template" id="external-form-popover">
+  <div ng-form name="external_form_option_form">
+    <forms model="$ctrl.optionModel" fields="$ctrl.optionForm" form="external_form_option_form"></forms>
+    <button
+      class="button button-action mleft15"
+      ng-disabled="$ctrl.optionLoading"
+      ng-click="$ctrl.submitOption($ctrl.optionModel, $index, external_form_option_form); $event.stopPropagation()"
+      title="Submit"
+      aria-label="Submit">
+      Salvar
+    </button>
+    <button
+      class="button button-white"
+      ng-disabled="$ctrl.optionLoading"
+      ng-click="$ctrl.closePopover($index)"
+      title="Cancel"
+      aria-label="Cancel">
+      Cancelar
+    </button>
+    <loading-tooltip loading="$ctrl.optionLoading" form="external_form_option_form"></loading-tooltip>
+  </div>
+</script>

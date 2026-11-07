@@ -1,0 +1,7 @@
+passo: scenario_start
+url: https://app10.ploomes.com/Deals/all/table
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

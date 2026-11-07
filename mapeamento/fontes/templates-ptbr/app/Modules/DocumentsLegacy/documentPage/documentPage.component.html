@@ -1,0 +1,179 @@
+<div class="component-with-height">
+  <div class="vbox small-header">
+    <div ng-class="{'mt-15-percent': !documentPageCtrl.can_load || documentPageCtrl.loadingHtmlGeneration}">
+      <loader
+        loading="!documentPageCtrl.can_load || documentPageCtrl.loadingHtmlGeneration"
+        title="documentPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.TITLE' | translate) : undefined"
+        message="documentPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.MESSAGE' | translate) : undefined">
+      </loader>
+    </div>
+    <header class="regular-header new-header b-b-1" ng-if="documentPageCtrl.can_load && !documentPageCtrl.loadingHtmlGeneration && !documentPageCtrl.not_found">
+      <div class="hbox stretch" ng-show="documentPageCtrl.can_load && !documentPageCtrl.loadingHtmlGeneration">
+        <aside class="v-middle">
+          <a class="btn-invisible" ng-click="documentPageCtrl.goToDeal()" ng-if="documentPageCtrl.document.Deal && documentPageCtrl.has_deals_module">
+            <div style="display: flex">
+              <div style="display: flex; flex-direction: row; width: 20px; justify-content: flex-start; font-size: 10px; align-items: center;">
+                <i class="fal fa-arrow-left"></i>
+              </div>
+              <span class="font-title font-thin">
+                {{ ('GENERICS.VISUALIZE' | translate) + ' ' + documentPageCtrl.pipelineSingularUnitName.toLowerCase()}}
+              </span>
+            </div>
+          </a>
+          <a class="btn-invisible" ng-click="documentPageCtrl.goToContact()" ng-if="!documentPageCtrl.document.Deal && documentPageCtrl.document.Contact">
+            <div style="display: flex">
+              <div style="display: flex; flex-direction: row; width: 20px; justify-content: flex-start; font-size: 10px; align-items: center;">
+                <i class="fal fa-arrow-left"></i>
+              </div>
+              <span class="font-title font-thin">
+                Visualizar Cliente
+              </span>
+            </div>
+          </a>
+        </aside>
+        <aside class="v-middle">
+          <a
+            class="button button-action pull-right"
+            ui-sref="document.share"
+            ng-if="documentPageCtrl.document.ApprovalStatusId === 2 || documentPageCtrl.document.ApprovalStatusId === null"
+            ng-class="{ 'disabled' : !documentPageCtrl.hasSharePermission }"
+            ng-disabled="!documentPageCtrl.hasSharePermission"
+            uib-tooltip="Você não tem permissão para realizar o compartilhamento."
+            tooltip-append-to-body="true"
+            tooltip-placement="bottom"
+            tooltip-enable="!documentPageCtrl.hasSharePermission">
+            <i class="button-icon fas fa-paper-plane"></i>
+            Compartilhar
+          </a>
+          <div class="dropdown display-inline-block pull-right" ng-if="(!documentPageCtrl.document.Shared && ((documentPageCtrl.document.Editable && documentPageCtrl.self.Profile.DocumentsEditPermission) || (documentPageCtrl.document.Deletable && documentPageCtrl.self.Profile.DocumentsDeletePermission))) && !(documentPageCtrl.wide_buttons_docusign)">
+            <a class="dropdown-toggle button button-white-no-border pull-right bottom-menu-button" id="edit-list" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="text-action"><i class="button-icon fal fa-pen"></i></span>
+              Editar<i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+              <li ng-if="documentPageCtrl.document.Editable && documentPageCtrl.self.Profile.DocumentsEditPermission">
+                <a class="white-dropdown-link" href ng-click-confirm="atualizar dados e modelo?" reversible="false" ng-click="documentPageCtrl.updateDocument()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-file-image"></i>
+                      </span>
+                    </aside>
+                    <aside>Atualizar dados e modelo</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="documentPageCtrl.document.Editable && documentPageCtrl.self.Profile.DocumentsEditPermission">
+                <a class="white-dropdown-link new-proposal-pane-example" ng-click="documentPageCtrl.goToDocumentEdit()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-pen-square"></i>
+                      </span>
+                    </aside>
+                    <aside>Editar valores preenchidos</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="documentPageCtrl.cpq_beta_button_enabled && documentPageCtrl.document.Editable && documentPageCtrl.self.Profile.DocumentsEditPermission">
+                <a class="white-dropdown-link new-proposal-pane-example" ng-click="documentPageCtrl.goToBetaDocumentEdit()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-pen-square"></i>
+                      </span>
+                    </aside>
+                    <aside>Editar valores preenchidos&nbsp;BETA</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="!documentPageCtrl.hasBusinessRules && documentPageCtrl.document.Editable && documentPageCtrl.self.Profile.DocumentsEditPermission">
+                <a class="white-dropdown-link new-proposal-pane-example" ui-sref="{{'docgenerator({ editing_html: true, editing_html_model: documentPageCtrl.document, editing_html_entity: \'document\' })'}}">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-file-edit"></i>
+                      </span>
+                    </aside>
+                    <aside>Modificação visual</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="documentPageCtrl.document.Editable && documentPageCtrl.self.Profile.DocumentsCreatePermission">
+                <a class="ck-editor-pane-example white-dropdown-link" ng-click="documentPageCtrl.duplicateDocument()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-copy"></i>
+                      </span>
+                    </aside>
+                    <aside>Duplicar Documento</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="documentPageCtrl.cpq_beta_button_enabled && documentPageCtrl.document.Editable && documentPageCtrl.self.Profile.DocumentsCreatePermission">
+                <a class="ck-editor-pane-example white-dropdown-link" ng-click="documentPageCtrl.betaDuplicateDocument()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-copy"></i>
+                      </span>
+                    </aside>
+                    <aside>Duplicar Documento BETA</aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="documentPageCtrl.self.Profile.DocumentsDeletePermission">
+                <a class="ck-editor-pane-example white-dropdown-link" ng-click="documentPageCtrl.deleteDocument()" ng-click-confirm="excluir o documento?" reversible="false">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-trash"></i>
+                      </span>
+                    </aside>
+                    <aside>Excluir Documento</aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <document-approval entity-id="66" document="documentPageCtrl.document" class="pull-right"></document-approval>
+          <document-share-status-bar model="documentPageCtrl.document" api-url="Documents" entity-id="66"></document-share-status-bar>
+        </aside>
+      </div>
+    </header>
+    <document-side-slide document="documentPageCtrl.document" ng-if="!documentPageCtrl.not_found"></document-side-slide>
+    <section ng-show="documentPageCtrl.can_load && !documentPageCtrl.loadingHtmlGeneration && !documentPageCtrl.not_found">
+      <div class="hbox stretch">
+        <aside class="dark-background">
+          <div class="vbox">
+            <section class="scrollable">
+              <div class="wrapper dark-background">
+                <div ng-class="{'mt-15-percent': !documentPageCtrl.can_load || documentPageCtrl.loadingHtmlGeneration}">
+                  <loader
+                    loading="!documentPageCtrl.can_load || documentPageCtrl.loadingHtmlGeneration"
+                    title="documentPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.TITLE' | translate) : undefined"
+                    message="documentPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.MESSAGE' | translate) : undefined">
+                  </loader>
+                </div>
+                <div class="full-width" ng-show="documentPageCtrl.can_load && !documentPageCtrl.loadingHtmlGeneration">
+                  <div class="width-800 margin-auto">
+                    <iframe id="preview-ifr" frameborder="0" scrolling="no" style="width: 100%;" height="0"></iframe>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </aside>
+        <aside class="width-105 white-content position-relative b-l-1 z-index-7">
+          <document-side-slide-options ng-if="documentPageCtrl.document" document="documentPageCtrl.document" show-external-comments="documentPageCtrl.shouldDisplayExternalComments"></document-side-slide-options>
+        </aside>
+      </div>
+    </section>
+    <section ng-if="documentPageCtrl.not_found">
+      <page-not-found></page-not-found>
+    </section>
+    <!-- MODALS -->
+    <document-modal ng-if="documentPageCtrl.state.current.name.includes('.edit')" model="documentPageCtrl.document"></document-modal>
+  </div>
+</div>

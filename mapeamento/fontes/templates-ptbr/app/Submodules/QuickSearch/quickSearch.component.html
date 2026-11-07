@@ -1,0 +1,77 @@
+<div class="quick-search-container">
+  <input type="text"
+         ng-focus="quickCtrl.focus()" id="main-search-bar"
+         class="pull-left main-search-bar"
+         ng-model="quickCtrl.quickSearchModel"
+         placeholder="Pesquisa rápida..."
+         uib-typeahead="item as item for item in quickCtrl.quickSearch($viewValue)"
+         typeahead-on-select="quickCtrl.quickSearchSelect($item, $model, $label, $event)"
+         typeahead-template-url="quick-search-item.html"
+         typeahead-popup-template-url="quick-search-popup.html"
+         typeahead-wait-ms="1200"
+         typeahead-loading="quickSearchLoading"
+         aria-describedby="sizing-addon3"
+         typeahead-min-length="0"
+         ng-blur="quickCtrl.no_results = false; quickCtrl.show_standard = false; quickCtrl.quickSearchModel = ''">
+
+  <ul class="quick-search-body" ng-show="quickCtrl.show_standard && !quickCtrl.close_all">
+    <div class="vbox height-350">
+      <section class="scrollable">
+        <div class="text-neutral text-center quick-search" ng-if="!quickCtrl.loading"><i class="fad fa-radar font-giant-title"></i>
+          <div class="gap-30"></div>
+          Busque por empresas, pessoas, negócios, propostas, vendas, usuários.
+        </div>
+        <div class="loader quick-search-loader" ng-if="quickCtrl.loading"></div>
+      </section>
+    </div>
+  </ul>
+</div>
+
+<script type="text/ng-template" id="quick-search-popup.html">
+  <ul class="quick-search-body" role="listbox" ng-show="isOpen() && !moveInProgress && !quickCtrl.close_all">
+    <div class="vbox height-350">
+      <section class="scrollable">
+        <div class="text-neutral text-center quick-search" ng-if="matches[0].model === null"><i class="fad fa-frown font-giant-title"></i>
+          <div class="gap-30"></div>
+          Nenhum resultado encontrado
+        </div>
+        <li class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-if="match.model !== undefined && match.model !== null" ng-class="{'quicksearch-keyboard': isActive($index)}"
+          ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.Id}}">
+          <div ng-if="$index === 0" class="dropdown-subtitle text-darkest-neutral">
+            Mais relevantes
+          </div>
+          <div ng-if="match.model.ExactMatchEndIndex && $index === match.model.ExactMatchEndIndex" class="dropdown-subtitle text-darkest-neutral">
+            Outros resultados
+          </div>
+          <div uib-typeahead-match index="$index" match="match" query="query" template-url="templateUrl"></div>
+        </li>
+      </section>
+    </div>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="quick-search-item.html">
+  <a class="approval-dropdown-link b-b-1" ng-if="match.model && match.model.CanShow" ui-sref="{{match.model.Url}}">
+    <div class="hbox">
+      <aside class="width-40 v-middle text-darkest-neutral">
+        <div>
+          <img ng-if="match.model.EntityId === 6" class="avatar-quick-search" ng-src="{{match.model.AvatarUrl}}">
+          <i ng-if="match.model.EntityId !== 6" class="{{match.model.Icon}} font-title v-bottom fad"></i>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="font-bold">
+          <span ng-if="quickCtrl.new_sanitize_front" ng-bind-html="quickCtrl.sanitizeHTML(match.model.Label) | uibTypeaheadHighlight:query"></span>
+          <span ng-if="!quickCtrl.new_sanitize_front" ng-bind-html="match.model.Label | uibTypeaheadHighlight:query"></span>
+        </div>
+        <div class="text-muted font-small">
+
+          {{match.model.Type}} <span ng-if="match.model.Parent">da {{match.model.ContactType}} <b>{{match.model.Parent}}</b></span> <span ng-if="match.model.ParentDeal">e {{match.model.ParentDealLabel}} <b>{{match.model.ParentDeal}}</b></span> <br>
+          <span>
+              {{match.model.Displayable.FormattedCNPJ || match.model.Displayable.FormattedCPF}}
+          </span>
+        </div>
+      </aside>
+    </div>
+  </a>
+</script>

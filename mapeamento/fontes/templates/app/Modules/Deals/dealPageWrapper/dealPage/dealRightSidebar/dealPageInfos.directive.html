@@ -1,0 +1,28 @@
+<div>
+  <infos-widget form-key="deal_form" entity-type="Deal" patch-fn="infosCtrl.dealPatchFn(model)" patch-fn-callback="infosCtrl.updatedModel(data, 1)" model="dealModel"></infos-widget>
+
+  <div class="short-side-bottom-wrapper" ng-if="infosCtrl.contact_load && infosCtrl.deal_contact">
+    <div class="font-big">
+      <span>Cliente</span>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background"></div>
+    <div class="gap-5"></div>
+  </div>
+  <div class="contact-page-person-list" ng-if="infosCtrl.contact_load && infosCtrl.deal_contact">
+    <infos-widget form-key="{{infosCtrl.deal_contact.TypeId === 1 ? 'contact_company_quick_form' : 'contact_person_quick_form'}}" entity-type="Contact" patch-fn="infosCtrl.contactPatchFn(model)" patch-fn-callback="infosCtrl.updatedModel(data, 2)" model="infosCtrl.deal_contact" replace-section-title="{{infosCtrl.deal_contact.Name}}" replace-section-title-icon="{{infosCtrl.deal_contact.TypeId === 1 ? 'fal fa-industry' : 'fal fa-user'}}" replace-section-title-link="contact({ contactid: {{infosCtrl.deal_contact.Id}} })"></infos-widget>
+  </div>
+
+  <div class="short-side-bottom-wrapper" ng-if="dealModel.PersonId && infosCtrl.person_load && infosCtrl.deal_person">
+    <div class="font-big">
+      <span>Contato</span>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background"></div>
+    <div class="gap-5"></div>
+  </div>
+  <div class="contact-page-person-list" ng-if="dealModel.PersonId && infosCtrl.person_load && infosCtrl.deal_person">
+    <infos-widget form-key="contact_person_quick_form" entity-type="Contact" patch-fn="infosCtrl.contactPatchFn(model)" patch-fn-callback="infosCtrl.updatedModel(data, 3)" model="infosCtrl.deal_person" replace-section-title="{{infosCtrl.deal_person.Name}}" replace-section-title-icon="fal fa-user" replace-section-title-link="contact({ contactid: {{infosCtrl.deal_person.Id}} })"></infos-widget>
+  </div>
+
+</div>

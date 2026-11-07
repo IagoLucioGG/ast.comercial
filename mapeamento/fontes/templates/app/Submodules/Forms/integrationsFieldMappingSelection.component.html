@@ -1,0 +1,78 @@
+<div class="dropdown" ng-class="{'open': integrationsFieldMappingSelectionCtrl.dropdown_open}">
+  <a class="btn button button-white dropdown-toggle border-left-square form-control input-sm integrations-field-mapping-button"
+    ng-click="integrationsFieldMappingSelectionCtrl.buildFieldSelection()">
+    <span class="text-action"><i class="fal fa-mouse-pointer button-icon"></i></span>
+    <span class="integrations-field-mapping-button-label">{{ integrationsFieldMappingSelectionCtrl.dynamicLabel || integrationsFieldMappingSelectionCtrl.label || ('FORMS.FIELD_SELECTION.FIELDS' | translate) }}</span>
+    <i class="fal fa-angle-down dropdown-sign"></i>
+  </a>
+  <ul class="dropdown-max-height-bigger dropdown-menu regular-background-dropdown-menu no-padding-top width-300">
+    <div class="rectangular-wrapper light-background">
+      <div class="hbox">
+        <aside class="v-middle font-big">
+          <a ng-repeat="path in integrationsFieldMappingSelectionCtrl.current_path"
+            ng-click="$event.stopPropagation(); $event.preventDefault(); integrationsFieldMappingSelectionCtrl.goBack(path, $last)"
+            href>
+            {{ path.field.Name }} {{ !$last && integrationsFieldMappingSelectionCtrl.current_path.length > 1 ? '/' : '' }}
+          </a>
+          <div class="gap-3"></div>
+          <a class="inline-link-neutral font-small display-inline-block" href
+            ng-if="integrationsFieldMappingSelectionCtrl.current_path.length > 1"
+            ng-click="$event.stopPropagation(); $event.preventDefault(); integrationsFieldMappingSelectionCtrl.goBack(null, $last)">
+            <div class="hbox">
+              <aside class="v-middle font-very-small width-10">
+                <i class="fas fa-chevron-left regular-icon"></i>
+              </aside>
+              <aside class="v-middle">
+                {{ 'GENERICS.BACK' | translate }}
+              </aside>
+            </div>
+          </a>
+          <a class="inline-link-neutral font-small display-inline-block" href
+            ng-if="integrationsFieldMappingSelectionCtrl.removeFieldSelectionFn"
+            ng-click="$event.stopPropagation(); $event.preventDefault(); integrationsFieldMappingSelectionCtrl.removeFieldSelection()">
+            <div class="hbox">
+              <aside class="v-middle font-very-small width-10">
+                <i class="fas fa-times regular-icon"></i>
+              </aside>
+              <aside class="v-middle">
+                {{ 'FORMS.FIELD_SELECTION.REMOVE_SELECTION' | translate }}
+              </aside>
+            </div>
+          </a>
+        </aside>
+        <aside>
+          <div class="gap-3"></div>
+          <a class="button-fixed-size button-fixed-size-medium button-light-background pull-right"
+            ng-click="integrationsFieldMappingSelectionCtrl.closeDropdown()">
+            <i class="fas fa-times text-neutral"></i>
+          </a>
+        </aside>
+      </div>
+    </div>
+    <div class="input-group full-width window-search has-feedback">
+      <div class="input-group">
+        <input class="form-control input-sm square-border" type="text"
+          ng-model="integrationsFieldMappingSelectionCtrl.field_filtering.field.label"
+          placeholder="{{ 'FORMS.FIELD_SELECTION.SEARCH_FIELD' | translate }}">
+      </div>
+    </div>
+    <div class="regular-background">
+      <a class="button-short button button-full-width button-background text-left data-visualization" href
+        ng-repeat="node in integrationsFieldMappingSelectionCtrl.field_tree | filter:integrationsFieldMappingSelectionCtrl.filterTree(integrationsFieldMappingSelectionCtrl.field_filtering.field.label)">
+        <div class="hbox stretch">
+          <aside class="v-middle" ng-class="{ 'button-darkest-background disabled': node.disable_selection }"
+            ng-click="integrationsFieldMappingSelectionCtrl.callFieldSelection(node)">
+            <div class="font-regular-weight font-regular-size mini-wrapper">
+              {{ node.field.Name }}
+            </div>
+          </aside>
+          <aside class="v-middle text-center width-30 text-neutral"
+            ng-if="node.child_nodes && node.child_nodes.length > 0"
+            ng-click="$event.stopPropagation(); $event.preventDefault(); integrationsFieldMappingSelectionCtrl.goDeeper(node)">
+            <i class="fas fa-chevron-right"></i>
+          </aside>
+        </div>
+      </a>
+    </div>
+  </ul>
+</div>

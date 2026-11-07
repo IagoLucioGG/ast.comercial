@@ -1,0 +1,38 @@
+<div class="wrapper">
+  <button class="button button-action full-width" ng-if="$ctrl.initial_load && $ctrl.nf_status === 'none'" ng-disabled="!$ctrl.can_load"
+    ng-click="$ctrl.generateNfe()">
+    Emitir Nota Fiscal Eletrônica
+  </button>
+  <button class="button button-action full-width" ng-if="$ctrl.initial_load && $ctrl.nf_status === 'rejected'"
+    ng-disabled="!$ctrl.can_load" ng-click="$ctrl.generateNfe()">
+    Re-emitir Nota Fiscal Eletrônica
+  </button>
+  <button class="button button-action full-width" ng-if="$ctrl.initial_load && $ctrl.nf_status === 'success'"
+    ng-click-confirm="gerar uma nova nota fiscal? Isso irá substituir a nota fiscal associada à essa Venda. Prosseguir"
+    reversible="false" ng-disabled="!$ctrl.can_load" ng-click="$ctrl.generateNfe()">
+    Emitir Nova Nota Fiscal Eletrônica
+  </button>
+  <a class="button button-success full-width mtop-10" ng-if="$ctrl.initial_load && $ctrl.nfe_url && $ctrl.nf_status === 'succeeded'"
+    ng-href="{{$ctrl.nfe_url}}">
+    Baixar Nota Fiscal
+  </a>
+  <button class="button button-action full-width disabled" ng-if="$ctrl.initial_load && $ctrl.nf_status === 'processing'" ng-disabled="true">
+    Processando Nota Fiscal
+  </button>
+
+  <div ng-if=" $ctrl.nf_status === 'rejected' && $ctrl.errors && $ctrl.initial_load">
+    <div class="gap-20"></div>
+    A integração com o Emites retornou os seguintes erros:
+    <div class="gap-20"></div>
+    <div class="panel white-content top-wrapper mbottom10" ng-repeat="error in $ctrl.errors">
+      <div class="hbox">
+        <aside class="v-middle text-danger width-30 left-wrapper"><i class="fad fa-exclamation-triangle"></i></aside>
+        <aside ng-if="$ctrl.new_sanitize_front" class="v-middle side-wrapper" ng-bind-html="$ctrl.sanitizeHTML(error) | to_trusted"></aside>
+        <aside ng-if="!$ctrl.new_sanitize_front" class="v-middle side-wrapper" ng-bind-html="error | to_trusted"></aside>
+      </div>
+    </div>
+  </div>
+
+  <standard-loader loading="!$ctrl.can_load"></standard-loader>
+
+</div>

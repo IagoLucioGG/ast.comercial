@@ -1,0 +1,210 @@
+<div>
+  <div class="only-top-wrapper">
+    <div class="hbox mbottom10" ng-if="!newLayout && timelineCtrl.self.Profile.TasksModule">
+      <aside class="v-middle width-160">
+        <span class="font-title font-thin text-darkest-neutral">Tarefas em aberto</span>
+      </aside>
+      <aside class="v-middle">
+        <div class="line line-no-margins-double"></div>
+      </aside>
+    </div>
+    <span ng-if="newLayout && timelineCtrl.self.Profile.TasksModule">
+      <div class="white-content overflow-hidden">
+        <ul class="nav nav-tabs white-content b-b-1 black-border-tabs">
+          <li class="active" data-cy="page-timeline-next-staps-tab">
+            <a href class="text-muted">
+              Tarefas em aberto
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="activity-history hist-separator" ng-if="!timelineCtrl.loading_tasks && model.Tasks.length > 0 && timelineCtrl.self.Profile.TasksModule"></div>
+      <div class="gap-20" ng-if="(model.Tasks.length === 0 && timelineCtrl.self.Profile.TasksModule) || timelineCtrl.loading_tasks"></div>
+    </span>
+
+
+    <div class="next-step-container" ng-if="!timelineCtrl.loading_tasks && model.Tasks.length === 0 && timelineCtrl.self.Profile.TasksModule">
+      <a class="button button-white mbottom10" href ng-click="timelineCtrl.openNewTask()">
+        <span class="text-action"><i class="button-icon-margin fal fa-calendar-plus"></i></span>
+        Nenhuma tarefa agendada. Clique aqui para criar.
+      </a>
+      <div class="gap-10"></div>
+    </div>
+    <next-steps entity-type="{{entityType}}" ng-if="timelineCtrl.self.Profile.TasksModule" loading-tasks="timelineCtrl.loading_tasks" ordered-task-list="model.Tasks" object-id="model.Id"></next-steps>
+    <!-- Tarefa-->
+    <div class="hbox">
+      <aside class="v-middle width-100" ng-if="!newLayout">
+        <span class="font-title font-thin text-darkest-neutral">
+          Atividades
+        </span>
+      </aside>
+      <aside class="v-middle" ng-if="newLayout">
+        <div class="white-content">
+          <ul class="nav nav-tabs white-content b-b-1 black-border-tabs">
+            <li ng-repeat="tab in timelineCtrl.timeline_tabs" ng-if="tab.Enabled" ng-class="{ 'active': tab.Active, 'interactions-filter': tab.Id === 2 }" data-cy="page-timeline-history-{{ tab.Key }}-tab">
+              <a class="text-neutral display-inline-block" ng-click="timelineCtrl.selectTimelineTab(tab)" href>
+                {{tab.Name}}
+              </a>
+              <div class="dropdown display-inline-block pull-right" ng-if="tab.Id === 2" ng-click="timelineCtrl.selectTimelineTab(tab)">
+                <div class="button button-white-light-border button-plus pull-right" data-toggle="dropdown" aria-expanded="false">
+                  {{timelineCtrl.active_interaction_record_types.length ? timelineCtrl.active_interaction_record_types.length + '/' + timelineCtrl.interaction_record_types.length : ('GENERIC_DIRECTIVES.ENTITY_PAGE.FILTER' | translate)}}<i class="fal fa-angle-down dropdown-sign"></i>
+                </div>
+                <ul class="dropdown-menu white-dropdown-menu pull-right white-content">
+                  <li ng-repeat="type in timelineCtrl.interaction_record_types">
+                    <a class="white-dropdown-link" href ng-click="$event.stopPropagation(); timelineCtrl.toggleInteractionRecordType(type)">
+                      <div class="hbox">
+                        <aside class="width-20 v-middle">
+                          <i class="fas fa-check" ng-if="type.Active"></i>
+                        </aside>
+                        <aside class="font-semi-big v-middle">
+                          {{type.Name}}
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="line line-no-margins-double"></div>
+      </aside>
+      <aside class="width-160 v-bottom" ng-if="timelineCtrl.selected_tab.Id !== 3">
+        <div class="dropdown pull-right">
+          <a href class="dropdown-toggle button button-white-light-border button-short" type="button" id="population-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="font-regular-size">
+              {{timelineCtrl.current_population_option.Name}}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="population-list">
+            <div class="dropdown-subtitle">
+              Exibir atividades
+            </div>
+            <div ng-repeat="population_option in timelineCtrl.population_options">
+              <li>
+                <a class="white-dropdown-link nowrap" href ng-click="timelineCtrl.current_population_option = population_option; timelineCtrl.changeFilter()">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="timelineCtrl.current_population_option.Id === population_option.Id">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle">
+                      {{population_option.Name}}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </aside>
+      <aside class="width-200 v-bottom" ng-if="timelineCtrl.selected_tab.Id === 3">
+        <div class="dropdown pull-right">
+          <a href class="dropdown-toggle button button-white-light-border button-short" type="button" id="population-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="font-regular-size">
+              {{timelineCtrl.current_changelog_population_option.Name}}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="population-list">
+            <div class="dropdown-subtitle">
+              Exibir modificações
+            </div>
+            <div ng-repeat="population_option in timelineCtrl.changelog_population_options">
+              <li>
+                <a class="white-dropdown-link nowrap" href ng-click="timelineCtrl.current_changelog_population_option = population_option; timelineCtrl.changeFilter()">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="timelineCtrl.current_changelog_population_option.Id === population_option.Id">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle">
+                      {{population_option.Name}}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </aside>
+      <!-- <aside class="width-20 v-middle">
+        <div class="line line-no-margins-double"></div>
+      </aside>
+      <aside class="width-60 text-right">
+        <a class="button button-dark-background button-short" href ng-click="toggleFilterModal = true">
+          <span class="text-neutral font-regular-size">Filtros</span>
+        </a>
+      </aside> -->
+    </div>
+    <main-timeline ng-if="timelineCtrl.can_load_timeline && !timelineCtrl.can_load_timeline_changelog" minimize-icon="false" entity-type="entityType" entity-id="model.Id" standard-filter="timelineCtrl.standard_timeline_filter" hide-contact-name="timelineCtrl.hide_contact_name" hide-deal-name="timelineCtrl.hide_deal_name" add-upper-separator="newLayout" scroll-distance="1"></main-timeline>
+    <changelog-timeline ng-if="timelineCtrl.can_load_timeline && timelineCtrl.can_load_timeline_changelog" item-id="model.Id" entity-type="entityType" changelog-filter-id="timelineCtrl.current_changelog_population_option.Id"></changelog-timeline>
+    <!-- Flowbiz timeline -->
+    <div ng-if="timelineCtrl.selected_tab.Key === 'flowbiz'">
+      <div class="timeline-loader-wrapper mtop10" ng-if="timelineCtrl.flowbiz_loading">
+        <standard-loader margin-top="15" loading="timelineCtrl.flowbiz_loading" optionalclass="timeline-loader"></standard-loader>
+      </div>
+
+      <!-- Erro -->
+      <div class="text-center text-neutral-light font-very-big-title" ng-if="!timelineCtrl.flowbiz_loading && timelineCtrl.flowbiz_error">
+        Não foi possível consultar o histórico de atividades. Tente novamente mais tarde.
+      </div>
+
+      <!-- Vazio -->
+      <div class="text-center text-neutral-light font-very-big-title"
+          ng-if="!timelineCtrl.flowbiz_loading && !timelineCtrl.flowbiz_error && !timelineCtrl.flowbiz_items.length">
+        Nenhuma atividade registrada para este contato.
+      </div>
+
+      <!-- Lista de interações -->
+      <div class="activity-history hist-separator" ng-if="!timelineCtrl.flowbiz_loading && !timelineCtrl.flowbiz_error && timelineCtrl.flowbiz_items.length"></div>
+      <div class="hbox" ng-repeat="it in timelineCtrl.flowbiz_items track by $index"
+          ng-if="!timelineCtrl.flowbiz_loading && !timelineCtrl.flowbiz_error && timelineCtrl.flowbiz_items.length">
+        <aside class="activity-history">
+          <div>
+            <div style="background-color:#BDBDBD;color:#fff">
+              <i class="fal activity-icon fa-plug"></i>
+            </div>
+          </div>
+        </aside>
+
+        <aside class="v-middle">
+          <div class="timeline-bubble">
+            <div class="history-arrow arrow-style"></div>
+            <div class="no-comments-bubble bubble-wrapper">
+              <div class="hbox overflow-wrap">
+                <aside class="width-40">
+                  <img ng-src="{{ timelineCtrl.flowbiz_icon_url }}" class="avatar-timeline" />
+                </aside>
+                <aside>
+                  <a class="font-bold inline-link-regular">Flowbiz</a><br/>
+
+                  <span class="timeline-clock" ng-if="it.Date">
+                    <i class="fal fa-clock"></i>
+                    {{ timelineCtrl.formatFlowbizDate(it.Date) }}
+                  </span>
+
+                  <div class="mtop3" ng-if="it.Title">
+                    <span class="font-bold">{{ it.Title }}</span>
+                  </div>
+
+                  <div class="mtop3" ng-if="it.Description">
+                    <span>{{ it.Description }}</span>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="activity-history hist-separator"></div>
+      </div>
+    </div>
+
+  </div>
+</div>

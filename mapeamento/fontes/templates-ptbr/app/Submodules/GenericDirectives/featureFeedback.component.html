@@ -1,0 +1,10 @@
+<span class="new-feature-container">
+  <span class="new-feature" ng-if="$ctrl.is_new_feature">Novo!</span>
+  <a
+    ng-if="$ctrl.can_ask_feedback && $ctrl.feedback_url"
+    ng-href="{{$ctrl.feedback_url}}"
+    target="_blank"
+    class="send-feedback">
+    Enviar feedback
+  </a>
+</span>

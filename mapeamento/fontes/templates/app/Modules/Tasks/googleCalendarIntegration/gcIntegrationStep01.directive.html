@@ -1,0 +1,31 @@
+<dynamic-modal modal-id="{{::modalId}}" wide="false" footer="false" dark="true" modal-title="Google Calendar" toggle-modal="step01Ctrl.toggle_modal" block-back-state="true" disassociate-toggle="true">
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="wrapper">
+          <div class="full-width">
+            <div class="hbox">
+              <aside class="v-middle width-120 text-left">
+                <span class="font-big font-bold">Fazer login com:</span>
+              </aside>
+              <aside class="v-middle text-left">
+                <a href ng-click="step01Ctrl.goNextStep()">
+                  <img src="assets/images/btn_google_signin_light_normal_web_short.png">
+                </a>
+              </aside>
+            </div>
+          </div>
+          <div class="gap-15"></div><span class="font-title font-thin">Observações</span>
+          <div class="gap-15"></div>
+          <ul>
+            <li class="font-semi-big">Os eventos para os quais você foi <span class="font-bold">convidado</span> pelo Google Calendar só aparecerão no Ploomes se você integrar com seu <span class="font-bold">calendário principal</span>.</li><br>
+            <li class="font-semi-big"><span class="font-bold">Eventos recorrentes</span> do Google Calendar <span class="font-bold">não</span> são suportados por esta integração. Os eventos recorrentes do Ploomes, por outro lado, <span class="font-bold">são</span>.</li><br>
+            <li class="font-semi-big">Ao realizar a integração, apenas seus eventos agendados para <span class="font-bold">hoje</span> ou <span class="font-bold">datas futuras</span> serão trazidos para o Ploomes.</li><br>
+            <li class="font-semi-big">Após a importação inicial ter sido realizada, a sincronização é de <span class="font-bold">mão dupla</span>, ou seja, toda criação/alteração de eventos realizada de um lado refletirá do outro, inclusive eventos passados.</li><br>
+            <li class="font-semi-big">Ao desfazer a integração, o Ploomes <span class="font-bold">manterá</span> uma cópia de todos os eventos, independentemente se foram importados pela integração.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

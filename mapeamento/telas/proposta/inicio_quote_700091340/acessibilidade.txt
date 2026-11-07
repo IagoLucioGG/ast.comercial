@@ -1,0 +1,45 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:  Visualizar negócio
+    - complementary:
+      - link " Compartilhar":
+        - /url: /quote/700091340/share
+      - text:  Revisar  Link Web ligado Perder
+    - complementary:
+      - iframe
+    - complementary:
+      - complementary:
+        - list:
+          - listitem:  Informações
+          - listitem:  Atualizações
+          - listitem:  Comentários
+          - listitem:  Chat com cliente
+          - listitem:  Aprovações
+          - listitem:  Revisões

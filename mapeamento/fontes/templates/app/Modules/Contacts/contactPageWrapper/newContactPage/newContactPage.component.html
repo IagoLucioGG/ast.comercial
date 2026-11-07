@@ -1,0 +1,22 @@
+<div class="deal-or-contact-domain stretch">
+  <div class="vbox" ng-if="!$ctrl.not_found">
+    <section class="scrollable">
+      <div class="hbox stretch fixed-size" ng-if="$ctrl.initial_load">
+        <aside class="width-500 light-background b-r-1 mini-wrapper">
+          <new-contact-page-side-menu model="$ctrl.model" toggle-version="$ctrl.toggleVersion" on-contact-deleted="$ctrl.onContactDeleted" reload-contact="$ctrl.reloadContact" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-side-menu>
+        </aside>
+        <aside>
+          <new-contact-page-main model="$ctrl.model" initial-load="$ctrl.initial_load" reload-contact="$ctrl.reloadContact" current-tab="$ctrl.currentTab" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-main>
+        </aside>
+      </div>
+      <standard-loader margin-top="'15'" optionalclass="'funnel-loader'" loading="!$ctrl.initial_load"></standard-loader>
+    </section>
+  </div>
+  <div class="vbox" ng-if="$ctrl.not_found">
+    <section class="scrollable">
+      <div class="hbox stretch">
+        <page-not-found></page-not-found>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<dynamic-modal modal-id="users" 
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="Usuários"
+  toggle-modal="usersCtrl.toggle_modal"
+  has-general-slide="user_slide"
+  is-fetching-modal-content="usersCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll">
+          <header class="sub-header b-b-1">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <div class="simple-inline width-200 v-bottom">
+                  <div class="input-group">
+                    <input class="form-control input-sm light-background" placeholder="Busca usuário" ng-model="usersCtrl.user_name_filter" ng-change="usersCtrl.filterUsers()" ng-model-options="{debounce:300}">
+                    <div class="input-group-btn">
+                      <a class="btn button button-neutral-gray special-search-button">
+                        <i class="fas fa-search text-neutral"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="simple-inline width-120">
+                  <input class="form-control input-sm light-background" date datepicker="true" placeholder="A partir de" ng-model="usersCtrl.user_frequency_min_filter" ng-change="usersCtrl.filterUsers()" ng-model-options="{debounce:300}">
+                </div>
+                <div class="simple-inline width-120">
+                  <input class="form-control input-sm light-background" date datepicker="true" placeholder="Até" ng-model="usersCtrl.user_frequency_max_filter" ng-change="usersCtrl.filterUsers()" ng-model-options="{debounce:300}">
+                </div> -->
+              </aside>
+              <aside class="v-middle">
+                <a class="button button-action pull-right" ng-click="usersCtrl.newUserSlide()" ng-class="{'disabled': usersCtrl.self.Account.IsSandboxAccount === true}">
+                  <i class="button-icon fas fa-user-astronaut">
+                  {{ 'ADMINISTRATION.USERS.USERS_MODAL.NEW_USER' | translate }}
+                </a>
+              </aside>
+            </div>
+          </header>
+          <section class="scrollable">
+            <div>
+              <table class="table table-hover white-table">
+                <thead>
+                  <tr>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.USERS_MODAL.NAME' | translate }}</th>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.USERS_MODAL.PROFILE' | translate }}</th>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.USERS_MODAL.ROLE' | translate }}</th>
+                    <th class="small-cell">{{ 'ADMINISTRATION.USERS.USERS_MODAL.CONTACT' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="contact-workplace-button" ng-repeat="user in usersCtrl.users | filter:{Show: true}" ui-sref="{{'user({userid: user.Id})'}}" >
+                    <td>
+                      <img class="mini-avatar-less" ng-src="{{user.AvatarUrl}}">
+                      <span class="font-bold">{{user.Name}}</span>
+                    </td>
+                    <td>{{user.Profile.Name}}</td>
+                    <td>{{user.Role ? user.Role.Name : ''}}</td>
+                    <td>
+                      {{user.Email}}
+                      <br>
+                      <small class="text-muted">
+                        {{user.Phone}}
+                      </small>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="user_slide" modal-side-slide-title="Usuário">
+    <users-adm-slide-content model="usersCtrl.model" editing="usersCtrl.editing"></users-adm-slide-content>
+  </modal-side-slide>
+</dynamic-modal>

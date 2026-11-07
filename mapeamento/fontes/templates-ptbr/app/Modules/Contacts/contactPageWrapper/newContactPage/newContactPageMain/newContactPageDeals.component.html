@@ -1,0 +1,118 @@
+<div>
+  <div class="side-scroll">
+    <div class="regular-header new-header white-content b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle-flex">
+          <pipeline-pocket-selector
+            pipelines="$ctrl.pipelinesConvertToFront"
+            loading-pocket-scroll="$ctrl.loadingPocketScroll"
+            select-fn="$ctrl.selectPipeline"
+            all-pipelines-fn="$ctrl.unselectPipeline"
+            all-deals-fn="$ctrl.selectPipeline"
+            selected-pipeline="$ctrl.selectedPipeline"
+            ng-if="($ctrl.selectedPipeline || $ctrl.selectedAllPipelines)"
+          ></pipeline-pocket-selector>
+          <div class="input-group pull-left width-250 mright10" ng-if="$ctrl.selectedPipeline || $ctrl.selectedAllPipelines">
+            <input
+              class="form-control input-sm light-background"
+              placeholder="Pesquisar"
+              ng-model="$ctrl.quick_filter"
+              ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)">
+            <div class="input-group-btn width-10">
+              <a ng-click="$ctrl.quickFilter($ctrl.quick_filter)" class="btn button button-neutral-gray special-search-button">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+        </aside>
+        <aside class="text-right width-10 v-middle" ng-if="$ctrl.self.Profile.DealsCreatePermission && !$ctrl.blockCreate">
+          <button ng-if="$ctrl.model.TypeId === 1 || ($ctrl.model.TypeId === 2 && !$ctrl.model.CompanyId)"
+            role="button"
+            class="button button-action nowrap"
+            ng-click="$ctrl.openNewDeal()"
+            aria-label="botão de criar (novo:deal:aa:s) (name:deal::s)"
+            uib-tooltip="{{ $ctrl.newDealButtonTooltip }}" 
+            tooltip-append-to-body="true"
+            tooltip-placement="left" 
+            ng-disabled="!$ctrl.hasActivePipeline"
+            ng-class="{disabled: !$ctrl.hasActivePipeline}"
+          >
+            <i class="fas button-icon" ng-class="$ctrl.customizables.deals_module.icon_class"></i>
+            (Novo:deal:Aa:s) (name:deal::s)
+          </button>
+          <div uib-dropdown ng-if="$ctrl.model.TypeId === 2 && $ctrl.model.CompanyId">
+            <button
+              class="button button-action nowrap"
+              uib-dropdown-toggle
+              ng-disabled="!$ctrl.hasActivePipeline"
+              ng-class="{disabled: !$ctrl.hasActivePipeline}"
+              uib-tooltip="{{ $ctrl.newDealButtonTooltip }}"
+              tooltip-placement="left"
+              tooltip-append-to-body="true"
+            >
+              (Novo:deal:Aa:s) (name:deal::s)
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </button>
+            <ul class="white-dropdown-menu pull-right" uib-dropdown-menu>
+              <li>
+                <a class="white-dropdown-link" href ng-click="$ctrl.openNewDeal(true)" >
+                  <div class="hbox">
+                    <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-industry list-simple-line"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      Para empresa e pessoa
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" href ng-click="$ctrl.openNewDeal()" >
+                  <div class="hbox">
+                    <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-user list-simple-line"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      Para pessoa
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content">
+      <pipelines-gallery
+        ng-if="$ctrl.showPipelinesGallery"
+        ng-show="!$ctrl.selectedPipeline && !$ctrl.selectedAllPipelines"
+        on-click-card-fn="$ctrl.selectPipeline"
+        contact-id="$ctrl.contactId"
+        load-pipelines-callback="$ctrl.loadPipelinesCallback"
+        set-initial-load-callback-fn="$ctrl.setInitialLoad"
+        deals-count="$ctrl.dealsCount"
+      ></pipelines-gallery>
+      <div class="rectangular-wrapper min-height-500" ng-if="$ctrl.selectedPipeline || $ctrl.selectedAllPipelines">
+        <dynamic-table
+            ng-if="$ctrl.can_load"
+            entity="$ctrl.current_entity"
+            opt-filter="$ctrl.current_filter"
+            table-edit-fn="$ctrl.editTablePatch"
+            current-tab="$ctrl.front_tab"
+            block-table-edit="$ctrl.blockCreate"
+            disable-default-order="$ctrl.show_child_companies && $ctrl.force_canary_api_front"
+            entity-page-loader="true">
+        </dynamic-table>
+        <div class="min-height-500 contact-page-deal-cant-create-table" ng-if="$ctrl.userCantCreateTable && !$ctrl.can_load">
+          <span class="contact-page-deal-cant-create-table__header">Você não tem permissão para criar tabelas</span>
+          <span class="contact-page-deal-cant-create-table__message">Entre em contato com o administrador da sua conta.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

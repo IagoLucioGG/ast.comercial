@@ -1,0 +1,234 @@
+<div class="tab-pane" id="d">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.DEALS_MODULE_ACCESS' | translate_sentence }}?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsModule" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsModule" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.DEALS_VISUALIZE' | translate_sentence }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsView" ng-value="1">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.ALL' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsView" ng-value="2">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION_OR_TEAM_MEMBERS' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsView" ng-value="3">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="gap-10"></div>
+      <div class="checkbox" ng-class="{'checkbox-disabled': model.DealsView === 1}">
+        <label>
+          <input class="inline-option" type="checkbox" ng-model="model.DealsContactsView" ng-disabled="model.DealsView === 1">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION' | translate }}
+          </strong>
+          <small class="checkbox-info" uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION_INFO' | translate }}" tooltip-append-to-body="true">
+            <i class="fas fa-info-circle"></i>
+          </small>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.DEALS_EDIT' | translate_sentence }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION_OR_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="3">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="4">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.NONE' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="gap-10"></div>
+      <div class="checkbox" ng-class="{'checkbox-disabled': model.DealsEdit === 1 || model.DealsEdit === 4}">
+        <label>
+          <input class="inline-option" type="checkbox" ng-model="model.DealsContactsEdit" ng-disabled="model.DealsEdit === 1 ||  model.DealsEdit === 4">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION' | translate }}
+          </strong>
+          <small
+            class="checkbox-info"
+            uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION_INFO' | translate }}"
+            tooltip-append-to-body="true"
+          >
+            <i class="fas fa-info-circle"></i>
+          </small>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="dealsModuleOptionsCtrl.pipeline_merge_feature">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.MERGE_LABEL' | translate_sentence }}
+        <i class="fa fa-info-circle merge-permission-tooltip" tooltip-append-to-body="true" uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.MERGE_TOOLTIP' | translate_sentence }}"></i>
+      </div>
+      <div class="line"></div>
+      <div>
+        <span class="merge-permission-details-text">
+          {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.MERGE_PERMISSION_DETAILS' | translate_sentence }}
+        </span>
+      </div>
+      <div class="radio" class="block-content-text">
+        <label class="merge-permission-disabled-inputs">
+          <input class="inline-option"
+            id="merge-only-view-responsibility-permission"
+            type="radio"
+            ng-model="model.DealsEdit"
+            ng-change="{{dealsModuleOptionsCtrl.verifyPermissionModelValue(model.DealsEdit)}}" 
+            ng-disabled="true"
+          >
+          {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY' | translate }}
+        </label>
+      </div>
+      <div class="radio" class="block-content-text">
+        <label class="merge-permission-disabled-inputs">
+          <input class="inline-option" type="radio" ng-model="model.DealsEdit" ng-value="4" ng-disabled="true">
+          {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.NONE' | translate }}
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.DEALS_DELETE' | translate_sentence }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION_OR_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="3">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsDelete" ng-value="4">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.NONE' | translate }}
+          </strong>
+        </label>
+      </div>
+      <div class="gap-10"></div>
+      <div class="checkbox" ng-class="{'checkbox-disabled': model.DealsDelete === 1 || model.DealsDelete === 4}">
+        <label>
+          <input class="inline-option" type="checkbox" ng-model="model.DealsContactsDelete" ng-disabled="model.DealsDelete === 1 || model.DealsDelete === 4">
+          <strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION' | translate }}</strong>
+          <small
+            class="checkbox-info"
+            uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.IF_IN_TEAM_MEMBER_RESPONSABILITY/COLABORATION_INFO' | translate }}"
+            tooltip-append-to-body="true"
+          >
+            <i class="fas fa-info-circle"></i>
+          </small>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.DEALS_CREATE' | translate_sentence }}?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsCreatePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsCreatePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.DEALS_WIN_LOSE' | translate_sentence }}?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsWinOrLosePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsWinOrLosePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.DEALS_MODULE_OPTIONS.DEALS_REOPEN' | translate_sentence }}?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsReopenPermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.DealsReopenPermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

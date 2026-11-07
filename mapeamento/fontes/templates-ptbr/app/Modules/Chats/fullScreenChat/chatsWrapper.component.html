@@ -1,0 +1,50 @@
+<div class="vbox">
+  <header class="regular-header">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <span class="text-brand">
+          <i class="fad fa-comments-alt module-id-icon"></i>
+        </span>
+        <span class="font-title font-thin">
+          Conversas
+        </span>
+      </aside>
+      <aside class="v-middle">
+        <div class="button button-light-background-border pull-right text-darkest-neutral" ng-click="$ctrl.openConfigModal()">
+          <i class="fad fa-cogs regular-fa"></i>
+          Configurações
+        </div>
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="vbox">
+      <section>
+        <div class="hbox stretch">
+          <aside class="regular-background width-400 size-slide" id="visualization-list">
+            <div class="vbox">
+              <section class="scrollable">
+                <chats-sidebar select-chat-callback-fn="$ctrl.selectChatCallback(chat)"></chats-sidebar>
+              </section>
+            </div>
+          </aside>
+          <aside class="dark-background b-l-1">
+            <chat-messages ng-if="$ctrl.current_chat" class="vbox" chat="$ctrl.current_chat"></chat-messages>
+            <div ng-if="!$ctrl.current_chat">
+              <div class="gap-50"></div>
+              <div class="gap-50"></div>
+              <div class="text-neutral text-center page-not-found font-big-title">
+                <i class="fad fa-comments-alt font-monster-size"></i>
+                <div class="gap-50"></div>
+                Selecione ou inicie uma conversa
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </section>
+</div>
+
+<chat-modal ng-if="$ctrl.open_chat_modal" chat="$ctrl.chat_modal_model"></chat-modal>
+<chats-config-modal ng-if="$ctrl.open_chats_config_modal"></chats-config-modal>

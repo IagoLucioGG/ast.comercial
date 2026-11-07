@@ -1,0 +1,43 @@
+<div ng-repeat="subModel in model[property]" ng-form="emailRowForm" class="form-group {{(field.wide ? 'col-sm-12' : 'col-sm-6')}}">
+  <div ng-class="form.$submitted && ((required && !subModel.Email) || emailRowForm.$invalid) ? 'invalid-input' : ''">
+    <span>
+      <label data-cy="{{'field-label-' + field.key}}" ng-hide="field.hideLabel || hideLabel">{{field.label}}</label>
+
+      <field-symbol-validation field="field" form="form" model="model" sub-model="subModel" hide-dedup-rule-icon="$index > 0"></field-symbol-validation>
+
+      <a ng-if="$index === model[property].length - 1 && !disabled" ng-click="emailsCtrl.pushField()" class="icon-button-neutral pull-right button-action-phone">
+        <i class="fas fa-plus-circle"></i>
+      </a>
+      <a ng-if="model[property].length > 1 && !disabled" ng-click="emailsCtrl.removeField($index)" class="icon-button-neutral pull-right button-action-phone">
+        <i class="fas fa-minus-circle"></i>
+      </a>
+    </span>
+
+    <div class="email-row__field">
+      <span class="email-row__input-wrapper">
+        <input
+          type="text"
+          inputmode="email"
+          name="{{::field.key}}"
+          class="form-control input-sm email-row__input"
+          ng-class="{ 'email-row__input--has-badge': subModel.IsMain }"
+          placeholder="E-mail"
+          ng-model="subModel.Email"
+          ng-model-options="{ 'debounce': 300, 'allowInvalid': true }"
+          ng-required="required"
+          ng-disabled="disabled"
+          email-format-validation
+          check-uniqueness
+          check-uniqueness-field="field"
+          check-uniqueness-model="model"
+          check-uniqueness-disable="false"
+          aria-label="{{ 'ARIA_LABELS.FIELD.EMAILS' | translate_with_replace: { fieldLabel: field.label } }}"
+          uib-tooltip="{{subModel.Email}}"
+          tooltip-append-to-body="true"
+          tooltip-enable="(subModel.Email || '').length > 30" />
+
+        <span class="email-principal-badge" ng-if="subModel.IsMain">Principal</span>
+      </span>
+    </div>
+  </div>
+</div>

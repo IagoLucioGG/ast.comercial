@@ -1,0 +1,69 @@
+<dynamic-modal
+  helper-key="'TEAMS_CONFIGURATION'"
+  modal-id="users"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="Equipes"
+  toggle-modal="teamsCtrl.toggle_modal"
+  cypress-prefix="administration-user-teams"
+  is-fetching-modal-content="teamsCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll small-header">
+          <header class="regular-header new-header b-b-1">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <div class="simple-inline width-200 v-bottom">
+                  <div class="input-group">
+                    <input class="form-control input-sm light-background" placeholder="Buscar pelo nome" ng-model="teamsCtrl.team_name_filter" ng-model-options="{debounce:300}">
+                    <div class="input-group-btn">
+                      <a class="btn button button-neutral-gray special-search-button">
+                        <i class="fas fa-search text-neutral"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+              <aside class="v-middle">
+                <a class="button button-action pull-right" ng-click="teamsCtrl.newTeamSlide()" data-cy="administration-user-teams-new-team-button">
+                  <i class="button-icon fas fa-users"></i>
+                  Nova Equipe
+                </a>
+              </aside>
+            </div>
+          </header>
+          <section class="scrollable">
+            <div>
+              <table class="table table-hover white-table">
+                <thead>
+                  <tr>
+                    <th class="small-cell cursor-pointer" ng-click="teamsCtrl.sortBy('Name')">
+                      Nome
+                      <i ng-if="teamsCtrl.sort_column === 'Name'" class="fas m-l-xs" ng-class="teamsCtrl.sort_reverse ? 'fa-sort-amount-down' : 'fa-sort-amount-up'"></i>
+                    </th>
+                    <th class="small-cell cursor-pointer" ng-click="teamsCtrl.sortBy('Users.length')">
+                      Membros
+                      <i ng-if="teamsCtrl.sort_column === 'Users.length'" class="fas m-l-xs" ng-class="teamsCtrl.sort_reverse ? 'fa-sort-amount-down' : 'fa-sort-amount-up'"></i>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="contact-workplace-button" ng-repeat="team in teamsCtrl.teams | filter: { Name: teamsCtrl.team_name_filter }:false | orderBy:teamsCtrl.sort_column:teamsCtrl.sort_reverse" ng-click="teamsCtrl.editTeamSlide(team)" data-cy="team-{{team.Id}}">
+                    <td>{{team.Name}}</td>
+                    <td>{{team.Users.length}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="team_slide" modal-side-slide-title="Equipe" cypress-prefix="administration-teams-new-team">
+    <teams-adm-slide-content model="teamsCtrl.model" editing="teamsCtrl.editing"></teams-adm-slide-content>
+  </modal-side-slide>
+</dynamic-modal>

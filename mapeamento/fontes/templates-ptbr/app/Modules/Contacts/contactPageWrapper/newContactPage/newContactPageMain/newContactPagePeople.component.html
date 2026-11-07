@@ -1,0 +1,53 @@
+<div>
+  <div class="side-scroll">
+    <div class="regular-header new-header b-b-1 new-header-d-flex">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="input-group">
+            <input class="form-control input-sm light-background expandable-search-bar" placeholder="Pesquisar"
+                   ng-model="$ctrl.quick_filter"
+                   ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)">
+            <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+              <button class="btn button button-white dropdown-toggle z-index-1" uib-dropdown-toggle ng-disabled="disabled">
+                {{$ctrl.current_quick_filter_property.Name}}
+                <i class="fal fa-angle-down dropdown-sign font-very-small"></i>
+              </button>
+              <ul class="dropdown-menu pull-right white-dropdown-menu no-padding-top" uib-dropdown-menu style="z-index: 10000;">
+                <div class="dropdown-subtitle">Buscando por</div>
+                <li ng-repeat="quick_filter in $ctrl.quick_filter_properties">
+                  <a href class="white-dropdown-link" ng-class="{'active-dropdown-link': quick_filter.Id === $ctrl.current_quick_filter_property.Id}" ng-click="$ctrl.changeCurrentQuickFilterProperty(quick_filter)">
+                    <div class="hbox">
+                      <span class="v-middle">{{quick_filter.Name}}</span>
+                      <span class="text-center v-middle" style="float: right;" ng-if="quick_filter.Id === $ctrl.current_quick_filter_property.Id">
+                        <i class="fal fa-check font-very-small"></i>
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+        <aside class="text-right width-10 v-middle" ng-if="$ctrl.self.Profile.ContactsPersonCreatePermission && !$ctrl.blockCreate">
+          <div class="dropdown">
+            <a class="button button-action nowrap" ng-click="$ctrl.openNewPerson()">
+              <i class="button-icon fas fa-user"></i>
+              Nova pessoa
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content">
+      <dynamic-table
+          ng-if="$ctrl.can_load"
+          entity="$ctrl.current_entity"
+          opt-filter="$ctrl.current_filter"
+          table-edit-fn="$ctrl.editTablePatch"
+          current-tab="$ctrl.front_tab"
+          block-table-edit="$ctrl.blockCreate"
+          entity-page-loader="true">
+      </dynamic-table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div ng-if="orderSideSlideDetailsCtrl.initial_load" class="wrapper deal-or-contact-domain min-height-100-percent light-background">
+  <infos-widget ng-if="orderSideSlideDetailsCtrl.order_deal" form-key="deal_quick_form" entity-type="Deal" patch-fn="orderSideSlideDetailsCtrl.dealPatchFn(model)" model="orderSideSlideDetailsCtrl.order_deal" replace-section-title="{{orderSideSlideDetailsCtrl.order_deal.Title}}" replace-section-title-icon="{{orderSideSlideDetailsCtrl.customizables.deals_module.icon_class}}" replace-section-title-link="deal({ dealid: {{orderSideSlideDetailsCtrl.order_deal.Id}} })"></infos-widget>
+
+  <infos-widget ng-if="orderSideSlideDetailsCtrl.order_contact" form-key="{{ orderSideSlideDetailsCtrl.contactQuickForm }}" entity-type="Contact" patch-fn="orderSideSlideDetailsCtrl.contactPatchFn(model)" model="orderSideSlideDetailsCtrl.order_contact" replace-section-title="{{orderSideSlideDetailsCtrl.order_contact.Name}}" replace-section-title-icon="fal {{ orderSideSlideDetailsCtrl.contactIcon }}" replace-section-title-link="contact({ contactid: {{orderSideSlideDetailsCtrl.order_contact.Id}} })"></infos-widget>
+
+  <infos-widget ng-if="orderSideSlideDetailsCtrl.order_person" form-key="contact_person_quick_form" entity-type="Contact" patch-fn="orderSideSlideDetailsCtrl.contactPatchFn(model)" model="orderSideSlideDetailsCtrl.order_person" replace-section-title="{{orderSideSlideDetailsCtrl.order_person.Name}}" replace-section-title-icon="fal fa-user" replace-section-title-link="contact({ contactid: {{orderSideSlideDetailsCtrl.order_person.Id}} })"></infos-widget>
+
+  <div class="deal-or-contact-domain">
+    <attachments-widget model="order" api-url="Orders"></attachments-widget>
+  </div>
+</div>
+<standard-loader margin-top="15" loading="!orderSideSlideDetailsCtrl.initial_load"></standard-loader>

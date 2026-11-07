@@ -1,0 +1,182 @@
+<form>
+  <div class="font-title font-thin text-darkest-neutral regular-background b-b-1">
+    {{ 'DOC_GENERATOR.SIDEBAR.GENERAL_OPTIONS' | translate }}
+  </div>
+  <div class="gap-10"></div>
+  <div class="form-group">
+    <label class="font-regular-weight">
+      {{ 'DOC_GENERATOR.SIDEBAR.TEMPLATE_NAME' | translate }}
+    </label>
+    <input class="form-control input-sm" ng-model="model.Name">
+  </div>
+  <div class="form-group allowed-users-doc-gen">
+    <allowed-users model="model.allowed_views_model" title="('DOC_GENERATOR.SIDEBAR.ALLOWED_USERS' | translate)" remove-side-wrapper="true"></allowed-users>
+  </div>
+  <div class="gap-15"></div>
+  <div class="font-title font-thin text-darkest-neutral regular-background b-b-1">
+    {{ 'DOC_GENERATOR.SIDEBAR.GENERAL_OPTIONS' | translate }}
+  </div>
+  <div class="gap-10"></div>
+  <div class="form-group">
+    <label class="font-regular-weight">
+      {{ 'DOC_GENERATOR.SIDEBAR.TEMPLATE_HAS_PAGINATION' | translate }}
+    </label>
+    <div class="switch">
+      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-2" ng-model="model.HasPaging" ng-checked="model.HasPaging" type="checkbox">
+      <label for="cmn-toggle-2"></label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="font-regular-weight">
+      {{ 'DOC_GENERATOR.SIDEBAR.CUSTOMIZE_PDF_NAME' | translate }}
+    </label>
+    <div class="switch">
+      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-custom-pdf"
+        ng-model="docGeneratorModelOptionsCtrl.customize_file_name" type="checkbox"
+        ng-change="docGeneratorModelOptionsCtrl.updateCustomizeFileName()">
+      <label for="cmn-toggle-custom-pdf"></label>
+    </div>
+  </div>
+  <div class="form-group" ng-if="docGeneratorModelOptionsCtrl.customize_file_name">
+    <div class="input-group">
+      <div class="input-group-btn display-block" style="width: 100%">
+        <field-path-selection
+          field-selection-fn="docGeneratorModelOptionsCtrl.addFileNameVariable(field, field_path_id)"
+          custom-filter-fn="docGeneratorModelOptionsCtrl.filterField(field)"
+          start-entity-id="model.EntityId"
+          skip-pull-right="true"
+        ></field-path-selection>
+      </div>
+      <input class="form-control input-sm" ng-model="model.FileNameFormula" ng-change="docGeneratorModelOptionsCtrl.updateFileName()">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="font-regular-weight">
+      {{ 'DOC_GENERATOR.SIDEBAR.INSTALLMENTS_REQUIRED' | translate }}
+    </label>
+    <div class="switch">
+      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-3" ng-model="model.InstallmentsRequired"
+        ng-checked="model.InstallmentsRequired" type="checkbox">
+      <label for="cmn-toggle-3"></label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="font-regular-weight">
+      {{ 'DOC_GENERATOR.SIDEBAR.INSTALLMENTS_AMOUNT_FIELD' | translate }}
+    </label>
+    <new-field field="docGeneratorModelOptionsCtrl.installments_field_select" model="docGeneratorModelOptionsCtrl.installments_field_model" property="docGeneratorModelOptionsCtrl.installments_field_select.key" wide="true" model-change-callback="docGeneratorModelOptionsCtrl.updateInstallmentFieldKey(new_val, old_val, first_trigger)"></new-field>
+
+  <div class="gap-15"></div>
+
+  <!-- here is the clicksign integration-->
+  <div class="gap-15" ng-if="docGeneratorModelOptionsCtrl.enable_clicksign_integration"></div>
+  <div class="form-group margin-top-15-template-quote"  ng-if="docGeneratorModelOptionsCtrl.enable_clicksign_integration">
+    <div class="font-title font-thin text-darkest-neutral regular-background b-b-1">
+      {{ 'DOC_GENERATOR.SIDEBAR.CLICKSIGN_INTEGRATION' | translate }}
+    </div>
+    <div class="gap-10"></div>
+    <label class="font-regular-weight">
+      {{ 'DOC_GENERATOR.SIDEBAR.USE_CUSTOM_MESSAGE' | translate }}
+    </label>
+    <div class="switch">
+      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-clicksign" ng-model="model.UseClicksignMessage" type="checkbox">
+      <label for="cmn-toggle-clicksign"></label>
+    </div>
+  </div>
+
+  <div class="form-group margin-top-15-template-quote" ng-if="docGeneratorModelOptionsCtrl.enable_clicksign_integration && model.UseClicksignMessage">
+    <label class="font-regular-weight"> {{ 'DOC_GENERATOR.SIDEBAR.BODY_MESSAGE' | translate }}</label>
+    <textarea class="form-control" ng-model="model.ClicksignMessage"></textarea>
+  </div>
+  <!-- end clicksign integration form -->
+
+  <!-- here is the docusign integration-->
+  <div class="gap-15" ng-if="!docGeneratorModelOptionsCtrl.enable_clicksign_integration"></div>
+  <div class="form-group" ng-if="docGeneratorModelOptionsCtrl.enable_docusign_integration" ng-class="{ 'margin-top-15-template-quote': !docGeneratorModelOptionsCtrl.enable_clicksign_integration && docGeneratorModelOptionsCtrl.enable_docusign_integration}">
+      <div class="font-title font-thin text-darkest-neutral regular-background b-b-1">
+        {{ 'DOC_GENERATOR.SIDEBAR.DOCUSIGN_INTEGRATION' | translate }}
+      </div>
+
+      <div class="gap-10"></div>
+      <label class="font-regular-weight">
+        {{ 'DOC_GENERATOR.SIDEBAR.USE_CUSTOM_MESSAGE' | translate }}
+      </label>
+
+      <div class="switch">
+        <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-docusign" ng-model="model.UseDocusignMessage" type="checkbox">
+        <label for="cmn-toggle-docusign"></label>
+      </div>
+    </div>
+
+  <div class="form-group" ng-class="{'invalid-input': !model.DocusignMessage}" ng-if="docGeneratorModelOptionsCtrl.enable_docusign_integration && model.UseDocusignMessage">
+    <label class="font-regular-weight">{{ 'DOC_GENERATOR.SIDEBAR.BODY_MESSAGE' | translate }}
+      <span ng-class="{'text-danger': !model.DocusignMessage, 'text-neutral': model.DocusignMessage}" uib-tooltip="Campo obrigatório" tooltip-append-to-body="true">
+        <i style="top: 0px" class="fas fa-exclamation-circle dropdown-sign"></i>
+      </span>
+    </label>
+    <textarea class="form-control" ng-model="model.DocusignMessage"></textarea>
+  </div>
+
+   <div class="form-group" ng-class="{'invalid-input': !model.DocusignSubject}" ng-if="docGeneratorModelOptionsCtrl.enable_docusign_integration && model.UseDocusignMessage">
+    <label class="font-regular-weight">{{ 'DOC_GENERATOR.SIDEBAR.SUBJECT_MESSAGE' | translate }}
+      <span ng-class="{'text-danger': !model.DocusignSubject, 'text-neutral': model.DocusignSubject}" uib-tooltip="Campo obrigatório" tooltip-append-to-body="true">
+        <i style="top: 0px" class="fas fa-exclamation-circle dropdown-sign"></i>
+      </span>
+    </label>
+    <input class="form-control" ng-model="model.DocusignSubject"></input>
+  </div>
+  <!-- end docusign integration form -->
+
+  <!-- here is the d4sign integration-->
+  <div class="form-group" ng-if="docGeneratorModelOptionsCtrl.enable_d4sign_integration" ng-class="{ 'margin-top-15-template-quote': !docGeneratorModelOptionsCtrl.enable_clicksign_integration && docGeneratorModelOptionsCtrl.enable_d4sign_integration}">
+      <div class="font-title font-thin text-darkest-neutral regular-background b-b-1">
+        {{ 'DOC_GENERATOR.SIDEBAR.D4SIGN_INTEGRATION' | translate }}
+      </div>
+
+      <div class="gap-10"></div>
+      <label class="font-regular-weight">
+        {{ 'DOC_GENERATOR.SIDEBAR.USE_CUSTOM_MESSAGE' | translate }}
+      </label>
+
+      <div class="switch">
+        <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-d4sign" ng-model="model.UseD4SignMessage" type="checkbox">
+        <label for="cmn-toggle-d4sign"></label>
+      </div>
+  </div>
+
+  <div class="form-group" ng-class="{'invalid-input': !model.D4SignMessage}" ng-if="docGeneratorModelOptionsCtrl.enable_d4sign_integration && model.UseD4SignMessage">
+    <label class="font-regular-weight">{{ 'DOC_GENERATOR.SIDEBAR.BODY_MESSAGE' | translate }}
+      <span ng-class="{'text-danger': !model.D4SignMessage, 'text-neutral': model.D4SignMessage}" uib-tooltip="Campo obrigatório" tooltip-append-to-body="true">
+        <i style="top: 0px" class="fas fa-exclamation-circle dropdown-sign"></i>
+      </span>
+    </label>
+    <textarea class="form-control" ng-model="model.D4SignMessage"></textarea>
+  </div>
+  <!-- end d4sign integration form -->
+
+  <div class="font-title font-thin text-darkest-neutral regular-background b-b-1">
+    {{ 'DOC_GENERATOR.SIDEBAR.EXTERNAL_DOC' | translate }}
+  </div>
+
+  <div class="form-group">
+    <div class="gap-10"></div>
+    <label class="font-regular-weight">
+      {{ 'DOC_GENERATOR.SIDEBAR.FORM_EXTERNAL_DOC' | translate }}
+    </label>
+    <div class="switch">
+      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-external-template"
+        ng-model="model.ExternalTemplate" type="checkbox">
+      <label for="cmn-toggle-external-template"></label>
+    </div>
+    <div class="gap-5"></div>
+    <label class="font-regular-weight" ng-show="model.ExternalTemplate">
+      {{ 'DOC_GENERATOR.SIDEBAR.URL' | translate }}
+    </label>
+    <input class="form-control input-sm" ng-model="model.ExternalTemplateUrl" ng-show="model.ExternalTemplate">
+  </div>
+
+</form>
+<div class="gap-30"></div>

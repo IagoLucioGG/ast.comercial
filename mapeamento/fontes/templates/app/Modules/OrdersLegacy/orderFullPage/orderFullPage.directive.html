@@ -1,0 +1,108 @@
+<div class="vbox" ng-form="order_model_form">
+  <header>
+    <div class="white-content b-b-1 side-wrapper height-40">
+      <div class="hbox-flex stretch">
+        <aside class="v-middle v-middle-flex">
+          <div class="font-thin font-title big-simple-inline max-width-400 ellipsis align-middle nowrap">
+            {{ (orderFullPageCtrl.editing ? 'ORDERS.EDITING_ORDER' : 'ORDERS.NEW_ORDER') | translate }}</div>
+        </aside>
+
+        <aside class="v-middle v-middle-flex text-right"
+          ng-if="orderFullPageCtrl.can_load && orderFullPageCtrl.initial_load && !orderFullPageCtrl.show_document_template_list">
+          <div class="mini-side-wrapper mini-side-wrapper-flex">
+            <div style="margin-left: 20px !important;" class="f-1">
+              <a class="button button-white nowrap" ng-click="orderFullPageCtrl.openModal()">
+                <span class="text-action"><i class="button-icon fal fa-times"></i></span>
+                {{ 'GENERICS.CANCEL' | translate}}
+              </a>
+
+              <div ng-if="!orderFullPageCtrl.hasPendingProducts && !orderFullPageCtrl.display_no_templates && !orderFullPageCtrl.formulaCalculating && !orderFullPageCtrl.externalFormulaCalculating"
+                class="button button-action position-relative pull-right width-110 full-page-loading-tooltip"
+                ng-class="{ 'disabled': orderFullPageCtrl.loading }"
+                ng-click="orderFullPageCtrl.applyOrder(orderFullPageCtrl.order_model, order_model_form)">
+                <i class="fas fa-save button-icon"></i>
+                {{ 'GENERICS.SAVE' | translate }}
+                <loading-tooltip loading="orderFullPageCtrl.loading" form="order_model_form" use-default-icon="true">
+                </loading-tooltip>
+              </div>
+
+              <div ng-if="orderFullPageCtrl.hasPendingProducts && !orderFullPageCtrl.display_no_templates && !orderFullPageCtrl.formulaCalculating && !orderFullPageCtrl.externalFormulaCalculating"
+                class="button button-action position-relative pull-right width-110 full-page-loading-tooltip"
+                ng-class="{ 'disabled': orderFullPageCtrl.loading }"
+                ng-click="orderFullPageCtrl.applyOrder(orderFullPageCtrl.order_model, order_model_form)"
+                ng-click-confirm="{{ 'GENERICS.PRODUCT_PENDING_SAVE_CONFIRMATION' | translate }}">
+                <i class="fas fa-save button-icon"></i>
+                {{ 'GENERICS.SAVE' | translate }}
+                <loading-tooltip loading="orderFullPageCtrl.loading" form="order_model_form" use-default-icon="true">
+                </loading-tooltip>
+              </div>
+
+              <div ng-if="orderFullPageCtrl.formulaCalculating || orderFullPageCtrl.externalFormulaCalculating"
+                class="button button-action position-relative pull-right width-110 disabled full-page-loading-tooltip"
+                uib-tooltip="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.WAIT_END_OF_CALCULATION' | translate }}"
+                tooltip-append-to-body="true"
+                tooltip-placement="bottom">
+                {{ 'GENERICS.WAIT' | translate }}
+                <loading-tooltip loading="orderFullPageCtrl.formulaCalculating || orderFullPageCtrl.externalFormulaCalculating" form="edit_quote_form" use-default-icon="true">
+                </loading-tooltip>
+              </div>
+            </div>
+            <a class="open-side-slide button pull-right nowrap" href
+              ng-click="orderFullPageCtrl.api_order.ContactId && orderFullPageCtrl.openDocumentEntityPreview()"
+              ng-class="{ 'button-white-no-border': orderFullPageCtrl.api_order.ContactId, 'button-light-background-border disabled': !orderFullPageCtrl.api_order.ContactId }"
+              ng-if="!orderFullPageCtrl.display_no_templates">
+              <span class="text-action"><i class="fal fa-id-card button-icon"></i></span>
+              {{ 'ORDERS.CONTACT_DATA' | translate }}
+            </a>
+            <div class="dropdown pull-right" ng-if="!orderFullPageCtrl.display_no_templates">
+              <a class="button button-white-no-border dropdown-toggle nowrap" data-toggle="dropdown">
+                <span class="text-action"><i class="fal fa-file-image button-icon"></i></span>
+                {{'QUOTES.CREATE_FULL_PAGE_QUOTE_MODAL.TEMPLATE_NAME' | translate }}:
+                {{orderFullPageCtrl.selected_template.Name}}<i class="fal fa-angle-down dropdown-sign"></i>
+              </a>
+              <ul class="dropdown-menu white-dropdown-menu pull-right field-pick">
+                <li ng-repeat="model in orderFullPageCtrl.order_templates track by model.Id"
+                  ng-click="orderFullPageCtrl.changeTemplate(model)"
+                  ng-show="model.Id !== orderFullPageCtrl.selected_template.Id && orderFullPageCtrl.order_templates.length > 1">
+                  <a class="white-dropdown-link" href>{{model.Name}}</a>
+                </li>
+                <li ng-show="orderFullPageCtrl.order_templates.length === 1">
+                  <a class="white-dropdown-link" href>{{ 'ORDERS.ONLY_ONE_ORDER_MODEL' | translate }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </header>
+  <idle-cover
+    start-idle="orderFullPageCtrl.can_load && orderFullPageCtrl.initial_load && !orderFullPageCtrl.show_document_template_list && !orderFullPageCtrl.display_no_templates">
+  </idle-cover>
+  <no-templates ng-if="orderFullPageCtrl.display_no_templates" entity-id="4"></no-templates>
+  <section class="scrollable">
+    <standard-loader margin-top="10" loading="!orderFullPageCtrl.can_load || !orderFullPageCtrl.initial_load">
+    </standard-loader>
+    <div class="top-wrapper">
+      <forms
+        ng-if="orderFullPageCtrl.can_load && orderFullPageCtrl.initial_load && !orderFullPageCtrl.show_document_template_list && !orderFullPageCtrl.display_no_templates"
+        model="orderFullPageCtrl.order_model" editing-model="orderFullPageCtrl.editing"
+        fields="orderFullPageCtrl.selected_form" form="order_model_form"
+        document-template-format="orderFullPageCtrl.selected_template.NewFormat" is-modal-full-screen="true"
+        use-new-product-section="true" template-load="orderFullPageCtrl.template_load">
+      </forms>
+
+      <div class="width-700 margin-auto" ng-if="orderFullPageCtrl.show_document_template_list">
+        <document-template-select entity-id="4" document-templates="orderFullPageCtrl.order_templates"
+          select-document-template-callback-fn="orderFullPageCtrl.selectDocumentTemplateCallback(template)">
+        </document-template-select>
+      </div>
+    </div>
+    <div class="gap-90" ng-if="!orderFullPageCtrl.show_document_template_list"></div>
+    <div class="gap-90" ng-if="!orderFullPageCtrl.show_document_template_list"></div>
+    <div class="gap-90"></div>
+  </section>
+</div>
+<document-entity-preview>
+  <contact-entity-preview fields="orderFullPageCtrl.selected_form" contact-id="orderFullPageCtrl.api_order.ContactId"></contact-entity-preview>
+</document-entity-preview>

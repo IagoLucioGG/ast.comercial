@@ -1,0 +1,69 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - text: Módulos do sistema
+    - strong:
+      - img
+      - text: Ploomes Básico O essencial para empresas que buscam organização comercial ou processos mais eficientes.
+    - button "undefined-collapse"
+    - button
+    - text: Clientes Centralização e gestão de clientes, contatos e seus históricos. Habilitado
+    - button
+    - text: Contato Venda Gestão de oportunidades, funil de vendas e demais processos. Habilitado
+    - button
+    - text: Produtos Cadastro de soluções, produtos e serviços que serão comercializados. Habilitado
+    - button
+    - text: E-mail Integração da caixa de e-mails. Habilitado
+    - button
+    - text: Tarefas Gestão de agenda e tarefas em calendários integrados. Habilitado Módulos adicionais Empodere seu plano com a adição de módulos. Você pagará apenas por aquilo que de fato é relevante para sua empresa.
+    - button
+    - text: Workflow Automação e obrigatoriedades para maior eficiência de processos. Habilitado
+    - button
+    - text: Propostas e Documentos Geração de propostas, contratos, pedidos, OS e demais documentos. Habilitado
+    - button
+    - text: Formulários Externos Formulários web personalizados para a coleta de leads e demais dados. Habilitado
+    - button
+    - text: Configure, Price, Quote (CPQ) Cálculos avançados para precificação e opcionais de produto. Habilitado
+    - button
+    - text: Analytics Dashboards personalizados para gestão à vista em tempo real. Habilitado
+    - button
+    - text: Produtos do cliente Vínculo de contratos, ativos ou produtos a clientes para melhor gestão de carteira. Habilitado
+    - button
+    - text: Biblioteca Facilite o acesso a documentos importantes para seus colaboradores organizando os arquivos em pastas e vinculando a clientes.
+    - button "Ver detalhes"
+    - button
+    - text: White Label Alteração da identidade visual do sistema web. Habilitado
+    - button
+    - text: Acesso à API Acesso à API rest do Ploomes para integrações. Habilitado
+    - button
+    - text: Radar Ploomes Transcrição inteligente com IA para capturar conversas, gerar resumos e alimentar o CRM automaticamente, tanto no app quanto no web.
+    - button "Ver detalhes"
+    - button
+    - text: Gestão de Dados Controle de duplicidade de cadastros.
+    - button "Ver detalhes"

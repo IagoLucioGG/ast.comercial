@@ -1,0 +1,306 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - button "botão de mudar funil": Tabela com todos os Contatos de Vendas
+      - textbox "Pesquise título ou pelo nome do cliente"
+      - text: 
+      - link "Dropdown de 'Ações de filtros'" [expanded]:
+        - /url: ""
+        - text:  Filtros 
+      - text:  Menu
+      - button "botão de criar novo Contato de Venda": Novo Contato de Venda
+      - complementary:
+        - complementary: Abas
+        - complementary: Nova aba
+        - 'button "botão para selecionar aba: filter"':
+          - complementary: filter
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: filter"':
+          - complementary: filter
+          - complementary: 
+        - 'button "botão para selecionar aba: filter"':
+          - complementary: filter
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+        - 'button "botão para selecionar aba: table"':
+          - complementary: table
+          - complementary: 
+      - complementary: 
+      - complementary:
+        - table:
+          - rowgroup:
+            - row "":
+              - columnheader:
+                - complementary: Consultor
+                - complementary
+              - columnheader:
+                - complementary: Data de Próximo Contato
+                - complementary
+              - columnheader:
+                - complementary: Nome do Cliente
+                - complementary
+              - columnheader:
+                - complementary: Usuário de Próximo Contato
+                - complementary
+              - columnheader:
+                - complementary: Meio de contato
+                - complementary
+              - columnheader ""
+          - rowgroup
+          - rowgroup:
+            - 'link "linha da tabela selecionável do item: 700155968"':
+              - cell ""
+              - cell "01/06/2026 "
+              - cell ""
+              - cell "HORTENSIA.RECIFE "
+              - cell "ATIVO - PROSPECÇÃO - WHATSAPP "
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8169767"':
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "TESTE STAFF NÃO UTILIZAR "
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8219527"':
+              - cell ""
+              - cell "07/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8219759"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8220338"':
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8220346"':
+              - cell ""
+              - cell "07/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8221907"':
+              - cell ""
+              - cell "29/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8222924"':
+              - cell ""
+              - cell "09/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8223921"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8224616"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8225172"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8225366"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8225858"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8225886"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+            - 'link "linha da tabela selecionável do item: 8225961"':
+              - cell ""
+              - cell "08/03/2022 "
+              - cell ""
+              - cell ""
+              - cell ""
+              - cell "ícone de tarefa do card":
+                - link "ícone de tarefa do card":
+                  - /url: ""
+                  - text: 
+        - text: Mostrando 1 - 15 de 241384
+        - menu:
+          - menuitem "Primeira":
+            - link "Primeira":
+              - /url: ""
+          - menuitem "Anterior":
+            - link "Anterior":
+              - /url: ""
+          - menuitem "1":
+            - link "1":
+              - /url: ""
+          - menuitem "2":
+            - link "2":
+              - /url: ""
+          - menuitem "3":
+            - link "3":
+              - /url: ""
+          - menuitem "4":
+            - link "4":
+              - /url: ""
+          - menuitem "5":
+            - link "5":
+              - /url: ""
+          - menuitem "...":
+            - link "...":
+              - /url: ""
+          - menuitem "Próxima":
+            - link "Próxima":
+              - /url: ""
+          - menuitem "Última":
+            - link "Última":
+              - /url: ""

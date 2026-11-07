@@ -1,0 +1,208 @@
+<div ng-if="!$ctrl.newLayout && $ctrl.checklist && $ctrl.checklist.Fields && $ctrl.checklist.Fields.length > 0">
+  <div class="contact-page-person-list mtop30" ng-if="$ctrl.can_load">
+    <div>
+      <div class="short-side-bottom-wrapper regular-background">
+        <div class="font-big text-break-word">
+          {{ $ctrl.checklist.Name || 'Checklist' }}
+        </div>
+        <div class="gap-5"></div>
+        <div class="b-t-1 dark-background">
+          <table class="b-t-1 table table-view borderless checklist-table font-semi-small mtop10 info-display-with-divider">
+            <tbody>
+              <tr ng-repeat="field in $ctrl.checklist.Fields" ng-hide="field.model.front_field.hidden" id="checklist-row-{{ field.Id }}">
+                <td class="width-30 ptop6 padding-right-checklist-fix cell-checklist-icon-require">
+                  <div>
+                    <i class="fas" ng-class="$ctrl.checklistItemIcon(field.require_check)"></i>
+                  </div>
+                </td>
+                <td class="font-bold ptop6">
+                  {{ field.Name }}
+                </td>
+                <td
+                  inline-edit
+                  size="{{ field.model.front_field.useRichTextEditor && $ctrl.rich_text_editor_feature && 'md' }}"
+                  model="field.model.front_model"
+                  properties="[field.model.front_field.key]"
+                  has-dynamic-field="field.model.front_field.dynamic"
+                  patch-api="'Contacts'"
+                  submit-fn="$ctrl.inlineEdit(item, field_key, field)"
+                  non-editable="$ctrl.isFieldNonEditable(field)"
+                  ng-if="!$ctrl.canAddNewDoc(field)"
+                  hide-pencil="!field.model.has_display || field.model.blockAlert"
+                  block-alert="field.model.blockAlert"
+                  not-trigger-formula="true"
+                  class="info-display-divider"
+                >
+                  <!-- Dev field display -->
+                  <display-field-dev
+                    ng-if="field.Field.TypeId === 22"
+                    field="field"
+                    display-model="field.model.front_model[field.model.front_field.key]"
+                  ></display-field-dev>
+                  <!-- value display -->
+                  <display-item
+                    ng-if="field.Field.TypeId !== 22 && field.model.has_display"
+                    display="field.model.front_model[field.model.front_field.key + '_display']"
+                    field="field.model.front_field"
+                    model-id="field.model.front_model.Id"
+                    object-id="field.model.object_id"
+                    display-model="field.model.front_model[field.model.front_field.key]"
+                    model="field.model.front_model"
+                  ></display-item>
+                  <!-- add value display -->
+                  <span
+                    ng-if="$ctrl.canShowAddValuePrompt(field)"
+                    ng-class="{ 'inline-link-neutral': field.model.hasContactData && field.model.hasConflictContactType === null }"
+                    class="font-small collapsed"
+                  >
+                    {{ $ctrl.getChecklistMessage(field) }}.?..
+                  </span>
+                </td>
+                <!-- <td ng-if="!field.model.front_field.inlineEditable && field.model.front_field.key !== 'deal_last_quote'">
+                  <i class="fas" ng-class="{'fa-check': field.model.api_model[field.Field.UpdatePropertyName] && true, 'fa-remove': !field.model.api_model[field.Field.UpdatePropertyName]}"></i>
+                </td> -->
+                <td ng-if="$ctrl.canAddNewDoc(field)" class="info-display-divider">
+                  <div class="data-edit" ng-if="!field.model.api_model[field.Field.UpdatePropertyName]">
+                    <div class="button button-action button-short" ng-click="$ctrl.openNewDocModal(field.model.front_field.key)">
+                      {{ 'GENERICS.ADD' | translate }}
+                    </div>
+                  </div>
+                  <!-- <i ng-if="field.model.api_model[field.Field.UpdatePropertyName] && true" class="fas fa-check"></i> -->
+                </td>
+                <td class="text-right">
+                  <!-- <img ng-repeat="user in field.Users" class="mini-avatar-less-plus m0" ng-src="{{user.User.AvatarUrl}}" uib-tooltip="{{user.User.Name}}" tooltip-append-to-body="true"> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="gap-15"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<collapse
+  show-default="true"
+  ng-if="$ctrl.newLayout && $ctrl.can_load && $ctrl.checklist && $ctrl.checklist.Fields && $ctrl.checklist.Fields.length > 0"
+>
+  <div class="overflow-hidden checklist-block-content-wrapper">
+    <div class="light-background">
+      <div
+        role="button"
+        class="d-flex space-gap-5 text-uppercase light-background b-b-1 rectangular-wrapper checklist-collapsible-title"
+        collapse-controller="{{ '#checklist-collapsible-element' }}"
+        ng-click="$ctrl.onToggleCollapse()"
+      >
+        <div class="text-break-word text-checklist-block-content-title" data-cy="checklist-block-content-title">
+          {{ $ctrl.checklist.Name || 'Checklist' }}
+          <i
+            ng-class="{ out: $ctrl.collapse || $ctrl.checklistFilled, in: !$ctrl.collapse && !$ctrl.checklistFilled }"
+            class="fas fa-exclamation-triangle text-danger warning animation-fade tiny-icon"
+            uib-tooltip="{{ 'PIPELINES.CHECKLIST_HAS_PENDING_ITEMS' | translate }}"
+            tooltip-append-to-body="true"
+          ></i>
+        </div>
+        <span class="pull-right d-flex gap-flex-10 all-in-center-flex">
+          <span
+            class="font-very-big"
+            uib-tooltip-html="$ctrl.tooltipHTML"
+            tooltip-append-to-body="true"
+            tooltip-placement="bottom"
+            ng-if="$ctrl.checklist.FillingInfo"
+          >
+            <i class="fal fa-info-circle"></i>
+          </span>
+          <span class="arrow-icon-collapse arrow-up" ng-class="{ 'arrow-down': !$ctrl.collapse }">
+            <i class="fas fa-caret-up"></i>
+          </span>
+        </span>
+      </div>
+      <div id="checklist-collapsible-element">
+        <div class="rectangular-wrapper">
+          <table class="b-t-1 table table-view borderless font-semi-small checklist-table white-checklist layout-fixed info-display-with-divider">
+            <tbody>
+              <tr
+                ng-repeat="field in $ctrl.checklist.Fields"
+                uib-tooltip="{{ field.CustomTooltip }}"
+                ng-hide="field.model.front_field.hidden"
+                id="checklist-row-{{ field.Id }}"
+              >
+                <td class="width-30 ptop6 padding-right-checklist-fix cell-checklist-icon-require">
+                  <div>
+                    <i class="fas" ng-class="$ctrl.checklistItemIcon(field.require_check)"></i>
+                  </div>
+                </td>
+                <td class="font-bold ptop6 break-words">
+                  {{ field.Name }}
+                </td>
+                <td
+                  inline-edit
+                  size="{{ field.model.front_field.useRichTextEditor && $ctrl.rich_text_editor_feature && 'md' }}"
+                  model="field.model.front_model"
+                  properties="[field.model.front_field.key]"
+                  has-dynamic-field="field.model.front_field.dynamic"
+                  patch-api="'Contacts'"
+                  submit-fn="$ctrl.inlineEdit(item, field_key, field)"
+                  non-editable="$ctrl.isFieldNonEditable(field)"
+                  ng-if="!$ctrl.canAddNewDoc(field)"
+                  hide-pencil="!field.model.has_display || field.model.blockAlert"
+                  block-alert="field.model.blockAlert"
+                  not-trigger-formula="true"
+                  class="info-display-divider"
+                >
+                  <!-- Dev field display -->
+                  <display-field-dev
+                    ng-if="field.Field.TypeId === 22"
+                    field="field"
+                    display-model="field.model.front_model[field.model.front_field.key]"
+                  ></display-field-dev>
+                  <!-- value display -->
+                  <display-item
+                    ng-if="field.Field.TypeId !== 22 && field.model.has_display"
+                    display="field.model.front_model[field.model.front_field.key + '_display']"
+                    display-model="field.model.front_model[field.model.front_field.key]"
+                    field="field.model.front_field"
+                    model-id="field.model.front_model.Id"
+                    object-id="field.model.object_id"
+                    model="field.model.front_model"
+                  ></display-item>
+                  <!-- add value display -->
+
+                  <span
+                    ng-if="$ctrl.canShowAddValuePrompt(field)"
+                    ng-class="{ 'inline-link-neutral': field.model.hasContactData && field.model.hasConflictContactType === null }"
+                    class="font-small collapsed"
+                  >
+                    {{ $ctrl.getChecklistMessage(field) }} ...
+                  </span>
+                </td>
+
+                <!-- <td ng-if="!field.model.front_field.inlineEditable && field.model.front_field.key !== 'deal_last_quote'">
+                <i class="fas" ng-class="{'fa-check': field.model.api_model[field.Field.UpdatePropertyName] && true, 'fa-remove': !field.model.api_model[field.Field.UpdatePropertyName]}"></i>
+              </td> -->
+                <td ng-if="$ctrl.canAddNewDoc(field)" class="info-display-divider">
+                  <div class="data-edit" ng-if="!field.model.api_model[field.Field.UpdatePropertyName]">
+                    <div class="button button-action button-short" ng-click="$ctrl.openNewDocModal(field.model.front_field.key)">
+                      {{ 'GENERICS.ADD' | translate }}
+                    </div>
+                  </div>
+                  <!-- <i ng-if="field.model.api_model[field.Field.UpdatePropertyName] && true" class="fas fa-check"></i> -->
+                </td>
+
+                <!-- <td class="text-right"> -->
+                <!-- <img ng-repeat="user in field.Users" class="mini-avatar-less-plus m0" ng-src="{{user.User.AvatarUrl}}"
+                  uib-tooltip="{{user.User.Name}}" tooltip-append-to-body="true"> -->
+                <!-- </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</collapse>
+
+<div class="mtop30" ng-if="!$ctrl.can_load">
+  <standard-loader margin-top="15" optionalclass="'timeline-loader checklist-loader'" loading="!$ctrl.can_load"></standard-loader>
+</div>

@@ -1,0 +1,19 @@
+<dynamic-modal modal-id="{{::modalId}}" wide="true" footer="false" dark="true" modal-title="Configurar colunas da tabela" right-legend="$ctrl.rightLegend" right-legend-custom-classes="$ctrl.rightLegendCustomClasses" right-legend-tooltip="$ctrl.rightLegendTooltip" show-right-legend-tooltip="$ctrl.showRightLegendTooltip" block-back-state="true" toggle-modal="$ctrl.toggleModal" cypress-prefix="dynamic-table-config-modal">
+    <modal-content>
+      <div class="vbox scroll-shadow neutral-shadow">
+          <section class="scrollable scroll-shadow-container">
+            <dynamic-table-column-selection
+              ng-if="$ctrl.toggleModal"
+              entity="$ctrl.entity"
+              column-list="$ctrl.currentTab.column_list"
+              use-featured="true"
+              add-column-fn="$ctrl.addColumn(column)"
+              remove-column-fn="$ctrl.removeColumn(column, index)"
+              column-reorder-fn="$ctrl.columnReorder()"
+              max-num-of-columns="$ctrl.columnLimit"
+            >
+            </dynamic-table-column-selection>
+          </section>
+        </div>
+    </modal-content>
+</dynamic-modal>

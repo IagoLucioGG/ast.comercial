@@ -1,0 +1,25 @@
+<div class="deal-or-contact-domain stretch">
+  <div class="vbox" ng-if="!mainContactCtrl.not_found">
+    <contact-page-header ng-if="mainContactCtrl.initial_load"></contact-page-header>
+    <section class="scrollable" ng-if="mainContactCtrl.initial_load">
+      <div class="hbox stretch">
+        <aside>
+          <div class="top-side-wrapper dark-background">
+            <page-static-forms model="mainContactCtrl.contact_view" entity-type="Contact"></page-static-forms>
+            <page-timeline model="mainContactCtrl.contact_view" entity-type="Contact" toggle-filter-modal="$parent.mainContactCtrl.toggle_filter_modal"></page-timeline>
+          </div>
+        </aside>
+        <contact-page-right-sidebar contact-id="mainContactCtrl.state.params.contactid" contact-type-id="mainContactCtrl.contact_view.TypeId" contact-model="mainContactCtrl.contact_view"></contact-page-right-sidebar>
+      </div>
+    </section>
+    <standard-loader margin-top="'15'" optionalclass="'funnel-loader'" loading="!mainContactCtrl.initial_load"></standard-loader>
+  </div>
+  <div class="vbox" ng-if="mainContactCtrl.not_found">
+    <section class="scrollable">
+      <div class="hbox stretch">
+        <page-not-found></page-not-found>
+      </div>
+    </section>
+  </div>
+  <page-timeline-filter ng-if="mainContactCtrl.toggle_filter_modal" toggle-modal="mainContactCtrl.toggle_filter_modal"></page-timeline-filter>
+</div>

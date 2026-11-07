@@ -1,0 +1,21 @@
+<span ng-show="disabled">
+  <input ng-disabled="disabled" class="form-control input-sm" />
+</span>
+<span ng-show="!disabled">
+  <div class="input-group full-width">
+      <div class="input-group-btn">
+          <button class="btn button button-white dropdown-toggle full-width" data-toggle="dropdown" aria-haspopup="true" aria-expanded="more_options">
+              {{relativeDateCtrl.current_relative_date.Name}}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+          </button>
+          <ul class="dropdown-menu pull-right white-dropdown-menu" aria-labelledby="more_options">
+              <li ng-repeat="relative_date in relativeDateCtrl.relative_dates">
+                  <a href class="white-dropdown-link" ng-click="relativeDateCtrl.updateModel(relativeDateCtrl.relative_date_length, relative_date)" data-cy="{{'select-relative-date-item-' + relative_date.Identifier }}">
+                      {{relative_date.Name}}
+                  </a>
+              </li>
+          </ul>
+      </div>
+    </div>
+    <input type="number" class="form-control input-sm input-group-border-fix" ng-model="relativeDateCtrl.relative_date_length" ng-show="relativeDateCtrl.current_relative_date.Countable" ng-change="relativeDateCtrl.updateModel(relativeDateCtrl.relative_date_length, relativeDateCtrl.current_relative_date)">
+</span>

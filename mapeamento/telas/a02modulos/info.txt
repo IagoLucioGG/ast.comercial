@@ -1,0 +1,7 @@
+passo: a02modulos
+url: https://app10.ploomes.com/system-modules
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

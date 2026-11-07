@@ -1,0 +1,122 @@
+<dynamic-modal helper-key="'APPROVAL_FLOWS'" 
+  modal-id="users" footer="false" 
+  wider="true" 
+  dark="true" 
+  modal-title="Fluxos de aprovação" 
+  toggle-modal="$ctrl.toggle_modal"
+  feature-key="business_rules_modal"
+  cypress-prefix="administration-business-rules-modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll small-header">
+          <header class="regular-header new-header b-b-1">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <div class="simple-inline width-200 v-bottom">
+                  <div class="input-group">
+                    <input class="form-control input-sm light-background" placeholder="Buscar fluxo" ng-model="$ctrl.quick_search" ng-model-options="{debounce:300}" ng-change="$ctrl.handleQuickSearch()">
+                    <div class="input-group-btn">
+                      <a class="btn button button-neutral-gray special-search-button" ng-click="$ctrl.handleQuickSearch()">
+                        <i class="fas fa-search text-neutral"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+              <aside class="v-middle">
+                <a class="button button-action pull-right" ng-click="$ctrl.newBusinessRuleSlide()" data-cy="administration-business-rules-new-business-rule-button">
+                  <i class="button-icon fas fa-badge-check"></i>
+                  Novo fluxo de aprovação
+                </a>
+              </aside>
+            </div>
+          </header>
+          <section class="scrollable" infinite-scroll="$ctrl.getBusinessRules()" infinite-scroll-disabled="$ctrl.loading || $ctrl.reached_end" infinite-scroll-distance="-2">
+            <ul class="nav nav-tabs b-b-1 gray-border-tabs arrange-mid">
+              <li ng-repeat="entity in $ctrl.entities" ng-class="{ 'active': $ctrl.selected_entity.Id === entity.Id }" ng-click="$ctrl.selectEntity(entity)">
+                <a class="text-muted" href>
+                  {{entity.name}}
+                </a>
+              </li>
+            </ul>
+            <ul class="fake-ul" ui-sortable="$ctrl.options" ng-model="$ctrl.business_rules">
+              <li class="button button-full-width button-white-no-border-semi-light-hover text-left drag-button button-square no-border button-very-big" ng-repeat="business_rule in $ctrl.business_rules" data-cy="business-rule-{{business_rule.Id}}">
+                  <div class="hbox font-regular-weight overflow-wrap">
+                    <aside class="v-middle width-20">
+                      <div class="token-drag-indicator muted-token"></div>
+                    </aside>
+                    <aside class="v-middle" ng-click="$ctrl.editBusinessRuleSlide(business_rule)">
+                      <span class="font-regular-weight font-regular-size">{{business_rule.Name}}</span>
+                    </aside>
+                    <aside class="width-40 position-relative">
+                      <a class="options-column-button" id="more_options" href="" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="hbox stretch">
+                          <aside class="v-middle">
+                            <i class="fal fa-cog table-options-simple-line"></i>
+                          </aside>
+                        </div>
+                      </a>
+                      <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+                        <li>
+                          <a class="white-dropdown-link" href ng-click="$ctrl.duplicateBusinessRule(business_rule)">
+                            <div class="hbox">
+                              <aside class="width-35 text-center v-middle">
+                                <i class="simple-line-big fal fa-clone"></i>
+                              </aside>
+                              <aside class="v-middle">Duplicar</aside>
+                            </div>
+                          </a>
+                          <a class="white-dropdown-link" href ng-click-confirm="excluir esse fluxo de aprovação?" reversible="false" ng-click="$ctrl.deleteBusinessRule(business_rule)">
+                            <div class="hbox">
+                              <aside class="width-35 text-center v-middle">
+                                <i class="simple-line-big fal fa-trash"></i>
+                              </aside>
+                              <aside class="v-middle">Excluir</aside>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </aside>
+                  </div>
+              </li>
+              <li ng-if="$ctrl.business_rules.length > 0 && $ctrl.can_load">
+                <div class="gap-30"></div>
+                <div class="text-muted text-center page-not-found font-big-title">
+                  <i class="fal fa-arrow-circle-down font-giant-title"></i>
+                </div>
+                <div class="gap-15"></div>
+                <div class="text-muted text-center page-not-found font-big side-wrapper">
+                  Os fluxos são verificados de forma ordenada do primeiro ao último item. Caso dois fluxos sejam disparados, o fluxo de aprovação disparado será o da primeira ocorrência verificada.
+                </div>
+                <div class="gap-30"></div>
+              </li>
+              <li ng-if="$ctrl.business_rules.length === 0 && $ctrl.can_load" data-cy="no-business-rule-found">
+                <div class="gap-50"></div>
+                <span class=" text-muted"></span>
+                <div class="text-muted text-center page-not-found font-big-title">
+                  <div class="gap-50"></div>
+                  <i class="fal fa-badge-check font-giant-title"></i>
+                  <div class="gap-30"></div>
+                  {{ 'ADMINISTRATION.BUSINESS_RULES.NO_RULE_FOUND' | translate_with_replace: { name: $ctrl.selected_entity.name.toLowerCase() } }}
+                </div>
+              </li>
+            </ul>
+            
+            <standard-loader margin-top="15" loading="!$ctrl.can_load"></standard-loader>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="business_rules_slide" modal-side-slide-title="Fluxo de aprovação" side-slide-wider="true" cypress-prefix="administration-business-rules-new-business-rule">
+    <business-rules-adm-slide-content 
+      model="$ctrl.model"
+      editing="$ctrl.editing"
+      entity="$ctrl.selected_entity"
+      last-ordination-value="$ctrl.highestOrdinationValue">
+    </business-rules-adm-slide-content>
+  </modal-side-slide>
+</dynamic-modal>

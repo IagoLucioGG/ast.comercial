@@ -1,0 +1,119 @@
+<standard-loader margin-top="15" loading="taskListCtrl.initial_load"></standard-loader>
+<table ng-hide="taskListCtrl.initial_load" class="table table-static table-draggable-no-headers table-reorder table-hover white-table last-wrap" infinite-scroll='taskListCtrl.loadMoreTasks()' infinite-scroll-disabled="taskListCtrl.initial_load || !taskListCtrl.can_load || taskListCtrl.reached_end">
+  <thead>
+    <tr class="b-t-1">
+      <th class="cancel-reorder"></th>
+      <th class="width-10 cancel-reorder"></th>
+      <th class="big-cell cancel-reorder">
+        Detalhes
+      </th>
+      <th class="small-cell cancel-reorder">
+        Cliente
+      </th>
+      <th class="small-cell cancel-reorder">
+        (name:deal::s)
+      </th>
+      <th class="small-cell cancel-reorder">
+        Horário
+      </th>
+      <th class="small-cell cancel-reorder">
+        Usuários
+      </th>
+      <th class="small-cell cancel-reorder">
+        Marcadores
+      </th>
+    </tr>
+  </thead>
+  <tr ng-if="taskListCtrl.list_view.length === 0" class="neutral-line">
+    <td colspan="9" class="text-center empty-results">
+      <span class=" text-neutral">Nenhuma tarefa encontrada</span>
+    </td>
+  </tr>
+  <tbody ng-repeat="view in taskListCtrl.list_view track by $index" style="border-top: 0px">
+    <tr class="neutral-line">
+      <td colspan="8">
+        <span class="new-item" ng-show="view.divider === 'late-task-divider'"></span>
+        <span class="text-neutral">
+          {{view.show_date}}
+        </span>
+      </td>
+    </tr>
+    <tr ng-repeat="task in view.tasks track by $index" ui-sref="{{'tasks.'+taskListCtrl.state.current.name.split('.')[1]+'.task({id: task.Id})'}}">
+      <td>
+        <div 
+          class="round-checkbox pull-right" 
+          ng-if="task.task_editable" 
+          ng-click="taskListCtrl.toggleFinishTask(task); $event.stopPropagation()"
+          ng-class="{'finish-task disabled': taskListCtrl.invalidFinisherOwner(task)}" 
+          uib-tooltip="{{ taskListCtrl.tooltipFinishMessage(task) }}" 
+          tooltip-append-to-body="true"
+        >
+          <div ng-if="!task.loadingIcon" ng-class="task.task_finished ? 'b-2 file-checked': 'b-2'">
+            <i class="fas fa-check activity-icon"></i>
+          </div>
+          <div class="loader modal-loader task-list-loader" style="width: 27px; height: 27px; margin: 0" ng-if="task.loadingIcon"></div>
+        </div>
+      </td>
+      <td>
+        <div class="badge font-bold" ng-style="{ 'background-color': task.task_type.Color }" style="color: white">{{task.task_type.Name}}</span>
+      </td>
+      <td>
+        <div class="max-width-300 overflow-hidden">
+            <span inline-edit model="task" properties="['task_title', 'task_description']" patch-api="Tasks" submit-fn="taskListCtrl.inlineTaskEdit(item)" non-editable="!task.Editable || taskListCtrl.invalidFinisherOwner(task)">
+              <span class="font-bold pre-wrap">
+                {{task.task_title ? task.task_title : task.task_type.Name}}
+              </span>
+              <span class="pre-wrap" ng-show="task.task_description.length > 0">
+                <div class="gap-3"></div>
+                {{task.task_description}}
+              </span>
+            </span>
+        </div>
+      </td>
+      <td>
+        <div class="ellipsis nowrap max-width-150">
+            {{task.task_contact_display}}
+        </div>
+      </td>
+      <td>
+        <div class="ellipsis nowrap max-width-150">
+            {{task.task_deal_display}}
+        </div>
+      </td>
+      <td>
+        <span inline-edit model="task" properties="['task_time']" patch-api="Tasks" submit-fn="taskListCtrl.inlineTaskEdit(item)" non-editable="!task.Editable || taskListCtrl.invalidFinisherOwner(task)">
+          <div class="light-badge b-1" ng-show="taskListCtrl.hourFormat(task.task_time) !== '--'">
+            <div class="text-darkest-neutral"><i class="fad fa-clock"></i> {{taskListCtrl.hourFormat(task.task_time)}}</div>
+          </div>
+          <span ng-show="taskListCtrl.hourFormat(task.task_time) === '--' && task.Editable" class="text-neutral">Adicionar</span>
+        </span>
+      </td>
+      <td>
+        <div inline-edit model="task" properties="['task_users']" patch-api="Tasks" submit-fn="taskListCtrl.inlineTaskEdit(item)" non-editable="!task.Editable || taskListCtrl.invalidFinisherOwner(task)">
+          <a ng-repeat="user in task.task_users" href class="light-badge neutral-content badge-border">
+            <div class="text-darkest-neutral font-bold table-cell-align-top">
+              <img ng-if="user.AvatarUrl" ng-src="{{user.User.AvatarUrl || user.AvatarUrl }}" class="avatar-timeline"><i ng-if="!user.AvatarUrl" class="fad fa-user"></i>
+              <span class="align-middle">{{user.User.Name || user.Name}}</span>
+            </div>
+          </a>
+        </div>
+      </td>
+      <td>
+        <div inline-edit model="task" properties="['task_tags']" patch-api="Tasks" submit-fn="taskListCtrl.inlineTaskEdit(item)" non-editable="!task.Editable || taskListCtrl.invalidFinisherOwner(task)">
+          <a ng-repeat="tag in task.task_tags" href class="light-badge neutral-content badge-border">
+            <div class="text-darkest-neutral font-bold table-cell-align-top">
+              <i class="fad fa-tag" ng-style="{'color': tag.Color}"></i>
+              <span class="align-middle">{{tag.Tag.Name ||tag.Name}}</span>
+            </div>
+          </a>
+          <span ng-show="task.task_tags.length === 0 && task.Editable" class="text-neutral">Adicionar</span>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tr ng-if="taskListCtrl.skip > 15 && !taskListCtrl.can_load" class="neutral-line tr-loader">
+    <td colspan="8" class="text-center empty-results">
+      <standard-loader margin-top="0" loading="!taskListCtrl.can_load" optionalclass="table-loader"></standard-loader>
+    </td>
+  </tr>
+</table>

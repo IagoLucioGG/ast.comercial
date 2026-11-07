@@ -1,0 +1,40 @@
+<div class="wrapper">
+  <div class="tab-content scrollable">
+    <div class="tab-pane active" id="call-status">
+      <div class="height-500 ongoing-call text-center">
+        <div class="font-semi-big">
+          Ligação finalizada com {{contact ? contact.Name : ''}}
+          <div class="gap-10"></div>
+          <div class="font-bold font-big">{{phoneNumber}}</div>
+        </div>
+        <div class="gap-20"></div>
+        <div class="hbox">
+          <aside class="v-middle text-center">
+            <div class="height-40 display-inline-block phone-wrap text-center">
+              <div class="font-big regular-background mini-wrapper rounded-regular b-1 text-darkest-neutral">
+                <i class="fad fa-clock"> </i> {{formattedTimer}}
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="gap-20"></div>
+        <div class="vbox height-42-vh side-wrapper">
+          <section class="scrollable">
+            <div ng-form name="call_interaction_record_form" class="phone-calls-form">
+              <forms model="interactionRecordModel" fields="interactionRecordFields" form="call_interaction_record_form"></forms>
+            </div>
+          </section>
+        </div>
+        <div class="gap-20"></div>
+        <div class="button button-action full-width position-relative" ng-class="{ 'disabled': interactionRecordLoading }" ng-click="registerContactFn(call_interaction_record_form)">
+          Novo registro de interação
+          <div class="loader modal-loader signer-loader" ng-if="interactionRecordLoading"></div>
+        </div>
+        <div class="gap-20"></div>
+        <div class="button button-neutral full-width position-relative" ng-class="{ 'disabled': interactionRecordLoading }" ng-click="newCallFn()">
+          Nova ligação
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

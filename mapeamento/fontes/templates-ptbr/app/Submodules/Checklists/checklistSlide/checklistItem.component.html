@@ -1,0 +1,99 @@
+<div class="hbox">
+  <aside class="v-middle">
+    <label class="font-bold font-semi-big">
+      Descrição do item
+    </label>
+    <span class="align-limited-characters">
+      <span class="text-muted font-small">
+        {{($ctrl.item.Name.length || '0') + '/' + $ctrl.name_max_length}}  
+      </span>
+    </span>
+    <input maxlength="{{ $ctrl.name_max_length }}" class="form-control input-sm" placeholder="Descreva como o usuário deve preencher este item." ng-model="$ctrl.item.Name">
+  </aside>
+</div>
+<div class="gap-10"></div>
+<div class="hbox">
+  <aside class="v-middle">
+    <label class="font-bold font-semi-big">
+      Campo a ser preenchido neste item do checklist
+    </label>
+    <checklist-select-or-create-field
+      is-checklist="true"
+      field-label="$ctrl.item.FieldLabel"
+      allowed-entities="$ctrl.allowed_entities"
+      select-field-fn="$ctrl.selectField"
+      filter-field-fn="$ctrl.filterField"
+      inserted-fields="$ctrl.insertedFields">
+    </checklist-select-or-create-field>
+  </aside>
+</div>
+<div class="gap-10"></div>
+<div class="hbox" ng-if="$ctrl.item.Field.typeId !== 22">
+  <aside class="v-middle">
+    <label class="font-bold font-semi-big">Adicionar condição para avanço?</label>
+    <div class="switch">
+      <input class="cmn-toggle cmn-toggle-round-flat" id="{{'checklist-toggle-' + $ctrl.itemIndex}}" type="checkbox"
+        ng-model="$ctrl.item.Required">
+      <label for="{{'checklist-toggle-' + $ctrl.itemIndex}}"></label>
+    </div>
+  </aside>
+</div>
+<span ng-if="$ctrl.item.Required">
+  <div class="gap-10"></div>
+  <div class="hbox">
+    <aside class="v-middle">
+      <label class="font-bold font-semi-big">
+        Qual valor deve ser preenchido para que o checklist seja válido?
+      </label>
+      <span ng-repeat="condition in $ctrl.item.Conditions">
+        <div class="hbox">
+          <aside class="width-30-percent">
+            <select
+              ng-options="operation.Operation.Name for operation in $ctrl.item.Field.operations track by operation.Operation.Id"
+              class="form-control input-sm" ng-model="condition.Operation" ng-disabled="!$ctrl.item.Field" required ng-class="{'form-submitted': $ctrl.form.$submitted || $ctrl.submitted}">
+            </select>
+          </aside>
+          <aside>
+            <div class="f-1 pl-5 pt-3" ng-if="$ctrl.item.Field.typeId === 10 && $ctrl.item.Field.useCheckboxBox" ng-form name="checklist_item_field_form">
+              <new-field form="checklist_item_field_form" ng-if="condition.Operation && !($ctrl.item.Field.typeId === 7 && $ctrl.item.Field.key === 'contact_phones')" field="$ctrl.item.Field" model="condition.FieldModel"
+                property="$ctrl.item.Field.key" required="false" disabled="false" wide="false" outside-form="true"
+                hide-label="true" force-hide-label="true" not-suggest-new-item="true" not-trigger-formula="true" ignore-default-values="true"></new-field>
+            </div>
+            <div ng-if="$ctrl.item.Field.typeId !== 10 || !$ctrl.item.Field.useCheckboxBox" ng-form name="checklist_item_field_form">
+              <new-field form="checklist_item_field_form" ng-if="condition.Operation && !($ctrl.item.Field.typeId === 7 && $ctrl.item.Field.key === 'contact_phones')" field="$ctrl.item.Field" model="condition.FieldModel"
+                property="$ctrl.item.Field.key" required="false" disabled="$ctrl.item.Field.typeId === 19" wide="false" outside-form="true"
+                hide-label="true" not-suggest-new-item="true" not-trigger-formula="true" ignore-default-values="true"></new-field>
+              <new-multi-field ng-if="condition.Operation && $ctrl.item.Field.typeId === 7 && $ctrl.item.Field.key === 'contact_phones'" class="remove-icon-multi-field" property="$ctrl.item.Field.key" field="$ctrl.item.Field" model="condition.FieldModel" disabled="true"></new-multi-field>
+            </div>
+            <span ng-if="!condition.Operation">
+              <input disabled="true" class="form-control input-sm" />
+            </span>
+          </aside>
+          <aside class="width-30" ng-if="$ctrl.item.Conditions.length > 1">
+            <div class="button button-white b-1 height-30" uib-tooltip="Remover condição" tooltip-append-to-body="true" ng-click="$ctrl.removeCondition($index)">
+              <i class="fal fa-trash font-very-small"></i>
+            </div>
+          </aside>
+        </div>
+        <div class="text-center" ng-if="$ctrl.item.Conditions.length > 0 && !$last">
+          <h2 class="text-muted font-thin">OU</h2>
+        </div>
+      </span>
+    </aside>
+  </div>
+  <div class="text-center wrapper">
+    <a class="button button-white" href ng-click="$ctrl.addCondition()">
+      <span class="text-action"><i class="fal fa-arrow-up-right-and-arrow-down-left-from-center button-icon"></i></span>
+      Ampliar condição
+    </a>
+  </div>
+</span>
+<!-- <div class="gap-10"></div>
+<div class="hbox">
+  <aside class="v-middle">
+    <label class="font-bold font-semi-big">
+      Quais usuários serão responsáveis por esse checklist?
+    </label>
+    <new-field field="$ctrl.users_field" model="$ctrl.item" property="'Users'" wide="true" hide-label="true"></new-field>
+  </aside>
+</div> -->

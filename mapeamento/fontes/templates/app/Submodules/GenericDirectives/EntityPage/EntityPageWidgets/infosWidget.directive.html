@@ -1,0 +1,231 @@
+<div class="info-table-options" data-cy="info-table-options">
+  <div ng-if="::(!newLayout)">
+    <div ng-repeat="sub_form in infosWidgetCtrl.forms track by $index" ng-hide="infosWidgetCtrl.sections[$index].hidden">
+      <collapse show-default="infosWidgetCtrl.sectionsCollapse ? !infosWidgetCtrl.sectionsCollapse[$index] : true">
+        <div class="flex-section-header text-uppercase light-background b-b-1 rectangular-wrapper pointer info-widget-collapse-header" collapse-controller="#collapsible-element" ng-click="infosWidgetCtrl.toggleShowIcon($index, $event)">
+          <i ng-if="replaceSectionTitle && replaceSectionTitleIcon" class="fal simple-line-space-small" ng-class="replaceSectionTitleIcon"></i>
+          <div  
+            ng-if="replaceSectionTitle && replaceSectionTitleLink"
+            id="inline-link-wrapper" 
+            uib-tooltip="{{replaceSectionTitle}}" 
+            tooltip-append-to-body="true" 
+            tooltip-enable="infosWidgetCtrl.isTooltipEnabled('inline-link-wrapper')">
+            <a class="inline-link" ui-sref="{{replaceSectionTitleLink}}">{{replaceSectionTitle}}</a>
+          </div>
+          <span class="text-break-word" ng-if="!replaceSectionTitleLink">{{replaceSectionTitle || infosWidgetCtrl.sections[$index].name || ('GENERIC_DIRECTIVES.ENTITY_PAGE.DEFAULT_SECTION_NAME' | translate)}}</span>
+          <span class="pull-right d-flex gap-flex-10">
+            <a class="animation-fade is-clicked-area d-block" role="button" ng-class="{'out': infosWidgetCtrl.isCollapsed[$index], 'in': !infosWidgetCtrl.isCollapsed[$index]}"  ng-click="infosWidgetCtrl.open_collapse[$index] = !infosWidgetCtrl.open_collapse[$index]" ng-if="infosWidgetCtrl.model_fields_not_filled[$index].length > 0 && model.Editable" data-cy="infos-collapse-icon">
+              <i class="fal font-super-super-small clickable-icon small-clickable-icon" ng-class="{'fa-layer-plus': !infosWidgetCtrl.open_collapse[$index], 'fa-layer-minus': infosWidgetCtrl.open_collapse[$index]}"></i>
+            </a>
+            <span class="arrow-icon-collapse arrow-up" ng-class="{'arrow-down': infosWidgetCtrl.isCollapsed[$index] }">
+              <i class="fas fa-caret-up"></i>
+            </span>
+          </span>
+        </div>
+        <div id="collapsible-element">
+          <div class="rectangular-wrapper light-background" ng-class="customBackgroundClass || 'white-content'">
+            <div class="gap-5"></div>
+            <a href ng-if="infosWidgetCtrl.model_fields_not_filled[$index].length === sub_form.length && !infosWidgetCtrl.open_collapse[$index]" class="contact-card panel no-quote" ng-click="infosWidgetCtrl.open_collapse[$index] = true">
+              <div class="font-semi-big">
+                {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.NO_FIELD_FILLED' | translate}}
+              </div>
+            </a>
+            <table class="b-t-1 table table-view borderless info-table font-semi-small info-display-with-divider light-info-table infos-widget-table">
+              <tbody>
+                <tr ng-repeat="field in sub_form track by field.key" uib-tooltip="{{ field.CustomTooltip }}" ng-if="infosWidgetCtrl.checkFieldFillness(field, infosWidgetCtrl.model_infos[field.key]) && !field.hidden">
+                  <td class="text-darkest-neutral ptop8">
+                    <aside class="fields-integration-icon-wrapper">
+                      <span
+                        id="info-widget-field-{{field.label}}"
+                        class="d-block text-ellipsis"
+                        uib-tooltip="{{field.label}}" 
+                        tooltip-append-to-body="true" 
+                        tooltip-enable="infosWidgetCtrl.isTooltipEnabled('info-widget-field-{{field.label}}')"
+                      >
+                        {{field.label}}
+                      </span>
+                      <div
+                        class="d-flex"
+                        ng-if="infosWidgetCtrl.canShowIntegrationIcon"
+                        ng-repeat="integrationField in infosWidgetCtrl.fieldIntegrationsLib.filterByFieldKey(field.key)"
+                        uib-tooltip="{{ 'GENERICS.INTEGRATED_FIELD' | translate_with_replace: { integration_name: integrationField.IntegrationName } }}"
+                        tooltip-append-to-body="true"
+                      >
+                        <img ng-src="{{integrationField.IntegrationIconUrl}}" alt="{{integrationField.IntegrationName}}" height="10" class="v-unset">
+                      </div>
+                    </aside>
+                  </td>
+                  <td inline-edit
+                      size="{{field.useRichTextEditor && infosWidgetCtrl.rich_text_editor_feature && 'md'}}"
+                      model="infosWidgetCtrl.model_infos"
+                      properties="[field.key]"
+                      validation-by-dependency="field.validationByDependency"
+                      has-dynamic-field="field.dynamic"
+                      patch-api="'Contacts'"
+                      submit-fn="infosWidgetCtrl.inlineEdit(item, field_key)"
+                      non-editable="!field.inlineEditable || !model.Editable || !infosWidgetCtrl.customNonEditable(field) || infosWidgetCtrl.validMicrosoftBlockedField(field.key)"
+                      not-trigger-formula="true"
+                      hide-pencil="field.blockAlert"
+                      block-alert="field.blockAlert"
+                      class="info-display-divider">
+                      <display-field-dev
+                        ng-if="field.typeId === 22"
+                        field="field"
+                        display-model="infosWidgetCtrl.model_infos[field.key]"
+                      ></display-field-dev>
+                      <display-item model="infosWidgetCtrl.model_infos" ng-if="field.typeId !== 22" display="infosWidgetCtrl.model_infos[field.key + '_display']" display-model="infosWidgetCtrl.model_infos[field.key]" field="field" object-id="infosWidgetCtrl.model_infos[field.key][0].Id" model-id="model.Id" reduced-layout="infosWidgetCtrl.reducedLayout"></display-item>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody ng-if="infosWidgetCtrl.model_fields_not_filled[$index].length > 0 && infosWidgetCtrl.open_collapse[$index]">
+                <tr ng-repeat="field in sub_form track by field.key" uib-tooltip="{{ field.CustomTooltip }}" ng-if="!infosWidgetCtrl.checkFieldFillness(field, infosWidgetCtrl.model_infos[field.key]) && !field.hidden">
+                  <td class="text-darkest-neutral ptop8">
+                    <aside class="fields-integration-icon-wrapper">
+                      {{field.label}}
+                      <div
+                        class="d-flex"
+                        ng-if="infosWidgetCtrl.canShowIntegrationIcon"
+                        ng-repeat="integrationField in infosWidgetCtrl.fieldIntegrationsLib.filterByFieldKey(field.key)"
+                        uib-tooltip="{{ 'GENERICS.INTEGRATED_FIELD' | translate_with_replace: { integration_name: integrationField.IntegrationName } }}"
+                        tooltip-append-to-body="true"
+                      >
+                        <img ng-src="{{integrationField.IntegrationIconUrl}}" alt="{{integrationField.IntegrationName}}" height="10" class="v-unset">
+                      </div>
+                    </aside>
+                  </td>
+                  <td inline-edit
+                      size="{{field.useRichTextEditor && infosWidgetCtrl.rich_text_editor_feature && 'md'}}"
+                      model="infosWidgetCtrl.model_infos"
+                      properties="[field.key]"
+                      validation-by-dependency="field.validationByDependency"
+                      has-dynamic-field="field.dynamic"
+                      patch-api="'Contacts'"
+                      submit-fn="infosWidgetCtrl.inlineEdit(item, field_key)"
+                      hide-pencil="true"
+                      non-editable="!field.inlineEditable || !model.Editable || !infosWidgetCtrl.customNonEditable(field)"
+                      not-trigger-formula="true"
+                      block-alert="field.blockAlert"
+                      class="info-display-divider">
+                      <span ng-if="!field.blockAlert" class="inline-link-neutral font-small collapsed">{{ 'GENERICS.ADD' | translate }}...</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="gap-10 light-background"></div>
+        </div>
+      </collapse>
+    </div>
+  </div>
+
+  <div ng-if="::(newLayout)">
+    <div ng-repeat="sub_form in infosWidgetCtrl.forms track by $index" ng-hide="infosWidgetCtrl.sections[$index].hidden">
+      <collapse show-default="infosWidgetCtrl.sectionsCollapse ? !infosWidgetCtrl.sectionsCollapse[$index] : true">
+      <div class="flex-section-header text-uppercase light-background b-b-1 rectangular-wrapper pointer info-widget-collapse-header" collapse-controller="#collapsible-element" ng-click="infosWidgetCtrl.toggleShowIcon($index, $event)">
+        <i ng-if="replaceSectionTitle && replaceSectionTitleIcon" class="simple-line-space-small" ng-class="replaceSectionTitleIcon"></i>
+        <div 
+          id="inline-link-wrapper" 
+          ng-if="replaceSectionTitle && replaceSectionTitleLink"
+          uib-tooltip="{{replaceSectionTitle}}" 
+          tooltip-append-to-body="true" 
+          tooltip-enable="infosWidgetCtrl.isTooltipEnabled('inline-link-wrapper')">
+          <a class="inline-link-regular" ui-sref="{{replaceSectionTitleLink}}">{{replaceSectionTitle}}</a>
+        </div>
+        <span ng-if="!replaceSectionTitleLink" class="text-break-word" data-cy="{{ ($index === 0 && 'infos-widget-default-section-title') || 'infos-widget-section-id-' + infosWidgetCtrl.sections[$index].Id + '-title' }}">
+          {{replaceSectionTitle || infosWidgetCtrl.sections[$index].name || ('GENERIC_DIRECTIVES.ENTITY_PAGE.DEFAULT_SECTION_NAME' | translate)}}
+        </span>
+        <span class="pull-right d-flex gap-flex-10">
+          <a class="animation-fade is-clicked-area d-block" role="button" ng-class="{'out': infosWidgetCtrl.isCollapsed[$index], 'in': !infosWidgetCtrl.isCollapsed[$index]}" ng-click="infosWidgetCtrl.open_collapse[$index] = !infosWidgetCtrl.open_collapse[$index]" ng-if="infosWidgetCtrl.model_fields_not_filled[$index].length > 0 && model.Editable" data-cy="infos-collapse-icon">
+            <i class="fal font-super-super-small clickable-icon small-clickable-icon" ng-class="{'fa-layer-plus': !infosWidgetCtrl.open_collapse[$index], 'fa-layer-minus': infosWidgetCtrl.open_collapse[$index]}"></i>
+          </a>
+          <span class="arrow-icon-collapse arrow-up" ng-class="{'arrow-down': infosWidgetCtrl.isCollapsed[$index] }">
+            <i class="fas fa-caret-up"></i>
+          </span>
+        </span>
+      </div>
+      <div id="collapsible-element">
+        <a class="contact-card empty-card" href ng-if="infosWidgetCtrl.model_fields_not_filled[$index].length === sub_form.length && !infosWidgetCtrl.open_collapse[$index]" ng-click="infosWidgetCtrl.open_collapse[$index] = true">
+          <div class="font-semi-big">
+            {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.NO_FIELD_FILLED' | translate}}
+          </div>
+        </a>
+        <div class="rectangular-wrapper light-background" ng-if="!(infosWidgetCtrl.model_fields_not_filled[$index].length === sub_form.length && !infosWidgetCtrl.open_collapse[$index])">
+          <table class="b-t-1 table table-view borderless light-info-table font-semi-small layout-fixed break-the-words info-display-with-divider">
+            <tbody>
+              <tr ng-repeat="field in sub_form track by field.key" uib-tooltip="{{ field.CustomTooltip }}" ng-if="infosWidgetCtrl.checkFieldFillness(field, infosWidgetCtrl.model_infos[field.key]) && !field.hidden">
+                <td class="text-darkest-neutral ptop8">
+                  <aside class="fields-integration-icon-wrapper">
+                    {{field.label}}
+                    <div
+                      class="d-flex"
+                      ng-if="infosWidgetCtrl.canShowIntegrationIcon"
+                      ng-repeat="integrationField in infosWidgetCtrl.fieldIntegrationsLib.filterByFieldKey(field.key)"
+                      uib-tooltip="{{ 'GENERICS.INTEGRATED_FIELD' | translate_with_replace: { integration_name: integrationField.IntegrationName } }}"
+                      tooltip-append-to-body="true"
+                    >
+                      <img ng-src="{{integrationField.IntegrationIconUrl}}" alt="{{integrationField.IntegrationName}}" height="10" class="v-unset">
+                    </div>
+                  </aside>
+                </td>
+                <td inline-edit
+                    size="{{field.useRichTextEditor && infosWidgetCtrl.rich_text_editor_feature && 'md'}}"
+                    model="infosWidgetCtrl.model_infos"
+                    properties="[field.key]"
+                    validation-by-dependency="field.validationByDependency"
+                    has-dynamic-field="field.dynamic"
+                    patch-api="'Contacts'"
+                    submit-fn="infosWidgetCtrl.inlineEdit(item, field_key)"
+                    non-editable="!field.inlineEditable || !model.Editable || !infosWidgetCtrl.customNonEditable(field)"
+                    class="info-display-divider"
+                    hide-pencil="field.blockAlert"
+                    block-alert="field.blockAlert"
+                    not-trigger-formula="true">
+                    <display-field-dev
+                      ng-if="field.typeId === 22"
+                      field="field"
+                      display-model="infosWidgetCtrl.model_infos[field.key]"
+                    ></display-field-dev>
+                    <display-item model="infosWidgetCtrl.model_infos" ng-if="field.typeId !== 22" display="infosWidgetCtrl.model_infos[field.key + '_display']" display-model="infosWidgetCtrl.model_infos[field.key]" field="field" object-id="infosWidgetCtrl.model_infos[field.key][0].Id" other-objects-id="infosWidgetCtrl.model_infos[field.key].Id" model-id="model.Id" reduced-layout="infosWidgetCtrl.reducedLayout"></display-item>
+                </td>
+              </tr>
+            </tbody>
+            <tbody ng-if="infosWidgetCtrl.model_fields_not_filled[$index].length > 0 && infosWidgetCtrl.open_collapse[$index]">
+              <tr ng-repeat="field in sub_form track by field.key" uib-tooltip="{{ field.CustomTooltip }}" ng-if="!infosWidgetCtrl.checkFieldFillness(field, infosWidgetCtrl.model_infos[field.key]) && !field.hidden">
+                <td class="text-darkest-neutral ptop8">
+                  <aside class="fields-integration-icon-wrapper">
+                    {{field.label}}
+                    <div
+                      class="d-flex"
+                      ng-if="infosWidgetCtrl.canShowIntegrationIcon"
+                      ng-repeat="integrationField in infosWidgetCtrl.fieldIntegrationsLib.filterByFieldKey(field.key)"
+                      uib-tooltip="{{ 'GENERICS.INTEGRATED_FIELD' | translate_with_replace: { integration_name: integrationField.IntegrationName } }}"
+                      tooltip-append-to-body="true"
+                    >
+                      <img ng-src="{{integrationField.IntegrationIconUrl}}" alt="{{integrationField.IntegrationName}}" height="10" class="v-unset">
+                    </div>
+                  </aside>
+                </td>
+                <td inline-edit
+                    size="{{field.useRichTextEditor && infosWidgetCtrl.rich_text_editor_feature && 'md'}}"
+                    model="infosWidgetCtrl.model_infos"
+                    properties="[field.key]"
+                    validation-by-dependency="field.validationByDependency"
+                    has-dynamic-field="field.dynamic"
+                    patch-api="'Contacts'"
+                    submit-fn="infosWidgetCtrl.inlineEdit(item, field_key)"
+                    hide-pencil="true"
+                    block-alert="field.blockAlert"
+                    non-editable="!field.inlineEditable || !model.Editable || !infosWidgetCtrl.customNonEditable(field)"
+                    class="info-display-divider"
+                    not-trigger-formula="true">
+                    <span ng-if="!field.blockAlert" class="inline-link-neutral font-small collapsed">{{ 'GENERICS.ADD' | translate }}...</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </collapse>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="white-content b-b-1 height-40 side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle">
+      <div class="input-group width-250 pull-left">
+        <input class="form-control input-sm light-background" placeholder="{{ 'PRODUCTS.CONTACT_PRODUCT_TABLE_QUICK_SEARCH_PLACEHOLDER' | translate }}" ng-model="$ctrl.quick_filter" ng-keyup="$event.keyCode === 13 ? $ctrl.quickFilter($ctrl.quick_filter) : null" data-cy="contact-products-quick-filter-input">
+        <div class="input-group-btn width-10">
+          <a ng-click="$ctrl.quickFilter($ctrl.quick_filter)" class="btn button button-neutral-gray special-search-button">
+            <i class="fas fa-search text-neutral"></i>
+          </a>
+        </div>
+      </div>
+    </aside>
+    <aside class="text-right width-10 v-middle">
+      <div class="dropdown pull-right">
+        <a class="button button-action nowrap" ng-if="$ctrl.can_create_new_contact_products" ng-click="$ctrl.openNewSerializedProduct()">
+          <i class="fas {{ $ctrl.customizables.contacts_products_module.icon_class }} button-icon"></i>
+          {{ 'PRODUCTS.NEW_CONTACT_PRODUCT' | translate_sentence }}
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>
+<div class="side-scroll white-content">
+  <div class="side-scroll-container serialized-product-table">
+    <dynamic-table
+        ng-if="$ctrl.can_load"
+        entity="$ctrl.main_entity"
+        opt-filter="$ctrl.current_filter"
+        current-tab="$ctrl.front_tab"
+        row-click-redirect="$ctrl.rowClickRedirect"
+        table-config-redirect="$ctrl.tableConfigRedirect(current_tab, add_column_callback, remove_column_callback, reorder_column_callback)"
+        style="padding-bottom: 0;">
+    </dynamic-table>
+  </div>
+</div>

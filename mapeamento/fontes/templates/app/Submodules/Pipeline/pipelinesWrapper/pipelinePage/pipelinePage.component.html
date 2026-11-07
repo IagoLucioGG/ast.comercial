@@ -1,0 +1,632 @@
+<div class="width-700 margin-auto funnel-config-container" ng-if="$ctrl.can_load">
+  <!-- Info title -->
+  <div class="top-side-wrapper">
+    <div class="dark-background b-b-1 overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+        <li class="active">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.INFOS' | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Infos -->
+  <div class="top-left-regular-wrapper">
+    <div class="hbox">
+      <aside class="width-10 text-center">
+        <div class="right-wrapper">
+          <div class="width-100 height-90 font-giant-title display-inline-block b-3 regular-background text-neutral small-wrapper">
+            <i class="fal" ng-class="$ctrl.pipeline_model.pipeline_icon && $ctrl.pipeline_model.pipeline_icon.Class"></i>
+          </div>
+          <div class="gap-10"></div>
+          <icon-selector select-icon-fn="$ctrl.selectIcon(icon)" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule"></icon-selector>
+        </div>
+      </aside>
+      <aside>
+        <div class="left-wrapper">
+          <form class="clearfix">
+            <div class="form-group col-sm-6">
+              <label data-cy="pipeline-page-pipeline-name-label">
+                {{ 'PIPELINES.PIPELINE_PAGE.PIPELINE_NAME_LABEL' | translate_sentence }}
+              </label>
+              <span class="align-limited-characters">
+                <span class="text-muted font-small">
+                  {{ $ctrl.pipeline_model.pipeline_name.length || 0 }}/{{ $ctrl.pipelineNameMaxLength }}
+                </span>
+              </span>
+              <input maxlength="{{ $ctrl.stageNameMaxLength }}" class="form-control input-sm" ng-model="$ctrl.pipeline_model.pipeline_name" ng-change="$ctrl.patchPipeline()">
+            </div>
+            <div class="form-group col-sm-6" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule">
+              <label>{{ 'PIPELINES.PIPELINE_PAGE.ICON_COLOR_LABEL' | translate }}</label>
+              <div class="position-relative">
+                <input colorpicker-parent class="form-control input-sm" colorpicker="hex" ng-model="$ctrl.pipeline_model.pipeline_icon_color" ng-style="{ 'background-color': $ctrl.pipeline_model.pipeline_icon_color }" ng-change="$ctrl.patchPipeline()">
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <allowed-users model="$ctrl.pipeline_model" title="$ctrl.allowedUsersLabel()" remove-side-wrapper="true" model-change-callback-fn="$ctrl.allowedUsersCallback"></allowed-users>
+            </div>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Stages title -->
+  <div class="top-side-wrapper">
+    <div class="dark-background b-b-1 overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+        <li class="active" data-cy="pipeline-page-stages-tab-label">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.STAGES' | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Stages -->
+  <div class="wrapper">
+    <div class="panel full-width b-1 new-funnel-button-padding white-content wrapper medium-shadow">
+      <form class="hbox">
+        <aside>
+          <label class="font-bold">
+            {{ 'PIPELINES.PIPELINE_PAGE.NEW_STAGE' | translate }}
+          </label>
+          <span class="align-limited-characters">
+            <span class="text-muted font-small">
+              {{ $ctrl.new_stage_model.Name.length || 0 }}/{{ $ctrl.stageNameMaxLength }}
+            </span>
+          </span>
+          <input class="form-control input-sm" ng-model="$ctrl.new_stage_model.Name" maxlength="{{ $ctrl.stageNameMaxLength }}" />
+        </aside>
+        <aside class="v-bottom width-10">
+          <a class="button button-action pull-right" href ng-click="$ctrl.addNewStage()">
+            {{ 'GENERICS.ADD' | translate }}
+          </a>
+        </aside>
+      </form>
+    </div>
+    <div ui-sortable="$ctrl.stage_drag_options" ng-model="$ctrl.pipeline_model.pipeline.stages">
+      <div ng-repeat="stage in $ctrl.pipeline_model.pipeline.stages">
+        <div class="gap-10"></div>
+        <div class="panel medium-shadow full-width drag-button white-content wrapper show-invisible-button">
+          <div class="hbox">
+            <aside class="v-middle font-semi-big text-left">
+              <div class="font-bold">
+                <div class="hbox-flex" style="width: auto; justify-content: unset; overflow-wrap:break-word;">
+                  <aside class="v-middle">
+                    <span class="max-width-500 d-inline-block" ng-show="!stage.show_edit_input">{{stage.Name}}</span>
+                    <input class="form-control input-sm" id="stage-{{stage.Id}}" ng-show="stage.show_edit_input" ng-keyup="$ctrl.checkEditStageKeyUp($event, stage)" ng-blur="$ctrl.updateStageName(stage)" ng-model="stage.editing_stage_name" placeholder="{{ 'PIPELINES.PIPELINE_PAGE.STAGE_NAME_PLACEHOLDER' | translate }}"  maxlength="{{ $ctrl.stageNameMaxLength }}">
+                  </aside>
+                  <aside class="v-middle left-wrapper">
+                    <a class="button-fixed-size button-fixed-size-small invisible-button button-white" href ng-show="!stage.show_edit_input" style="top: -2px;" ng-click="$ctrl.editStageName(stage)">
+                      <i class="fal fa-pen activity-icon-top-3"></i>
+                    </a>
+                  </aside>
+                </div>
+              </div>
+              <div class="gap-10"></div>
+              <div class="line-itens-left">
+                <a class="line-item button button-white-light-border open-side-slide" href ng-click="$ctrl.openAutomationsSlide(stage)" ng-if="$ctrl.activeWorkflowModule" data-cy="pipeline-page-automation-config-button">
+                  <div class="hbox font-small font-bold table-cell-align-top">
+                    <aside class="v-middle text-action">
+                      <i class="fal fa-robot big-simple-line"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      <span class="align-middle">
+                        {{ 'PIPELINES.PIPELINE_PAGE.CONFIG_AUTOMATIONS' | translate }} {{stage.num_of_automations > 0 ? '(' + stage.num_of_automations + ')' : ''}}
+                      </span>
+                    </aside>
+                  </div>
+                </a>
+                <a class="line-item button button-white-light-border open-side-slide" href ng-click="$ctrl.openChecklistsSlide(stage)" ng-if="$ctrl.activeWorkflowModule && $ctrl.self.Account.Plan.Checklists" data-cy="pipeline-page-checklist-config-button">
+                  <div class="hbox font-small font-bold table-cell-align-top">
+                    <aside class="v-middle text-action">
+                      <i class="fal fa-tasks big-simple-line"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      <span class="align-middle">
+                        {{ 'PIPELINES.PIPELINE_PAGE.CONFIG_CHECKLISTS' | translate }} {{stage.num_of_checklists > 0 ? '(' + stage.num_of_checklists + ')' : ''}}
+                      </span>
+                    </aside>
+                  </div>
+                </a>
+              </div>
+            </aside>
+            <aside class="v-middle width-30 right-wrapper">
+              <a class="btn-close-proposal button-fixed-size button-fixed-size-header button-white pull-right invisible-button" ng-click-confirm="{{ 'PIPELINES.PIPELINE_PAGE.DELETE_STAGE_CONFIRM' | translate }}" reversible="false" ng-click="$ctrl.deleteStage(stage)" ng-if="$ctrl.can_delete_or_sort">
+                <div class="gap-5"></div>
+                <i class="fal fa-trash font-title"></i>
+              </a>
+            </aside>
+            <aside class="v-middle width-30">
+              <div class="token-drag-indicator b-1 white-content big-gray-dragger panel" ng-if="$ctrl.can_delete_or_sort"></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Form config title -->
+  <div class="top-side-wrapper">
+    <div class="dark-background b-b-1 overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+        <li ng-class="{ 'active': $ctrl.full_form_selected }" ng-click="$ctrl.toggleSelectedForm()" data-cy="pipeline-page-new-deal-form">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.NEW_DEAL_FORM' | translate_sentence }}
+          </a>
+        </li>
+        <li ng-class="{ 'active': !$ctrl.full_form_selected }" ng-click="$ctrl.toggleSelectedForm()" data-cy="pipeline-page-new-deal-form-mini">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.NEW_DEAL_MINI_FORM' | translate_sentence }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Form config -->
+  <form-config-builder ng-if="$ctrl.full_form_selected" form-id="$ctrl.pipeline_model.pipeline_form_id" full-width="true"></form-config-builder>
+
+  <form-config-builder ng-if="!$ctrl.full_form_selected" form-id="$ctrl.pipeline_model.pipeline_quick_form_id" full-width="true"></form-config-builder>
+
+
+  <!-- Config title -->
+  <div class="top-side-wrapper">
+    <div class="dark-background b-b-1 overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+        <li class="active">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.SETTINGS' | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Config -->
+  <div class="wrapper">
+    <div class="darkest-background b-1 panel no-shadow wrapper medium-shadow">
+      <div class="hbox">
+        <aside class="v-middle right-wrapper" data-cy="pipeline-page-visualization-modes-label-tab">
+          <div class="font-bold">
+            {{ 'PIPELINES.PIPELINE_PAGE.AVAILABLE_VISUALIZATION_MODES' | translate }}
+          </div>
+          <div class="gap-5"></div>
+          <div class="hbox">
+            <aside class="width-20 v-middle">
+              <input type="checkbox" ng-model="$ctrl.pipeline_model.pipeline.allow_table_view" ng-change="$ctrl.checkEnabledView(); $ctrl.patchPipeline()">
+            </aside>
+            <aside class="v-middle">
+              {{ 'PIPELINES.PIPELINE_PAGE.TABLE' | translate }}
+            </aside>
+          </div>
+          <div class="gap-5"></div>
+          <div class="hbox">
+            <aside class="width-20 v-middle">
+              <input type="checkbox" ng-model="$ctrl.pipeline_model.pipeline.allow_funnel_view" ng-change="$ctrl.checkEnabledView(); $ctrl.patchPipeline()">
+            </aside>
+            <aside class="v-middle">
+              {{ 'PIPELINES.PIPELINE_PAGE.KANBAN' | translate }}
+            </aside>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="gap-10" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule"></div>
+    <div class="darkest-background b-1 panel no-shadow wrapper medium-shadow" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule">
+      <div class="hbox">
+        <aside class="v-middle right-wrapper">
+          <div class="font-bold">
+            {{ 'PIPELINES.PIPELINE_PAGE.WHICH_PIPELINES_CAN_RECEIVE_DEAL' | translate_sentence }}
+          </div>
+          <div class="gap-5"></div>
+          <div class="input-group full-width">
+            <div class="input-group-btn">
+              <a class="btn button button-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{$ctrl.current_link_option.Name}}<i class="fal fa-angle-down dropdown-sign"></i>
+              </a>
+              <ul class="dropdown-menu left-menu white-dropdown-menu">
+                <li ng-repeat="link_option in $ctrl.pipeline_link_options" ng-if="$ctrl.current_link_option.Id !== link_option.Id" ng-click="$ctrl.selectLinkOption(link_option)">
+                  <a class="white-dropdown-link" href>
+                    {{link_option.Name}}
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <input class="form-control input-sm" disabled="" placeholder="" ng-if="$ctrl.current_link_option.Id !== 2">
+            <select-fk ng-if="$ctrl.current_link_option.Id === 2" model="$ctrl.pipeline_model.allowed_pipelines" field="$ctrl.link_pipelines_field" api-url="{{$ctrl.link_pipelines_field.apiUrl}}"
+          display-property="Name" option-change-callback="$ctrl.patchPipeline(model)"></select-fk>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="gap-10"></div>
+    <div ng-repeat="config in $ctrl.pipeline_config_options | filter: { Enabled: true }">
+      <div class="gap-10" ng-if="!$first"></div>
+      <div class="darkest-background b-1 panel no-shadow wrapper medium-shadow">
+        <div class="hbox">
+          <aside class="v-middle right-wrapper">
+            <div class="font-bold">{{::config.Name}}</div>
+            <div class="gap-3"></div>
+            <div class="font-small">{{::config.Description}}</div>
+          </aside>
+          <aside class="v-middle width-70">
+            <div class="switch pull-right">
+              <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-{{::config.Id}}" type="checkbox" ng-model="$ctrl.pipeline_model.pipeline[config.FrontProperty]" ng-change="$ctrl.patchPipeline()">
+              <label for="cmn-toggle-{{::config.Id}}"></label>
+            </div>
+          </aside>
+        </div>
+        <div ng-if="config.HasDropdown && $ctrl.pipeline_model.pipeline[config.FrontProperty]">
+          <div class="gap-10"></div>
+          <select
+            class="form-control input-sm"
+            ng-options="option.Value as option.Label for option in config.DropdownOptions"
+            ng-model="$ctrl.pipeline_model.pipeline[config.DropdownProperty]"
+            ng-change="$ctrl.patchPipeline()">
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="gap-10"></div>
+    <div ng-repeat="config in $ctrl.pipeline_document_config_options" ng-if="config.Enabled || config.EnabledFn()">
+      <div class="gap-10" ng-if="!$first"></div>
+      <div class="darkest-background b-1 panel no-shadow wrapper medium-shadow">
+        <div class="hbox">
+          <aside class="v-middle right-wrapper">
+            <div class="font-bold">{{::config.Name}}</div>
+            <div class="gap-3"></div>
+            <div class="font-small">{{::config.Description}}</div>
+          </aside>
+          <aside class="v-middle width-70" ng-if="!config.SelectConfigOptions">
+            <div class="switch pull-right">
+              <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-{{::config.Id}}" type="checkbox" ng-model="$ctrl.pipeline_model.pipeline[config.FrontProperty]" ng-change="$ctrl.patchPipeline()">
+              <label for="cmn-toggle-{{::config.Id}}"></label>
+            </div>
+          </aside>
+        </div>
+        <div class="hbox" ng-if="config.SelectConfigOptions">
+          <select
+            class="form-control input-sm"
+            ng-options="option.Value as option.Label for option in config.SelectConfigOptions"
+            ng-model="$ctrl.pipeline_model[config.FrontProperty]"
+            ng-change="$ctrl.patchPipeline()"
+            ng-disabled="config.DisabledFn()"
+            uib-tooltip="{{config.tooltipText}}"
+            tooltip-enable="config.DisabledFn()">
+          </select>
+        </div>
+        <div ng-if="config.SelectTemplateField && $ctrl.pipeline_model.pipeline[config.FrontProperty]">
+          <div class="gap-10"></div>
+          <div class="darkest-background b-t-1"></div>
+          <div class="gap-10"></div>
+        </div>
+
+        <table class="table light-table" ng-if="config.SelectTemplateField && $ctrl.pipeline_model.pipeline[config.FrontProperty]">
+          <thead>
+            <tr>
+              <th>
+                {{ 'PIPELINES.PIPELINE_PAGE.TEMPLATE' | translate }}
+              </th>
+              <th class="text-right">
+                {{ 'PIPELINES.PIPELINE_PAGE.DEFAULT' | translate }}
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="template in config.DocumentTemplates">
+              <td>
+                {{template.Name}}
+              </td>
+              <td class="text-center">
+                <div class="switch pull-right">
+                  <input class="cmn-toggle cmn-toggle-round-flat" id="template-{{::template.Id}}" type="checkbox"
+                  ng-model="template.Default" ng-change="$ctrl.toggleDefaultEntityTemplate(config, template)">
+                  <label for="template-{{::template.Id}}"></label>
+                </div>
+              </td>
+              <td>
+                <a href class="button-inherit button-fixed-size button-fixed-size-small" ng-click="$ctrl.deleteDocumentTemplate(config, template.Id)">
+                  <i class="fal fa-trash fixing-fixed-size-button"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="v-top" colspan="2">
+                <select-fk model="config.selected_template" exclude-model="config.DocumentTemplates" field="config.SelectTemplateField"
+                  api-url="{{config.SelectTemplateField.apiUrl}}" display-property="Name" list="true"></select-fk>
+              </td>
+
+
+              <td class="text-center v-top width-10">
+                <a href class="button-fixed-size button-action button-fixed-size-big" ng-click="$ctrl.addDocumentTemplate(config)">
+                  <i class="fas fa-check"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Naming title -->
+  <div class="top-side-wrapper" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule">
+    <div class="dark-background b-b-1 overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+        <li class="active">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.NAMING' | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Naming -->
+  <div class="top-wrapper" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule">
+    <form class="clearfix">
+      <div class="form-group col-sm-6">
+        <label>{{ 'PIPELINES.PIPELINE_PAGE.SINGULAR_UNIT_NAME_LABEL' | translate }}</label>
+        <input class="form-control input-sm" ng-model="$ctrl.pipeline_model.pipeline_singular_unit_name" ng-change="$ctrl.patchPipeline()">
+      </div>
+      <div class="form-group col-sm-6">
+        <label>{{ 'PIPELINES.PIPELINE_PAGE.PLURAL_UNIT_NAME_LABEL' | translate }}</label>
+        <input class="form-control input-sm" ng-model="$ctrl.pipeline_model.pipeline_plural_unit_name" ng-change="$ctrl.patchPipeline()">
+      </div>
+      <div class="form-group col-sm-6">
+        <label>{{ 'PIPELINES.PIPELINE_PAGE.GENDER_LABEL' | translate }}</label>
+        <select-options model="$ctrl.pipeline_model.pipeline_gender" field="$ctrl.gender_field" select-item-callback-fn="$ctrl.patchPipeline(item)"></select-options>
+      </div>
+    </form>
+  </div>
+
+    <!-- Pipeline Deal Status Config Title -->
+    <div class="top-side-wrapper" ng-if="$ctrl.pipeline_model.pipeline.enable_status">
+      <div class="dark-background b-b-1 overflow-hidden">
+        <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+          <li class="active">
+            <a class="text-neutral" href>
+              {{ 'PIPELINES.PIPELINE_PAGE.STATUS_CONFIG_TITLE' | translate_sentence }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Pipeline Deal Status Config -->
+    <div class="wrapper" ng-if="$ctrl.pipeline_model.pipeline.enable_status">
+      <div class="pipeline-deal-status-config-helper">
+        <span>
+          {{ 'PIPELINES.PIPELINE_PAGE.STATUS_FIELD_HELPER' | translate_sentence }}
+        </span>
+      </div>
+      <div class="panel full-width b-1 new-funnel-button-padding white-content wrapper medium-shadow">
+        <form class="hbox">
+          <aside>
+            <span class="align-limited-characters">
+              <span class="text-muted font-small">
+                {{ $ctrl.new_deal_status_model.Name.length || 0 }}/{{ $ctrl.deal_status_max_length }}
+              </span>
+            </span>
+            <label class="font-bold">{{ 'PIPELINES.PIPELINE_PAGE.STATUS_FIELD_LABEL' | translate_sentence }}</label>
+            <div uib-dropdown>
+              <input 
+                class="form-control input-sm" 
+                ng-model="$ctrl.new_deal_status_model.Name"
+                ng-click="$ctrl.loadCustomDealStatus()"
+                maxlength="{{ $ctrl.deal_status_max_length }}" 
+                uib-dropdown-toggle
+              >
+              <div class="dropdown-menu white-dropdown-menu w-100 dropdown-display-menu" uib-dropdown-menu>
+                <infinite-scroll-page
+                  on-scroll-end="$ctrl.loadCustomDealStatus"
+                  loading="$ctrl.reached_end"
+                  bind-on-scroll-end="{ hasSkip: true }"
+                  gap="0"
+                  class-name="custom-deal-status-wrapper"
+                >
+                  <a ng-repeat="custom_status in $ctrl.custom_deal_status track by custom_status.Id" 
+                    role="menuitem"
+                    class="d-block break-word-container dropdown-display-menu-item pipeline-dropdown-display-item p-10" 
+                    ng-click="$ctrl.addNewPipelineDealStatus(custom_status)"
+                    >
+                    <span>
+                      {{ custom_status.Name }}
+                    </span>
+                  </a>
+                  <span class="d-block dropdown-display-menu-item p-10" ng-if="$ctrl.custom_deal_status.length === 0 && !$ctrl.loading_custom_deal_status" class="d-block">
+                    {{ 'QUICK_SEARCH.EMPTY_RESULTS_TITLE' | translate }}
+                  </span>
+                  <div ng-if="$ctrl.loading_custom_deal_status" class="deal-status-field-loader-wrapper">
+                    <loading-tooltip loading="$ctrl.loading_custom_deal_status" form="deal_status_field"></loading-tooltip>
+                  </div>
+                </infinite-scroll-page>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-bottom width-10">
+            <a class="button button-action pull-right" href ng-click="$ctrl.addNewPipelineDealStatus()">
+              {{ 'GENERICS.ADD' | translate }}
+            </a>
+          </aside>
+        </form>
+      </div>
+      <div ui-sortable="$ctrl.status_drag_options" ng-model="$ctrl.pipeline_deal_status">
+        <div ng-repeat="deal_status in $ctrl.pipeline_deal_status">
+          <div class="gap-10"></div>
+          <div class="panel medium-shadow full-width drag-button white-content wrapper show-invisible-button overflow-auto">
+            <div class="hbox">
+              <aside class="v-middle font-semi-big text-left">
+                <div class="font-bold">
+                  <div class="d-flex align-items-center w-100">
+                    <div class="v-middle w-fit-content nowrap" ng-class="{ 'w-100': deal_status.show_edit_input }">
+                      <span class="break-word-container" ng-show="!deal_status.show_edit_input">{{deal_status.Name}}</span>
+                      <span class="align-limited-characters" ng-show="deal_status.show_edit_input">
+                        <span class="text-muted font-small">
+                          {{ deal_status.editing_deal_status_name.length || 0 }}/{{ $ctrl.deal_status_max_length }}
+                        </span>
+                      </span>
+                      <input class="form-control w-100 input-sm" 
+                        id="deal_status-{{deal_status.Id}}"
+                        ng-show="deal_status.show_edit_input"
+                        ng-keyup="$ctrl.checkEditLossReasonKeyUp($event, deal_status)" ng-blur="$ctrl.updatePipelineDealStatusName(deal_status)"
+                        ng-model="deal_status.editing_deal_status_name"
+                        maxlength="{{ $ctrl.deal_status_max_length }}"
+                      >
+                    </div>
+                    <aside class="v-middle left-wrapper">
+                      <a class="button-fixed-size button-fixed-size-small invisible-button button-white" href
+                        ng-show="!deal_status.show_edit_input" ng-click="$ctrl.editPipelineDealStatusName(deal_status)">
+                        <span>
+                          <i class="fal fa-pen activity-icon-top-3"></i>
+                        </span>
+                      </a>
+                    </aside>
+                  </div>
+                </div>
+              </aside>
+              <aside class="v-middle width-30 right-wrapper">
+                <a class="btn-close-proposal button-fixed-size button-fixed-size-header button-white pull-right invisible-button"
+                  ng-click-confirm="{{ 'PIPELINES.PIPELINE_PAGE.DELETE_DEAL_STATUS_CONFIRM' | translate }}" reversible="true" ng-click="$ctrl.deletePipelineDealStatus(deal_status.Id)">
+                  <div class="gap-5"></div>
+                  <i class="fal fa-trash font-title"></i>
+                </a>
+              </aside>
+              <aside class="v-middle width-30">
+                <div class="token-drag-indicator b-1 white-content big-gray-dragger panel"></div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Win lose title -->
+  <div class="top-side-wrapper" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule">
+    <div class="dark-background b-b-1 overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+        <li class="active">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.WIN_LOSE_ACTIONS' | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Win lose -->
+  <div class="top-wrapper" ng-if="$ctrl.self.Account.Plan.CustomWorkflows || $ctrl.activeWorkflowModule">
+    <form class="clearfix text-center">
+      <div class="form-group col-sm-6">
+        <a class="button" ng-class="$ctrl.pipeline_model.pipeline_win_button.Class" href>
+          <span>{{$ctrl.pipeline_model.pipeline_win_verb.Name}}</span>
+        </a>
+      </div>
+      <div class="form-group col-sm-6">
+        <a class="button" ng-class="$ctrl.pipeline_model.pipeline_lose_button.Class" href>
+          <span>{{$ctrl.pipeline_model.pipeline_lose_verb.Name}}</span>
+        </a>
+      </div>
+    </form>
+    <form class="clearfix">
+      <div class="form-group col-sm-6">
+        <label>{{ 'PIPELINES.PIPELINE_PAGE.WIN_BUTTON_COLOR' | translate }}</label>
+        <select-options model="$ctrl.pipeline_model.pipeline_win_button" field="$ctrl.win_button_field" select-item-callback-fn="$ctrl.patchPipeline(item)"></select-options>
+      </div>
+      <div class="form-group col-sm-6">
+        <label>{{ 'PIPELINES.PIPELINE_PAGE.LOSE_BUTTON_COLOR' | translate }}</label>
+        <select-options model="$ctrl.pipeline_model.pipeline_lose_button" field="$ctrl.lose_button_field" select-item-callback-fn="$ctrl.patchPipeline(item)"></select-options>
+      </div>
+      <div class="form-group col-sm-6">
+        <label>{{ 'PIPELINES.PIPELINE_PAGE.WIN_VERB' | translate }}</label>
+        <select-options model="$ctrl.pipeline_model.pipeline_win_verb" field="$ctrl.win_verb_field" select-item-callback-fn="$ctrl.patchPipeline(item)"></select-options>
+      </div>
+      <div class="form-group col-sm-6">
+        <label>{{ 'PIPELINES.PIPELINE_PAGE.LOSE_VERB' | translate }}</label>
+        <select-options model="$ctrl.pipeline_model.pipeline_lose_verb" field="$ctrl.lose_verb_field" select-item-callback-fn="$ctrl.patchPipeline(item)"></select-options>
+      </div>
+    </form>
+  </div>
+
+  <!-- Loss reasons title -->
+  <div class="top-side-wrapper">
+    <div class="dark-background b-b-1 overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 darkest-gray-border-tabs">
+        <li class="active">
+          <a class="text-neutral" href>
+            {{ 'PIPELINES.PIPELINE_PAGE.PIPELINE_LOSS_REASONS' | translate_sentence }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Loss reasons -->
+  <div class="wrapper">
+    <div class="panel full-width b-1 new-funnel-button-padding white-content wrapper medium-shadow">
+      <form class="hbox">
+        <aside>
+          <span class="align-limited-characters">
+            <span class="text-muted font-small">
+              {{ $ctrl.new_loss_reason_model.Name.length || 0 }}/{{ $ctrl.loss_reason_max_length }}
+            </span>
+          </span>
+          <label class="font-bold">{{ 'PIPELINES.PIPELINE_PAGE.NEW_LOSS_REASON' | translate }}</label>
+          <input class="form-control input-sm" ng-model="$ctrl.new_loss_reason_model.Name" maxlength="{{ $ctrl.loss_reason_max_length }}">
+        </aside>
+        <aside class="v-bottom width-10">
+          <a class="button button-action pull-right" href ng-click="$ctrl.addNewLossReason()">
+            {{ 'GENERICS.ADD' | translate }}
+          </a>
+        </aside>
+      </form>
+    </div>
+    <div ng-repeat="loss_reason in $ctrl.pipeline_loss_reasons">
+      <div class="gap-10"></div>
+      <div class="panel medium-shadow full-width drag-button white-content wrapper show-invisible-button">
+        <div class="hbox">
+          <aside class="v-middle font-semi-big text-left">
+            <div class="font-bold">
+              <div class="hbox">
+                <aside class="v-middle nowrap" ng-class="{ 'width-10': !loss_reason.show_edit_input }">
+                  <span ng-show="!loss_reason.show_edit_input">{{loss_reason.Name}}</span>
+                  <span class="align-limited-characters" ng-show="loss_reason.show_edit_input">
+                    <span class="text-muted font-small" ng-show="loss_reason.show_edit_input">
+                      {{ loss_reason.editing_loss_reason_name.length || 0 }}/{{ $ctrl.loss_reason_max_length }}
+                    </span>
+                  </span>
+                  <input class="form-control input-sm" id="loss_reason-{{loss_reason.Id}}" ng-show="loss_reason.show_edit_input"
+                    ng-keyup="$ctrl.checkEditLossReasonKeyUp($event, loss_reason)" ng-blur="$ctrl.updateLossReasonName(loss_reason)"
+                    ng-model="loss_reason.editing_loss_reason_name" placeholder="{{ 'PIPELINES.PIPELINE_PAGE.LOSS_REASON_NAME_PLACEHOLDER' | translate }}" 
+                    maxlength="{{ $ctrl.loss_reason_max_length }}">
+                </aside>
+                <aside class="v-middle left-wrapper">
+                  <a class="button-fixed-size button-fixed-size-small invisible-button button-white" href
+                    ng-show="!loss_reason.show_edit_input" ng-click="$ctrl.editLossReasonName(loss_reason)">
+                    <span>
+                      <i class="fal fa-pen activity-icon-top-3"></i>
+                    </span>
+                  </a>
+                </aside>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle width-30 right-wrapper" ng-if="$ctrl.pipeline_loss_reasons.length > 1">
+            <a class="btn-close-proposal button-fixed-size button-fixed-size-header button-white pull-right invisible-button"
+              ng-click-confirm="{{ 'PIPELINES.PIPELINE_PAGE.DELETE_LOSS_REASON_CONFIRM' | translate }}" reversible="false" ng-click="$ctrl.deleteLossReason(loss_reason)">
+              <div class="gap-5"></div>
+              <i class="fal fa-trash font-title"></i>
+            </a>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gap-100"></div>
+
+</div>
+<standard-loader margin-top="15" loading="!$ctrl.can_load"></standard-loader>

@@ -1,0 +1,12 @@
+<div class="vbox scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <dynamic-table-column-selection
+      entity="$ctrl.entity"
+      column-list="$ctrl.currentTab.column_list"
+      use-featured="true"
+      add-column-fn="$ctrl.addColumnCallbackFn(column)"
+      remove-column-fn="$ctrl.removeColumnCallbackFn(column, index)"
+      column-reorder-fn="$ctrl.reorderColumnCallbackFn()">
+    </dynamic-table-column-selection>
+  </section>
+</div>

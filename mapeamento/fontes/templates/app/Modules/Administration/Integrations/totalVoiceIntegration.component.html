@@ -1,0 +1,155 @@
+<div class="vbox tab-header scroll-shadow neutral-shadow" ng-form="total_voice_integration_form">
+  <section class="scrollable scroll-shadow-container">
+    <div class="white-content b-b-1 wrapper">
+      <div class="gap-15"></div>
+      <div>
+        <div class="hbox">
+          <aside class="width-10 text-center">
+            <div class="side-wrapper"><img class="avatar-select" src="assets/images/zenvia.png"></div>
+          </aside>
+          <aside>
+            <div class="side-wrapper" ng-bind-html="('INTEGRATIONS.TOTAL_VOICE.DESCRIPTION' | translate) | to_trusted">
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="gap-15"></div>
+    </div>
+    <div class="gap-15"></div>
+    <div class="form-group col-sm-12">
+      <div class="white-content top-wrapper b-1 rounded-regular">
+        <div class="font-big side-wrapper">
+          <strong>
+            {{ 'INTEGRATIONS.TOTAL_VOICE.CONFIG_INTEGRATION_OPTIONS' | translate }}
+          </strong>
+        </div>
+        <div class="gap-10"></div>
+        <div class="clearfix">
+          <forms model="$ctrl.model" fields="$ctrl.form" form="total_voice_integration_form"></forms>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12" ng-if="$ctrl.account.TotalVoiceIntegration">
+      <div class="white-content top-wrapper b-1 rounded-regular">
+        <div class="font-big side-wrapper">
+          <strong>
+            {{ 'INTEGRATIONS.TOTAL_VOICE.EXPORT_REPORT_TITLE' | translate }}
+          </strong>
+        </div>
+        <div class="gap-10"></div>
+        <div class="clearfix">
+          <div class="form-group col-sm-6">
+            <label>{{ 'INTEGRATIONS.TOTAL_VOICE.FILTER_CALLS_FROM' | translate }}:</label>
+            <input date datepicker="true" class="form-control input-sm" ng-model="$ctrl.start_date" />
+          </div>
+          <div class="form-group col-sm-6">
+            <label>{{ 'INTEGRATIONS.TOTAL_VOICE.FILTER_CALLS_TO' | translate }}:</label>
+            <input date datepicker="true" class="form-control input-sm" ng-model="$ctrl.end_date" />
+          </div>
+        </div>
+        <div class="side-wrapper">
+          <div class="button button-action button-full-width button-big position-relative panel"
+            ng-class="{ 'disabled': $ctrl.exporting_report }" ng-click="$ctrl.downloadReport()">
+            {{ 'INTEGRATIONS.TOTAL_VOICE.EXPORT_REPORT_BUTTON' | translate }}
+            <div class="loader modal-loader button-loader" ng-if="$ctrl.exporting_report"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12" ng-if="$ctrl.account.TotalVoiceIntegration">
+      <div class="white-content top-wrapper b-1 rounded-regular">
+        <div class="font-big side-wrapper">
+          <strong>
+            {{ 'INTEGRATIONS.TOTAL_VOICE.GENERATE_RECHARGE_URL' | translate }}
+          </strong>
+        </div>
+        <div class="gap-10"></div>
+        <div class="side-wrapper">
+          <div
+            class="button button-action button-full-width button-big position-relative panel"
+            ng-class="{ 'disabled': $ctrl.getting_recharge_url }"
+            ng-click="$ctrl.getRechargeUrl()"
+            ng-if="!$ctrl.recharge_url">
+            {{ 'INTEGRATIONS.TOTAL_VOICE.GET_URL' | translate }}
+            <div class="loader modal-loader button-loader" ng-if="$ctrl.getting_recharge_url"></div>
+          </div>
+          <a
+            class="button button-success button-full-width button-big position-relative panel"
+            target="_blank"
+            ng-href="{{$ctrl.recharge_url}}"
+            ng-if="$ctrl.recharge_url">
+            {{ 'INTEGRATIONS.TOTAL_VOICE.GO_TO_RECHARGE_PAGE' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-12" ng-if="$ctrl.account.TotalVoiceIntegration">
+      <div class="white-content top-wrapper b-1 rounded-regular">
+        <div class="font-big side-wrapper">
+          <strong>
+            {{ 'INTEGRATIONS.TOTAL_VOICE.ASSOCIATE_PLOOMES_USERS_WITH_ZENVIA' | translate }}
+          </strong>
+        </div>
+        <div class="gap-10"></div>
+        <div class="clearfix">
+          <table class="table modal-table table-smaller-header double-header">
+            <thead>
+              <tr>
+                <th class="width-150">{{ 'INTEGRATIONS.TOTAL_VOICE.USER' | translate }}</th>
+                <th>{{ 'INTEGRATIONS.TOTAL_VOICE.ID_BRANCH' | translate }}</th>
+                <th>{{ 'INTEGRATIONS.TOTAL_VOICE.BRANCH_NUMBER' | translate }}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="user in $ctrl.users">
+                <td>
+                  <new-field field="$ctrl.user_form.total_voice_user" model="user" property="$ctrl.user_form.total_voice_user.key" wide="field.wide" hide-label="true" not-trigger-formula="true"></new-field>
+                </td>
+                <td>
+                  <new-field field="$ctrl.user_form.total_voice_user_branch_id" model="user" property="$ctrl.user_form.total_voice_user_branch_id.key" wide="field.wide" hide-label="true" not-trigger-formula="true"></new-field>
+                </td>
+                <td>
+                  <new-field field="$ctrl.user_form.total_voice_user_branch" model="user" property="$ctrl.user_form.total_voice_user_branch.key" wide="field.wide" hide-label="true" not-trigger-formula="true"></new-field>
+                </td>
+                <td>
+                  <a class="button-inherit button-fixed-size button-fixed-size-small"
+                    ng-click="$ctrl.removeUser($index)">
+                    <i class="fal fa-trash fixing-fixed-size-button"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <div class="button button-action" ng-click="$ctrl.addUser()">
+                    {{ 'INTEGRATIONS.TOTAL_VOICE.ADD_USER' | translate }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="wrapper">
+      <div class="text-center">
+        <a class="button button-big button-action" ng-click="$ctrl.submitControl(total_voice_integration_form)">
+          <div>
+            {{ ($ctrl.account.TotalVoiceIntegration ? 'INTEGRATIONS.UPDATE_INTEGRATION' : 'INTEGRATIONS.ENABLE_INTEGRATION') | translate }}
+          </div>
+        </a>
+        <a class="button button-big button-white" ng-if="$ctrl.account.TotalVoiceIntegration" ng-click="$ctrl.disableIntegration()">
+          <div class="text-danger">
+            <i class="fal fa-pause button-icon"></i>
+            <span class="text-regular">{{ 'INTEGRATIONS.DISABLE_INTEGRATION' | translate }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

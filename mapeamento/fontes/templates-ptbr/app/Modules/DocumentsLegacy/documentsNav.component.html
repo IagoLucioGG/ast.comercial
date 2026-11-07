@@ -1,0 +1,43 @@
+<ul class="nav nav-tabs border-tabs special-tabs display-inline-block pull-left">
+  <li ng-class="{ 'active': documentsNavCtrl.active === 'quotes' }" ng-if="documentsNavCtrl.activeQuoteModule && documentsNavCtrl.self.Profile.QuotesModule">
+    <a href 
+      role="button"
+      data-cy="documents-quotes" 
+      ng-click="documentsNavCtrl.goToQuotes()" 
+      aria-label="botão de entrar na aba de propostas"
+    >
+      <div class="hbox">
+        <aside class="v-middle width-25 text-center">
+          <i class="fal fa-file-invoice-dollar simple-line-space"></i>
+        </aside>
+        <aside class="v-middle font-semi-big">
+          Propostas
+        </aside>
+      </div>
+    </a>
+  </li>
+  <li ng-class="{ 'active': documentsNavCtrl.active === 'orders' }" ng-if="documentsNavCtrl.activeOrderModule && documentsNavCtrl.self.Profile.OrdersModule">
+    <a href ng-click="documentsNavCtrl.goToOrders()" data-cy="documents-orders">
+      <div class="hbox">
+        <aside class="v-middle width-25 text-center">
+          <i class="fal fa-money-check-edit-alt simple-line-space"></i>
+        </aside>
+        <aside class="v-middle font-semi-big">
+          Vendas
+        </aside>
+      </div>
+    </a>
+  </li>
+  <li ng-class="{ 'active': documentsNavCtrl.active === 'documents' }" ng-if="documentsNavCtrl.activeDocumentModule && documentsNavCtrl.self.Profile.DocumentsModule">
+    <a href ng-click="documentsNavCtrl.goToDocuments()" data-cy="documents-documents">
+      <div class="hbox">
+        <aside class="v-middle width-25 text-center">
+          <i class="fal fa-file-alt simple-line-space"></i>
+        </aside>
+        <aside class="v-middle font-semi-big">
+          Documentos
+        </aside>
+      </div>
+    </a>
+  </li>
+</ul>

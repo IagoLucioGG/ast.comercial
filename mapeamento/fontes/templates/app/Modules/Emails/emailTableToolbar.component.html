@@ -1,0 +1,62 @@
+<div class="hbox">
+  <aside class="v-middle">
+    <a
+      href
+      class="button-fixed-size button-fixed-size-big button-white-no-border"
+      ng-class="{ 'button-white-no-border': $ctrl.emailGroupPage, 'button-white-no-border': !$ctrl.emailGroupPage }"
+      ng-repeat="action in $ctrl.email_actions | filter:{ Available: true }"
+      uib-tooltip="{{action.Name}}"
+      tooltip-append-to-body="true"
+      ng-click="action.action(action)">
+      <span class="text-action"><i class="fal" ng-class="action.Icon"></i></span>
+    </a>
+
+    <div ng-if="$ctrl.isMovableFolder" ng-class="{ 'display-inline-block': !$ctrl.emailGroupPage, 'pull-right': $ctrl.emailGroupPage }" uib-dropdown uib-tooltip="{{ 'EMAILS.TABLE_TOOLBAR.MOVE_TO' | translate }}" tooltip-append-to-body="true">
+      <a
+        href
+        class="button-fixed-size button-fixed-size-big button-white-no-border"
+        style="width: 50px"
+        ng-class="{ 'button-white-no-border': $ctrl.emailGroupPage, 'button-white-no-border': !$ctrl.emailGroupPage, 'disabled': $ctrl.loadingMove }"
+        ng-disabled="$ctrl.loadingMove"
+        uib-dropdown-toggle>
+        <span class="text-action"><i ng-class="$ctrl.loadingMove ? 'fal fa-spinner fa-spin' : 'fal fa-folder-upload'"></i></span>
+        <i class="fal fa-angle-down dropdown-sign"></i>
+      </a>
+      <ul class="dropdown-max-height dropdown-menu white-dropdown-menu dropdown-colored-icons no-padding-top" style="width: auto" uib-dropdown-menu>
+        <div class="dropdown-subtitle">{{ 'EMAILS.TABLE_TOOLBAR.FOLDERS' | translate }}</div>
+        <li ng-repeat="action in $ctrl.folder_tree" ng-include="'email_action_folder_tree'" ng-click="action.action(action)">
+        </li>
+      </ul>
+    </div>
+
+    <a
+      class="button-fixed-size button-fixed-size-big button-white-no-border"
+      ng-class="{ 'button-white-no-border': $ctrl.emailGroupPage, 'button-white-no-border': !$ctrl.emailGroupPage }"
+      uib-tooltip="{{ 'EMAILS.TABLE_TOOLBAR.ACTIONS.DELETE_THREAD' | translate }}"
+      tooltip-append-to-body="true"
+      ng-click-confirm="{{ 'EMAILS.TABLE_TOOLBAR.ACTIONS.DELETE_THREAD_WARNING' | translate }}"
+      reversible="false"
+      ng-click="$ctrl.deleteEmailGroups()">
+      <span class="text-action"><i ng-class="!$ctrl.loadingDelete ? 'fal fa-trash': 'fal fa-spinner fa-spin'"></i></span>
+    </a>
+  </aside>
+</div>
+
+<script type="text/ng-template" id="email_action_folder_tree">
+  <a class="white-dropdown-link" href>
+    <div class="hbox">
+      <aside class="v-middle text-left width-20">
+        <i class="fal" ng-class="action.icon.Class"></i>
+      </aside>
+      <aside class="v-middle text-left"
+      uib-tooltip="{{ action.name }}"
+      tooltip-append-to-body="true"
+      tooltip-placement="auto right"
+      >{{action.name.length < 20 ? action.name : action.name.substring(0, 17) + '...'}}
+      </aside>
+    </div>
+  </a>
+  <ul class="email-tabletoolbar__subfolder-tree" ng-if="(action.subFolders | filter:$ctrl.folder_action_filtering).length > 0">
+    <li ng-repeat="action in action.subFolders | filter:$ctrl.folder_action_filtering" ng-include="'email_action_folder_tree'" ng-click="$event.stopPropagation(); action.action(action)"></li>
+  </ul>
+</script>

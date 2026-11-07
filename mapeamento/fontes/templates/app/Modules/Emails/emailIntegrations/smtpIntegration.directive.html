@@ -1,0 +1,270 @@
+<div class="vbox header-or-footer">
+  <section class="scrollable">
+    <div class="top-wrapper" ng-form="smtp_integration_form" data-cy="smtp-integration-form">
+      <form class="clearfix" autocomplete="off" name="smtpIntegrationCtrl.form">
+
+        <div>
+          <div class="form-group col-sm-12">
+            <div class="hbox font-title font-thin white-content b-b-1" href>
+              Status
+            </div>
+            <div class="font-semi-big mt-10">
+              <div class="font-bold" ng-class="smtpIntegrationCtrl.integrationStatus.color">{{ smtpIntegrationCtrl.integrationStatus.text }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="smtpIntegrationCtrl.showDepreciationWarning('google')">
+          <div class="form-group col-sm-12">
+            <div class="font-semi-big ml-5">
+              <span class="font-bold font-big text-danger m-0"><i class="fas fa-exclamation-triangle"></i>&nbsp;{{ 'GENERICS.ATTENTION!' | translate }}</span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_WARNING' | translate_with_replace: { account: 'Gmail', company: 'Google' }) | to_trusted"></span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_INFO' | translate_with_replace: { account: 'Gmail', company: 'Google' }) | to_trusted"></span>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="smtpIntegrationCtrl.showDepreciationWarning('microsoft')">
+          <div class="form-group col-sm-12">
+            <div class="font-semi-big ml-5">
+              <span class="font-bold font-big text-danger m-0"><i class="fas fa-exclamation-triangle"></i>&nbsp;{{ 'GENERICS.ATTENTION!' | translate }}</span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_WARNING' | translate_with_replace: { account: 'Outlook', company: 'Microsoft' }) | to_trusted"></span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_INFO' | translate_with_replace: { account: 'Outlook', company: 'Microsoft' }) | to_trusted"></span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div ng-if="smtpIntegrationCtrl.showIntegrateWithAccountSection" class="form-group col-sm-12">
+              <div class="hbox font-title font-thin white-content b-b-1" href>
+                {{ 'EMAILS.INTEGRATIONS.QUICK_INTEGRATION' | translate  }}
+              </div>
+          </div>
+
+          <div ng-if="smtpIntegrationCtrl.showGmailBtn" class="form-group col-sm-12">
+            <a id="google-gmail" class="button button-white button-google" ng-class="{'--disabled': smtpIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="smtpIntegrationCtrl.authorizeIntegration('google', false)">
+              <img width="18" height="18"
+                ng-src="{{smtpIntegrationCtrl.rootUrl + '/assets/images/google_logo_alpha.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.GOOGLE_LOGIN' | translate  }}
+              </span>
+            </a>
+            <loading-tooltip loading="smtpIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+          <div ng-if="smtpIntegrationCtrl.showGoogleBtn" class="form-group col-sm-12">
+            <a id="google-api" class="button button-white button-google" ng-class="{'--disabled': smtpIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="smtpIntegrationCtrl.authorizeIntegration('google', true)">
+              <img width="18" height="18"
+                ng-src="{{smtpIntegrationCtrl.rootUrl + '/assets/images/google_logo_alpha.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.GOOGLE_LOGIN' | translate  }}
+              </span>
+            </a>
+            <loading-tooltip loading="smtpIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+          <div ng-if="smtpIntegrationCtrl.showOutlook" class="form-group col-sm-12">
+            <a id="ms-outlook" class="button button-white button-google" ng-class="{'--disabled': smtpIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="smtpIntegrationCtrl.authorizeIntegration('ms', false)">
+              <img width="18" height="18"
+                ng-src="{{smtpIntegrationCtrl.rootUrl + '/assets/images/ms-symbollockup_mssymbol_19.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.MICROSOFT_LOGIN' | translate  }}
+              </span>
+            </a>
+            <loading-tooltip loading="smtpIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+          <div ng-if="smtpIntegrationCtrl.showMSBtn" class="form-group col-sm-12">
+            <a id="ms-graph-api" class="button button-white button-google" ng-class="{'--disabled': smtpIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="smtpIntegrationCtrl.authorizeIntegration('ms', true)">
+              <img width="18" height="18"
+                ng-src="{{smtpIntegrationCtrl.rootUrl + '/assets/images/ms-symbollockup_mssymbol_19.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.MICROSOFT_LOGIN' | translate  }}
+              </span>
+            </a>
+            <loading-tooltip loading="smtpIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+        </div>
+
+        <div ng-if="!smtpIntegrationCtrl.loadingOauthIntegration">
+          <div class="form-group col-sm-12">
+            <div class="hbox font-title font-thin white-content b-b-1" href>
+              {{ !smtpIntegrationCtrl.has_smtp ? ('EMAILS.INTEGRATIONS.INTEGRATE_WITH_OTHERS' | translate) : ('EMAILS.INTEGRATIONS.BASIC_CONFIG' | translate) }}
+            </div>
+          </div>
+          <div class="form-group col-sm-12">
+            <div class="input-group">
+              <div class="input-group-addon white-content force-right-border width-90">{{ 'EMAILS.INTEGRATIONS.EMAIL' |
+                translate }}<span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                    class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                    ng-class="{ 'text-danger': smtpIntegrationCtrl.form.smtp_address.$invalid && smtpIntegrationCtrl.form.$submitted }"></i></span>
+              </div>
+              <input
+                ng-class="{'has-error': smtpIntegrationCtrl.form.smtp_address.$invalid && smtpIntegrationCtrl.form.$submitted}"
+                name="smtp_address" class="form-control input-sm" ng-required="true"
+                ng-model="smtpIntegrationCtrl.model.email" autocomplete="chrome-off"
+                ng-change="smtpIntegrationCtrl.checkForCommonHost()"
+                ng-blur="smtpIntegrationCtrl.checkIfShouldOpenAdvancedConfig()">
+            </div>
+            <div class="gap-5"></div>
+            <div class="input-group">
+              <div class="input-group-addon white-content force-right-border width-90">{{ 'EMAILS.INTEGRATIONS.PASSWORD'
+                | translate }}<span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                    class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                    ng-class="{ 'text-danger': smtpIntegrationCtrl.form.smtp_password.$invalid && smtpIntegrationCtrl.form.$submitted }"></i></span>
+              </div>
+              <input
+                ng-class="{'has-error': smtpIntegrationCtrl.form.smtp_password.$invalid && smtpIntegrationCtrl.form.$submitted}"
+                name="smtp_password" class="form-control input-sm" type="password" ng-required="true"
+                autocomplete="chrome-off" ng-model="smtpIntegrationCtrl.model.password">
+            </div>
+            <div class="gap-5"></div>
+            <span class="text-muted font-small">
+              {{ 'EMAILS.INTEGRATIONS.PASSWORD_DESCRIPTION' | translate }}
+            </span>
+          </div>
+          <div
+            ng-if="smtpIntegrationCtrl.selected_default_host.server === 'Outlook' || smtpIntegrationCtrl.model.host.includes('office365')">
+            <div class="form-group col-sm-12">
+              <a class="hbox font-title font-thin white-content b-b-1" href
+                ng-click="smtpIntegrationCtrl.showOutlookIntegrationInfo = !smtpIntegrationCtrl.showOutlookIntegrationInfo">
+                <aside class="v-middle">
+                  {{ 'EMAILS.INTEGRATIONS.HOW_TO_CONFIG_OUTLOOK' | translate }}
+                </aside>
+                <aside class="v-middle text-right">
+                  <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i class="fal"
+                      ng-class="{'fa-angle-down': !smtpIntegrationCtrl.showOutlookIntegrationInfo, 'fa-angle-up': smtpIntegrationCtrl.showOutlookIntegrationInfo}"></i></span>
+                </aside>
+              </a>
+            </div>
+            <div class="form-group col-sm-12" ng-if="smtpIntegrationCtrl.showOutlookIntegrationInfo">
+              <strong><span class="text-danger">{{ 'GENERICS.ATTENTION!' | translate }}</span> {{
+                'EMAILS.INTEGRATIONS.HOW_TO_CONFIG_OUTLOOK_TITLE' | translate }}</strong><br />
+              <ul style="margin-right: 90px">
+                <li ng-bind-html="smtpIntegrationCtrl.howToConfigOutlookBlock"></li>
+                <li ng-bind-html="smtpIntegrationCtrl.howToConfigOutlookTwoFactor"></li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-sm-12">
+            <a class="hbox font-title font-thin white-content b-b-1" href
+              ng-click="smtpIntegrationCtrl.show_advanced_config = !smtpIntegrationCtrl.show_advanced_config">
+              <aside class="v-middle">
+                {{ 'EMAILS.INTEGRATIONS.ADVANCED_CONFIG' | translate }}
+              </aside>
+              <aside class="v-middle text-right">
+                <i class="fal dropdown-sign"
+                  ng-class="{'fa-angle-down': !smtpIntegrationCtrl.show_advanced_config, 'fa-angle-up': smtpIntegrationCtrl.show_advanced_config}"></i>
+              </aside>
+            </a>
+          </div>
+          <div
+            ng-if="smtpIntegrationCtrl.show_advanced_config  || (smtpIntegrationCtrl.form.$submitted && smtpIntegrationCtrl.form.$invalid)">
+            <div class="form-group col-sm-12">
+              <div class="column-container">
+                <aside class="v-middle">
+                  <span class="font-semi-big">{{ 'EMAILS.INTEGRATIONS.GET_DEFAULT_SERVER_CONFIG' | translate }}</span>
+                </aside>
+                <div class="gap-5"></div>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <select ng-options="host as host.server for host in smtpDefaultConfig" class="form-control input-sm"
+                      ng-model="smtpIntegrationCtrl.selected_default_host"
+                      ng-change="smtpIntegrationCtrl.selectCommonHost()"></select>
+                  </div>
+                </aside>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <span class="font-semi-big">{{ 'EMAILS.INTEGRATIONS.ADDRESS_AND_PORT_CONFIG' | translate }}</span>
+              <div class="gap-5"></div>
+              <div class="input-group">
+                <div class="input-group-addon white-content force-right-border width-120">{{
+                  'EMAILS.INTEGRATIONS.SERVER_ADDRESS' | translate }}<span
+                    uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                      class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                      ng-class="{ 'text-danger': smtpIntegrationCtrl.form.smtp_host.$invalid && smtpIntegrationCtrl.form.$submitted }"></i></span>
+                </div>
+                <input
+                  ng-class="{'has-error': smtpIntegrationCtrl.form.smtp_host.$invalid && smtpIntegrationCtrl.form.$submitted}"
+                  name="smtp_host" class="form-control input-sm" ng-required="true"
+                  ng-model="smtpIntegrationCtrl.model.host">
+              </div>
+              <div class="gap-5"></div>
+              <div class="input-group">
+                <div class="input-group-addon white-content force-right-border width-80">{{ 'EMAILS.INTEGRATIONS.PORT' |
+                  translate }}<span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                      class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                      ng-class="{ 'text-danger': smtpIntegrationCtrl.form.smtp_port.$invalid && smtpIntegrationCtrl.form.$submitted }"></i></span>
+                </div>
+                <input name="smtp_port"
+                  ng-class="{'has-error': smtpIntegrationCtrl.form.smtp_port.$invalid && smtpIntegrationCtrl.form.$submitted}"
+                  class="form-control input-sm" ng-required="true" ng-model="smtpIntegrationCtrl.model.port">
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="column-container">
+                <aside class="v-middle">
+                  <span class="font-semi-big">{{ 'EMAILS.INTEGRATIONS.USES_SSL' | translate }}</span>
+                </aside>
+                <div class="gap-5"></div>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input name="smtp_ssl" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-7" type="checkbox"
+                      ng-model="smtpIntegrationCtrl.model.has_ssl">
+                    <label for="cmn-toggle-7"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12" ng-if="smtpIntegrationCtrl.has_save_inbox">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <span class="font-semi-big">{{ 'EMAILS.INTEGRATIONS.STORE_EMAIL_COPY' | translate }}</span>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-save-inbox" type="checkbox"
+                      ng-model="smtpIntegrationCtrl.model.save_inbox">
+                    <label class="pull-right" for="cmn-toggle-save-inbox"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group col-sm-12">
+          <div class="gap-15"></div>
+          <a class="button button-action" href ng-click="smtpIntegrationCtrl.updateSmtp()"
+            ng-if="!smtpIntegrationCtrl.has_smtp">
+            <i class="fas fa-play button-icon"></i>
+            {{ 'EMAILS.INTEGRATIONS.ENABLE_INTEGRATION' | translate }}
+          </a>
+          <a class="button button-action" href ng-click="smtpIntegrationCtrl.updateSmtp()"
+            ng-if="smtpIntegrationCtrl.has_smtp">
+            <i class="fas fa-save button-icon"></i>
+            {{ 'EMAILS.INTEGRATIONS.UPDATE_INTEGRATION' | translate }}
+          </a>
+          <a class="button button-white" href ng-click="smtpIntegrationCtrl.deleteSmtp()"
+            ng-if="smtpIntegrationCtrl.has_smtp">
+            <div class="text-danger">
+              <i class="fal fa-pause button-icon"></i>
+              <span class="text-regular">{{ 'EMAILS.INTEGRATIONS.DISABLE_INTEGRATION' | translate }}</span>
+            </div>
+          </a>
+          <loading-tooltip loading="smtpIntegrationCtrl.loading" form="smtpIntegrationCtrl.form"></loading-tooltip>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,111 @@
+<div class="dropdown" ng-class="{'open': fieldPathSelectionCtrl.dropdown_open}">
+  <a class="btn button button-white dropdown-toggle border-left-square" ng-click="fieldPathSelectionCtrl.buildFieldSelection()">
+    <span class="text-action"><i class="fal fa-mouse-pointer button-icon"></i></span>
+    {{ fieldPathSelectionCtrl.dynamicLabel || fieldPathSelectionCtrl.label || ('FORMS.FIELD_SELECTION.FIELDS' | translate) }}
+    <i class="fal fa-angle-down dropdown-sign"></i>
+  </a>
+  <ul class="dropdown-max-height-bigger dropdown-menu regular-background-dropdown-menu no-padding-top width-300" ng-class="{'pull-right': !fieldPathSelectionCtrl.skipPullRight}">
+    <div class="rectangular-wrapper light-background">
+      <div class="hbox">
+        <aside class="v-middle font-big">
+          <a ng-if="fieldPathSelectionCtrl.current_path.length === 0" href>
+            {{ fieldPathSelectionCtrl.entityName }}
+          </a>
+          <span class="break-word-container">
+            <a ng-repeat="path in fieldPathSelectionCtrl.current_path" class="d-block" ng-click="$event.stopPropagation(); $event.preventDefault(); fieldPathSelectionCtrl.goBack(path, $last)" href>
+              <span ng-if="path.field.key === 'contact_last_interaction_record' || path.field.key === 'deal_last_interaction_record'">
+                {{ 'FORMS.FIELD_SELECTION.LAST_INTERACTION_RECORD' | translate }}
+              </span>
+              <span ng-if="path.field.key !== 'contact_last_interaction_record' && path.field.key !== 'deal_last_interaction_record'">
+                {{path.field.label}}
+              </span>
+              {{!$last && fieldPathSelectionCtrl.current_path.length > 1 ? '/' : ''}}
+            </a>
+          </span>
+          <div class="gap-3"></div>
+          <a class="inline-link-neutral font-small display-inline-block" href ng-if="fieldPathSelectionCtrl.current_path.length > 1" ng-click="$event.stopPropagation(); $event.preventDefault(); fieldPathSelectionCtrl.goBack(null, $last)">
+            <div class="hbox">
+              <aside class="v-middle font-very-small width-10">
+                <i class="fas fa-chevron-left regular-icon"></i>
+              </aside>
+              <aside class="v-middle">
+                {{ 'GENERICS.BACK' | translate }}
+              </aside>
+            </div>
+          </a>
+          <a class="inline-link-neutral font-small display-inline-block" href ng-if="fieldPathSelectionCtrl.removeFieldSelectionFn" ng-click="$event.stopPropagation(); $event.preventDefault(); fieldPathSelectionCtrl.removeFieldSelection()">
+            <div class="hbox">
+              <aside class="v-middle font-very-small width-10">
+                <i class="fas fa-times regular-icon"></i>
+              </aside>
+              <aside class="v-middle">
+                {{ 'FORMS.FIELD_SELECTION.REMOVE_SELECTION' | translate }}
+              </aside>
+            </div>
+          </a>
+        </aside>
+        <aside>
+          <div class="gap-3"></div>
+          <a class="button-fixed-size button-fixed-size-medium button-light-background pull-right" ng-click="fieldPathSelectionCtrl.closeDropdown()">
+            <i class="fas fa-times text-neutral"></i>
+          </a>
+        </aside>
+      </div>
+    </div>
+    <div class="input-group full-width window-search has-feedback">
+      <div class="input-group">
+        <input class="form-control input-sm square-border" type="text" ng-model="fieldPathSelectionCtrl.field_filtering.field.label" ng-change="fieldPathSelectionCtrl.filterTree()" placeholder="{{ 'FORMS.FIELD_SELECTION.SEARCH_FIELD' | translate }}">
+        <div class="input-group-btn" ng-if="fieldPathSelectionCtrl.self.Profile.FieldsCreatePermission">
+          <button
+            ng-if="fieldPathSelectionCtrl.open_popover"
+            class="btn button button-white"
+            uib-popover-template="fieldPathSelectionCtrl.popoverTemplate"
+            popover-title="{{ 'FORMS.FIELD_SELECTION.QUICK_FIELD_CREATE_MODAL_TITLE' | translate }}"
+            popover-append-to-body="true"
+            popover-placement="auto right"
+            popover-is-open="fieldPathSelectionCtrl.is_open">
+            {{ 'FORMS.FIELD_SELECTION.QUICK_FIELD_CREATE' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="regular-background">
+      <a class="button-short button button-full-width button-background text-left data-visualization" href ng-repeat="node in fieldPathSelectionCtrl.filtered_fields" ng-if="node.field.propertyName !== 'CreatesGoogleCalendarEvent'">
+        <div class="hbox stretch">
+          <aside
+            class="v-middle"
+            uib-tooltip="{{ (node.field.key === 'contact_last_interaction_record' || node.field.key === 'deal_last_interaction_record') ? ('FORMS.FIELD_SELECTION.LAST_INTERACTION_RECORD' | translate) : node.field.label }}"
+            tooltip-enable="node.field.label.length > 30"
+            tooltip-append-to-body="true"
+            ng-class="{ 'button-darkest-background disabled': node.disable_selection }"
+            ng-click="fieldPathSelectionCtrl.callFieldSelection(node)"
+          >
+            <div class="font-regular-weight font-regular-size mini-wrapper">
+              <i ng-class="'width-20 mr-5 fal ' + node.field.icon"></i>
+              <span ng-if="node.field.key === 'contact_last_interaction_record' || node.field.key === 'deal_last_interaction_record'">
+                {{ ('FORMS.FIELD_SELECTION.LAST_INTERACTION_RECORD' | translate).length > 30 ? (('FORMS.FIELD_SELECTION.LAST_INTERACTION_RECORD' | translate).substring(0, 29) + '...') : ('FORMS.FIELD_SELECTION.LAST_INTERACTION_RECORD' | translate) }}
+              </span>
+              <span ng-if="node.field.key !== 'contact_last_interaction_record' && node.field.key !== 'deal_last_interaction_record'">
+                {{ node.field.label.length > 30 ? (node.field.label.substring(0, 29) + '...') : node.field.label }}
+              </span>
+            </div>
+          </aside>
+          <aside class="v-middle text-center width-30 text-neutral" ng-if="node.child_nodes && node.child_nodes.length > 0 && !node.force_disable_nesting" ng-click="$event.stopPropagation(); $event.preventDefault(); fieldPathSelectionCtrl.goDeeper(node)">
+            <div class="f-1 ai-center background-field-path-action field-path-action jc-center">
+              <i class="fas fa-chevron-right"></i>
+            </div>
+          </aside>
+        </div>
+      </a>
+    </div>
+  </ul>
+</div>
+
+<script type="text/ng-template" id="quick-field-template">
+  <div ng-if="fieldPathSelectionCtrl.is_open" ng-form name="quick_field_form">
+    <forms model="fieldPathSelectionCtrl.new_field_model" fields="fieldPathSelectionCtrl.new_field_form" form="quick_field_form" formula-trigger-hide-or-disable="true" start-entity-id="fieldPathSelectionCtrl.startEntityId"></forms>
+    <button type="button" class="button button-action mleft15" ng-disabled="fieldPathSelectionCtrl.loading" ng-click="fieldPathSelectionCtrl.submitControl(fieldPathSelectionCtrl.new_field_model, quick_field_form)" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+    <button type="button" class="button button-white" ng-disabled="fieldPathSelectionCtrl.loading" ng-click="fieldPathSelectionCtrl.cancel()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+    <loading-tooltip loading="fieldPathSelectionCtrl.loading" form="quick_field_form"></loading-tooltip>
+  </div>
+</script>

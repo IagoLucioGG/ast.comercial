@@ -1,0 +1,27 @@
+<div class="side-scroll white-content b-t-1 b-b-1">
+  <div class="side-scroll-container white-content wrapper nowrap">
+    <div class="simple-inline v-top">
+      <a class="button button-height button-square button-white-light-border width-120 height-120" href ng-click="productImageSelectCtrl.openImagePopup()">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <div>
+              <i class="fal fa-images font-very-big-title"></i>
+              <div class="gap-5"></div>
+              <span class="font-big">
+                {{ 'PRODUCTS.ENTITY_MODAL_UTILS.NEW_IMAGE' | translate }}
+              </span>
+            </div>
+          </aside>
+        </div>
+      </a>
+    </div>
+    <div class="simple-inline v-top" ng-if="imageUrl">
+      <div class="width-120 height-120 picture-container">
+        <a class="button-fixed-size button-white button-fixed-size-small picture-delete" href ng-click="productImageSelectCtrl.deleteImage()">
+          <i class="fal fa-trash fixing-fixed-size-button"></i>
+        </a>
+        <img class="stretch" ng-src="{{imageUrl}}">
+      </div>
+    </div>
+  </div>
+</div>

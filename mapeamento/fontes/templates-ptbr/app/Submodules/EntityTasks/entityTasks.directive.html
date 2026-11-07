@@ -1,0 +1,64 @@
+<div class="dropdown-menu-card-tasks">
+  <div uib-dropdown>
+    <a class="deal-task-click" id="task_list" href ng-click="entityTasksCtrl.getObjectTasks()" uib-dropdown-toggle>
+      <i ng-class="{'text-warning': entityTasksCtrl.next_task === 'today', 'text-danger': entityTasksCtrl.next_task === 'late', 'text-muted': entityTasksCtrl.next_task === 'future' || !entityTasksCtrl.next_task || entityTasksCtrl.next_task === '', 'fal fa-calendar-exclamation': entityTasksCtrl.next_task, 'fal fa-calendar': !entityTasksCtrl.next_task || entityTasksCtrl.next_task === '' }" class="font-big" aria-label="ícone de tarefa do card"></i>
+    </a>
+    <ul aria-labelledby="tasks" class="white-dropdown-menu pull-right no-padding-top width-230 tasks-ul" uib-dropdown-menu>
+      <div class="dropdown-subtitle">
+        Tarefas pendentes
+      </div>
+      <div class="task-dropdown">
+        <li class="wrapper text-neutral font-semi-big text-center" ng-if="!entityTasksCtrl.initial_load">
+          <div class="loader table-loader"></div>
+        </li>
+        <li ng-if="entityTasksCtrl.initial_load && entityTasksCtrl.tasks.length === 0" class="wrapper text-muted font-semi-big text-center">
+          Nenhuma tarefa agendada
+        </li>
+        <li ng-if="entityTasksCtrl.initial_load && entityTasksCtrl.tasks.length > 0" ng-repeat="task in entityTasksCtrl.tasks" class="short-wrapper b-b-1 white-content">
+          <div class="white-dropdown-link">
+            <div class="hbox fixed-size">
+              <aside class="width-45" ng-if="task.Editable">
+                <div class="round-checkbox" ng-click="entityTasksCtrl.toggleFinishTask(task); $event.stopPropagation()">
+                  <div class="b-2" ng-if="!task.loadingIcon" uib-tooltip="Finalizar tarefa" tooltip-append-to-body="true">
+                    <i class="fas fa-check activity-icon"></i>
+                  </div>
+                  <div class="loader modal-loader task-list-loader" style="width: 27px; height: 27px; margin: 0" ng-if="task.loadingIcon"></div>
+                </div>
+              </aside>
+              <aside>
+                <span class="font-bold">{{task.Title || task.Type.Name}}</span>
+                <div class="overflow-hidden nowrap ellipsis" ng-show="task.Description.length > 0">
+                  {{task.Description}}
+                </div>
+                <div class="mtop5"><span class="timeline-clock">
+                  <div><i class="fal fa-clock"> </i> {{task.formatted_date}}</div></span></div>
+                  <div class="gap-5"></div>
+                  <div class="big-simple-inline text-muted font-big">
+                    <span class="inline-link-muted">
+                      <a class="font-small" ui-sref="{{state.current.name + '.task({id: task.Id})'}}">
+                        Visualizar
+                      </a>
+                    </span>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </li>
+        </div>
+        <div class="white-content b-t-1"></div>
+        <span ng-if="entityTasksCtrl.has_permission_to_create_task" class="button no-border button-square button-full-width button-big button-white text-left" ui-sref="{{state.current.name + '.newtask({contact: entityTasksCtrl.contact, deal: entityTasksCtrl.deal})'}}">
+          <strong class="font-regular-size">
+            <span class="text-action"><i class="fal fa-calendar-plus simple-line-space"></i></span>
+            Nova tarefa
+          </strong>
+        </span>
+        <div class="white-content b-t-1"></div>
+        <span class="button no-border button-square button-full-width button-big button-white text-left" ui-sref="{{state.current.name + '.newinteractionrecord({contact: entityTasksCtrl.contact, deal: entityTasksCtrl.deal})'}}">
+          <span class="text-action"><i class="fal fa-comment-plus simple-line-space"></i></span>
+          <strong class="font-regular-size">
+            Novo registro de interação
+          </strong>
+        </span>
+      </ul>
+    </div>
+  </div>

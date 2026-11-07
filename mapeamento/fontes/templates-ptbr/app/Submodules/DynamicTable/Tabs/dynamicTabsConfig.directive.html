@@ -1,0 +1,72 @@
+<div class="vbox">
+  <section id="tabs-list" class="scrollable">
+    <div class="height-50 side-wrapper light-background b-b-1 width-250">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="font-very-big font-thin text-neutral" data-cy="dynamic-tab-title">
+            Abas
+          </div>
+        </aside>
+        <aside class="text-right v-middle">
+          <div 
+            id="new_tab_button" 
+            class="button button-light-background-border" 
+            ng-if="dynamicTabsConfigCtrl.can_create_new" 
+            data-cy="dynamic-tabs-config-brn-new-tab"
+            ng-click="dynamicTabsConfigCtrl.openTabModal(false)" 
+            aria-label="Botão de 'Nova aba'" 
+          >
+            Nova aba
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="wrapper" ui-sortable="dynamicTabsConfigCtrl.options" ng-model="tabs">
+      <div class="hbox" ng-repeat="tab in tabs track by $index" data-cy="{{ cypressPrefix + '-tab' }}">
+        <a href 
+          role="button"
+          class="nowrap data-visualization button button-full-width button-very-big text-left" 
+          data-cy="{{ cypressPrefix + '-tab-' + tab.Id }}"
+          ng-class="{'button-light-background': tab.Id !== currentTab.Id, 'button-dry-background': tab.Id === currentTab.Id}" 
+          ng-click="tab.Id !== currentTab.Id && dynamicTabsConfigCtrl.changeCurrentTab(tab)" 
+          aria-label="{{ 'ARIA_LABELS.TAB' | translate_with_replace: { tabName: tab.name } }}"
+        >
+          <div class="hbox position-relative">
+            <aside 
+              class="v-middle" 
+              uib-tooltip="{{tab.name}}"
+              tooltip-enable="tab.name.length >= 20"
+              tooltip-placement="auto top"
+              tooltip-append-to-body="true"
+            >
+              <span
+                class="font-regular-weight font-regular-size"
+                ng-class="{'text-regular': tab.Id !== currentTab.Id}">
+                {{tab.name}}
+              </span>
+            </aside>
+            <aside class="v-middle width-50 text-right edit-tab">
+              <dynamic-tabs-options 
+                front-tab="tab"
+                api-tab="$parent.currentApiTab"
+                tab-index="$index"
+                filter="filter"
+                entity="entity"
+                enable-config-tab-options="dynamicTabsConfigCtrl.enable_config_tab_options"
+                has-new-mailchimp-integration="dynamicTabsConfigCtrl.hasNewMailchimpIntegration"
+                user-has-power-bi="dynamicTabsConfigCtrl.user_has_power_bi"
+                current-tab-total-items="currentTabTotalItems"
+                can-integrate-mailchimp="dynamicTabsConfigCtrl.canIntegrateMailchimp"
+                mailchimp-account-integration-id="dynamicTabsConfigCtrl.mailchimpAccountIntegrationId"
+                mailchimp-integrated-tab-id="dynamicTabsConfigCtrl.mailchimpIntegratedTabId"
+                mailchimp-tab-change-callback-fn="dynamicTabsConfigCtrl.processMailchimpIntegration"
+                applied-filter="appliedFilter"
+                ></dynamic-tabs-options>
+            </aside>
+          </div>
+        </a>
+        <div class="gap-5"></div>
+      </div>
+    </div>
+  </section>
+</div>

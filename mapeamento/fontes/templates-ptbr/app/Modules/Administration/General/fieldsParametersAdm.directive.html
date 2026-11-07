@@ -1,0 +1,52 @@
+<dynamic-modal
+  modal-id="fields"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="Opções pré-cadastradas"
+  toggle-modal="fieldsParametersAdmCtrl.toggle_modal"
+  cypress-prefix="administration-field-parameters"
+  is-fetching-modal-content="fieldsParametersAdmCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll">
+          <section class="scrollable">
+            <div>
+              <table class="table table-hover white-table">
+                <tbody ng-repeat="field_entity in fieldsParametersAdmCtrl.grouped_fields" data-cy="field-parameters-{{field_entity.name}}">
+                  <tr class="clickable-line" ng-click="field_entity.show = !field_entity.show">
+                    <td class="font-uppercase font-bold">
+                      <span class="text-regular">{{field_entity.name}}</span>
+                      <span class="pull-right text-regular">
+                        <i class="fal fa-angle-down dropdown-sign"></i>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr class="contact-workplace-button open-size-slide" ng-repeat="field in field_entity.fields" ng-click="fieldsParametersAdmCtrl.openField(field)" ng-if="field_entity.show">
+                    <td>
+                      {{field.label}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="fields_slide" modal-side-slide-title="Opções do campo">
+    <div class="vbox header-or-footer scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="col-sm-12 clearfix product-section" ng-if="fieldsParametersAdmCtrl.selected_field.dynamic && !fieldsParametersAdmCtrl.selected_field.secondaryEntityId">
+          <field-options field="fieldsParametersAdmCtrl.selected_field" editing="true" get-local="true"></field-options>
+        </div>
+        <div class="col-sm-12 clearfix product-section" ng-if="!fieldsParametersAdmCtrl.selected_field.dynamic">
+          <fixed-field-options field="fieldsParametersAdmCtrl.selected_field"></fixed-field-options>
+        </div>
+      </section>
+    </div>
+  </modal-side-slide>
+</dynamic-modal>

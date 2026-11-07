@@ -1,0 +1,17 @@
+<div class="hbox stretch regular-background">
+  <aside id="dynamic-tabs-size-slide" class="light-background width-250 size-slide position-relative" ng-class="{'hide-size-slide': !toggleSidebar}" ng-style="(toggleSidebar && {'display': 'table-cell'}) || (!toggleSidebar && {'display': 'none'})">
+    <dynamic-tabs-config entity="entity" tabs="dynamicTabsCtrl.front_tabs" original-tabs="tabs" ng-show="dynamicTabsCtrl.can_open_config" current-tab="dynamicTabsCtrl.front_tab" current-api-tab="currentTab" filter="filter" current-tab-total-items="dynamicTabsCtrl.current_tab_total_items" applied-filter="appliedFilter" cypress-prefix="{{cypressPrefix}}"></dynamic-tabs-config>
+  </aside>
+  <aside class="position-relative light-background" style="width: 0.1px;">
+    <a class="button button-white size-slide-button" ng-click="dynamicTabsCtrl.toggleSizeSlide()" ng-class="{'hidden-panel-button': toggleSidebar, 'visible-panel-button': !toggleSidebar}">
+      <span class="font-big"><i class="fal" ng-class="{'fa-long-arrow-left': toggleSidebar, 'fa-long-arrow-right': !toggleSidebar}"></i></span>
+    </a>
+  </aside>
+  <aside class="white-content b-l-1">
+    <div class="vbox side-scroll">
+      <section class="scrollable">
+        <dynamic-table ng-if="dynamicTabsCtrl.front_tab" entity="entity" table-edit-fn="tableEditFn" current-tab="dynamicTabsCtrl.front_tab" opt-filter="filter" no-item-found-string="noItemFoundString" total-items-fn="dynamicTabsCtrl.totalItemsFn" row-click-redirect="rowClickRedirect" disable-inline-edit="disableInlineEdit" pipeline="pipeline"></dynamic-table>
+      </section>
+    </div>
+  </aside>
+</div>

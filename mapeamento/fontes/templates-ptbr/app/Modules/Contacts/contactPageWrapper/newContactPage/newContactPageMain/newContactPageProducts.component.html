@@ -1,0 +1,80 @@
+<div>
+  <div class="side-scroll">
+    <div class="header-customer-products">
+      <div class="regular-header new-header white-content b-b-1">
+        <div class="hbox h-100 d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center justify-content-between flex-1">
+            <div class="text-right">
+              <div class="input-group width-250">
+                <input class="form-control input-sm light-background" placeholder="Pesquisar"
+                  ng-model="$ctrl.quick_filter"
+                  ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)">
+                <div class="input-group-btn width-10">
+                  <a ng-click="$ctrl.quickFilter($ctrl.quick_filter)"
+                    class="btn button button-neutral-gray special-search-button">
+                    <i class="fas fa-search text-neutral"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="dropdown mright10">
+                <filters-menu filters="$ctrl.filters" applied-filter="$ctrl.applied_filter"
+                  filter-actions-fn="$ctrl.filterActions"></filters-menu>
+              </div>
+              <div class="dropdown" ng-if="$ctrl.has_contact_product_create_permission && !$ctrl.blockCreate">
+                <a class="button button-action nowrap" ng-click="$ctrl.openNewContactProduct()">
+                  <i class="button-icon fas {{ $ctrl.customizables.contacts_products_module.icon_class }}"></i>
+                  (Novo:contact_product:Aa:s) (name:contact_product:aa:s)
+                </a>
+              </div>
+              <div class="dropdown" ng-if="$ctrl.isContactPreview">
+                <button href class="button button-action nowrap" ng-class="{disabled: !$ctrl.selected_rows.length}"
+                  ng-click="$ctrl.propagateSelectedRows();" ng-disabled="!$ctrl.selected_rows.length"
+                  ng-click-confirm="{{ 'CONTACTS.CONTACT_PAGE.CONFIRM_INCLUDE_CONTACT_PRODUCTS' | translate_sentence_with_replace : { number: $ctrl.selected_rows.length } }}"
+                  reversible="true">
+                  <i class="fas button-icon fa-check-square"></i>
+                  Incluir produtos selecionados
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="regular-header new-header white-content b-b-1 sub-header"
+        ng-if="$ctrl.selected_rows.length && $ctrl.total_items && !$ctrl.applied_filter && !$ctrl.quick_filter_string">
+        <div class="d-flex align-items-center justify-content-center h-100">
+          <div>
+            <span ng-if="$ctrl.is_selected_all_rows">
+              {{ 'CONTACTS.CONTACT_PAGE.ALL_SELECTED_PRODUCTS' | translate_sentence_with_replace : { number: $ctrl.total_items } }}
+            </span>
+            <span ng-if="!$ctrl.is_selected_all_rows">
+              {{ 'CONTACTS.CONTACT_PAGE.QUANTITY_SELECTED_PRODUCTS' | translate_sentence_with_replace : { number: $ctrl.selected_rows.length } }}
+            </span>
+            <a class="select-all-product" href ng-click="$ctrl.selectAllRows();">
+              <span ng-if="$ctrl.is_selected_all_rows">
+                Limpar seleção
+              </span>
+              <span ng-if="!$ctrl.is_selected_all_rows">
+                {{ 'CONTACTS.CONTACT_PAGE.SELECT_ALL_PRODUCTS' | translate_sentence_with_replace : { number: $ctrl.total_items } }}
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content">
+      <dynamic-table ng-if="$ctrl.can_load" entity="$ctrl.current_entity" opt-filter="$ctrl.current_filter"
+        table-edit-fn="$ctrl.editTablePatch" current-tab="$ctrl.front_tab" block-table-edit="$ctrl.blockCreate"
+        entity-page-loader="true" total-items-fn="$ctrl.totalItemsFn" allow-row-select="$ctrl.selectRowCallback"
+        rows-select-callback-fn="$ctrl.selectRowsCallbackFn" keep-selected-rows="true">
+      </dynamic-table>
+    </div>
+  </div>
+</div>
+<portal>
+  <filters-modal ng-if="$ctrl.state.current.name.endsWith('filter')" modal-id="filter_modal"
+    entity="$ctrl.current_entity" filter-actions-fn="$ctrl.filterActions" remove-simple-filter="true">
+  </filters-modal>
+</portal>

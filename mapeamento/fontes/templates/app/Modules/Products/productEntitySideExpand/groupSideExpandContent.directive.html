@@ -1,0 +1,64 @@
+<div class="vbox deals-vbox scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container dark-background">
+    <div class="gap-15"></div>
+    <standard-loader margin-top="30" loading="!groupContentCtrl.initial_load"></standard-loader>
+    <div ng-if="groupContentCtrl.initial_load">
+      <div class="side-wrapper">
+        <a class="button button-action full-width"
+          ng-if="groupContentCtrl.self.Profile.ProductsCreatePermission"
+          ng-click="groupContentCtrl.popover_open = !groupContentCtrl.popover_open"
+          uib-popover-template="groupContentCtrl.popoverTemplate"
+          popover-append-to-body="true"
+          popover-enable="groupContentCtrl.popover_open"
+          popover-is-open="groupContentCtrl.popover_open"
+          popover-trigger="none"
+          popover-placement="auto right"
+          popover-title="{{'GENERICS.CREATE' | translate}}">
+          {{'PRODUCTS.SIDE_EXPAND.GROUP.CREATE_PRODUCT' | translate}}
+        </a>
+      </div>
+      <div class="gap-15"></div>
+      <div class="side-wrapper">
+        <input class="form-control input-sm light-background" placeholder="{{'PRODUCTS.SIDE_EXPAND.GROUP.PLACEHOLDER' | translate}}" ng-if="editing" ng-model="groupContentCtrl.current_query" ng-model-options="{ debounce: 300 }" ng-change="groupContentCtrl.filterProductEntity()">
+      </div>
+      <div class="gap-40"></div>
+      <div class="mini-side-wrapper" infinite-scroll='groupContentCtrl.loadProducts()' infinite-scroll-disabled="groupContentCtrl.reached_end">
+        <div class="contact-page-person-list">
+          <div ng-repeat="product in groupContentCtrl.products">
+            <div class="short-side-bottom-wrapper">
+              <div class="font-big text-break-word display-flex justify-between">
+                <a class="inline-link-regular d-block" href>{{product.Name}}</a>
+                <div class="display-flex align-self-start">
+                  <a class="button button-light-background-border button-plus pull-right modal-options-button" href ng-if="!editing" ng-click="groupContentCtrl.removeProductEntity($index)">
+                    <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                  </a>
+                  <a class="button button-light-background-border button-plus pull-right modal-options-button" href ng-if="editing && groupContentCtrl.self.Profile.ProductsDeletePermission" ng-click-confirm="{{ 'PRODUCTS.ENTITY_MODAL.DELETE_CONFIRM' | translate }}" reversible="false" ng-click="groupContentCtrl.removeProductEntity($index, product)">
+                    <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                  </a>
+                  <a class="button button-light-background-border button-plus pull-right modal-options-button" href ng-click="product.open_collapse = !product.open_collapse">
+                    <i class="fa font-super-super-small text-neutral" ng-class="{'fa-arrow-up-right-and-arrow-down-left-from-center': !product.open_collapse, 'fa-arrow-down-left-and-arrow-up-right-to-center': product.open_collapse}"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="gap-15"></div>
+              <infos-widget ng-if="product.open_collapse" form-key="product_quick_form" entity-type="Product" patch-fn="groupContentCtrl.patchFn(model)" model="product"></infos-widget>
+            </div>
+          </div>
+          <standard-loader ng-if="!groupContentCtrl.can_load" optionalclass="'timeline-loader'" loading="!groupContentCtrl.can_load"></standard-loader>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="text/ng-template" id="new-product-for-group-template">
+  <div ng-form name="quick_new_product_form">
+    <forms model="groupContentCtrl.new_product_model" is-popover="true" fields="groupContentCtrl.new_product_form" form="quick_new_product_form"></forms>
+
+    <button type="button" class="button button-action mleft15" ng-disabled="!groupContentCtrl.can_create_load" ng-click="groupContentCtrl.submitControl(groupContentCtrl.new_product_model, quick_new_product_form)" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+
+    <button type="button" class="button button-white" ng-disabled="!groupContentCtrl.can_create_load" ng-click="groupContentCtrl.closePopover()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+    <span class="text-danger font-very-big" ng-if="quick_new_product_form.$submitted && quick_new_product_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="{{ 'FORMS.REQUIRED_FIELDS_NOT_FILLED' | translate }}"><i class="fad fa-exclamation-triangle"></i></span>
+    <div class="loader" ng-if="!groupContentCtrl.can_create_load"></div>
+  </div>
+</script>

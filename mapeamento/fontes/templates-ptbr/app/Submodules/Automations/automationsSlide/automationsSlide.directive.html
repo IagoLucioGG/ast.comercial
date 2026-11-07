@@ -1,0 +1,13 @@
+<automations-list
+    ng-if="automationsSlideCtrl.current_content === 1"
+    stage="stage"
+    entity="automationsSlideCtrl.main_entity"
+    toggle-automation-enabled-callback-fn="automationsSlideCtrl.toggleAutomationEnabledCallbackFn({enabled: enabled})"
+></automations-list>
+<automation-content
+ng-if="automationsSlideCtrl.current_content === 2"
+stage="stage"
+entity="automationsSlideCtrl.main_entity"
+automation="automationsSlideCtrl.current_automation"
+update-automation-callback-fn="automationsSlideCtrl.updateSelectedAutomation"></automation-content>
+<formula-config-slide automation-formulas="true"></formula-config-slide>

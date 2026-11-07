@@ -1,0 +1,92 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="true"
+  thin="true"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'PRODUCTS.NEW_ENTITY_MODAL.TITLE' | translate_with_replace : { name: newProductEntityModalCtrl.product_entity.name } }}"
+  toggle-modal="newProductEntityModalCtrl.toggle_modal"
+  ng-form
+  name="new_product_entity_form"
+  side-expands="newProductEntityModalCtrl.side_expands"
+  select-side-expand-callback-fn="newProductEntityModalCtrl.selectSideExpand(side_expand, open)"
+  cypress-prefix="{{newProductEntityModalCtrl.cypressPrefix}}"
+  is-fetching-modal-content="newProductEntityModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="hbox stretch">
+      <aside class="overflow-hidden full-width">
+        <div class="vbox scroll-shadow neutral-shadow">
+          <section class="scrollable scroll-shadow-container">
+            <product-image-select
+              ng-if="newProductEntityModalCtrl.product_entity.Id === 10" image-url="newProductEntityModalCtrl.new_product_entity_model.product_image">
+            </product-image-select>
+
+            <div ng-if="newProductEntityModalCtrl.product_entity.Id === 41">
+              <div class="gap-15"></div>
+              <forms
+                model="newProductEntityModalCtrl.new_product_entity_model"
+                fields="[newProductEntityModalCtrl.product_part_parent_product]"
+                form="new_product_entity_form">
+              </forms>
+              <div ng-class="{'invalid-input-ploomes-host': newProductEntityModalCtrl.invalid_product_part_type_select}">
+                <product-part-type-select model-change-callback-fn="newProductEntityModalCtrl.selectedPartType(item_id, type)">
+                </product-part-type-select>
+              </div>
+              <div class="gap-70"></div>
+            </div>
+
+            <div class="gap-50"></div>
+
+            <div ng-repeat="section in newProductEntityModalCtrl.sections">
+              <div ng-if="section.Id === 'null'">
+                <forms model="newProductEntityModalCtrl.new_product_entity_model" fields="newProductEntityModalCtrl.forms[$index]" form="new_product_entity_form"></forms>
+                <div class="gap-20"></div>
+              </div>
+              <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+                <modal-section section-form="new_product_entity_form" name="section.name" section-id="section.Id" collapsed="section.collapsed">
+                  <forms model="newProductEntityModalCtrl.new_product_entity_model" fields="newProductEntityModalCtrl.forms[$index]" form="new_product_entity_form" name="'section_form_' + section.Id"></forms>
+                </modal-section>
+                <div class="gap-20"></div>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <allowed-users ng-if="newProductEntityModalCtrl.product_entity.Id === 11" model="newProductEntityModalCtrl.allowed_views_model" title="('PRODUCTS.WHO_CAN_SEE_PRODUCT_GROUP' | translate)"></allowed-users>
+            </div>
+
+            <div ng-if="newProductEntityModalCtrl.product_entity.Id === 41 &&newProductEntityModalCtrl.new_product_entity_model.product_part_parent_product">
+              <product-part-arrays
+                parent-product-id="newProductEntityModalCtrl.new_product_entity_model.product_part_parent_product[0].Id"
+                model="newProductEntityModalCtrl.new_product_entity_model"
+                model-change-callback-fn="newProductEntityModalCtrl.changedPartArrays(default_parts, required_parts, suggested_parts, blocked_parts)">
+              </product-part-arrays>
+            </div>
+
+          </section>
+        </div>
+      </aside>
+      <aside class="white-content b-l-1 proposal-hidden" id="new_proposal" ng-class="{'width-450-proposal': newProductEntityModalCtrl.selected_side_expand.open}">
+        <product-entity-side-expand
+          ng-if="newProductEntityModalCtrl.selected_side_expand.open"
+          side-expand="newProductEntityModalCtrl.selected_side_expand"
+          model="newProductEntityModalCtrl.new_product_entity_model"
+          entity="newProductEntityModalCtrl.product_entity"
+          selected-items="newProductEntityModalCtrl.selected_expand_items">
+        </product-entity-side-expand>
+      </aside>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button class="button button-action pull-right" ng-disabled="newProductEntityModalCtrl.loading" ng-click="newProductEntityModalCtrl.submitControl(newProductEntityModalCtrl.new_product_entity_model, new_product_entity_form)">
+            <i class="fas fa-save button-icon"></i>
+            Salvar
+          </button>
+          <loading-tooltip loading="newProductEntityModalCtrl.loading" form="new_product_entity_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

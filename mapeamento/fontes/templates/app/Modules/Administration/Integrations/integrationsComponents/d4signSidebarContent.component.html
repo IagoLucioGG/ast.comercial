@@ -1,0 +1,570 @@
+<div ng-if="d4signCtrl.can_load">
+  <!-- We’re hiding this div following a top-down decision. To enable it again in the future, just remove the ng-if.  -->
+  <div class="d4-sign-fields-container" ng-if="false">
+    <div class="flex-1">
+      <label class="fake-label">{{ 'INTEGRATIONS.D4SIGN_VAULT' | translate }}</label>
+      <new-field
+        field="d4signCtrl.safeField"
+        model="d4signCtrl.safeAndFolderModel"
+        property="'safe'"
+        required="false"
+        disabled="false"
+        wide="true"
+        model-change-callback="d4signCtrl.safeChangeCallback(new_val, old_val, first_trigger, mappedFieldObj)"
+        hide-label="false"
+      ></new-field>
+    </div>
+    <div class="flex-1">
+      <label class="fake-label">{{ 'INTEGRATIONS.D4SIGN_FOLDER' | translate }}</label>
+      <new-field
+        field="d4signCtrl.folderField"
+        model="d4signCtrl.safeAndFolderModel"
+        property="'folder'"
+        required="false"
+        disabled="d4signCtrl.folderFieldDisabled"
+        wide="true"
+        model-change-callback=""
+        hide-label="false"
+      ></new-field>
+    </div>
+  </div>
+
+  <div class="side-wrapper mt-10" ng-class="{ 'd4sign-timeline-reorder-active': d4signCtrl.useOrdination && !d4signCtrl.signFired }">
+    <div
+      ng-model="d4signCtrl.signers"
+      ui-sortable="{
+        disabled: !d4signCtrl.useOrdination && !d4signCtrl.signFired,
+        placeholder: 'd4sign-sortable-placeholder',
+        tolerance: 'pointer',
+        handle: '.drag-icon',
+        helper: d4signCtrl.helper,
+        cancel: '.non-draggable',
+        items: '> :not(.non-draggable)',
+      }"
+    >
+      <span ng-repeat="signer in d4signCtrl.signers track by $index" class="signer-card" ng-class="{ 'non-draggable': d4signCtrl.signFired }">
+        <div class="hbox display-flex">
+          <div ng-class="{ 'width-0': !d4signCtrl.useOrdination || d4signCtrl.signFired, 'width-18': d4signCtrl.useOrdination && !d4signCtrl.signFired }" style="transition: width 150ms">
+            <i class="fas fa-grip-vertical text-darkest-neutral drag-icon"></i>
+          </div>
+          <div class="signer-content-card">
+            <aside class="activity-history" ng-class="{ 'activity-history-first-item': $index === 0 }">
+              <div>
+                <div class="no-color-timeline timeline-rouded-item" ng-class="{ 'timeline-rounded-item__signed': signer.Signed }">
+                  <span ng-class="{ 'opacity-0': !d4signCtrl.useOrdination }" ng-if="d4signCtrl.useOrdination">{{ $index + 1 }}</span>
+                  <i class="fas fa-check" ng-if="!d4signCtrl.useOrdination && signer.Signed"></i>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="hbox fixed-size">
+                <aside>
+                  <div class="gap-10"></div>
+                  <div class="gap-3"></div>
+
+                  <div class="f-1">
+                    <div class="mr-15" ng-if="d4signCtrl.isEmailMethod(signer)">
+                      <i class="fa fa-envelope font-bold"></i>
+                      <span class="font-semi-big ellipsis">
+                        {{ ' ' + signer.Email }}
+                      </span>
+                    </div>
+                    <div class="mr-15" ng-if="!d4signCtrl.isEmailMethod(signer)">
+                      <i class="fa fa-phone font-bold"></i>
+                      <span class="font-semi-big ellipsis">
+                        {{ ' ' + d4signCtrl.getContactPhone(signer) }}
+                      </span>
+                    </div>
+                    <div class="mr-15" ng-if="signer.Phone">
+                      <i class="fa fa-phone font-bold"></i>
+                      <span class="font-semi-big ellipsis">
+                        {{ ' ' + signer.Phone }}
+                      </span>
+                    </div>
+                    <div class="mr-15">
+                      <i class="fa fa-user font-bold"></i>
+                      <span class="font-semi-big ellipsis">
+                        {{ ' ' + signer.Name }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="gap-3"></div>
+                  <div class="f-1">
+                    <div class="text-darkest-neutral mr-15">
+                      {{ 'INTEGRATIONS.MAIN_AGENT' | translate }}
+                    </div>
+                    <div class="text-darkest-neutral mr-15">
+                      {{ signer.SignerType.Name }} {{ ('INTEGRATIONS.BY' | translate).toLowerCase() + ' ' + signer.SendMethod.Name }}
+                    </div>
+                    <div class="text-darkest-neutral mr-15">
+                      {{ signer.AuthenticationType.Name }}
+                    </div>
+                    <div
+                      class="mr-15 text-darkest-neutral mr-15"
+                      ng-repeat="property in signer.OtherProperties | filter: d4signCtrl.signerFrontFilter"
+                    >
+                      {{ 'INTEGRATIONS.SIGN_IN' | translate }}:
+                      {{ ' ' + property.StringValue }}
+                    </div>
+                  </div>
+                </aside>
+                <aside class="width-30 v-middle">
+                  <a
+                    class="button-white button-fixed-size button-fixed-size-small"
+                    href
+                    ng-click="d4signCtrl.removeDocumentSigner($index)"
+                    ng-class="{ 'disabled': d4signCtrl.blockExcludeButton }"
+                    ng-if="d4signCtrl.signingOpen && !(d4signCtrl.remove_loading && d4signCtrl.removingSignerIndex === $index) && !signer.Signed"
+                  >
+                    <i class="fal fa-trash fixing-fixed-size-button"></i>
+                  </a>
+                  <loading-tooltip loading="d4signCtrl.remove_loading && d4signCtrl.removingSignerIndex === $index"> </loading-tooltip>
+                  <div class="gap-3"></div>
+                </aside>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <div class="display-flex" ng-class="{ 'space-gap-5': d4signCtrl.useOrdination && !d4signCtrl.signFired }">
+          <span></span>
+          <div class="activity-history hist-separator" style="transition: margin 150ms"></div>
+        </div>
+      </span>
+    </div>
+
+    <div class="display-flex" ng-if="d4signCtrl.signingOpen" ng-class="{ 'space-gap-5': d4signCtrl.useOrdination && d4signCtrl.signers.length && !d4signCtrl.signFired }">
+      <span></span>
+      <div class="width-max100-min0 f-1 display-flex" style="transition: margin 150ms;" ng-class="{'hist-separator': d4signCtrl.signers.length }">
+        <aside class="activity-history activity-history-sign-min-width" ng-class="{ 'activity-history-first-item': !d4signCtrl.signers.length }">
+          <div>
+            <div class="no-color-timeline timeline-rouded-item"></div>
+          </div>
+        </aside>
+        <aside style="min-width: 0; max-width: 100%; flex: 1;">
+          <div>
+            <div class="font-bold font-semi-big">{{ 'INTEGRATIONS.NEW_SIGNER' | translate }}</div>
+            <div class="gap-3"></div>
+
+            <div class="docusign-fields">
+              <div class="f-1 sign-fields-container">
+                <div class="dropdown margin-right-5" ng-if="d4signCtrl.signerTypes.length > 0">
+                  <a
+                    class="button button-white-light-border dropdown-toggle nowrap sign-fields__button"
+                    href
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    uib-tooltip="{{ d4signCtrl.selectedSignType.Name }}"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="d4signCtrl.isTooltipEnabled('signerTypeDropdown')"
+                    id="signerTypeDropdown"
+                  >
+                    <span>
+                      <span class="text-action"><i class="button-icon fal fa-pencil"></i></span>
+                      {{ d4signCtrl.selectedSignType.Name }}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li ng-repeat="signer_type in d4signCtrl.signerTypes" ng-click="d4signCtrl.changeSignerType(signer_type)">
+                      <a class="white-dropdown-link" href>
+                        {{ signer_type.Name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="dropdown margin-right-5" ng-if="d4signCtrl.signerTypes.length > 0">
+                  <a
+                    class="button button-white-light-border dropdown-toggle nowrap sign-fields__button"
+                    href
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    uib-tooltip="Via {{ d4signCtrl.selectedSendMethod.Name }}"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="d4signCtrl.isTooltipEnabled('selectedSSendMethodDropdown')"
+                    id="selectedSSendMethodDropdown"
+                  >
+                    <span>
+                      <span class="text-action"><i class="button-icon fal fa-pencil"></i></span>
+                      Via {{ d4signCtrl.selectedSendMethod.Name }}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li ng-repeat="sendMethod in d4signCtrl.sendMethods" ng-click="d4signCtrl.changeSendMethod(sendMethod)">
+                      <a class="white-dropdown-link" href>
+                        {{ sendMethod.Name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="dropdown margin-right-5" ng-if="d4signCtrl.signerTypes.length > 0">
+                  <a
+                    class="button button-white-light-border dropdown-toggle nowrap sign-fields__button"
+                    href
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    uib-tooltip="{{ d4signCtrl.selectedAuthenticationType.Name }}"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="d4signCtrl.isTooltipEnabled('selectedAuthenticationTypeDropdown')"
+                    id="selectedAuthenticationTypeDropdown"
+                  >
+                    <span>
+                      <span class="text-action"><i class="button-icon fal fa-comment-alt-lines"></i></span>
+                      {{ d4signCtrl.selectedAuthenticationType.Name }}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li
+                      ng-repeat="authenticationType in d4signCtrl.authenticationTypes"
+                      ng-click="d4signCtrl.changeAuthenticationType(authenticationType)"
+                    >
+                      <a class="white-dropdown-link" href>
+                        {{ authenticationType.Name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="dropdown" ng-if="d4signCtrl.anchors_filter.length > 0 && !d4signCtrl.selectedSignType.MoreAnchor">
+                  <a
+                    class="button button-white-light-border dropdown-toggle nowrap sign-fields__button"
+                    href
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    uib-tooltip="{{ d4signCtrl.selectedAnchor.Name }}"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="d4signCtrl.isTooltipEnabled('selectedAnchorDropdown')"
+                    id="selectedAnchorDropdown"
+                  >
+                    <span>
+                      <span class="text-action"><i class="button-icon fa-anchor fal regular-fa"></i></span>
+                      {{ d4signCtrl.selectedAnchor.Name }}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li ng-repeat="anchors in d4signCtrl.anchors_filter" ng-click="d4signCtrl.changeAnchor(anchors)">
+                      <a class="white-dropdown-link" href>
+                        {{ anchors.Name }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="f-1 fd-col">
+                <div class="sign-inputs-container-column">
+                  <!-- Here is the signer fields -->
+                  <!-- email field (email) -->
+                  <div class="input-group" ng-if="d4signCtrl.selectedSendMethod.Id === 2" ng-class="{ 'multiple-email-on': d4signCtrl.multipleEmailFeature }">
+                    <input
+                      class="form-control input-sm"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('email') }"
+                      placeholder="{{ 'INTEGRATIONS.SIGNER_EMAIL_INPUT_PLACEHOLDER' | translate }}"
+                      ng-model="d4signCtrl.emailInputModel"
+                      autocomplete="off"
+                      uib-typeahead="email for email in d4signCtrl.getEmails($viewValue)"
+                      typeahead-wait-ms="300"
+                      typeahead-popup-template-url="email-search-popup.html"
+                      typeahead-on-select="d4signCtrl.selectSignerEmail($item)"
+                      aria-label="{{ 'ARIA_LABELS.EMAILS.SEARCH_INPUT' | translate }}"
+                      typeahead-min-length="0"
+                      ng-change="d4signCtrl.validateInputValue(d4signCtrl.emailInputModel, 'email', d4signCtrl.signers)"
+                    />
+                    <script type="text/ng-template" id="email-search-popup.html">
+                      <ul class="dropdown-menu deal-title-suggestion email-search-popup" ng-show="isOpen() && !moveInProgress">
+                        <div class="suggestion-group-header"
+                          ng-repeat-start="match in matches track by $index"
+                          ng-show="match.model.groupHeader"
+                          ng-bind="match.model.groupHeader"></div>
+                        <li class="uib-typeahead-match" ng-repeat-end
+                          ng-class="{'quicksearch-keyboard': isActive($index)}"
+                          ng-mouseenter="selectActive($index)"
+                          ng-click="selectMatch($index)" role="option"
+                          aria-label="{{ 'ARIA_LABELS.EMAILS.OPTION' | translate_with_replace: { email: match.model.email || match.model.Email } }}">
+                          {{ match.model.email || match.model.Email }}
+                          <div class="text-muted text-small">
+                            {{ match.model.name || match.model.Name }}<span ng-if="match.model.isMain"> | {{ 'EMAILS.MAIN' | translate }}</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </script>
+                  </div>
+
+                  <!-- name field (email) -->
+                  <div class="input-group" ng-if="d4signCtrl.selectedSendMethod.Id === 2">
+                    <input
+                      class="form-control input-sm"
+                      ng-change="d4signCtrl.validateInputValue(d4signCtrl.nameInputModel, 'name', d4signCtrl.signers)"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('name') }"
+                      placeholder="{{ 'INTEGRATIONS.SIGNER_NAME_INPUT_PLACEHOLDER' | translate }}"
+                      ng-model="d4signCtrl.nameInputModel"
+                    />
+                  </div>
+
+                  <!-- contact field (wpp) -->
+                  <div class="input-group" ng-if="d4signCtrl.selectedSendMethod.Id === 1">
+                    <input
+                      placeholder="{{ 'INTEGRATIONS.SIGNER_CONTACT_INPUT_PLACEHOLDER' | translate }}"
+                      class="form-control input-sm"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('contactname') }"
+                      ng-model="d4signCtrl.contactNameModel"
+                      ng-change="d4signCtrl.validateInputValue(d4signCtrl.contactNameModel, 'contactname', d4signCtrl.signers)"
+                      autocomplete="off"
+                      uib-typeahead="phone for phone in d4signCtrl.getContactPhones($viewValue)"
+                      typeahead-wait-ms="300"
+                      typeahead-popup-template-url="contact-search-popup"
+                      typeahead-on-select="d4signCtrl.selectContact($item)"
+                      typeahead-min-length="0"
+                      typeahead-select-on-blur="true"
+                    />
+                    <script type="text/ng-template" id="contact-search-popup">
+                      <ul
+                        class="dropdown-menu deal-title-suggestion"
+                        ng-show="isOpen() && !moveInProgress"
+                      >
+                        <li
+                          class="uib-typeahead-match"
+                          ng-class="{'quicksearch-keyboard': isActive($index)}"
+                          ng-repeat="match in matches track by $index"
+                          ng-mouseenter="selectActive($index)"
+                          ng-click="selectMatch($index)"
+                          role="option"
+                        >
+                          {{ match.model.Name }}
+                          <div class="text-muted text-small">
+                            {{ match.model.Phones[0].PhoneNumber }}
+                          </div>
+                        </li>
+                      </ul>
+                    </script>
+                  </div>
+
+                  <!-- phone field (wpp) -->
+                  <div class="input-group" ng-if="d4signCtrl.selectedSendMethod.Id === 1">
+                    <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+                      <button class="btn button button-white" uib-dropdown-toggle ng-disabled="disabled">
+                        <img
+                          ng-src="{{
+                            d4signCtrl.rootUrl +
+                              '/assets/images/paises/' +
+                              (d4signCtrl.contactPhoneCountry ? d4signCtrl.contactPhoneCountry.toLowerCase() : 'none') +
+                              '.png'
+                          }}"
+                          width="15"
+                        />
+                      </button>
+                      <ul class="dropdown-menu white-dropdown-menu" uib-dropdown-menu style="z-index: 10000">
+                        <li ng-repeat="country in d4signCtrl.phoneCountries">
+                          <a href class="white-dropdown-link" ng-click="d4signCtrl.changeContactPhoneCountry(country)">
+                            <img
+                              ng-src="{{
+                                d4signCtrl.rootUrl + '/assets/images/paises/' + (country.Short2 ? country.Short2.toLowerCase() : 'none') + '.png'
+                              }}"
+                              width="15"
+                            />
+                            <span>{{ country.PhoneMask.replace('?', '') }}</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href class="white-dropdown-link" ng-click="d4signCtrl.changeContactPhoneCountry(null)">
+                            <img ng-src="{{ d4signCtrl.rootUrl + '/assets/images/paises/withoutmask.png' }}" width="15" />
+                            <span>{{ 'FORMS.NO_MASK' | translate }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <input
+                      class="form-control input-sm"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('phone') }"
+                      ng-model="d4signCtrl.selectedContactPhone"
+                      ng-change="d4signCtrl.validateInputValue(d4signCtrl.selectedContactPhone, 'phone', d4signCtrl.signers)"
+                      autocomplete="off"
+                      ui-mask="{{ d4signCtrl.contactPhoneMask }}"
+                    />
+                  </div>
+
+                  <!-- phone input (authentication) -->
+                  <div
+                    class="input-group"
+                    ng-if="
+                      d4signCtrl.selectedAuthenticationType &&
+                      (d4signCtrl.selectedAuthenticationType.ExternalKey === 'embed_methodauth;sms' ||
+                        d4signCtrl.selectedAuthenticationType.ExternalKey === 'embed_methodauth;whats')
+                    "
+                  >
+                    <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+                      <button class="btn button button-white" uib-dropdown-toggle ng-disabled="disabled">
+                        <img
+                          ng-src="{{
+                            d4signCtrl.rootUrl +
+                              '/assets/images/paises/' +
+                              (d4signCtrl.country_phone ? d4signCtrl.country_phone.toLowerCase() : 'none') +
+                              '.png'
+                          }}"
+                          width="15"
+                        />
+                      </button>
+                      <ul class="dropdown-menu white-dropdown-menu" uib-dropdown-menu style="z-index: 10000">
+                        <li ng-repeat="country in d4signCtrl.phoneCountries">
+                          <a href class="white-dropdown-link" ng-click="d4signCtrl.changeCountry(country)">
+                            <img
+                              ng-src="{{
+                                d4signCtrl.rootUrl + '/assets/images/paises/' + (country.Short2 ? country.Short2.toLowerCase() : 'none') + '.png'
+                              }}"
+                              width="15"
+                            />
+                            <span>{{ country.PhoneMask.replace('?', '') }}</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href class="white-dropdown-link" ng-click="d4signCtrl.changeCountry(null, model)">
+                            <img ng-src="{{ d4signCtrl.rootUrl + '/assets/images/paises/withoutmask.png' }}" width="15" />
+                            <span>{{ 'FORMS.NO_MASK' | translate }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <input
+                      class="form-control input-sm"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('authphone') }"
+                      ng-model="d4signCtrl.authenticationNumberInputModel"
+                      ng-change="d4signCtrl.validateInputValue(d4signCtrl.authenticationNumberInputModel, 'authphone', d4signCtrl.signers)"
+                      ng-focus="d4signCtrl.focus=true"
+                      ng-blur="d4signCtrl.focus=false"
+                      autocomplete="off"
+                      uib-typeahead="phone for phone in d4signCtrl.getPhones($viewValue)"
+                      ui-mask="{{ d4signCtrl.applied_phone_mask }}"
+                      typeahead-wait-ms="300"
+                      typeahead-popup-template-url="phone-search-popup.html"
+                      typeahead-focus-first="false"
+                      typeahead-on-select="d4signCtrl.selectSignerPhone($item)"
+                      typeahead-min-length="0"
+                    />
+                    <script type="text/ng-template" id="phone-search-popup.html">
+                      <ul class="dropdown-menu deal-title-suggestion" ng-show="isOpen() && !moveInProgress">
+                        <li class="uib-typeahead-match"
+                          ng-class="{'quicksearch-keyboard': isActive($index)}"
+                          ng-repeat="match in matches track by $index"
+                          ng-mouseenter="selectActive($index)"
+                          ng-click="selectMatch($index)" role="option">
+                          {{ match.model.Phone.PhoneNumber }}
+                          <div class="text-muted text-small">
+                            {{ match.model.Name }}
+                          </div>
+                        </li>
+                      </ul>
+                    </script>
+                  </div>
+
+                  <!-- access code (authentication) -->
+                  <div class="input-group" ng-if="d4signCtrl.selectedAuthenticationType.ExternalKey === 'password_code'">
+                    <input
+                      class="form-control input-sm"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('code') }"
+                      placeholder="{{ 'INTEGRATIONS.SIGNER_CODE_INPUT_PLACEHOLDER' | translate }}"
+                      ng-model="d4signCtrl.accessCodeInputModel"
+                      ng-change="d4signCtrl.validateInputValue(d4signCtrl.accessCodeInputModel, 'code', d4signCtrl.signers)"
+                      uib-tooltip="{{ 'INTEGRATIONS.SIGNER_CODE_INPUT_PLACEHOLDER' | translate }}"
+                      tooltip-append-to-body="true"
+                      tooltip-placement="bottom"
+                      tooltip-enable="!d4signCtrl.accessCodeInputModel.length"
+                    />
+                  </div>
+
+                  <!-- pix fullname (authentication) -->
+                  <div class="input-group" ng-if="d4signCtrl.selectedAuthenticationType.ExternalKey === 'auth_pix'">
+                    <input
+                      class="form-control input-sm"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('fullname') }"
+                      placeholder="{{ 'INTEGRATIONS.FULL_NAME_INPUT' | translate }}"
+                      ng-model="d4signCtrl.fullnameInputModel"
+                      ng-change="d4signCtrl.validateInputValue(d4signCtrl.fullnameInputModel, 'fullname', d4signCtrl.signers)"
+                      uib-tooltip="{{ 'INTEGRATIONS.FULL_NAME_INPUT' | translate }}"
+                      tooltip-append-to-body="true"
+                      tooltip-placement="bottom"
+                      tooltip-enable="!d4signCtrl.fullnameInputModel.length"
+                    />
+                  </div>
+
+                  <!-- pix cpf (authentication) -->
+                  <div class="input-group" ng-if="d4signCtrl.selectedAuthenticationType.ExternalKey === 'auth_pix'">
+                    <new-field
+                      field="d4signCtrl.cpf_field"
+                      model="d4signCtrl.cpfInputModel"
+                      hide-label="true"
+                      property="'cpf_field'"
+                      required="false"
+                      disabled="false"
+                      wide="true"
+                      ng-class="{ 'sign-fields__invalid-input': d4signCtrl.invalidFieldsSet.has('cpf') }"
+                      model-change-callback="d4signCtrl.cpfChangeCallback(new_val, old_val, first_trigger, mappedFieldObj)"
+                      uib-tooltip="{{ 'INTEGRATIONS.SIGNER_CPF_INPUT_PLACEHOLDER' | translate }}"
+                      tooltip-append-to-body="true"
+                      tooltip-placement="bottom"
+                    ></new-field>
+                  </div>
+                </div>
+
+                <div class="f-1 ai-center jc-center mt-10">
+                  <a class="btn button button-white sign-fields__button" href ng-click="d4signCtrl.addDocumentSigner()">
+                    <span class="text-action"><i class="button-icon fal fa-user-plus"></i></span>
+                    {{ 'GENERICS.ADD' | translate }}
+                  </a>
+                  <div class="loader modal-loader signer-loader signer-loader-sign custom-load-important" ng-if="d4signCtrl.add_loading"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    
+  </div>
+  <div ng-if="!d4signCtrl.signFired" class="ds-section-color b-1 ds-section-d4sign-padding rounded-5 m-20">
+    <div class="hbox-flex px-10">
+      <aside class="v-middle right-wrapper">
+        <div class="font-regular-weight font-size-14">{{ 'INTEGRATIONS.SIGN_ON_THIS_ORDINATION' | translate }}</div>
+      </aside>
+      <aside class="v-middle width-70">
+        <div class="switch pull-right">
+          <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-email" type="checkbox" ng-model="d4signCtrl.useOrdination" />
+          <label for="cmn-toggle-email"></label>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <div
+    class="sign-action-container f-1 jc-center ai-center mt-20"
+    ng-if="(d4signCtrl.signFired && d4signCtrl.signingOpen) || (d4signCtrl.signFired && !d4signCtrl.signingOpen)"
+  >
+    <div class="custom-action-container-sign f-1 ai-center">
+      <div class="f-1 ai-center" ng-if="d4signCtrl.signFired && d4signCtrl.signingOpen">
+        <i class="fa fa-lightbulb-on mr-10 custom-icon-sign"></i>
+        <span>{{ 'INTEGRATIONS.EMAIL_FIRED' | translate }}</span>
+      </div>
+      <div
+        class="btn button button-white mr-5"
+        ng-if="d4signCtrl.signFired && d4signCtrl.signingOpen"
+        ng-click="!d4signCtrl.fire_signing_loading &&  d4signCtrl.refireSigning()"
+        ng-class="{ disabled: d4signCtrl.fire_signing_loading }"
+      >
+        {{ 'INTEGRATIONS.RESEND_FOR_SIGNING' | translate }}
+      </div>
+      <div
+        class="button button-delete height-30"
+        ng-if="d4signCtrl.signFired && d4signCtrl.signingOpen"
+        ng-click="!d4signCtrl.fire_signing_loading && d4signCtrl.fireCancelConfirmationModal('INTEGRATIONS.CONFIRMATION_CANCEL_SIGN_SUBMISSION' | translate, false,  d4signCtrl.cancelSigning)"
+        ng-class="{ disabled: d4signCtrl.fire_signing_loading }"
+      >
+        {{ 'INTEGRATIONS.CANCEL_SUBSCRIPTION_SUBMISSION' | translate }}
+      </div>
+      <div ng-if="d4signCtrl.signFired && !d4signCtrl.signingOpen">
+        <i class="fa fa-check mr-10 custom-icon-sign"></i>
+        <span>{{ 'INTEGRATIONS.FINISHED_DOCUMENT' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<standard-loader loading="!d4signCtrl.can_load" margin-top="15"></standard-loader>

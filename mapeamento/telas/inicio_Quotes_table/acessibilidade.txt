@@ -1,0 +1,663 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - list:
+        - listitem:
+          - button "botão de entrar na aba de propostas":
+            - complementary: 
+            - complementary: Propostas
+        - listitem:
+          - link:
+            - /url: ""
+            - complementary: 
+            - complementary: Documentos
+      - textbox "Buscar pelo nome ou código"
+      - text: 
+    - complementary:
+      - button "botão de criar nova proposta":  Nova proposta
+      - text:  Menu
+      - link "Dropdown de 'Ações de filtros'" [expanded]:
+        - /url: ""
+        - text:  Filtros 
+      - link " Quebrar por propostas ":
+        - /url: ""
+    - complementary:
+      - complementary: Abas
+      - complementary: Nova aba
+      - 'button "botão para selecionar aba: Propostas em andamento"':
+        - complementary: Propostas em andamento
+        - complementary: 
+      - 'button "botão para selecionar aba: Proposta Aceita"':
+        - complementary: Proposta Aceita
+        - complementary: 
+      - 'button "botão para selecionar aba: Propostas perdidas"':
+        - complementary: Propostas perdidas
+        - complementary: 
+      - 'button "botão para selecionar aba: Minhas Propostas Aceitas"':
+        - complementary: Minhas Propostas Aceitas
+        - complementary: 
+      - 'button "botão para selecionar aba: Proposta criadas hoje"':
+        - complementary: Proposta criadas hoje
+        - complementary: 
+      - 'button "botão para selecionar aba: Aba Iago.staff"':
+        - complementary: Aba Iago.staff
+        - complementary: 
+      - 'button "botão para selecionar aba: Propostas anteriores ao carnaval"':
+        - complementary: Propostas anteriores ao carnaval
+        - complementary: 
+      - 'button "botão para selecionar aba: Proposta a serem alteradas."':
+        - complementary: Proposta a serem alteradas.
+        - complementary: 
+    - complementary: 
+    - complementary:
+      - table:
+        - rowgroup:
+          - row "":
+            - columnheader:
+              - complementary: Produtos da proposta
+              - complementary
+            - columnheader:
+              - complementary: Cliente de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Término de Contato de venda
+              - complementary: 
+            - columnheader:
+              - complementary: Motivo de perda de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Meio de contato de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Responsável de Cliente
+              - complementary
+            - columnheader:
+              - complementary: Usuário de Próximo Contato de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Valor
+              - complementary
+            - columnheader:
+              - complementary: Responsável de Cliente de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Data da criação
+              - complementary
+            - columnheader:
+              - complementary: Código
+              - complementary
+            - columnheader:
+              - complementary: Situação de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: CNPJ de Cliente
+              - complementary
+            - columnheader:
+              - complementary: Data de criação de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: CPF de Cliente
+              - complementary
+            - columnheader ""
+        - rowgroup
+        - rowgroup:
+          - 'link "linha da tabela selecionável do item: 700094807"':
+            - cell "Alterdata Contábil First Alterdata Nuvem First Alterdata Bunker Pack - Serviço Implantação/OS":
+              - link "Alterdata Contábil First":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+              - link "Alterdata Bunker":
+                - /url: ""
+              - link "Pack - Serviço Implantação/OS":
+                - /url: ""
+            - cell "Lara da Rosa Teixeira "
+            - cell "Hoje "
+            - cell "_Suspensão do projeto"
+            - cell "PASSIVO SITE ALTERDATA SOFTWARE "
+            - cell "ALTERDATA TEC EM INF LTDA - PORTO ALEGRE ":
+              - link "ALTERDATA TEC EM INF LTDA - PORTO ALEGRE":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - PORTO ALEGRE
+              - text: 
+            - cell "RAFAELOLIVEIRA.POA "
+            - cell "1.533,80 "
+            - cell "ALTERDATA TEC EM INF LTDA - PORTO ALEGRE ":
+              - link "ALTERDATA TEC EM INF LTDA - PORTO ALEGRE":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - PORTO ALEGRE
+              - text: 
+            - cell "18/09/2026 às 12:43"
+            - cell "92444"
+            - cell "Perdida"
+            - cell ""
+            - cell "12/09/2026 às 10:48"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700096800"':
+            - cell "Alterdata Contábil Fit Alterdata Nuvem":
+              - link "Alterdata Contábil Fit":
+                - /url: ""
+              - link "Alterdata Nuvem":
+                - /url: ""
+            - cell "EMBALE "
+            - cell "Hoje "
+            - cell "_Outros"
+            - cell "ATIVO - PROSPECÇÃO - WHATSAPP "
+            - cell "ALTERDATA TEC EM INF LTDA - PALMAS ":
+              - link "ALTERDATA TEC EM INF LTDA - PALMAS":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - PALMAS
+              - text: 
+            - cell "MAYONEREGIS.PALMAS "
+            - cell "535,60 "
+            - cell "ALTERDATA TEC EM INF LTDA - PALMAS ":
+              - link "ALTERDATA TEC EM INF LTDA - PALMAS":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - PALMAS
+              - text: 
+            - cell "07/10/2026 às 09:57"
+            - cell "94344"
+            - cell "Perdida"
+            - cell "00.000.000/0000-00 "
+            - cell "07/10/2026 às 09:52"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700098341"':
+            - cell "Pack - eContador Master Pack - eRadar e-CAC":
+              - link "Pack - eContador Master":
+                - /url: ""
+              - link "Pack - eRadar e-CAC":
+                - /url: ""
+            - cell "CIDADE CONSULTORIA "
+            - cell "Hoje "
+            - cell "_Suspensão do projeto"
+            - cell "ATIVO - PROSPECÇÃO - WHATSAPP "
+            - cell "ALTERDATA TEC EM INF LTDA - MANAUS ":
+              - link "ALTERDATA TEC EM INF LTDA - MANAUS":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - MANAUS
+              - text: 
+            - cell "LARISSE.VENDAS "
+            - cell "1.041,15 "
+            - cell "ALTERDATA TEC EM INF LTDA - MANAUS ":
+              - link "ALTERDATA TEC EM INF LTDA - MANAUS":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - MANAUS
+              - text: 
+            - cell "22/10/2026 às 13:04"
+            - cell "95836"
+            - cell "Perdida"
+            - cell "00.000.000/0000-00 "
+            - cell "28/09/2026 às 09:56"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700100016"':
+            - cell "Alterdata Contábil First Alterdata Nuvem First NF-STOCK Alterdata Bunker":
+              - link "Alterdata Contábil First":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+              - link "NF-STOCK":
+                - /url: ""
+              - link "Alterdata Bunker":
+                - /url: ""
+            - cell "MULTIPLICANDO IDEIAS "
+            - cell "Hoje "
+            - cell "_Outros"
+            - cell "PASSIVO INICIATIVA DO CLIENTE "
+            - cell "ALTERDATA TEC EM INF LTDA - FILIAL RIO ":
+              - link "ALTERDATA TEC EM INF LTDA - FILIAL RIO":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FILIAL RIO
+              - text: 
+            - cell "RAFAELA.RIO "
+            - cell "805,98 "
+            - cell "ALTERDATA TEC EM INF LTDA - FILIAL RIO ":
+              - link "ALTERDATA TEC EM INF LTDA - FILIAL RIO":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FILIAL RIO
+              - text: 
+            - cell "Hoje às 17:27"
+            - cell "97422"
+            - cell "Perdida"
+            - cell "00.000.000/0000-00 "
+            - cell "Hoje às 17:18"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700089018"':
+            - cell "Pack - Serviço Implantação/OS Alterdata Nuvem First Alterdata Bunker":
+              - link "Pack - Serviço Implantação/OS":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+              - link "Alterdata Bunker":
+                - /url: ""
+            - cell "Maria Eliete de Paiva "
+            - cell "Hoje "
+            - cell "_Suspensão do projeto"
+            - cell "ATIVO PROMOTOR DE MARCA "
+            - cell "IGOR.SALVADOR ":
+              - link "IGOR.SALVADOR":
+                - /url: ""
+                - img
+                - text: IGOR.SALVADOR
+              - text: 
+            - cell "LUANA.SALVADOR "
+            - cell "1.509,70 "
+            - cell "IGOR.SALVADOR ":
+              - link "IGOR.SALVADOR":
+                - /url: ""
+                - img
+                - text: IGOR.SALVADOR
+              - text: 
+            - cell "23/07/2026 às 14:25"
+            - cell "86879"
+            - cell "Perdida"
+            - cell ""
+            - cell "17/07/2026 às 16:26"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700094532"':
+            - cell "Alterdata Contábil First Alterdata Nuvem First Alterdata Bunker Pack - Serviço Implantação/OS":
+              - link "Alterdata Contábil First":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+              - link "Alterdata Bunker":
+                - /url: ""
+              - link "Pack - Serviço Implantação/OS":
+                - /url: ""
+            - cell "Jacymara Sacramento "
+            - cell "Hoje "
+            - cell "Outros - community"
+            - cell "ATIVO PROMOTOR DE MARCA "
+            - cell "ALTERDATA TEC EM INF LTDA - SALVADOR ":
+              - link "ALTERDATA TEC EM INF LTDA - SALVADOR":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - SALVADOR
+              - text: 
+            - cell "LUANA.SALVADOR "
+            - cell "1.689,79 "
+            - cell "ALTERDATA TEC EM INF LTDA - SALVADOR ":
+              - link "ALTERDATA TEC EM INF LTDA - SALVADOR":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - SALVADOR
+              - text: 
+            - cell "16/09/2026 às 16:01"
+            - cell "92183"
+            - cell "Perdida"
+            - cell ""
+            - cell "09/09/2026 às 17:53"
+            - cell "000.000.000-00 "
+            - cell
+          - 'link "linha da tabela selecionável do item: 700095336"':
+            - cell "NF-STOCK ERP4ME.One Premium Alterdata Nuvem First Alterdata Bunker Alterdata Contábil Fit":
+              - link "NF-STOCK":
+                - /url: ""
+              - link "ERP4ME.One Premium":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+              - link "Alterdata Bunker":
+                - /url: ""
+              - link "Alterdata Contábil Fit":
+                - /url: ""
+            - cell "Ademildo "
+            - cell "Hoje "
+            - cell "Parou De Responder"
+            - cell "PASSIVO SITE ALTERDATA SOFTWARE "
+            - cell "GAMMIX TECNOLOGIA E GESTAO LTDA. ":
+              - link "GAMMIX TECNOLOGIA E GESTAO LTDA.":
+                - /url: ""
+                - img
+                - text: GAMMIX TECNOLOGIA E GESTAO LTDA.
+              - text: 
+            - cell "DUDA.CAMPOGRANDE "
+            - cell "4.139,50 "
+            - cell "GAMMIX TECNOLOGIA E GESTAO LTDA. ":
+              - link "GAMMIX TECNOLOGIA E GESTAO LTDA.":
+                - /url: ""
+                - img
+                - text: GAMMIX TECNOLOGIA E GESTAO LTDA.
+              - text: 
+            - cell "23/09/2026 às 15:32"
+            - cell "92954"
+            - cell "Perdida"
+            - cell ""
+            - cell "21/09/2026 às 13:20"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700095340"':
+            - cell "Alterdata Contábil First NF-STOCK ERP4ME.One Premium":
+              - link "Alterdata Contábil First":
+                - /url: ""
+              - link "NF-STOCK":
+                - /url: ""
+              - link "ERP4ME.One Premium":
+                - /url: ""
+            - cell "Ademildo "
+            - cell "Hoje "
+            - cell "Parou De Responder"
+            - cell "PASSIVO SITE ALTERDATA SOFTWARE "
+            - cell "GAMMIX TECNOLOGIA E GESTAO LTDA. ":
+              - link "GAMMIX TECNOLOGIA E GESTAO LTDA.":
+                - /url: ""
+                - img
+                - text: GAMMIX TECNOLOGIA E GESTAO LTDA.
+              - text: 
+            - cell "DUDA.CAMPOGRANDE "
+            - cell "2.662,60 "
+            - cell "GAMMIX TECNOLOGIA E GESTAO LTDA. ":
+              - link "GAMMIX TECNOLOGIA E GESTAO LTDA.":
+                - /url: ""
+                - img
+                - text: GAMMIX TECNOLOGIA E GESTAO LTDA.
+              - text: 
+            - cell "23/09/2026 às 15:37"
+            - cell "92958"
+            - cell "Perdida"
+            - cell ""
+            - cell "21/09/2026 às 13:20"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700091449"':
+            - cell "ERP4ME.Shop Essencial Força de venda - Mobile Four Keep ERP4ME.Shop - Minha Empresa Alterdata Nuvem First Alterdata Bunker":
+              - link "ERP4ME.Shop Essencial":
+                - /url: ""
+              - link "Força de venda - Mobile Four Keep":
+                - /url: ""
+              - link "ERP4ME.Shop - Minha Empresa":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+              - link "Alterdata Bunker":
+                - /url: ""
+            - cell "INDUSTRIA E COMERCIO DE ALIMEN "
+            - cell "Hoje "
+            - cell "_Falta de recurso/conversor"
+            - cell "ATIVO - PROSPECÇÃO - WHATSAPP "
+            - cell "FABIO.ARARAQUARA ":
+              - link "FABIO.ARARAQUARA":
+                - /url: ""
+                - img
+                - text: FABIO.ARARAQUARA
+              - text: 
+            - cell "FABIO.ARARAQUARA "
+            - cell "3.334,30 "
+            - cell "FABIO.ARARAQUARA ":
+              - link "FABIO.ARARAQUARA":
+                - /url: ""
+                - img
+                - text: FABIO.ARARAQUARA
+              - text: 
+            - cell "17/08/2026 às 15:41"
+            - cell "89219"
+            - cell "Perdida"
+            - cell "00.000.000/0000-00 "
+            - cell "17/08/2026 às 15:31"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700099784"':
+            - cell "Pack - eRadar e-CAC":
+              - link "Pack - eRadar e-CAC":
+                - /url: ""
+            - cell "INGRID ALVES CONTABILIDADE "
+            - cell "Hoje "
+            - cell "_Outros"
+            - cell "RELACIONAMENTO - ATIVO "
+            - cell "ALTERDATA TEC EM INF LTDA - CABO FRIO ":
+              - link "ALTERDATA TEC EM INF LTDA - CABO FRIO":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - CABO FRIO
+              - text: 
+            - cell "JACQUELINE.CABOFRIO "
+            - cell "851,25 "
+            - cell "ALTERDATA TEC EM INF LTDA - CABO FRIO ":
+              - link "ALTERDATA TEC EM INF LTDA - CABO FRIO":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - CABO FRIO
+              - text: 
+            - cell "Ontem às 10:42"
+            - cell "97202"
+            - cell "Perdida"
+            - cell "00.000.000/0000-00 "
+            - cell "Ontem às 10:15"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700093969"':
+            - cell "Alterdata Contábil First":
+              - link "Alterdata Contábil First":
+                - /url: ""
+            - cell "Ramiele Contadora "
+            - cell "Hoje "
+            - cell "_Melhor tecnologia/serviço"
+            - cell "RELACIONAMENTO - ATIVO "
+            - cell "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA ":
+              - link "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA
+              - text: 
+            - cell "HEBERT.FSA "
+            - cell "759,90 "
+            - cell "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA ":
+              - link "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA
+              - text: 
+            - cell "10/09/2026 às 15:33"
+            - cell "91647"
+            - cell "Perdida"
+            - cell ""
+            - cell "10/09/2026 às 14:00"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700093979"':
+            - cell "Alterdata Contábil First Alterdata Nuvem First Alterdata Bunker":
+              - link "Alterdata Contábil First":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+              - link "Alterdata Bunker":
+                - /url: ""
+            - cell "Ramiele Contadora "
+            - cell "Hoje "
+            - cell "_Melhor tecnologia/serviço"
+            - cell "RELACIONAMENTO - ATIVO "
+            - cell "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA ":
+              - link "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA
+              - text: 
+            - cell "HEBERT.FSA "
+            - cell "1.013,80 "
+            - cell "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA ":
+              - link "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA
+              - text: 
+            - cell "10/09/2026 às 16:14"
+            - cell "91657"
+            - cell "Perdida"
+            - cell ""
+            - cell "10/09/2026 às 14:00"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700098949"':
+            - cell "Alterdata Bunker Alterdata Nuvem First":
+              - link "Alterdata Bunker":
+                - /url: ""
+              - link "Alterdata Nuvem First":
+                - /url: ""
+            - cell "HORTIFRUTI ADENIL "
+            - cell "Hoje "
+            - cell "_Suspensão do projeto"
+            - cell "ATIVO VISITA - PROSPECÇÃO "
+            - cell "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA ":
+              - link "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA
+              - text: 
+            - cell "CLAIR.FSA "
+            - cell "112,80 "
+            - cell "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA ":
+              - link "ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FEIRA DE SANTANA
+              - text: 
+            - cell "28/10/2026 às 08:30"
+            - cell "96399"
+            - cell "Perdida"
+            - cell "00.000.000/0000-00 "
+            - cell "28/10/2026 às 08:22"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700098156"':
+            - cell "Pack - CND Pack - eRadar e-CAC Pack - eContador Master":
+              - link "Pack - CND":
+                - /url: ""
+              - link "Pack - eRadar e-CAC":
+                - /url: ""
+              - link "Pack - eContador Master":
+                - /url: ""
+            - cell "IMPERIUM CONTABILIDADE "
+            - cell "Hoje "
+            - cell "_Outros"
+            - cell "ATIVO - PROSPECÇÃO - WHATSAPP "
+            - cell "ALTERDATA TEC EM INF LTDA - IMPERATRIZ ":
+              - link "ALTERDATA TEC EM INF LTDA - IMPERATRIZ":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - IMPERATRIZ
+              - text: 
+            - cell "CAMILLE.VENDAS "
+            - cell "1.191,05 "
+            - cell "ALTERDATA TEC EM INF LTDA - IMPERATRIZ ":
+              - link "ALTERDATA TEC EM INF LTDA - IMPERATRIZ":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - IMPERATRIZ
+              - text: 
+            - cell "21/10/2026 às 11:36"
+            - cell "95654"
+            - cell "Perdida"
+            - cell "00.000.000/0000-00 "
+            - cell "14/10/2026 às 15:37"
+            - cell ""
+            - cell
+          - 'link "linha da tabela selecionável do item: 700098974"':
+            - cell "Alterdata Contábil Fit NF-STOCK Pack - eContador Plus Karoo BOT Karoo Chat One Integração WhatsApp API Oficial":
+              - link "Alterdata Contábil Fit":
+                - /url: ""
+              - link "NF-STOCK":
+                - /url: ""
+              - link "Pack - eContador Plus":
+                - /url: ""
+              - link "Karoo BOT":
+                - /url: ""
+              - link "Karoo Chat One":
+                - /url: ""
+              - link "Integração WhatsApp API Oficial":
+                - /url: ""
+            - cell "ALESSANDRO RODRIGUES DE SOUZA "
+            - cell "Hoje "
+            - cell "_Duplicidade de Contato/Erro de Importação de Site"
+            - cell "RELACIONAMENTO - ATIVO "
+            - cell "ALTERDATA TEC EM INF LTDA - FILIAL RIO ":
+              - link "ALTERDATA TEC EM INF LTDA - FILIAL RIO":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FILIAL RIO
+              - text: 
+            - cell "ITALO.RIO "
+            - cell "1.915,30 "
+            - cell "ALTERDATA TEC EM INF LTDA - FILIAL RIO ":
+              - link "ALTERDATA TEC EM INF LTDA - FILIAL RIO":
+                - /url: ""
+                - img
+                - text: ALTERDATA TEC EM INF LTDA - FILIAL RIO
+              - text: 
+            - cell "28/10/2026 às 10:22"
+            - cell "96424"
+            - cell "Perdida"
+            - cell ""
+            - cell "28/10/2026 às 09:13"
+            - cell "000.000.000-00 "
+            - cell
+      - text: Mostrando 1 - 15 de 8196
+      - menu:
+        - menuitem "Primeira":
+          - link "Primeira":
+            - /url: ""
+        - menuitem "Anterior":
+          - link "Anterior":
+            - /url: ""
+        - menuitem "1":
+          - link "1":
+            - /url: ""
+        - menuitem "2":
+          - link "2":
+            - /url: ""
+        - menuitem "3":
+          - link "3":
+            - /url: ""
+        - menuitem "4":
+          - link "4":
+            - /url: ""
+        - menuitem "5":
+          - link "5":
+            - /url: ""
+        - menuitem "...":
+          - link "...":
+            - /url: ""
+        - menuitem "Próxima":
+          - link "Próxima":
+            - /url: ""
+        - menuitem "Última":
+          - link "Última":
+            - /url: ""

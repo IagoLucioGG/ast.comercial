@@ -1,0 +1,117 @@
+<div class="component-with-height">
+  <div class="vbox small-header">
+    <header class="regular-header new-header b-b-1 white-content">
+      <div class="hbox stretch">
+        <aside class="v-middle text-right" ng-if="!userCtrl.model.AccountOwner && userCtrl.can_load && userCtrl.self.Profile.Administrator && !userCtrl.self.Account.IsSandboxAccount">
+          <!-- <a class="button button-white-no-border" ng-if="!userCtrl.model.NoLogin" ng-click="userCtrl.openNoLoginModal(true)">
+            <span class="text-action"><i class="fal fa-user-times regular-icon"></i></span>
+            <span>Transformar em usuário sem acesso</span>
+          </a> -->
+          <a class="button button-white-no-border" ng-if="userCtrl.model.NoLogin" ng-click="userCtrl.openNoLoginModal(false)">
+            <span class="text-action"><i class="fal fa-user regular-icon"></i></span>
+            <span>Transformar em usuário padrão</span>
+          </a>
+        </aside>
+
+        <aside class="v-middle text-right width-10" ng-if="!userCtrl.model.AccountOwner && userCtrl.can_load && userCtrl.self.Profile.Administrator && !userCtrl.self.Account.IsSandboxAccount">
+          <a class="button button-white-no-border pull-right nowrap" ng-if="!userCtrl.model.Suspended && !userCtrl.blockDeactivateUser()" mini-modal mini-modal-title="Inativar usuário" mini-modal-fields="userCtrl.suspend_form" mini-modal-model="userCtrl.suspend_model" mini-modal-callback="userCtrl.suspendUser(new_val, old_val, first_trigger)" block-model-watcher="true" mini-modal-not-trigger-formula="true">
+            <span class="text-danger"><i class="fal fa-toggle-off regular-icon"></i></span>
+            <span>Desativar usuário</span>
+          </a>
+          <a class="button button-white-no-border pull-right nowrap" ng-if="userCtrl.model.Suspended" ng-click-confirm="{{userCtrl.activateUserMessage()}}" ng-click="userCtrl.activateUser()" skip-reversible-message="true">
+            <span class="text-success"><i class="fal fa-toggle-on regular-icon"></i></span>
+            <span>Ativar usuário</span>
+          </a>
+        </aside>
+        <aside class="v-middle text-right width-10" ng-if="(userCtrl.auth_obj.profile_owner || userCtrl.auth_obj.administrator)">
+          <a class="button button-white-no-border pull-right nowrap" ui-sref="user.config" data-cy="user-config-button">
+            <span class="text-action"><i class="fal fa-cogs regular-fa"></i></span>
+            Configurações do usuário
+          </a>
+        </aside>
+      </div>
+    </header>
+    <section class="user-page-section-content" ng-if="userCtrl.can_load && !userCtrl.not_found">
+      <div class="hbox stretch">
+        <!--view-->
+          <aside>
+            <div class="vbox small-header">
+              <header class="regular-header new-header white-content tabnavbar b-b-1">
+                <ul class="nav nav-tabs border-tabs special-tabs">
+                  <li ng-class="{'active': userCtrl.self.UserPageViewMode === 'timeline'}">
+                    <a data-toggle="tab" href ng-click="userCtrl.handleTabChange('timeline')" data-target="#menu1" class="text-muted">
+                      {{ (userCtrl.auth_obj.profile_owner ? 'USERS.YOUR_ACTIVITIES' : 'USERS.ACTIVITIES') | translate }}
+                    </a>
+                  </li>
+                  <li ng-class="{'active': userCtrl.self.UserPageViewMode === 'contacts'}">
+                    <a data-toggle="tab" href ng-click="userCtrl.handleTabChange('contacts')" data-target="#menu2" class="text-muted">
+                      {{ (userCtrl.auth_obj.profile_owner ? 'USERS.YOUR_CONTACTS' : 'USERS.CONTACTS') | translate }}
+                    </a>
+                  </li>
+                  <li ng-if="userCtrl.tabExportationPermission && userCtrl.auth_obj.profile_owner" ng-class="{'active': userCtrl.self.UserPageViewMode === 'exportations'}">
+                   <a data-toggle="tab" href ng-click="userCtrl.handleTabChange('exportations')" data-target="#menu3" class="text-muted">
+                    Suas exportações
+                   </a>
+                 </li>
+                  <li ng-if="userCtrl.activeDealsModule" ng-class="{'active': userCtrl.self.UserPageViewMode === 'deals'}">
+                    <a data-toggle="tab" href ng-click="userCtrl.handleTabChange('deals')" data-target="#menu4" class="text-muted">
+                      {{ (userCtrl.auth_obj.profile_owner ? 'USERS.YOUR_DEALS' : 'USERS.DEALS') | translate_sentence }}
+                    </a>
+                  </li>
+                  <li ng-if="userCtrl.has_nav_log_permission" ng-class="{'active': userCtrl.self.UserPageViewMode === 'nav_log'}">
+                    <a data-toggle="tab" href ng-click="userCtrl.handleTabChange('nav_log')" data-target="#menu5" class="text-muted">
+                      Histórico de navegação
+                    </a>
+                  </li>
+                </ul>
+              </header>
+
+              <section class="scrollable user-page-section-content" class="scrollable">
+                <div class="tab-content stretch">
+                  <div id="menu1" class="tab-pane stretch" ng-class="{'active': userCtrl.self.UserPageViewMode === 'timeline'}">
+                    <user-timeline ng-if="userCtrl.self.UserPageViewMode === 'timeline'"></user-timeline>
+                  </div>
+                  <div id="menu2" class="tab-pane stretch" ng-class="{'active': userCtrl.self.UserPageViewMode === 'contacts'}">
+                    <user-contacts ng-if="userCtrl.self.UserPageViewMode === 'contacts'"></user-contacts>
+                  </div>
+                  <div id="menu3" ng-if="userCtrl.tabExportationPermission && userCtrl.auth_obj.profile_owner" class="tab-pane stretch" ng-class="{'active': userCtrl.self.UserPageViewMode === 'exportations'}">
+                    <exportation-table current-tab-id="userCtrl.exportationTabId" ng-if="userCtrl.self.UserPageViewMode === 'exportations'"></exportation-table>
+                  </div>
+                  <div id="menu4" class="tab-pane stretch" ng-class="{'active': userCtrl.self.UserPageViewMode === 'deals'}">
+                    <user-deals ng-if="userCtrl.self.UserPageViewMode === 'deals'"></user-deals>
+                  </div>
+                  <div id="menu5" class="tab-pane stretch" ng-class="{'active': userCtrl.self.UserPageViewMode === 'nav_log'}">
+                    <user-nav-log ng-if="userCtrl.self.UserPageViewMode === 'nav_log'" user-id="userCtrl.model.Id"></nav-log>
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </aside>
+
+
+        <!--userProfileMenu-->
+
+
+        <aside class="width-400 light-background b-l-1">
+          <div class="vbox">
+            <section class="scrollable scroll-shadow-container">
+              <user-profile-menu class="display-block" ng-if="userCtrl.model" model="userCtrl.model"></user-profile-menu>
+              <div class="gap-15"></div>
+            </section>
+          </div>
+        </aside>
+
+
+
+      </div>
+    </section>
+
+    <section class="scrollable" ng-if="userCtrl.not_found">
+      <div class="hbox stretch">
+        <page-not-found></page-not-found>
+      </div>
+    </section>
+
+  </div>
+</div>

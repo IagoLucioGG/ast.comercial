@@ -1,0 +1,7 @@
+passo: scenario_start
+url: https://app10.ploomes.com/cpq/quote/review/700091340?dealId=700193681
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: captured

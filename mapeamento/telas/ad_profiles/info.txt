@@ -1,0 +1,7 @@
+passo: ad_profiles
+url: https://app10.ploomes.com/administration/profiles
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

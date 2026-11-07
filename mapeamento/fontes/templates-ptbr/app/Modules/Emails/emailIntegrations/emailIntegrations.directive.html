@@ -1,0 +1,198 @@
+<dynamic-modal
+  modal-id="{{'emailintegrations'}}"
+  wider="true"
+  dark="false"
+  modal-title="Configurações de Email"
+  toggle-modal="emailIntegrationsCtrl.toggle_modal"
+  cypress-prefix="email-config-modal"
+  is-fetching-modal-content="emailIntegrationsCtrl.isFetchingModalContent"
+
+>
+  <modal-content>
+    <standard-loader margin-top="15" ng-if="!initialLoad" loading="true"></standard-loader>
+    <div class="hbox stretch" ng-if="initialLoad">
+      <aside class="overflow-hidden width-400 white-content">
+        <div class="mini-activities arrange-mid white-content">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <div class="side-wrapper">
+                <span class="font-big">Dados básicos</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <div class="line line-border arrange-top"></div>
+        <div class="vbox task-vbox scroll-shadow white-content">
+          <section class="scrollable scroll-shadow-container">
+            <div class="gap-15"></div>
+            <form class="clearfix">
+              <div class="form-group col-sm-12">
+                <span class="font-semi-big">Sua caixa de e-mails</span>
+                <br>
+                <span class="text-muted font-small">Encaminhe os e-mails dos seus clientes para o endereço abaixo, ou coloque este mesmo endereço nas cópias dos e-mails que você enviar aos seus clientes.</span>
+                <div class="gap-10"></div>
+                <div class="input-group">
+                  <input 
+                    class="form-control input-sm" 
+                    ng-model="emailIntegrationsCtrl.ploomes_email_model" 
+                    ng-disabled="emailIntegrationsCtrl.block_ploomes_email_edit" 
+                    ng-init="emailIntegrationsCtrl.setEmailLowercase()"
+                    id="email-input"
+                  >
+                  <div class="input-group-addon white-content force-left-border">@mail.ploomes.com</div>
+                </div>
+                <br>
+                <button
+                  class="button button-action button-short"
+                  href
+                  ng-click="emailIntegrationsCtrl.updatePloomesEmail()"
+                  ng-disabled="!emailIntegrationsCtrl.ploomes_email_model || !emailIntegrationsCtrl.ploomes_email_can_load"
+                  ng-if="!emailIntegrationsCtrl.block_ploomes_email_edit"
+                  >
+                  Salvar
+                </button>
+                <button
+                  class="button button-short button-delete"
+                  href
+                  ng-click="emailIntegrationsCtrl.clearPloomesEmail()"
+                  ng-disabled="!emailIntegrationsCtrl.ploomes_email_can_load"
+                  ng-if="!emailIntegrationsCtrl.block_ploomes_email_edit && emailIntegrationsCtrl.has_ploomes_email">
+                  Excluir
+                </button>
+                <button
+                  class="button button-neutral button-short"
+                  href
+                  ng-click="emailIntegrationsCtrl.setBlockPloomesEmail(true, true)"
+                  ng-disabled="!emailIntegrationsCtrl.ploomes_email_can_load"
+                  ng-if="!emailIntegrationsCtrl.block_ploomes_email_edit && emailIntegrationsCtrl.has_ploomes_email">
+                  Cancelar
+                </button>
+                <a class="button button-action button-short" href ng-click="emailIntegrationsCtrl.setBlockPloomesEmail(false)" ng-if="emailIntegrationsCtrl.block_ploomes_email_edit">
+                  Trocar
+                </a>
+                <loading-tooltip loading="!emailIntegrationsCtrl.ploomes_email_can_load"></loading-tooltip>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="hbox">
+                  <aside class="v-middle">
+                    <span class="font-semi-big">Vincular e-mails aos clientes</span>
+                    <br>
+                    <span class="text-muted font-small" ng-bind-html="('EMAILS.INTEGRATIONS.ACTIVE_CONTACTS_HISTORY' | translate) | to_trusted"></span>
+                  </aside>
+                  <aside class="v-middle">
+                    <div class="switch">
+                      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-6" type="checkbox" ng-model="emailIntegrationsCtrl.public_insert"  ng-change="emailIntegrationsCtrl.savePublicInsertChanges()">
+                      <label class="pull-right" for="cmn-toggle-6"></label>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12">
+                <span class="font-semi-big">Configurar assinatura de e-mail</span>
+                <br>
+                <span class="text-muted font-small">Configure a assinatura que aparecerá ao final dos seus e-mails.</span>
+                <div class="gap-10"></div>
+                <div class="hbox">
+                  <aside class="v-middle">
+                    <textarea ng-if="!emailIntegrationsCtrl.rich_text_editor_feature" ng-model="emailIntegrationsCtrl.signature" pl-ckeditor="emailIntegrationsCtrl.options" class="form-control height-100"></textarea>
+                    <rich-text-editor
+                      ng-if="emailIntegrationsCtrl.rich_text_editor_feature"
+                      value="emailIntegrationsCtrl.signature"
+                      mode="'email'"
+                      height="260"
+                      min-height="260"
+                      on-change-value="emailIntegrationsCtrl.onRichTextEditorChangeValue"
+                      language="emailIntegrationsCtrl.language"
+                      on-images-upload="emailIntegrationsCtrl.onImagesUpload"
+                    ></rich-text-editor>
+                    <br>
+                    <a class="button button-action" ng-click="emailIntegrationsCtrl.saveSignatureChanges()">
+                      <i class="button-icon fas fa-save"></i>
+                      Atualizar Assinatura</a>
+                    <loading-tooltip loading="!emailIntegrationsCtrl.signature_load"></loading-tooltip>
+                  </aside>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </aside>
+      <aside class="overflow-hidden width-400 white-content b-l-1">
+        <div class="mini-activities arrange-mid white-content">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <div class="side-wrapper">
+                <span class="font-big">Integrações de Email</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <div class="line line-border arrange-top"></div>
+        <table class="table first-child-border table-hover white-table">
+          <thead>
+            <tr>
+              <th class="small-cell">Ferramenta</th>
+              <th class="small-cell">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="contact-workplace-button open-size-slide" ng-if="emailIntegrationsCtrl.self.EmailIntegration.GmailEmail" ng-click="emailIntegrationsCtrl.changeTab('gmail')">
+              <td>
+                <div class="font-big">Gmail</div>
+              </td>
+              <td>
+                <div ng-class="{'neutral-badge': !emailIntegrationsCtrl.self.EmailIntegration.GmailEmail, 'success-badge': emailIntegrationsCtrl.self.EmailIntegration.GmailEmail }">
+                  <div>{{ (emailIntegrationsCtrl.self.EmailIntegration.GmailEmail ? 'EMAILS.INTEGRATIONS.ON' : 'EMAILS.INTEGRATIONS.OFF') | translate }}</div>
+                </div>
+              </td>
+            </tr>
+            <tr class="contact-workplace-button open-size-slide" ng-repeat="integration in emailIntegrationsCtrl.integrations" ng-click="emailIntegrationsCtrl.openDynamicIntegrationSlide(integration)">
+              <td>
+                <div class="font-big">{{integration.Name}}</div>
+              </td>
+              <td>
+                <div ng-class="{'neutral-badge': integration.StatusId === 2 || !integration.StatusId, 'success-badge': integration.StatusId === 1, 'warning-badge': integration.StatusId === 3 }">
+                  <div>{{ (integration.StatusId === 1 ? 'EMAILS.INTEGRATIONS.ON' : (integration.StatusId === 3 ? 'EMAILS.INTEGRATIONS.PENDING' : 'EMAILS.INTEGRATIONS.OFF') ) | translate }}</div>
+                </div>
+              </td>
+            </tr>
+            <tr class="contact-workplace-button open-size-slide" ng-click="emailIntegrationsCtrl.changeTab('smtp')" data-cy="emails-smtp-integration-config-button">
+              <td>
+                <div class="font-big">Envio de e-mails (SMTP)</div>
+              </td>
+              <td>
+                <div ng-class="{'neutral-badge': !(emailIntegrationsCtrl.userSettings.smtp_config && emailIntegrationsCtrl.userSettings.active_smtp), 'success-badge': (emailIntegrationsCtrl.userSettings.smtp_config && emailIntegrationsCtrl.userSettings.active_smtp) }">
+                  <div>{{ ((emailIntegrationsCtrl.userSettings.smtp_config && emailIntegrationsCtrl.userSettings.active_smtp) ? 'EMAILS.INTEGRATIONS.ON' : 'EMAILS.INTEGRATIONS.OFF') | translate }}</div>
+                </div>
+                <i ng-if="emailIntegrationsCtrl.mustUpdateSmtp" class="fas fa-exclamation-triangle text-danger"></i>
+              </td>
+            </tr>
+            <tr class="contact-workplace-button open-size-slide" ng-click="emailIntegrationsCtrl.changeTab('receive')" data-cy="emails-imap-integration-config-button">
+              <td>
+                <div class="font-big">Recebimento de e-mails (IMAP)</div>
+              </td>
+              <td>
+                <div ng-class="{'neutral-badge': !(emailIntegrationsCtrl.userSettings.imap_config && emailIntegrationsCtrl.userSettings.active_imap), 'success-badge': (emailIntegrationsCtrl.userSettings.imap_config && emailIntegrationsCtrl.userSettings.active_imap) }">
+                  <div>{{ ((emailIntegrationsCtrl.userSettings.imap_config && emailIntegrationsCtrl.userSettings.active_imap) ? 'EMAILS.INTEGRATIONS.ON' : 'EMAILS.INTEGRATIONS.OFF') | translate }}</div>
+                </div>
+                <i ng-if="emailIntegrationsCtrl.mustUpdateImap" class="fas fa-exclamation-triangle text-danger"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </aside>
+    </div>
+  </modal-content>
+  <modal-side-slide helper-key="'EMAIL_INTEGRATION'" slide-id="integrations_slide" modal-side-slide-title="Integrações">
+    <gmail-integration ng-if="!emailIntegrationsCtrl.current_integration && emailIntegrationsCtrl.current_tab === 'gmail'"></gmail-integration>
+    <smtp-integration update-settings-callback-fn="emailIntegrationsCtrl.updateSettingsCallback" ng-if="!emailIntegrationsCtrl.current_integration && emailIntegrationsCtrl.current_tab === 'smtp'" smtp-config="emailIntegrationsCtrl.userSettings.smtp_config" smtp-default-config="emailIntegrationsCtrl.userSettings.smtpdefaultconfig" update-actions-fn="updateActionsFn"></smtp-integration>
+    <receive-integration update-settings-callback-fn="emailIntegrationsCtrl.updateSettingsCallback" ng-if="!emailIntegrationsCtrl.current_integration && emailIntegrationsCtrl.current_tab === 'receive'" imap-config="emailIntegrationsCtrl.userSettings.imap_config" imap-default-config="emailIntegrationsCtrl.userSettings.imapdefaultconfig" sync-start-delta="emailIntegrationsCtrl.userSettings.imap_start_delta" sync-delta="emailIntegrationsCtrl.userSettings.imap_sync_delta" update-actions-fn="updateActionsFn"></receive-integration>
+    <integration-form ng-if="emailIntegrationsCtrl.current_integration" integration-id="emailIntegrationsCtrl.current_integration.Id" change-enabled-callback="emailIntegrationsCtrl.changeEnabledCallback(status_id)"></integration-form>
+  </modal-side-slide>
+</dynamic-modal>

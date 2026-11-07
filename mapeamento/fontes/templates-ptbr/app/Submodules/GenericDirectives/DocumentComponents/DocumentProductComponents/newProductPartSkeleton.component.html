@@ -1,0 +1,32 @@
+<div class="top-wrapper regular-background">
+  <div class="b-1 darkest-background">
+    <table class="table options-table table-smaller-header full-editable-table full-width">
+      <thead>
+        <tr class="options-header height-20">
+          <th></th>
+          <th class="mini-cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="drag-button drag-line input-square input-filled options-table-item" ng-repeat="row in $ctrl.rows">
+          <td class="please-nowrap">
+            <div class="hbox regular-background b-1 height-30">
+              <aside class="v-middle text-center mini-side-wrapper dark-background">
+                <div class="checkbox options-checkbox">
+                  <label>
+                    <input type="checkbox" disabled="true">
+                  </label>
+                </div>
+              </aside>
+            </div>
+          </td>
+          <td>
+            <div class="hbox stretch darkest-background disabled-option height-30 part-skeleton-loading">
+
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

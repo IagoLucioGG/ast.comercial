@@ -1,0 +1,37 @@
+<div class="vbox small-header">
+  <header class="regular-header new-header white-content b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="input-group width-250" tooltip-placement="right"
+          uib-tooltip="Pesquise clientes pelo nome, nome da empresa, e-mail, razão social ou CNPJ"
+          tooltip-append-to-body="true">
+          <input class="form-control input-sm light-background" placeholder="Busca por nome, e-mail, razão social, CNPJ"
+            ng-model="userContactsCtrl.quick_filter"
+            ng-keyup="$event.keyCode == 13 ? userContactsCtrl.quickFilter(userContactsCtrl.quick_filter) : userContactsCtrl.onTypeQuickFilter(userContactsCtrl.quick_filter)">
+          <div class="input-group-btn width-10">
+            <a class="btn button button-neutral-gray special-search-button"
+              ng-click="userContactsCtrl.quickFilter(userContactsCtrl.quick_filter)">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <!-- CONTEÚDO DA TELA -->
+  <section>
+    <div class="hbox stretch white-content">
+      <aside class="white-content">
+        <div class="vbox side-scroll">
+          <section class="scrollable">
+            <user-contacts-table entity="userContactsCtrl.main_entity"
+              quick-search-string="userContactsCtrl.quick_filter_string">
+            </user-contacts-table>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+
+</div>

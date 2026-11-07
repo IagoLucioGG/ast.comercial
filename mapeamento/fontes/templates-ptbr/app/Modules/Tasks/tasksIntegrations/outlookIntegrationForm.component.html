@@ -1,0 +1,117 @@
+<div class="vbox header-or-footer" ng-form="integration_form">
+    <standard-loader
+      margin-top="'15'"
+      loading="!outlookIntegrationFormCtrl.initial_load"
+    ></standard-loader>
+  
+    <section
+      class="scrollable"
+      ng-if="outlookIntegrationFormCtrl.initial_load"
+    >
+      <div class="white-content b-b-1 wrapper">
+        <div class="gap-15"></div>
+        <div>
+          <div class="hbox">
+            <aside class="width-10 text-center">
+              <div class="side-wrapper">
+                <img
+                  class="avatar-select"
+                  ng-src="{{outlookIntegrationFormCtrl.integration.ImageUrl}}"
+                >
+              </div>
+            </aside>
+            <aside>
+              <div class="side-wrapper">
+                <div
+                  class="mtop3"
+                  ng-bind-html="outlookIntegrationFormCtrl.integration.Description | to_trusted"
+                ></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <div class="gap-15"></div>
+      </div>
+      <div class="gap-15"></div>
+  
+      <form class="clearfix">
+        <div
+          class="form-group col-sm-12 font-big"
+          ng-if="(outlookIntegrationFormCtrl.integrationStatus === 1 || outlookIntegrationFormCtrl.integrationStatus === 3) && outlookIntegrationFormCtrl.integration.RedirectUrl"
+        >
+          <div class="white-content wrapper b-1 rounded-regular">
+            <div class="font-big">
+              <strong>
+                {{ 'INTEGRATIONS.FORM.AUTHORIZE_INTEGRATION_BY' | translate_with_replace: { name: outlookIntegrationFormCtrl.integration.Name } }}
+              </strong>
+            </div>
+            <div class="gap-15"></div>
+            Essa integração precisa que você autorize a conexão com o Ploomes.
+            <div class="gap-10"></div>
+            <div class="text-center">
+              <a
+                class="button button-big"
+                ng-class="outlookIntegrationFormCtrl.integrationAuthorized ? 'button-success' : 'button-action'"
+                href
+                ng-click="outlookIntegrationFormCtrl.authorizeIntegration()"
+              >
+                <div class="font-big">
+                  <i
+                    ng-if="outlookIntegrationFormCtrl.integrationAuthorized"
+                    class="fad fa-check-circle regular-icon"
+                  ></i>
+                  {{ (outlookIntegrationFormCtrl.integrationAuthorized ? 'INTEGRATIONS.FORM.AUTHORIZED_INTEGRATION' : 'INTEGRATIONS.FORM.AUTHORIZE_INTEGRATION') | translate }}
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+  
+        <div
+          class="form-group col-sm-12"
+          ng-if="(outlookIntegrationFormCtrl.integrationStatus === 1 || outlookIntegrationFormCtrl.integrationStatus === 3) && (outlookIntegrationFormCtrl.form | filter:{hidden: false}).length > 0"
+        >
+          <div class="white-content top-wrapper b-1 rounded-regular">
+            <div class="font-big side-wrapper">
+              <strong>
+                Configure as opções da integração
+              </strong>
+            </div>
+            <div class="gap-10"></div>
+            <div class="clearfix">
+              <forms
+                model="outlookIntegrationFormCtrl.model"
+                fields="outlookIntegrationFormCtrl.form"
+                form="integration_form"
+                watch-field-changes="true"
+              ></forms>
+            </div>
+          </div>
+        </div>
+      </form>
+  
+      <div class="wrapper">
+        <div class="text-center">
+          <a
+            class="button button-big button-action"
+            ng-click="outlookIntegrationFormCtrl.submitControl(integration_form)"
+          >
+            {{outlookIntegrationFormCtrl.actionButtonLabel(outlookIntegrationFormCtrl.integrationStatus)}}
+          </a>
+          <a
+            class="button button-big button-white"
+            ng-if="outlookIntegrationFormCtrl.account_integration && (outlookIntegrationFormCtrl.integrationStatus === 1 || outlookIntegrationFormCtrl.integrationStatus === 3)"
+            ng-click="outlookIntegrationFormCtrl.disableIntegration()"
+          >
+            <div class="text-danger">
+              <i class="fal fa-pause button-icon"></i>
+              <span class="text-regular">
+                Desligar integração
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+  

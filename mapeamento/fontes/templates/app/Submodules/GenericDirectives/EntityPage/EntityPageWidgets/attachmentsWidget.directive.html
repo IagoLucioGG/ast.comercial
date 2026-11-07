@@ -1,0 +1,61 @@
+<div>
+  <div class="" ng-show="!newLayout">
+    <div class="b-b-1 text-uppercase light-background rectangular-wrapper">
+      <span>
+        {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ATTACHMENTS' | translate }}
+      </span>
+      <label class="pull-right pointer" href id="att-wrapper">
+        <span class="text-action">
+          <i class="fal fa-cloud-upload-alt clickable-icon clickable-icon-align-middle font-super-super-small"></i>
+        </span>
+        <input id="att" type="file" style="display: none;"/>
+      </label>
+    </div>
+    <div class="gap-5"></div>
+    <div class="light-background rectangular-wrapper">
+      <div class="gap-5"></div>
+      <div class="line-itens-left">
+        <a ng-repeat="file in attachmentsCtrl.files track by $index" class="light-badge neutral-content badge-border badge-deletable" ng-click="attachmentsCtrl.downloadUrl(file)">
+          <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+            <span class="align-middle">{{file.FileName}}</span>
+            <div ng-if="model.Editable" ng-click="attachmentsCtrl.removeAttachment($index); $event.preventDefault();" class="button-light-background align-middle button-fixed-size button-fixed-size-small" href>
+              <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2"></i>
+            </div>
+          </div>
+        </a>
+        <standard-loader margin-top="15" optionalclass="'timeline-loader'" loading="!attachmentsCtrl.can_load"></standard-loader>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="newLayout">
+    <div class="text-uppercase light-background b-b-1 b-t-1 rectangular-wrapper">
+      <span>
+        {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ATTACHMENTS' | translate }}
+      </span>
+      <label class="pull-right" href id="new-att-wrapper">
+        <i class="fal fa-cloud-upload-alt clickable-icon clickable-icon-align-middle font-super-super-small"></i>
+        <input id="new-att" type="file" style="display: none;" />
+      </label>
+    </div>
+    <div class="light-background" ng-class="{ 'rectangular-wrapper': attachmentsCtrl.files.length > 0 || !attachmentsCtrl.can_load }">
+      <div class="line-itens-left">
+        <a ng-repeat="file in attachmentsCtrl.files track by $index" class="line-item light-badge neutral-content badge-border badge-deletable" ng-click="attachmentsCtrl.downloadUrl(file)">
+          <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+            <span class="align-middle">{{file.FileName}}</span>
+            <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" ng-if="model.Editable" ng-click="attachmentsCtrl.removeAttachment($index); $event.preventDefault();" class="button-light-background align-middle button-fixed-size button-fixed-size-small">
+              <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2" href></i>
+            </div>
+          </div>
+        </a>
+        <standard-loader margin-top="15" optionalclass="'timeline-loader'" loading="!attachmentsCtrl.can_load"></standard-loader>
+        <label class="contact-card empty-card no-padding" id="no-att-wrapper" ng-show="attachmentsCtrl.can_load && attachmentsCtrl.files.length === 0">
+          <input id="no-att" type="file" style="display: none;" />
+          <div class="font-semi-big font-regular-weight">
+            {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.NO_ATTACHMENTS_FOUND' | translate }}
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

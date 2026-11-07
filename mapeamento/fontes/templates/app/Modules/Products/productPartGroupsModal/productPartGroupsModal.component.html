@@ -1,0 +1,55 @@
+<dynamic-modal
+  modal-id="product_part_group_modal"
+  wide="false"
+  footer="false"
+  dark="true"
+  modal-title="{{ 'PRODUCTS.PART_GROUPS.TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="modal-body-no-padding">
+          <table class="table table-striped modal-table">
+            <thead>
+              <tr>
+                <th>{{'PRODUCTS.PART_GROUPS.NAME' | translate}}</th>
+                <!-- <th>Padrão</th> -->
+                <th></th>
+              </tr>
+              <tr>
+                <th>
+                  <new-field ng-class="{'is-button': field.isButton}" field="$ctrl.part_group_name_field" model="$ctrl.new_part_group" property="$ctrl.part_group_name_field.key" required="$ctrl.part_group_name_field.required" disabled="false" wide="false" hide-label="false"></new-field>
+                </th>
+                <!-- <th>
+                  <new-field ng-class="{'is-button': field.isButton}" field="$ctrl.part_group_default_field" model="$ctrl.new_part_group" property="$ctrl.part_group_default_field.key" required="$ctrl.part_group_default_field.required" disabled="false" wide="false" hide-label="false"></new-field>
+                </th> -->
+                <th class="text-center">
+                  <a class="button-fixed-size button-action button-fixed-size-big" href ng-click="$ctrl.addPartGroup()">
+                    <i class="fas fa-check"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="part_group in $ctrl.part_groups track by $index" ng-mouseover="showTrashCan = true" ng-mouseout="showTrashCan = false">
+                <td inline-edit model="part_group" properties="['part_group_name']" patch-api="Tags" submit-fn="$ctrl.inlinePartGroupEdit(item)" non-editable="false">{{part_group.Name}}</td>
+
+                <!-- <td>
+                  <new-field ng-class="{'is-button': field.isButton}" field="$ctrl.part_group_default_field" model="part_group" property="$ctrl.part_group_default_field.key" required="$ctrl.part_group_default_field.required" disabled="false" wide="false" hide-label="false"></new-field>
+                </td> -->
+
+                <td class="text-center">
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" href ng-show="showTrashCan" ng-click="$ctrl.removePartGroup(part_group)" ng-click-confirm="{{'PRODUCTS.PART_GROUPS.DELETE_CATEGORY_CONFIRM' | translate}}" reversible="false">
+                    <i class="fal fa-trash fixing-fixed-size-button"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

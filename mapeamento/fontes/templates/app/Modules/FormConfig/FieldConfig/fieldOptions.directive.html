@@ -1,0 +1,80 @@
+<div class="gap-10"></div>
+<a class="button-neutral-gray button font-regular-size text-left button-full-width" role="button" data-toggle="collapse" data-target="#fk_opt" aria-expanded="true" aria-controls="proposalProducts">
+  {{ 'FIELD_CONFIG_MODAL.FIELD_OPTIONS' | translate }}
+  <i class="fal fa-angle-down dropdown-sign"></i>
+</a>
+<div class="collapse in" id="fk_opt" aria-expanded="true" >
+  <div class="clearfix border-bottom-fix">
+    <div>
+      <div class="white-content b-1 rounded-regular overflow-hidden">
+        <div>
+          <table class="table table-striped modal-table">
+            <tbody>
+              <tr ng-if="!editing || field.canCreateNewProperty">
+                <td colspan="{{getLocal ? 1 : 2}}" >
+                  <input class="form-control input-sm" placeholder="{{ 'FIELD_CONFIG_MODAL.ADD_OPTION_TOOLTIP' | translate }}..." ng-model="fieldOptionsCtrl.opt_model.text" ng-model-options="{ debounce: 100 }" ng-change="fieldOptionsCtrl.filterOptions()" ng-keypress="fieldOptionsCtrl.onKeyPress($event, fieldOptionsCtrl.opt_model, !editing)">
+                </td>
+                <td class="text-center nowrap">
+                  <a class="button-fixed-size button-fixed-size-big" ng-class="{ 'button-action': fieldOptionsCtrl.opt_model.text, 'button-neutral disabled': !fieldOptionsCtrl.opt_model.text }" ng-click="fieldOptionsCtrl.insertNewOption(fieldOptionsCtrl.opt_model, !editing)" uib-tooltip="{{ 'FIELD_CONFIG_MODAL.ADD_OPTION_TOOLTIP' | translate }}" tooltip-append-to-body="true" tooltip-enable="fieldOptionsCtrl.opt_model.text && true">
+                    <i class="fas fa-check"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr ng-if="field.local_options.length === 0">
+                <td colspan="{{getLocal ? 2 : 3}}" class="text-center text-muted">
+                  {{ 'FIELD_CONFIG_MODAL.NO_OPTION_FOUND' | translate }}
+                </td>
+              </tr>
+              <tr ng-if="field.local_options.length > 0" ng-repeat="option in field.local_options track by $id(option)">
+                <td ng-if="!getLocal">
+                  <span>
+                      <div class="round-checkbox" ng-click="fieldOptionsCtrl.toggleDefault($index)">
+                        <div uib-tooltip="{{ 'FIELD_CONFIG_MODAL.TURN_DEFAULT_OPTION' | translate }}" tooltip-append-to-body="true" ng-class="option.default ? 'b-2 file-checked': 'b-2'">
+                          <i class="fas fa-check activity-icon"></i>
+                        </div>
+                      </div>
+                  </span>
+                </td>
+                <td class="field-option-size">
+                  {{option.text}}
+                </td>
+                <td class="text-center nowrap">
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" ng-click="fieldOptionsCtrl.openPopover(option.text, $index); $event.stopPropagation()" uib-tooltip="{{ 'FIELD_CONFIG_MODAL.EDIT_OPTION' | translate }}" tooltip-append-to-body="true">
+                    <i class="fal fa-pen activity-icon-top-3" uib-popover-template="fieldOptionsCtrl.popoverTemplate" popover-title="{{ 'FIELD_CONFIG_MODAL.EDIT_OPTION' | translate }}" popover-append-to-body="true" popover-placement="auto right" popover-is-open="fieldOptionsCtrl.isOpen[$index]"></i>
+                  </a>
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" ng-if="editing" ng-click-confirm="{{ 'FIELD_CONFIG_MODAL.DELETE_OPTION_CONFIRM' | translate }}" reversible="false" ng-click="fieldOptionsCtrl.removeOption($index, !editing)" uib-tooltip="{{ 'FIELD_CONFIG_MODAL.DELETE_OPTION' | translate }}" tooltip-append-to-body="true">
+                    <i class="text-darkest-neutral fal fa-trash"></i>
+                  </a>
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" ng-if="!editing" ng-click="fieldOptionsCtrl.removeOption($index, !editing)" uib-tooltip="{{ 'FIELD_CONFIG_MODAL.DELETE_OPTION' | translate }}" tooltip-append-to-body="true">
+                    <i class="text-darkest-neutral fal fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" class="text-center" ng-if="fieldOptionsCtrl.showPagination">
+                  <ul uib-pagination ng-model="fieldOptionsCtrl.current_page" ng-change="fieldOptionsCtrl.changePage()" total-items="fieldOptionsCtrl.total_items" class="pagination-sm" items-per-page="fieldOptionsCtrl.top" rotate="true" max-size="5" force-ellipses="true"
+                    ng-disabled="!fieldOptionsCtrl.can_load" first-text="{{ 'FIELD_CONFIG_MODAL.FIRST' | translate }}" previous-text="{{ 'FIELD_CONFIG_MODAL.PREVIOUS' | translate }}" next-text="{{ 'FIELD_CONFIG_MODAL.NEXT' | translate }}" last-text="{{ 'FIELD_CONFIG_MODAL.LAST' | translate }}"></ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gap-15"></div>
+
+<script type="text/ng-template" id="popoverDynamicField">
+  <div ng-if="fieldOptionsCtrl.isOpen" ng-form name="inline_edit_form">
+    <form class="clearfix form">
+      <div class="form-group col-sm-12">
+        <label>{{ 'GENERICS.OPTION' | translate }}</label>
+        <input class="form-control input-sm" placeholder="" ng-model="fieldOptionsCtrl.option_edit" ng-required="true">
+      </div>
+    </form>
+    <button class="button button-action mleft15" ng-disabled="fieldOptionsCtrl.edit_loading" ng-click="fieldOptionsCtrl.editOption(fieldOptionsCtrl.option_edit, !editing); $event.stopPropagation()" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+    <button class="button button-white" ng-disabled="fieldOptionsCtrl.edit_loading" ng-click="fieldOptionsCtrl.isOpen[$index] = false; $event.stopPropagation()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+    <loading-tooltip loading="fieldOptionsCtrl.edit_loading" form="inline_edit_form"></loading-tooltip>
+  </div>
+</script>

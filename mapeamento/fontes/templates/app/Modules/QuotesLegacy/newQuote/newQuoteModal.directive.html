@@ -1,0 +1,71 @@
+<div class="width-450 stretch proposal-transition" ng-if="!newQuoteCtrl.show_document_template_list && !newQuoteCtrl.display_no_templates">
+  <div class="regular-header b-b-1 scroll-shadow arrange-mid">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="modal-title" data-cy="new-deal-template-title">
+          <small class="font-regular-weight text-muted">{{ 'QUOTES.MODEL' | translate }}</small>
+        </div>
+        <div class="dropdown mtop-3">
+          <a class="button button-white-no-border button-super-small new-item-folder dropdown-toggle position-relative" data-toggle="dropdown">
+            <span class="font-big font-regular-weight field-option-size nowrap wider display-block right-wrapper">{{newQuoteCtrl.selected_template.Name}}</span>
+            <span class="font-big font-regular-weight document-template-dropdown"><i class="fal fa-angle-down dropdown-sign"></i></span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu field-pick">
+            <li ng-repeat="model in newQuoteCtrl.quote_templates track by model.Id" ng-click="newQuoteCtrl.changeTemplate(model)" ng-show="model.Id !== newQuoteCtrl.selected_template.Id && newQuoteCtrl.quote_templates.length > 1">
+              <a class="white-dropdown-link" href>{{model.Name}}</a>
+            </li>
+            <li ng-show="newQuoteCtrl.quote_templates.length === 1">
+              <a class="white-dropdown-link" href> {{ 'QUOTES.CREATE_QUOTE_MODAL.ONE_QUOTE_MODEL' | translate }} </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <a class="btn-close-proposal button-fixed-size button-fixed-size-medium button-light-background pull-right" ng-click="newQuoteCtrl.closeQuoteModal()">
+          <i class="fas fa-times"></i>
+        </a>
+      </aside>
+    </div>
+  </div>
+
+  <div class="deals-vbox vbox scroll-shadow neutral-shadow">
+    <section class="scroll-shadow-container">
+      <div class="gap-15"></div>
+      <forms
+        model="newQuoteCtrl.new_quote"
+        fields="newQuoteCtrl.selected_form"
+        form="newQuoteForm"
+        document-template-format="newQuoteCtrl.selected_template.NewFormat"
+        ng-if="newQuoteCtrl.selected_form && newQuoteCtrl.has_fields_to_show && newQuoteCtrl.can_load && !newQuoteCtrl.externalTemplate"></forms>
+      <div
+        class="text-center text-neutral-light font-very-big-title big-wrapper"
+        ng-if="(!newQuoteCtrl.selected_form || !newQuoteCtrl.has_fields_to_show) && newQuoteCtrl.can_load && !newQuoteCtrl.externalTemplate">
+        <i class="font-monster-size fad fa-exclamation-triangle"></i>
+        <div class="gap-30"></div>
+        {{ 'QUOTES.EDIT_QUOTE_MODAL.NO_FIELDS' | translate }}
+      </div>
+      <div
+        class="text-center text-neutral-light font-big big-wrapper"
+        ng-if="newQuoteCtrl.can_load && newQuoteCtrl.externalTemplate">
+        <i class="font-monster-size fad fa-exclamation-triangle"></i>
+        <div class="gap-30"></div>
+        {{ 'QUOTES.EXTERNAL_TEMPLATE_MESSAGE' | translate_sentence }}
+      </div>
+      <standard-loader margin-top="30" loading="!newQuoteCtrl.can_load"></standard-loader>
+    </section>
+  </div>
+</div>
+
+<no-templates ng-if="newQuoteCtrl.display_no_templates" entity-id="7" modal="true"></no-templates>
+
+<div class="width-450 stretch proposal-transition" ng-if="newQuoteCtrl.show_document_template_list">
+  <div class="vbox">
+    <section class="scrollable">
+      <document-template-select
+        entity-id="7"
+        document-templates="newQuoteCtrl.quote_templates"
+        select-document-template-callback-fn="newQuoteCtrl.selectDocumentTemplateCallback(template)">
+      </document-template-select>
+    </section>
+  </div>
+</div>

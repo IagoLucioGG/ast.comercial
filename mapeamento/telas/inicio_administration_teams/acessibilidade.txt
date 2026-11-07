@@ -1,0 +1,664 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - img
+    - text: Seu CRM totalmente personalizado! Sua conta já possui 2 construções com IA, continue gerando.
+    - button "Consumo de IA"
+    - button "Ver construções"
+    - complementary:
+      - text: Geral
+      - link "":
+        - /url: /system-modules
+        - text: 
+        - complementary: 
+        - complementary: Módulos do sistema
+      - link "":
+        - /url: /formconfig
+        - text: 
+        - complementary: 
+        - complementary: Campos e formulários
+      - text: 
+      - complementary: 
+      - complementary: Opções pré-cadastradas
+      - text: 
+      - complementary: 
+      - complementary: Dados da empresa
+      - text: 
+      - complementary: 
+      - complementary: Configurações do sistema
+      - link "":
+        - /url: /administration/automations
+        - text: 
+        - complementary: 
+        - complementary: Automações
+      - text: 
+      - complementary: 
+      - complementary: Ploo Store
+      - link "":
+        - /url: /administration/processingqueue
+        - text: 
+        - complementary: 
+        - complementary: Fila de Processamento
+    - complementary:
+      - text: Usuários
+      - link "":
+        - /url: /Users/table
+        - text: 
+        - complementary: 
+        - complementary: Tabela de usuários
+      - text: 
+      - complementary: 
+      - complementary: Equipes de usuários
+      - text: 
+      - complementary: 
+      - complementary: Perfis de usuário
+      - text: 
+      - complementary: 
+      - complementary: Permissão ao Suporte Ploomes
+      - link "":
+        - /url: /Logs/changes
+        - text: 
+        - complementary: 
+        - complementary: Registros
+    - complementary:
+      - text: Propostas e vendas
+      - link "":
+        - /url: /templates
+        - text: 
+        - complementary: 
+        - complementary: Modelos de documento
+      - text: 
+      - complementary: 
+      - complementary: Fluxos de aprovação
+    - complementary:
+      - text: Integrações 
+      - complementary: 
+      - complementary: Integrações plug-and-play
+      - text: 
+      - complementary: 
+      - complementary: Usuários de integração
+      - text: 
+      - complementary: 
+      - complementary: Formulários externos
+    - complementary:
+      - text: Pagamentos 
+      - complementary: 
+      - complementary: Dados de pagamento
+      - text: 
+      - complementary: 
+      - complementary: Histórico de fatura
+      - link "":
+        - /url: /administration/aiconsumption
+        - text: 
+        - complementary: 
+        - complementary: Créditos de IA
+    - complementary: Equipes
+    - complementary:
+      - complementary
+      - complementary:
+        - button
+      - complementary: 
+    - complementary:
+      - textbox "Buscar pelo nome"
+      - text: 
+    - complementary:  Nova Equipe
+    - table:
+      - rowgroup:
+        - row "Nome Membros":
+          - columnheader "Nome"
+          - columnheader "Membros"
+      - rowgroup:
+        - row "ALTERDATA MATRIZ 124":
+          - cell "ALTERDATA MATRIZ"
+          - cell "124"
+        - row "FILIAL PETROPOLIS 7":
+          - cell "FILIAL PETROPOLIS"
+          - cell "7"
+        - row "FILIAL UBERLANDIA 2":
+          - cell "FILIAL UBERLANDIA"
+          - cell "2"
+        - row "FILIAL ARACAJU 11":
+          - cell "FILIAL ARACAJU"
+          - cell "11"
+        - row "FILIAL SAO PAULO 27":
+          - cell "FILIAL SAO PAULO"
+          - cell "27"
+        - row "FILIAL SALVADOR 13":
+          - cell "FILIAL SALVADOR"
+          - cell "13"
+        - row "FILIAL VITORIA 10":
+          - cell "FILIAL VITORIA"
+          - cell "10"
+        - row "FILIAL MANAUS 11":
+          - cell "FILIAL MANAUS"
+          - cell "11"
+        - row "FILIAL BELEM 12":
+          - cell "FILIAL BELEM"
+          - cell "12"
+        - row "FILIAL RECIFE 15":
+          - cell "FILIAL RECIFE"
+          - cell "15"
+        - row "REPR RJ-ANGRA DOS REIS 2":
+          - cell "REPR RJ-ANGRA DOS REIS"
+          - cell "2"
+        - row "REPR RJ-V. REDONDA 2":
+          - cell "REPR RJ-V. REDONDA"
+          - cell "2"
+        - row "FILIAL GOIANIA 11":
+          - cell "FILIAL GOIANIA"
+          - cell "11"
+        - row "FILIAL CURITIBA 7":
+          - cell "FILIAL CURITIBA"
+          - cell "7"
+        - row "FILIAL CABO FRIO 19":
+          - cell "FILIAL CABO FRIO"
+          - cell "19"
+        - row "FILIAL CAMPOS 11":
+          - cell "FILIAL CAMPOS"
+          - cell "11"
+        - row "FILIAL FORTALEZA 16":
+          - cell "FILIAL FORTALEZA"
+          - cell "16"
+        - row "REPR AL-MACEIO 6":
+          - cell "REPR AL-MACEIO"
+          - cell "6"
+        - row "REPR MA-SÃO LUIS 4":
+          - cell "REPR MA-SÃO LUIS"
+          - cell "4"
+        - row "REPR RJ-H2L 2":
+          - cell "REPR RJ-H2L"
+          - cell "2"
+        - row "REPR RJ-CAMPO GRANDE 14":
+          - cell "REPR RJ-CAMPO GRANDE"
+          - cell "14"
+        - row "REPR RS-PASSO FUNDO 2":
+          - cell "REPR RS-PASSO FUNDO"
+          - cell "2"
+        - row "REPR ES-CACHOEIRO 2":
+          - cell "REPR ES-CACHOEIRO"
+          - cell "2"
+        - row "FILIAL PORTO ALEGRE 9":
+          - cell "FILIAL PORTO ALEGRE"
+          - cell "9"
+        - row "REPR RS-LAJEADO 2":
+          - cell "REPR RS-LAJEADO"
+          - cell "2"
+        - row "FILIAL BELO HORIZONTE 21":
+          - cell "FILIAL BELO HORIZONTE"
+          - cell "21"
+        - row "REPR RJ-GRANDE RIO 14":
+          - cell "REPR RJ-GRANDE RIO"
+          - cell "14"
+        - row "FILIAL RIBEIRAO PRETO 8":
+          - cell "FILIAL RIBEIRAO PRETO"
+          - cell "8"
+        - row "REPR PB-JOAO PESSOA 3":
+          - cell "REPR PB-JOAO PESSOA"
+          - cell "3"
+        - row "FILIAL MACAE 17":
+          - cell "FILIAL MACAE"
+          - cell "17"
+        - row "REPR PA-CASTANHAL 2":
+          - cell "REPR PA-CASTANHAL"
+          - cell "2"
+        - row "FILIAL RIO 30":
+          - cell "FILIAL RIO"
+          - cell "30"
+        - row "REPR PE-PETROLINA 2":
+          - cell "REPR PE-PETROLINA"
+          - cell "2"
+        - row "FILIAL CAMPO GRANDE 2":
+          - cell "FILIAL CAMPO GRANDE"
+          - cell "2"
+        - row "FILIAL BRASÍLIA 10":
+          - cell "FILIAL BRASÍLIA"
+          - cell "10"
+        - row "FILIAL LONDRINA 2":
+          - cell "FILIAL LONDRINA"
+          - cell "2"
+        - row "REPR MG-MONTES CLARO 10":
+          - cell "REPR MG-MONTES CLARO"
+          - cell "10"
+        - row "REPR RJ-ITAPERUNA 2":
+          - cell "REPR RJ-ITAPERUNA"
+          - cell "2"
+        - row "REPR RJ-NOVA IGUAÇU 14":
+          - cell "REPR RJ-NOVA IGUAÇU"
+          - cell "14"
+        - row "REPR RJ-SÃO GONÇALO 2":
+          - cell "REPR RJ-SÃO GONÇALO"
+          - cell "2"
+        - row "REPR MG-TEOFILO OTONI 2":
+          - cell "REPR MG-TEOFILO OTONI"
+          - cell "2"
+        - row "REPR MG-IPATINGA 2":
+          - cell "REPR MG-IPATINGA"
+          - cell "2"
+        - row "REPR MG-ZONADAMATA 6":
+          - cell "REPR MG-ZONADAMATA"
+          - cell "6"
+        - row "REPR MG-POUSO ALEGRE 3":
+          - cell "REPR MG-POUSO ALEGRE"
+          - cell "3"
+        - row "FILIAL CUIABA 2":
+          - cell "FILIAL CUIABA"
+          - cell "2"
+        - row "REPR SP-CRUZEIRO 2":
+          - cell "REPR SP-CRUZEIRO"
+          - cell "2"
+        - row "REPR MG-DIVINÓPOLIS 2":
+          - cell "REPR MG-DIVINÓPOLIS"
+          - cell "2"
+        - row "REPR MG-SETE LAGOAS 2":
+          - cell "REPR MG-SETE LAGOAS"
+          - cell "2"
+        - row "REPR ES-VITORIA 2":
+          - cell "REPR ES-VITORIA"
+          - cell "2"
+        - row "FILIAL TERESINA 2":
+          - cell "FILIAL TERESINA"
+          - cell "2"
+        - row "REPR SP-GUARULHOS 14":
+          - cell "REPR SP-GUARULHOS"
+          - cell "14"
+        - row "FILIAL ITABUNA 9":
+          - cell "FILIAL ITABUNA"
+          - cell "9"
+        - row "FILIAL FEIRA DE SANTANA 11":
+          - cell "FILIAL FEIRA DE SANTANA"
+          - cell "11"
+        - row "REPR BA-BARREIRAS 2":
+          - cell "REPR BA-BARREIRAS"
+          - cell "2"
+        - row "REPR RJ-REALENGO 14":
+          - cell "REPR RJ-REALENGO"
+          - cell "14"
+        - row "REPR MG-POÇOS CALDAS 2":
+          - cell "REPR MG-POÇOS CALDAS"
+          - cell "2"
+        - row "FILIAL IMPERATRIZ 6":
+          - cell "FILIAL IMPERATRIZ"
+          - cell "6"
+        - row "FILIAL UBERABA 13":
+          - cell "FILIAL UBERABA"
+          - cell "13"
+        - row "FILIAL BAURU 15":
+          - cell "FILIAL BAURU"
+          - cell "15"
+        - row "FILIAL JUIZ DE FORA 2":
+          - cell "FILIAL JUIZ DE FORA"
+          - cell "2"
+        - row "REPR TO-PALMAS 2":
+          - cell "REPR TO-PALMAS"
+          - cell "2"
+        - row "REPR MG-SJ. DEL REI 2":
+          - cell "REPR MG-SJ. DEL REI"
+          - cell "2"
+        - row "FILIAL SOROCABA 6":
+          - cell "FILIAL SOROCABA"
+          - cell "6"
+        - row "REPR MG-BARBACENA 2":
+          - cell "REPR MG-BARBACENA"
+          - cell "2"
+        - row "REPR SP-FRANCA 2":
+          - cell "REPR SP-FRANCA"
+          - cell "2"
+        - row "REPR RO-RONDONIA 2":
+          - cell "REPR RO-RONDONIA"
+          - cell "2"
+        - row "FILIAL SANTOS 2":
+          - cell "FILIAL SANTOS"
+          - cell "2"
+        - row "FILIAL P. PRUDENTE 2":
+          - cell "FILIAL P. PRUDENTE"
+          - cell "2"
+        - row "FILIAL PATOS DE MINAS 2":
+          - cell "FILIAL PATOS DE MINAS"
+          - cell "2"
+        - row "REPR RJ-TREEDATA 14":
+          - cell "REPR RJ-TREEDATA"
+          - cell "14"
+        - row "REPR DF-TECHMASTER 2":
+          - cell "REPR DF-TECHMASTER"
+          - cell "2"
+        - row "REPR SP - ASSIS 2":
+          - cell "REPR SP - ASSIS"
+          - cell "2"
+        - row "REPR PA-SANTARÉM 2":
+          - cell "REPR PA-SANTARÉM"
+          - cell "2"
+        - row "REPR PR-DIGIBYTE 2":
+          - cell "REPR PR-DIGIBYTE"
+          - cell "2"
+        - row "REPR PE-CARUARU 2":
+          - cell "REPR PE-CARUARU"
+          - cell "2"
+        - row "FILIAL CAMPINAS 10":
+          - cell "FILIAL CAMPINAS"
+          - cell "10"
+        - row "REPR MT-CACERES 2":
+          - cell "REPR MT-CACERES"
+          - cell "2"
+        - row "REPR SC-FLORIPA 3":
+          - cell "REPR SC-FLORIPA"
+          - cell "3"
+        - row "FILIAL VARGINHA 2":
+          - cell "FILIAL VARGINHA"
+          - cell "2"
+        - row "REPR PI-INFOTECH 2":
+          - cell "REPR PI-INFOTECH"
+          - cell "2"
+        - row "FILIAL SÃO JOSÉ DO RIO PRETO 2":
+          - cell "FILIAL SÃO JOSÉ DO RIO PRETO"
+          - cell "2"
+        - row "REPR MG-UNAI 9":
+          - cell "REPR MG-UNAI"
+          - cell "9"
+        - row "REPR AC-RIO BRANCO 2":
+          - cell "REPR AC-RIO BRANCO"
+          - cell "2"
+        - row "FILIAL ABC 12":
+          - cell "FILIAL ABC"
+          - cell "12"
+        - row "REPR RJ-OCEANICA 2":
+          - cell "REPR RJ-OCEANICA"
+          - cell "2"
+        - row "REPR CE-JUAZEIRO 2":
+          - cell "REPR CE-JUAZEIRO"
+          - cell "2"
+        - row "REPR SP-JUNDIAÍ 2":
+          - cell "REPR SP-JUNDIAÍ"
+          - cell "2"
+        - row "REPR PB-CAMPINA GRANDE 2":
+          - cell "REPR PB-CAMPINA GRANDE"
+          - cell "2"
+        - row "REPR SP-COSEBELLE 2":
+          - cell "REPR SP-COSEBELLE"
+          - cell "2"
+        - row "REPR RJ-GFB 2":
+          - cell "REPR RJ-GFB"
+          - cell "2"
+        - row "REPR PR-CELERON 2":
+          - cell "REPR PR-CELERON"
+          - cell "2"
+        - row "REPR SP-S J CAMPOS 2":
+          - cell "REPR SP-S J CAMPOS"
+          - cell "2"
+        - row "REPR PA-ALTAMIRA 2":
+          - cell "REPR PA-ALTAMIRA"
+          - cell "2"
+        - row "REPR BA-V. CONQUISTA 8":
+          - cell "REPR BA-V. CONQUISTA"
+          - cell "8"
+        - row "REPR RO-JI-PARANA 2":
+          - cell "REPR RO-JI-PARANA"
+          - cell "2"
+        - row "REPR GO-RIO VERDE 1":
+          - cell "REPR GO-RIO VERDE"
+          - cell "1"
+        - row "REPR RN-NATAL 4":
+          - cell "REPR RN-NATAL"
+          - cell "4"
+        - row "REPR RJ-NOVA FRIBURGO 2":
+          - cell "REPR RJ-NOVA FRIBURGO"
+          - cell "2"
+        - row "ALTERDATA MATRIZ - Vertical Varejo e Food 27":
+          - cell "ALTERDATA MATRIZ - Vertical Varejo e Food"
+          - cell "27"
+        - row "ALTERDATA MATRIZ - Vertical Gestão e Moda 6":
+          - cell "ALTERDATA MATRIZ - Vertical Gestão e Moda"
+          - cell "6"
+        - row "ALTERDATA MATRIZ - Vertical Contábil 34":
+          - cell "ALTERDATA MATRIZ - Vertical Contábil"
+          - cell "34"
+        - row "Jurídico Alterdata 1":
+          - cell "Jurídico Alterdata"
+          - cell "1"
+        - row "PROSOFT AL - MACEIO 2":
+          - cell "PROSOFT AL - MACEIO"
+          - cell "2"
+        - row "PROSOFT BA - VIT DA CONQUISTA 2":
+          - cell "PROSOFT BA - VIT DA CONQUISTA"
+          - cell "2"
+        - row "PROSOFT DF - BRASÍLIA 2":
+          - cell "PROSOFT DF - BRASÍLIA"
+          - cell "2"
+        - row "PROSOFT ES - VILA VELHA 2":
+          - cell "PROSOFT ES - VILA VELHA"
+          - cell "2"
+        - row "PROSOFT GO - RIO VERDE 3":
+          - cell "PROSOFT GO - RIO VERDE"
+          - cell "3"
+        - row "PROSOFT MATRIZ 2":
+          - cell "PROSOFT MATRIZ"
+          - cell "2"
+        - row "PROSOFT MG - BELO HORIZONTE 2":
+          - cell "PROSOFT MG - BELO HORIZONTE"
+          - cell "2"
+        - row "PROSOFT MG - MONTES CLAROS 2":
+          - cell "PROSOFT MG - MONTES CLAROS"
+          - cell "2"
+        - row "PROSOFT MS - CAMPO GRANDE 2":
+          - cell "PROSOFT MS - CAMPO GRANDE"
+          - cell "2"
+        - row "PROSOFT RJ - RIO DE JANEIRO 2":
+          - cell "PROSOFT RJ - RIO DE JANEIRO"
+          - cell "2"
+        - row "PROSOFT RS - CURITIBA 5":
+          - cell "PROSOFT RS - CURITIBA"
+          - cell "5"
+        - row "PROSOFT RS - FLORIANÓPOLIS 5":
+          - cell "PROSOFT RS - FLORIANÓPOLIS"
+          - cell "5"
+        - row "PROSOFT RS - PORTO ALEGRE 6":
+          - cell "PROSOFT RS - PORTO ALEGRE"
+          - cell "6"
+        - row "PROSOFT SP - PIRACICABA 2":
+          - cell "PROSOFT SP - PIRACICABA"
+          - cell "2"
+        - row "PROSOFT SP - RIO PARDO 2":
+          - cell "PROSOFT SP - RIO PARDO"
+          - cell "2"
+        - row "PROSOFT SP - RIO PRETO 2":
+          - cell "PROSOFT SP - RIO PRETO"
+          - cell "2"
+        - row "PROSOFT SP - SANTOS 2":
+          - cell "PROSOFT SP - SANTOS"
+          - cell "2"
+        - row "PROSOFT SP - SÃO JOSÉ DOS CAMP 2":
+          - cell "PROSOFT SP - SÃO JOSÉ DOS CAMP"
+          - cell "2"
+        - row "PROSOFT SP - SUL 2":
+          - cell "PROSOFT SP - SUL"
+          - cell "2"
+        - row "PROSOFT TO - PALMAS 3":
+          - cell "PROSOFT TO - PALMAS"
+          - cell "3"
+        - row "REPR MG- SETE LAGOAS 3":
+          - cell "REPR MG- SETE LAGOAS"
+          - cell "3"
+        - row "REPR MG-PASSOS - OLGON 4":
+          - cell "REPR MG-PASSOS - OLGON"
+          - cell "4"
+        - row "REPR MG-PATOS DE MINAS 4":
+          - cell "REPR MG-PATOS DE MINAS"
+          - cell "4"
+        - row "REPR MG-POÇOS CALDAS - OLGON 3":
+          - cell "REPR MG-POÇOS CALDAS - OLGON"
+          - cell "3"
+        - row "REPR MG-VARGINHA 4":
+          - cell "REPR MG-VARGINHA"
+          - cell "4"
+        - row "REPR MS-CAMPO GRANDE 9":
+          - cell "REPR MS-CAMPO GRANDE"
+          - cell "9"
+        - row "REPR MT-CUIABA 2":
+          - cell "REPR MT-CUIABA"
+          - cell "2"
+        - row "REPR PI-FILIPE MATEU 2":
+          - cell "REPR PI-FILIPE MATEU"
+          - cell "2"
+        - row "REPR PI-TERESINA 4":
+          - cell "REPR PI-TERESINA"
+          - cell "4"
+        - row "REPR PR-LONDRINA 2":
+          - cell "REPR PR-LONDRINA"
+          - cell "2"
+        - row "REPR RJ-ANGRA REIS 1":
+          - cell "REPR RJ-ANGRA REIS"
+          - cell "1"
+        - row "REPR RJ-GILVANIA 2":
+          - cell "REPR RJ-GILVANIA"
+          - cell "2"
+        - row "REPR RO-GUAJARÁ-MIRIM 1":
+          - cell "REPR RO-GUAJARÁ-MIRIM"
+          - cell "1"
+        - row "REPR SC-JOINVILLE 2":
+          - cell "REPR SC-JOINVILLE"
+          - cell "2"
+        - row "REPR SP-ITAUTEC 2":
+          - cell "REPR SP-ITAUTEC"
+          - cell "2"
+        - row "REPR SP-NELSYS 2":
+          - cell "REPR SP-NELSYS"
+          - cell "2"
+        - row "REPR SP-PRESIDENTE PRUDENTE 2":
+          - cell "REPR SP-PRESIDENTE PRUDENTE"
+          - cell "2"
+        - row "REPRESENTAÇÕES LISBOA 1":
+          - cell "REPRESENTAÇÕES LISBOA"
+          - cell "1"
+        - row "FILIAL CAXIAS DO SUL 2":
+          - cell "FILIAL CAXIAS DO SUL"
+          - cell "2"
+        - row "FILIAL FRIBURGO 2":
+          - cell "FILIAL FRIBURGO"
+          - cell "2"
+        - row "FILIAL JOINVILLE 2":
+          - cell "FILIAL JOINVILLE"
+          - cell "2"
+        - row "FILIAL OSASCO 8":
+          - cell "FILIAL OSASCO"
+          - cell "8"
+        - row "FILIAL S.J. DOS CAMPOS 2":
+          - cell "FILIAL S.J. DOS CAMPOS"
+          - cell "2"
+        - row "FILIAL TERESÓPOLIS 2":
+          - cell "FILIAL TERESÓPOLIS"
+          - cell "2"
+        - row "REPR PR-PARANAENSE 2":
+          - cell "REPR PR-PARANAENSE"
+          - cell "2"
+        - row "REPR CE-AUREO 2":
+          - cell "REPR CE-AUREO"
+          - cell "2"
+        - row "REPR SP-RIBEIRAO PRETO - OLGON 2":
+          - cell "REPR SP-RIBEIRAO PRETO - OLGON"
+          - cell "2"
+        - row "REPR PA - BELÉM 2":
+          - cell "REPR PA - BELÉM"
+          - cell "2"
+        - row "BLIMAX TECNOLOGIA LTDA 1":
+          - cell "BLIMAX TECNOLOGIA LTDA"
+          - cell "1"
+        - row "LEO COALHADA GASTRONOMIA LTDA 1":
+          - cell "LEO COALHADA GASTRONOMIA LTDA"
+          - cell "1"
+        - row "PROGESCONT 1":
+          - cell "PROGESCONT"
+          - cell "1"
+        - row "47.354.102 GUILHERME DE SENE 1":
+          - cell "47.354.102 GUILHERME DE SENE"
+          - cell "1"
+        - row "REPR RJ - OCEANICA B TECH 2":
+          - cell "REPR RJ - OCEANICA B TECH"
+          - cell "2"
+        - row "REPR BA - STO ANTONIO DE JESUS 2":
+          - cell "REPR BA - STO ANTONIO DE JESUS"
+          - cell "2"
+        - row "REPR - AM - MANAUS 3":
+          - cell "REPR - AM - MANAUS"
+          - cell "3"
+        - row "21.865.934 FABIANO REIS DA SILVA 2":
+          - cell "21.865.934 FABIANO REIS DA SILVA"
+          - cell "2"
+        - row "REPR ES - STA MARIA DE JETIBA 2":
+          - cell "REPR ES - STA MARIA DE JETIBA"
+          - cell "2"
+        - row "PRO&EN CONSULTORIA EMPRESARIAL LTDA 1":
+          - cell "PRO&EN CONSULTORIA EMPRESARIAL LTDA"
+          - cell "1"
+        - row "CANDIDATO.AFILIADOS 1":
+          - cell "CANDIDATO.AFILIADOS"
+          - cell "1"
+        - row "REPR PB - PATOS 2":
+          - cell "REPR PB - PATOS"
+          - cell "2"
+        - row "REPR BA - LAURO DE FREITAS 6":
+          - cell "REPR BA - LAURO DE FREITAS"
+          - cell "6"
+        - row "REPR AP - MACAPA 2":
+          - cell "REPR AP - MACAPA"
+          - cell "2"
+        - row "REPR PA - BELEM SOFTEC 2":
+          - cell "REPR PA - BELEM SOFTEC"
+          - cell "2"
+        - row "REPR PA - PARAUAPEBAS 2":
+          - cell "REPR PA - PARAUAPEBAS"
+          - cell "2"
+        - row "REPR RN - MOSSORÓ 3":
+          - cell "REPR RN - MOSSORÓ"
+          - cell "3"
+        - row "FILIAL PALMAS 4":
+          - cell "FILIAL PALMAS"
+          - cell "4"
+        - row "REPR PR - CASCAVEL 3":
+          - cell "REPR PR - CASCAVEL"
+          - cell "3"
+        - row "Suporte Nuvem 0":
+          - cell "Suporte Nuvem"
+          - cell "0"
+        - row "REPR PR - PONTA GROSSA 3":
+          - cell "REPR PR - PONTA GROSSA"
+          - cell "3"
+        - row "REPR SP - MOGI DAS CRUZES 2":
+          - cell "REPR SP - MOGI DAS CRUZES"
+          - cell "2"
+        - row "REPR SP - TABOÃO DA SERRA 4":
+          - cell "REPR SP - TABOÃO DA SERRA"
+          - cell "4"
+        - row "REPR COM MG - MONLEVADE 2":
+          - cell "REPR COM MG - MONLEVADE"
+          - cell "2"
+        - row "ALTERDATA MATRIZ - Vertical Aceleração 2":
+          - cell "ALTERDATA MATRIZ - Vertical Aceleração"
+          - cell "2"
+        - row "REPR SC - CHAPECÓ 3":
+          - cell "REPR SC - CHAPECÓ"
+          - cell "3"

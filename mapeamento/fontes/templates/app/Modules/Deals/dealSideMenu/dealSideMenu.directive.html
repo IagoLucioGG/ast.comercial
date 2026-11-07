@@ -1,0 +1,61 @@
+
+<div class="bottom-side-wrapper">
+  <div 
+    class="text-ellipsis button left-align full-width button-white-light-border b-1 button-very-big" 
+    ng-click="dealSideMenuCtrl.openImportation()" 
+    ng-if="dealSideMenuCtrl.import_permission" 
+    data-cy="deal-side-menu-btn-deal-import-excel"
+    uib-tooltip="{{ 'DEALS.SIDE_MENU.EXCEL_IMPORT' | translate_sentence : currentPipeline.Id }}"
+    tooltip-append-to-body="true"
+    tooltip-enable="dealSideMenuCtrl.isTooltipEnabled('deal-side-menu-excel-import')"
+    id="deal-side-menu-excel-import"
+    tooltip-placement="left"
+  >
+    <i class="fal fa-file-excel simple-line-space"></i>
+    <span class="text-regular semi-big">{{ 'DEALS.SIDE_MENU.EXCEL_IMPORT' | translate_sentence : currentPipeline.Id }}</span>
+  </div>
+  <div>
+    <div
+      class="text-ellipsis button left-align full-width button-white-light-border b-1 semi-big button-very-big"
+      ng-click="dealSideMenuCtrl.state.go(dealSideMenuCtrl.state.current.name + '.newtag', {entity: $parent.$parent.dealsCtrl.main_entity})"
+      ng-if="dealSideMenuCtrl.tags_permission"
+      data-cy="deal-side-menu-btn-tag-config"
+      uib-tooltip="{{ 'DEALS.SIDE_MENU.TAGS_CONFIG' | translate_sentence : currentPipeline.Id }}"
+      tooltip-append-to-body="true"
+      tooltip-enable="dealSideMenuCtrl.isTooltipEnabled('deal-side-menu-tags-config')"
+      id="deal-side-menu-tags-config"
+      tooltip-placement="left"
+    >
+      <i class="fal fa-tag simple-line-space"></i>
+      <span class="text-regular">{{ 'DEALS.SIDE_MENU.TAGS_CONFIG' | translate_sentence : currentPipeline.Id }}</span>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="dealSideMenuCtrl.can_edit_pipeline && currentPipeline.Id" ng-click="dealSideMenuCtrl.state.go('pipelines.editpipeline', { pipelineid: currentPipeline.Id })" data-cy="deal-side-menu-btn-contact-form-config">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal simple-line-space" ng-class="currentPipeline.pipeline_icon.Class"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'DEALS.SIDE_MENU.EDIT_PIPELINE' | translate_sentence }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="button full-width button-white-light-border b-1 semi-big button-very-big"
+      ng-if="dealSideMenuCtrl.canEditExternalForm"
+      data-cy="deal-side-menu-btn-config-external-forms"
+      ng-click="dealSideMenuCtrl.openExternalFormsModal()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+          <i class="fal fa-pen-square simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'DEALS.SIDE_MENU.CONFIG_EXTERNAL_FORMS' | translate_sentence }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

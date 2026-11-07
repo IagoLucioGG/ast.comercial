@@ -1,0 +1,21 @@
+<div class="text-neutral top-wrapper">
+  Mostrando {{(itemsPerPage*(currentPage - 1)) + 1}} - {{itemsPerPage*currentPage > totalItems ? totalItems : itemsPerPage*currentPage}} de {{totalItems}}
+</div>
+<ul
+  uib-pagination
+  ng-model="currentPage"
+  ng-disabled="disable"
+  total-items="totalItems"
+  class="pagination-sm"
+  num-pages="numPages"
+  boundary-links="!disableBoundaryLinks"
+  items-per-page="itemsPerPage"
+  rotate="true"
+  max-size="5"
+  force-ellipses="true"
+  first-text="Primeira"
+  previous-text="Anterior"
+  next-text="Próxima"
+  last-text="Última"
+  ng-change="dynamicTablePaginationCtrl.changePageCallback()">
+</ul>

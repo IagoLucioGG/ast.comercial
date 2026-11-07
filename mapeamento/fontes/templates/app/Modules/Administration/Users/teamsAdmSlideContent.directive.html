@@ -1,0 +1,35 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-form="team_form">
+  <section class="scrollable scroll-shadow-container" ng-if="teamsAdmSlideContentCtrl.initial_load">
+    <div class="gap-15"></div>
+    <div ng-repeat="section in teamsAdmSlideContentCtrl.sections">
+      <div ng-if="section.Id === 'null'">
+        <forms model="teamsAdmSlideContentCtrl.model" fields="teamsAdmSlideContentCtrl.forms[$index]" form="team_form" formula-trigger-hide-or-disable="true"></forms>
+        <div class="gap-20"></div>
+      </div>
+      <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+        <modal-section section-form="team_form" name="section.name" section-id="section.Id">
+          <forms model="teamsAdmSlideContentCtrl.model" fields="teamsAdmSlideContentCtrl.forms[$index]" form="team_form" name="'section_form_' + section.Id" formula-trigger-hide-or-disable="true"></forms>
+        </modal-section>
+        <div class="gap-20"></div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle">
+      <a href class="button button-white" ng-if="editing" ng-click-confirm="{{ 'ADMINISTRATION.USERS.TEAMS_SIDE_SLIDE.DELETE_TEAM_CONFIRM' | translate }}" reversible="false" ng-click="teamsAdmSlideContentCtrl.deleteTeam()">
+        <span class="font-big">
+          <i class="fal fa-trash text-darkest-neutral"></i>
+        </span>
+      </a>
+    </aside>
+    <aside class="v-middle text-right">
+      <a class="button button-action pull-right" href ng-click="teamsAdmSlideContentCtrl.submitControl(team_form)">
+        <i class="button-icon fas fa-save"></i>
+        {{ (editing ? 'ADMINISTRATION.USERS.TEAMS_SIDE_SLIDE.SAVE_EDIT' : 'ADMINISTRATION.USERS.TEAMS_SIDE_SLIDE.CREATE_TEAM') | translate }}
+      </a>
+      <loading-tooltip loading="teamsAdmSlideContentCtrl.loading" form="team_form"></loading-tooltip>
+    </aside>
+  </div>
+</div>

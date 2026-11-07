@@ -1,0 +1,72 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  toggle-full-screen-fn="orderModalCtrl.toggleFullScreenFn"
+  footer="true"
+  dark="true"
+  modal-title="{{ (model ? 'ORDERS.EDIT_ORDER' : 'ORDERS.NEW_ORDER') | translate }}"
+  toggle-modal="orderModalCtrl.toggle_modal"
+  ng-form
+  name="order_model_form"
+  has-order="true"
+  block-back-state="orderModalCtrl.block_back_state"
+  cypress-prefix="documents-new-order-modal"
+  is-fetching-modal-content="orderModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="regular-header b-b-1 scroll-shadow arrange-mid" ng-if="!orderModalCtrl.show_document_template_list && !orderModalCtrl.display_no_templates">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="modal-title" data-cy="new-order-modal-template-titel">
+            <small class="font-regular-weight text-muted">Modelo</small>
+          </div>
+          <div class="dropdown mtop-3">
+            <a class="button button-white-no-border button-super-small new-item-folder dropdown-toggle" data-toggle="dropdown">
+              <span class="font-big font-regular-weight">{{orderModalCtrl.selected_template.Name}}<i class="fal fa-angle-down dropdown-sign"></i></span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu field-pick">
+              <li ng-repeat="model in orderModalCtrl.order_templates track by model.Id" ng-click="orderModalCtrl.changeTemplate(model)" ng-show="model.Id !== orderModalCtrl.selected_template.Id && orderModalCtrl.order_templates.length > 1">
+                <a class="white-dropdown-link" href>{{model.Name}}</a>
+              </li>
+              <li ng-show="orderModalCtrl.order_templates.length === 1">
+                <a class="white-dropdown-link" href>Você tem apenas um modelo de venda</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="deals-vbox vbox scroll-shadow neutral-shadow" ng-if="!orderModalCtrl.show_document_template_list && !orderModalCtrl.display_no_templates">
+      <standard-loader margin-top="30" loading="!orderModalCtrl.can_load || !orderModalCtrl.initial_load"></standard-loader>
+      <section class="scrollable scroll-shadow-container" ng-if="orderModalCtrl.can_load && orderModalCtrl.initial_load">
+        <div class="gap-15"></div>
+        <forms model="orderModalCtrl.order_model" fields="orderModalCtrl.selected_form" form="order_model_form" document-template-format="orderModalCtrl.selected_template.NewFormat"  editing-model="orderModalCtrl.editing" is-modal-full-screen="orderModalCtrl.modal_is_full_screen"></forms>
+        <div class="text-center text-neutral-light font-very-big-title big-wrapper" ng-if="(!orderModalCtrl.selected_form || !orderModalCtrl.has_fields_to_show) && orderModalCtrl.can_load && orderModalCtrl.initial_load">
+          <i class="font-monster-size fad fa-exclamation-triangle"></i>
+          <div class="gap-30"></div>
+          Sem campos para preenchimento
+        </div>
+      </section>
+    </div>
+
+    <no-templates ng-if="orderModalCtrl.display_no_templates" entity-id="4" modal="true"></no-templates>
+
+    <div class="vbox scroll-shadow neutral-shadow" ng-if="orderModalCtrl.show_document_template_list">
+      <section class="scrollable">
+        <document-template-select
+          entity-id="4"
+          document-templates="orderModalCtrl.order_templates"
+          select-document-template-callback-fn="orderModalCtrl.selectDocumentTemplateCallback(template)">
+        </document-template-select>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch" ng-if="!orderModalCtrl.show_document_template_list && !orderModalCtrl.display_no_templates">
+      <div class="document-footer-container stretch">
+        <loading-tooltip loading="orderModalCtrl.loading" form="order_model_form"></loading-tooltip>
+        <button class="button button-action pull-right" ng-class="{ 'disabled': orderModalCtrl.loading }" ng-disabled="orderModalCtrl.loading" ng-click="orderModalCtrl.applyOrder(orderModalCtrl.order_model, order_model_form)">Salvar</button>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

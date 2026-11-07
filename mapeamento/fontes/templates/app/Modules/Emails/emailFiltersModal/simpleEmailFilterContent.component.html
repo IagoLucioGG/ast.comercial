@@ -1,0 +1,22 @@
+<div class="modal-body-no-padding">
+  <div class="gap-15"></div>
+  <ul class="nav nav-tabs button-tabs-background filter-tabs" ng-if="simpleEmailFilterContentCtrl.simple_filter_entities.length > 1">
+    <li ng-repeat="entity in simpleEmailFilterContentCtrl.simple_filter_entities" ng-class="{'active': simpleEmailFilterContentCtrl.simple_filter_current_entity.name === entity.name}">
+      <a class="text-darkest-neutral" href ng-click="simpleEmailFilterContentCtrl.setSimpleFilterEntity(entity)">{{entity.name}}</a>
+    </li>
+  </ul>
+  <div class="gap-15"></div>
+  <div class="tab-content">
+    <div ng-repeat="section in simpleEmailFilterContentCtrl.simple_filter_sections">
+      <div ng-if="section.Id === 'null'">
+        <forms model="simpleEmailFilterContentCtrl.simple_filter_model" fields="simpleEmailFilterContentCtrl.simple_filter_forms[$index]" form="simple_filter_form" ignore-default-values="true" not-trigger-formula="true"></forms>
+      </div>
+      <div ng-if="section.Id !== 'null'">
+        <modal-section section-form="simple_filter_form" name="section.name || 'GENERIC_DIRECTIVES.ENTITY_PAGE.DEFAULT_SECTION_NAME' | translate" section-id="section.Id">
+          <forms model="simpleEmailFilterContentCtrl.simple_filter_model" fields="simpleEmailFilterContentCtrl.simple_filter_forms[$index]" form="simple_filter_form" ignore-default-values="true" not-trigger-formula="true"></forms>
+        </modal-section>
+      </div>
+      <div class="gap-20"></div>
+    </div>
+  </div>
+</div>

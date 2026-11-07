@@ -1,0 +1,9 @@
+<div>
+  <checklist-block ng-if="$ctrl.activeWorkflowModule && $ctrl.can_load_checklist && $ctrl.self.Account.Plan.Checklists" deal="$ctrl.deal" new-layout="true" ng-style="{ 'display': $ctrl.can_show_checklist ? 'block' : 'none' }"></checklist-block>
+  <!--<div class="gap-30" ng-if="$ctrl.can_load_checklist && $ctrl.self.Account.Plan.Checklists" ng-style="{ 'display': $ctrl.can_show_checklist ? 'block' : 'none' }"></div>-->
+  <new-deal-page-infos deal="$ctrl.deal" extend-deal-fn="$ctrl.extendDealFn"></new-deal-page-infos>
+  <!--<div class="gap-30" ng-if="$ctrl.deal.OriginDealId"></div>-->
+  <new-deal-page-origin-deal origin-deal-id="$ctrl.deal.OriginDealId"></new-deal-page-origin-deal>
+  <hr class="hr-sidebar-separator"/>
+</div>
+

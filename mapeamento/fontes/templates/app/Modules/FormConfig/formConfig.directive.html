@@ -1,0 +1,42 @@
+<div class="hbox stretch">
+  <aside>
+    <div class="form-config-wrapper">
+      <h4 class="text-center text-neutral-light">
+        {{ 'FORM_CONFIG.SLIDE_TITLE' | translate }}
+      </h4>
+      <helper-button helper-key="'FORM_CONFIG'" tooltip-placement="'left'"></helper-button>
+    </div>
+    <div class="vbox">
+      <section>
+        <div class="vbox side-scroll">
+          <section>
+            <div class="hbox stretch">
+              <aside id="form-config-size-slide" class="light-background width-250 size-slide" style="display: table-cell">
+                <form-config-slide entities="formConfigCtrl.entities"></form-config-slide>
+              </aside>
+              <aside class="position-relative light-background" style="width: 0.1px;">
+                <a class="button button-white size-slide-button hidden-panel-button" ng-click="formConfigCtrl.toggleSizeSlide()" ng-class="{'hidden-panel-button': formConfigCtrl.toggle_slide, 'visible-panel-button': !formConfigCtrl.toggle_slide}">
+                  <span class="font-big"><i class="fal fa-long-arrow-left" ng-class="{'fa-long-arrow-left': formConfigCtrl.toggle_slide, 'fa-long-arrow-right': !formConfigCtrl.toggle_slide}"></i></span>
+                </a>
+              </aside>
+              <aside class="regular-background b-l-1">
+                <div class="vbox side-scroll">
+                  <section class="scrollable form-config-view" ui-view="form-config-view">
+                    <div class="wrapper">
+                      <div class="text-center text-neutral-light font-very-big-title">
+                        <div class="gap-90"></div>
+                        <i class="font-monster-size fad fa-pen-square"></i>
+                        <div class="gap-30"></div>
+                        {{ 'FORM_CONFIG.SELECT_A_FORM' | translate }}
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </aside>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>

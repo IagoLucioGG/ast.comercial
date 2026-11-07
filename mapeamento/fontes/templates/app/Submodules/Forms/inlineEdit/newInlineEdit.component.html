@@ -1,0 +1,22 @@
+<div
+  uib-popover-template="$ctrl.popoverTemplate"
+  popover-title="{{ 'GENERICS.EDIT' | translate }}"
+  popover-append-to-body="true"
+  popover-placement="{{ $ctrl.popoverPlacement || 'auto right' }}"
+  popover-is-open="$ctrl.isOpen"
+  popover-class="$ctrl.popoverSize"
+  >
+</div>
+
+<script type="text/ng-template" id="new-popover">
+  <div ng-if="$ctrl.isOpen" ng-form name="inline_edit_form">
+    <form ng-if="$ctrl.loading_model">
+      <div class="loader modal-loader inline-edit-loader"></div>
+    </form>
+    <forms ng-if="!$ctrl.loading_model" model="$ctrl.modelCopy" fields="$ctrl.fields" not-trigger-formula="$ctrl.notTriggerFormula" form="inline_edit_form" is-inline-form="true"></forms>
+    <mdm-duplicates-watcher ng-if="!$ctrl.loading_model" model="$ctrl.modelCopy" forms="$ctrl.mdmFields" contact-type="$ctrl.mdmContactType"></mdm-duplicates-watcher>
+    <button class="button button-action mleft15" ng-disabled="$ctrl.loading" ng-click="$ctrl.submit(inline_edit_form); $event.stopPropagation()" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+    <button class="button button-white" ng-disabled="$ctrl.loading" ng-click="$ctrl.cancel(); $event.stopPropagation()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+    <loading-tooltip loading="$ctrl.loading" form="inline_edit_form"></loading-tooltip>
+  </div>
+</script>

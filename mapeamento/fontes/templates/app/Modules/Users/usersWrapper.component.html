@@ -1,0 +1,56 @@
+<div class="component-with-height">
+  <div class="vbox small-header">
+    <header class="regular-header new-header b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="input-group width-250 pull-left" tooltip-placement="right" uib-tooltip="{{ 'USERS.SEARCH_TOOLTIP' | translate }}">
+            <input class="form-control input-sm light-background" placeholder="{{ 'USERS.SEARCH_PLACEHOLDER' | translate }}" ng-model="$ctrl.quick_filter" ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)" data-cy="users-quick-filter-input">
+            <div class="input-group-btn width-10">
+              <a class="btn button button-neutral-gray special-search-button" ng-click="$ctrl.quickFilter($ctrl.quick_filter)">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <a class="button button-action pull-right" href ng-click="$ctrl.openNewUser()" data-cy="administration-user-table-new-user-button" ng-class="{'disabled': $ctrl.self.Account.IsSandboxAccount === true}" uib-tooltip="{{ ('SANDBOX.NEW_USER_TOOLTIP' | translate) }}" tooltip-placement="left" tooltip-append-to-body="true" tooltip-enable="$ctrl.self.Account.IsSandboxAccount" style="pointer-events: all !important;;">
+            <i class="button-icon fas fa-user-astronaut"></i>
+            {{ 'USERS.NEW_USER' | translate }}
+          </a>
+          <a id="users-menu-button" class="button button-background pull-right" open-side-menu side-menu-id="user_side_menu" ng-if="$ctrl.show_menu">
+            <span class="text-action"><i class="fal fa-cog button-icon"></i></span> {{ 'GENERICS.MENU' | translate }}
+          </a>
+          <div class="dropdown">
+            <filters-menu
+              filters="$ctrl.filters"
+              applied-filter="$ctrl.applied_filter"
+              filter-actions-fn="$ctrl.filterActions">
+            </filters-menu>
+          </div>
+        </aside>
+      </div>
+    </header>
+    <section>
+      <div class="vbox">
+        <!-- CONTEÚDO DA TELA -->
+        <section ui-view="users-view"></section>
+      </div>
+    </section>
+
+    <!--MODALS-->
+    <new-user-modal ng-if="$ctrl.state.current.name.includes('.newuser')"></new-user-modal>
+    <filters-modal
+        ng-if="$ctrl.state.current.name.endsWith('filter')"
+        modal-id="filter_modal"
+        entity="$ctrl.main_entity"
+        remove-simple-filter="true"
+        filter-actions-fn="$ctrl.filterActions">
+    </filters-modal>
+    <!--SIDE-MENU-->
+    <side-menu side-menu-id="user_side_menu">
+      <user-side-menu></user-side-menu>
+    </side-menu>
+    <!--END OF SIDE-MENU-->
+
+  </div>
+</div>

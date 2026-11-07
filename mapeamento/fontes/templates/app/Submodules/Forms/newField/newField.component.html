@@ -1,0 +1,312 @@
+<span
+  formula
+  formula-model="$ctrl.model"
+  formula-field="$ctrl.field"
+  formula-scope="$ctrl.formulaScope"
+  formula-block-start="$ctrl.notTriggerFormula"
+  formula-unique-id="$ctrl.formulaUniqueId"
+  formula-block-watcher="$ctrl.formulaBlockWatcher"
+  formula-result-listener-fn="$ctrl.formulaCalculatedCallback($ctrl.model, $ctrl.field)"
+  formula-get-allowed-scopes-fn="$ctrl.formulaGetAllowedScopesFn"
+  formula-check-path-fn="$ctrl.formulaCheckPathFn"
+  formula-ignore-variable-changes="$ctrl.formulaIgnoreVariableChanges"
+  formula-skip-watcher="$ctrl.formulaSkipWatcher"
+  formula-resettable-variables="$ctrl.formulaResettableVariables"
+  formula-trigger-hide-or-disable="$ctrl.formulaTriggerHideOrDisable"
+  formula-hide-callback-fn="$ctrl.formulaHideCallbackFn"
+>
+
+  <div ng-if="$ctrl.field.internalFormula" ng-class="{ '--percentage' : $ctrl.field.typeId === 13 }" ng-show="$ctrl.loadingFormula" class="formula-loading">
+    <div class="skeleton"></div>
+  </div>
+
+  <!-- case field is deal title -->
+  <input maxlength="200" ng-if="$ctrl.field.key.includes('deal_title') && !$ctrl.field.unique && $ctrl.field.formId && !$ctrl.outsideForm" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" type="text" class="form-control input-sm" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" uib-typeahead="title for title in $ctrl.titles | filter:$viewValue | limitTo:8" typeahead-min-length="0" typeahead-wait-ms="200" typeahead-popup-template-url="title-search-popup.html" autocomplete="off" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.DEAL_TITLE' | translate_sentence }}"/>
+
+  <script type="text/ng-template" id="title-search-popup.html">
+    <ul class="dropdown-menu deal-title-suggestion" role="listbox" ng-show="isOpen() && !moveInProgress">
+      <li class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-if="match.model !== undefined && match.model !== null" ng-class="{'quicksearch-keyboard': isActive($index)}" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.Id}}">
+        {{match.label}}
+      </li>
+    </ul>
+  </script>
+
+  <!-- case field is lead company name -->
+  <input maxlength="200" ng-if="($ctrl.field.key === 'lead_company_name') && !$ctrl.field.unique && $ctrl.field.formId" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" type="text" class="form-control input-sm" uib-typeahead="contact.Name for contact in $ctrl.getLeadContactSuggestions($ctrl.field, $ctrl.model)" typeahead-min-length="0" typeahead-loading="$ctrl.loading_typeahead" typeahead-wait-ms="300" typeahead-popup-template-url="contact-search-popup.html" typeahead-on-select="$ctrl.selectModel($item, $ctrl.field, $ctrl.model)" autocomplete="off" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}"/>
+
+  <script type="text/ng-template" id="contact-search-popup.html">
+    <ul class="dropdown-menu deal-title-suggestion" role="listbox" ng-show="isOpen() && !moveInProgress">
+      <li class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-if="match.model !== undefined && match.model !== null" ng-class="{'quicksearch-keyboard': isActive($index)}" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.Id}}">
+        {{match.label}}
+        <div ng-if="match.model.Register && match.model.TypeId === 1" class="text-muted text-small">
+          {{'CNPJ: ' + match.model.Register}}
+        </div>
+      </li>
+    </ul>
+  </script>
+
+  <!-- case field is text -->
+  <input
+    ng-if="($ctrl.field.typeId === 1 || $ctrl.field.typeId === 21) && !$ctrl.field.key.includes('color') && !($ctrl.field.key === 'lead_company_name' && !$ctrl.field.unique && $ctrl.field.formId) && !($ctrl.field.key.includes('deal_title') && !$ctrl.field.unique && $ctrl.field.formId && !$ctrl.outsideForm) && (!($ctrl.field.key.includes('zipcode')) || !$ctrl.showZipCodeMask)"
+    ng-model="$ctrl.model[$ctrl.property]"
+    ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules"
+    ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable"
+    name="{{$ctrl.field.key}}"
+    type="text"
+    class="form-control input-sm"
+    placeholder="{{$ctrl.placeholder}}"
+    check-uniqueness
+    check-uniqueness-field="$ctrl.field"
+    check-uniqueness-model="$ctrl.model"
+    check-uniqueness-disable="$ctrl.notSuggestNewItem"
+    autocomplete="off"
+    ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)"
+    maxlength="{{$ctrl.field.maxLength}}"
+    data-cy="{{'field-key-' + $ctrl.field.key}}"
+    aria-label="{{ 'ARIA_LABELS.FIELD.SIMPLE_TEXT' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"
+  />
+    
+  <!-- case field is text area with ckeditor -->
+  <!-- field enabled -->
+  <!-- <div ng-show="!($ctrl.disabled || !$ctrl.field.valueEditable)" ng-if="$ctrl.field.typeId === 2 && $ctrl.field.useRichTextEditor && !$ctrl.field.useMentio && !$ctrl.ignoreTextAreaDirectives" class="position-relative">
+    <textarea ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" pl-ckeditor="$ctrl.options" class="form-control height-100" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)"></textarea>
+  </div> -->
+  <!-- field disabled -->
+  <!-- <div ng-show="($ctrl.disabled || !$ctrl.field.valueEditable)" ng-if="$ctrl.field.typeId === 2 && $ctrl.field.useRichTextEditor && !$ctrl.field.useMentio && !$ctrl.ignoreTextAreaDirectives" class="position-relative">
+    <div class="">
+      <iframe id="{{$ctrl.field.key}}" class="cke_wysiwyg_frame cke_reset form-control height-200 cke-disabled-text-area"  frameborder="0" scrolling="true" style="width: 100%;"></iframe>
+    </div>
+  </div> -->
+
+  <!-- case field is text area with ckeditor -->
+  <!-- field enabled -->
+  <div ng-if="$ctrl.field.typeId === 2 && $ctrl.field.useRichTextEditor && !$ctrl.field.useMentio && !$ctrl.ignoreTextAreaDirectives" class="position-relative" ng-class="{'disabled-ckeditor': ($ctrl.disabled || !$ctrl.field.valueEditable) && $ctrl.field.useRichTextEditor}">
+    <textarea ng-if="!$ctrl.rich_text_editor_feature" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" pl-ckeditor="$ctrl.options" pl-editor-id="{{ 'ckeditor-' + $ctrl.field.key }}" class="form-control height-100" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" aria-label="{{ 'ARIA_LABELS.FIELD.TEXT_AREA' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"></textarea>
+    <!-- invisible input with the model and requirement rules to be able to use the angular directives to validate the form -->
+    <input ng-if="$ctrl.rich_text_editor_feature" ng-show="false" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules"/>
+    <rich-text-editor
+      ng-if="$ctrl.rich_text_editor_feature"
+      value="$ctrl.model[$ctrl.property]"
+      disabled="$ctrl.disabled || !$ctrl.field.valueEditable"
+      height="250"
+      min-height="150"
+      language="$ctrl.language"
+      angular-scope="$ctrl.angularScope"
+      dispatch-angular-scope-apply-on-value-change="true"
+      on-init-editor="$ctrl.onInitRichTextEditor"
+      on-change-value="$ctrl.onRichTextEditorChangeValue"
+      data-cy="{{'field-key-' + $ctrl.field.key}}"
+      aria-label="{{ 'ARIA_LABELS.FIELD.TEXT_AREA' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"  
+    >
+    </rich-text-editor>
+  </div>
+  <!-- field disabled -->
+  <!-- <div ng-show="($ctrl.disabled || !$ctrl.field.valueEditable)" ng-if="$ctrl.field.typeId === 2 && $ctrl.field.useRichTextEditor && !$ctrl.field.useMentio && !$ctrl.ignoreTextAreaDirectives" class="position-relative">
+    <div class="">
+      <iframe id="{{$ctrl.field.key}}" class="cke_wysiwyg_frame cke_reset form-control height-200 cke-disabled-text-area"  frameborder="0" scrolling="true" style="width: 100%;"></iframe>
+    </div>
+  </div> -->
+
+  <!-- case field is text area without ckeditor and without mentio -->
+  <div ng-if="$ctrl.field.typeId === 2 && ($ctrl.ignoreTextAreaDirectives || (!$ctrl.field.useRichTextEditor && !$ctrl.field.useMentio))" class="position-relative">
+    <textarea
+      ng-model="$ctrl.model[$ctrl.property]"
+      ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules"
+      ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable"
+      name="{{$ctrl.field.key}}"
+      class="form-control height-100"
+      placeholder="{{$ctrl.placeholder}}"
+      ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)"
+      maxlength="{{$ctrl.field.maxLength}}"
+      data-cy="{{'field-key-' + $ctrl.field.key}}"
+      aria-label="{{ 'ARIA_LABELS.FIELD.TEXT_AREA' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"
+    >
+    </textarea>
+
+    <speech-to-text
+      ng-model="$ctrl.model[$ctrl.property]"
+      position="{{ $ctrl.getPositionSpeechToText() }}"
+    ></speech-to-text>
+  </div>
+
+  <!-- case field is text area with mentio -->
+  <div ng-if="$ctrl.field.typeId === 2 && !$ctrl.field.useRichTextEditor && $ctrl.field.useMentio && !$ctrl.ignoreTextAreaDirectives" class="position-relative">
+    <textarea
+      ng-model="$ctrl.model[$ctrl.property]"
+      ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules"
+      ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable"
+      ng-model-options="{ debounce: 300 }"
+      mentio mentio-typed-term="$ctrl.typed_user"
+      mentio-trigger-char="'@'"
+      mentio-search="$ctrl.searchUsers()"
+      mentio-select="$ctrl.getTopicTextRaw(item)"
+      mentio-items="$ctrl.users"
+      mentio-template-url="user-mentions"
+      name="{{$ctrl.field.key}}"
+      class="form-control height-100"
+      placeholder="{{placeholder || ('FORMS.TAG_USER' | translate)}}"
+      ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)"
+      maxlength="{{ $ctrl.field.maxLength }}"
+      data-cy="{{'field-key-' + $ctrl.field.key}}"
+      aria-label="{{ 'ARIA_LABELS.FIELD.TEXT_AREA' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"
+    >
+    </textarea>
+
+    <speech-to-text
+      ng-model="$ctrl.model[$ctrl.property]"
+      position="{{ $ctrl.getPositionSpeechToText() }}"
+    ></speech-to-text>
+
+    <script type="text/ng-template" id="user-mentions">
+      <ul class="list-group user-search">
+        <li mentio-menu-item="user" ng-repeat="user in items" class="list-group-item">
+          <div class="left-panel">
+            <img ng-src="{{user.AvatarUrl}}" class="mini-avatar">
+            <span>{{user.Name}}</span>
+          </div>
+        </li>
+      </ul>
+    </script>
+  </div>
+  <!-- case field is number -->
+  <input number-only ng-if="!$ctrl.field.key.includes('id') && $ctrl.field.typeId === 4 && !$ctrl.field.key.includes('amount') && $ctrl.field.type !== 'Duração' && !$ctrl.field.key.includes('zipcode')  && !$ctrl.field.isDurationField" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" type="number" class="form-control input-sm" check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" uib-tooltip="{{ 'FORMS.INTEGER_LIMIT_INFO' | translate }}" tooltip-append-to-body="true" tooltip-enable="!$ctrl.disabled && $ctrl.field.valueEditable" tooltip-is-open="$ctrl.integerMaxLengthReached" max="{{$ctrl.FIELD_TYPE_NUMBER.MAX}}" min="{{$ctrl.FIELD_TYPE_NUMBER.MIN}}" id="{{$ctrl.fieldUniqueId}}" type-id="{{$ctrl.field.typeId}}" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.NUMBER' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+  <!-- case field is Id field -->
+  <input ng-if="$ctrl.field.key.includes('id') && $ctrl.field.typeId === 4 && !$ctrl.field.key.includes('amount') && $ctrl.field.type !== 'Duração' && !$ctrl.field.key.includes('zipcode')  && !$ctrl.field.isDurationField" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" type="number" class="form-control input-sm" check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.TEXT_AREA' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+  <!-- case field is zipcode -->
+  <input ng-if="$ctrl.field.key.includes('zipcode') && ($ctrl.field.key !== 'contact_foreign_zipcode' && $ctrl.field.key !== 'contact_zipcode_country')" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" class="form-control input-sm" ui-mask="{{$ctrl.applied_mask}}" ui-options="{{$ctrl.ui_options}}" check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.CEP' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+  <!-- case field is foreign zipcode with mask -->
+  <foreign-zip-code ng-if="$ctrl.field.key === 'contact_foreign_zipcode' && $ctrl.showZipCodeMask" model="$ctrl.model[$ctrl.property]" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" parent-model="$ctrl.model" field="$ctrl.field" model-change-callback="$ctrl.fieldChanges($ctrl.field, $ctrl.model)"></foreign-zip-code>
+  <!-- case field is amount -->
+  <input number-only ng-if="$ctrl.field.typeId === 5" currency-format check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem" placeholder="{{ 'NUMBER_FORMATS.AMOUNT_PLACEHOLDER' | translate }}" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" class="form-control input-sm" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" autocomplete="off" type-id="{{$ctrl.field.typeId}}" maxlength="{{$ctrl.field.maxLength}}" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.CURRENCY' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+  <!-- case field is unlimited decimal places -->
+  <input ng-if="$ctrl.field.typeId === 6" type="number" placeholder="{{ 'NUMBER_FORMATS.AMOUNT_PLACEHOLDER' | translate }}" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" class="form-control input-sm" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" autocomplete="off" check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem" custom-validation data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.NUMBER_WITH_UNLIMITED_DECIMAL_PLACES' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+
+  <!-- case field is interaction_record_duration_in_seconds -->
+  <input type="time" step="1" ng-if="$ctrl.field.typeId === 4  && $ctrl.field.isDurationField" ng-model="$ctrl.model[$ctrl.property + '_date']" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" class="form-control input-sm" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" autocomplete="off" check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem"/>
+
+  <!-- case field is select tag -->
+  <select-fk ng-if="$ctrl.field.typeId === 7 && $ctrl.field.multiple && $ctrl.field.apiUrl" dropdown-append-contact-filter="$ctrl.dropdownAppendContactFilter" on-save-form-mini-callback="$ctrl.onSaveFormMiniCallback" model="$ctrl.model[$ctrl.property]" parent-model="$ctrl.model" field="$ctrl.field" api-url="{{$ctrl.field.apiUrl}}" display-property="{{$ctrl.field.displayProperty}}" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" not-suggest-new-item="$ctrl.notSuggestNewItem" restrict-badge-size="$ctrl.outsideForm" option-change-callback="$ctrl.selectFkFieldChanges(model)" placeholder="$ctrl.placeholder" data-cy="{{'field-key-' + $ctrl.field.key}}"></select-fk>
+  <!-- case field is list_select -->
+  <select-fk ng-if="$ctrl.field.typeId === 7 && !$ctrl.field.multiple && $ctrl.field.apiUrl && $ctrl.field.type !== 'Currencia'" dropdown-append-contact-filter="$ctrl.dropdownAppendContactFilter" on-save-form-mini-callback="$ctrl.onSaveFormMiniCallback" model="$ctrl.model[$ctrl.property]" parent-model="$ctrl.model" field="$ctrl.field" api-url="{{$ctrl.field.apiUrl}}" display-property="{{$ctrl.field.displayProperty}}" list="true" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" not-suggest-new-item="$ctrl.notSuggestNewItem" not-clear-on-blur="$ctrl.field.not_clear_on_blur" store-view-value="$ctrl.model[$ctrl.field.key + '_stored_view_value']" option-change-callback="$ctrl.selectFkFieldChanges(model)" placeholder="$ctrl.placeholder" restrict-badge-size="$ctrl.outsideForm" rebuild-opt-query="$ctrl.rebuildOptQuery" data-cy="{{'field-key-' + $ctrl.field.key}}"></select-fk>
+
+  <!-- case field is aggregator field -->
+  <div ng-if="$ctrl.field.typeId === 23" class="input-group">
+    <input ng-if="$ctrl.sourceFieldTypeId !== 5" type="number" ng-model="$ctrl.model[$ctrl.property]" ng-disabled="$ctrl.disabled" name="{{$ctrl.field.key}}" class="form-control input-sm" autocomplete="off" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.AGGREGATOR' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+
+    <!-- source field is amount -->
+    <input ng-if="$ctrl.sourceFieldTypeId === 5" ng-model="$ctrl.aggregatorCurrencyDisplayValue" ng-disabled="$ctrl.disabled" name="{{$ctrl.field.key}}" class="form-control input-sm" autocomplete="off" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.AGGREGATOR' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+    
+    <div ng-show="$ctrl.sourceFieldTypeId === 13" class="input-group-addon white-content width-10 force-left-border"><i class="fas fa-percent"></i></div>
+  </div>
+
+  <!-- case field is date -->
+  <input ng-if="$ctrl.field.typeId === 8 && !$ctrl.field.key.includes('_relative')" ng-model="$ctrl.model[$ctrl.property]" date datepicker="true" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" type="text" class="form-control input-sm" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" id="datepicker_{{$ctrl.field.Id}}" autocomplete="off" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.DATE' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}" ng-blur="$ctrl.fieldOnBlur($ctrl.field, $ctrl.model)"/>
+  <!-- case field is time -->
+  <input ng-if="$ctrl.field.typeId === 9" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" type="time" class="form-control input-sm" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.TIME' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+  <!-- case field is boolean -->
+  <select class="form-control input-sm" ng-if="$ctrl.field.typeId === 10 && $ctrl.field.type !== 'Enviar Convite' && !$ctrl.field.key.includes('_installment_fixed') && !$ctrl.field.useCheckboxBox" ng-options="((item ? 'GENERICS.YES' : 'GENERICS.NO') | translate) for item in [true, false]" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.CHECKBOX' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"></select>
+
+  <!-- case field is email filter folder -->
+  <select-field ng-if="$ctrl.field.typeId === 7 && $ctrl.field.key === 'folder'"  model="$ctrl.model[$ctrl.property]"  required="$ctrl.required && $ctrl.field.applyRequiredFieldRules"  item-list="$ctrl.field.option_list"  disabled="$ctrl.disabled || !$ctrl.field.valueEditable"  placeholder="" change-callback-fn="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}"></select-field>
+
+  <!-- case field is cpf -->
+  <input ng-if="$ctrl.field.typeId === 11" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" ui-mask="{{$ctrl.applied_mask}}" ui-options="{{$ctrl.ui_options}}" class="form-control input-sm" check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem" autocomplete="off" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.CPF' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+
+  <!-- case field is cnpj -->
+  <input ng-if="$ctrl.field.typeId === 12" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" ui-mask="{{$ctrl.applied_mask}}" ui-options="{{$ctrl.ui_options}}" uppercase class="form-control input-sm" check-uniqueness check-uniqueness-field="$ctrl.field" check-uniqueness-model="$ctrl.model" check-uniqueness-disable="$ctrl.notSuggestNewItem" autocomplete="off" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" ng-blur="$ctrl.fieldOnBlur($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.CNPJ' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+
+  <!-- case field is percentage -->
+  <div ng-if="$ctrl.field.typeId === 13" class="input-group">
+    <input type="number" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" class="form-control input-sm" style="min-width: 100px" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" uib-tooltip="{{ 'FORMS.PERCENTAGE_LIMIT_INFO' | translate }}" tooltip-enable="!$ctrl.disabled && $ctrl.field.valueEditable" tooltip-append-to-body="true" tooltip-is-open="$ctrl.integerMaxLengthReached" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.PERCENTAGE' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"/>
+    <div class="input-group-addon white-content width-10 force-left-border"><i class="fas fa-percent"></i></div>
+  </div>
+
+  <!-- case field is address -->
+  <!-- <single-address-select ng-if="$ctrl.field.typeId === 17" model="$ctrl.model" field="$ctrl.field" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" label="{{$ctrl.field.label}}"></single-address-select> -->
+  <single-address-select-wrapper ng-if="$ctrl.field.typeId === 17" select-place-callback-fn="$ctrl.selectPlaceCallbackFn" model="$ctrl.model" set-address-value-callback-fn="$ctrl.setAddressValueCallbackFn" field="$ctrl.field" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" is-inline-form="$ctrl.isInlineForm" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" data-cy="{{'field-key-' + $ctrl.field.key}}"></single-address-select-wrapper>
+
+  <!-- case field is image -->
+  <image-field ng-if="$ctrl.field.typeId === 18" model="$ctrl.model[$ctrl.property]" field="$ctrl.field" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" label="{{$ctrl.field.label}}"></image-field>
+
+  <!-- case field is attachment -->
+  <attachment-field ng-if="$ctrl.field.typeId === 19" model="$ctrl.model[$ctrl.property]" field="$ctrl.field" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" label="{{$ctrl.field.label}}" is-inline-form="$ctrl.isInlineForm" data-cy="{{'field-key-' + $ctrl.field.key}}" aria-label="{{ 'ARIA_LABELS.FIELD.ATTACHMENTS' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"></attachment-field>
+
+  <!-- case field is color select -->
+  <input ng-if="($ctrl.field.typeId === 1 && $ctrl.field.key.includes('color')) || $ctrl.field.typeId === 20" ng-model="$ctrl.model[$ctrl.property]" ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" name="{{$ctrl.field.key}}" colorpicker="hex" class="form-control input-sm" ng-style="{ 'background-color': $ctrl.model[$ctrl.property] }" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)"/>
+
+  <!-- case field is date (in filters) -->
+  <relative-date ng-if="$ctrl.field.key.includes('_relative')" field="$ctrl.field" model="$ctrl.model[$ctrl.property]" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" model-change-callback="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" parent-model="$ctrl.model" data-cy="{{'field-key-' + $ctrl.field.key}}"></relative-date>
+  <!-- case field is repeat interval unit -->
+  <repeat-interval ng-if="$ctrl.field.type === 'Intervalo da repetição'" model="$ctrl.model[$ctrl.property]" api-url="{{$ctrl.field.apiUrl}}" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" data-cy="{{'field-key-' + $ctrl.field.key}}"></repeat-interval>
+  <!-- case field is duration -->
+  <duration ng-if="$ctrl.field.type === 'Duração'" model="$ctrl.model[$ctrl.property]" api-url="{{$ctrl.field.apiUrl}}" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" data-cy="{{'field-key-' + $ctrl.field.key}}"></duration>
+  <!-- case field is email reminder -->
+  <email-reminder ng-if="$ctrl.field.type === 'Lembrete por Email'" model="$ctrl.model[$ctrl.property]" api-url="{{$ctrl.field.apiUrl}}" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" data-cy="{{'field-key-' + $ctrl.field.key}}"></email-reminder>
+  <!-- case field is calendar invite -->
+  <calendar-invite ng-if="$ctrl.field.type === 'Enviar Convite'" model="$ctrl.model[$ctrl.property]" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" hide-label="$ctrl.hideLabel" data-cy="{{'field-key-' + $ctrl.field.key}}"></calendar-invite>
+  <!-- case field is currency -->
+  <currency-field ng-if="$ctrl.field.type === 'Currencia'" model="$ctrl.model[$ctrl.property]" required="$ctrl.required && $ctrl.field.applyRequiredFieldRules" disabled="$ctrl.disabled || !$ctrl.field.valueEditable" label="{{$ctrl.field.label}}" data-cy="{{'field-key-' + $ctrl.field.key}}"></currency-field>
+  <!-- case field is deal actions -->
+  <deal-actions ng-if="$ctrl.field.key === 'deal_actions'" model="$ctrl.model" label="{{$ctrl.field.label}}" data-cy="{{'field-key-' + $ctrl.field.key}}"></deal-actions>
+  <!-- case field is installment fixed -->
+  <div class="switch" ng-if="$ctrl.field.key.includes('_installment_fixed')">
+      <input id="{{$ctrl.unique_id}}" ng-model="$ctrl.model[$ctrl.property]" ng-checked="$ctrl.model[$ctrl.property] === true" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)" data-cy="{{'field-key-' + $ctrl.field.key}}">
+      <label for="{{$ctrl.unique_id}}"></label>
+  </div>
+  <!-- case field is bool with checkbox -->
+  <div ng-if="$ctrl.field.typeId === 10 && $ctrl.field.type !== 'Enviar Convite' && !$ctrl.field.key.includes('_installment_fixed') && !$ctrl.field.key.includes('has_consent') && $ctrl.field.useCheckboxBox">
+      <div class="hbox">
+          <aside class="v-middle">
+              <label
+                for="$ctrl.unique_id"
+                class="font-semi-big"
+                ng-if="!$ctrl.forceHideLabel && !$ctrl.hideLabel && $ctrl.field.key.includes('_product')">
+                {{$ctrl.field.label}}
+              </label>
+              <label for="$ctrl.unique_id" ng-show="!$ctrl.field.key.includes('_product') && !$ctrl.forceHideLabel">
+                {{$ctrl.field.label}}
+                <img ng-if="$ctrl.field.isAiField" src="assets/images/ai-assistant-logo.svg" class="ai-field-label-icon" />
+              </label>
+              <div
+                class="gap-10"
+                ng-if="!$ctrl.forceHideLabel && !$ctrl.hideLabel && $ctrl.field.key.includes('_products') && !$ctrl.field.key.includes('contact')"></div>
+              <div class="switch" ng-class="{disabled: $ctrl.disabled || !$ctrl.field.valueEditable}">
+                <input
+                  id="{{$ctrl.unique_id}}"
+                  type="checkbox"
+                  class="cmn-toggle"
+                  ng-class="$ctrl.field.isAiField ? 'cmn-toggle-round-flat-ai-transcription-prompt' : 'cmn-toggle-round-flat'"
+                  ng-model="$ctrl.model[$ctrl.property]"
+                  ng-change="$ctrl.fieldChanges($ctrl.field, $ctrl.model)"
+                  ng-required="$ctrl.required && $ctrl.field.applyRequiredFieldRules"
+                  ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable"
+                  data-cy="{{'field-key-' + $ctrl.field.key}}"
+                  aria-label="{{ 'ARIA_LABELS.FIELD.CHECKBOX' | translate_with_replace: { fieldLabel: $ctrl.field.label } }}"
+                >
+                <label
+                  for="{{$ctrl.unique_id}}"
+                  uib-tooltip="{{ ($ctrl.model[$ctrl.property] == null ? 'GENERICS.EMPTY' : ($ctrl.model[$ctrl.property] ? 'GENERICS.YES' : 'GENERICS.NO')) | translate }}"
+                  tooltip-append-to-body="true"
+                  ng-class="{'mx-auto': $ctrl.field.key.includes('_product') && !$ctrl.field.key.includes('contact')}"
+                ></label>
+              </div>
+          </aside>
+      </div>
+  </div>
+  <small class="text-warning" ng-if="$ctrl.repeated_name">
+    {{ 'FIELD_CONFIG_MODAL.ALREADY_FIELD_WITH_NAME' | translate }}
+  </small>
+
+  <!-- case field is has consent -->
+  <contact-has-consent
+    ng-if="$ctrl.field.typeId === 10 && $ctrl.field.key.includes('has_consent')"
+    field="$ctrl.field"
+    model="$ctrl.model[$ctrl.property]"
+    required="$ctrl.required && $ctrl.field.applyRequiredFieldRules"
+    disabled="$ctrl.disabled || !$ctrl.field.valueEditable">
+  </contact-has-consent>
+</span>
+
+<!-- case field is developer type -->
+<a ng-if="$ctrl.field.typeId === 22 && $ctrl.dev_field_hlimit_overflow" class="button-fixed-size button-fixed-size-small button-white pull-right b-1 expand-developer-field-button" ng-click="$ctrl.toggleDeveloperMaxHeight()" ng-class="{ 'expand-developer-field-button-offset': !$ctrl.dev_vertical_bar_offset }"><i class="fal" ng-class="{ 'fa-arrow-up-right-and-arrow-down-left-from-center': $ctrl.developer_field_max_height, 'fa-arrow-down-left-and-arrow-up-right-to-center': !$ctrl.developer_field_max_height }"></i></a>
+<iframe id="{{::$ctrl.developer_field_element_iframe_id}}" ng-if="$ctrl.field.typeId === 22" class="developer-field" ng-class="{ 'developer-field-max-height': $ctrl.developer_field_max_height }" data-cy="{{'field-key-' + $ctrl.field.key}}"></iframe>

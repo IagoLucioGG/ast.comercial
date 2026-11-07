@@ -1,0 +1,27 @@
+<dynamic-funnel
+  ng-if="dealFunnelCtrl.initial_load && dealsCtrl.has_pipelines && !dealFunnelCtrl.has_error"
+  entity="dealsCtrl.main_entity"
+  pipeline="dealsCtrl.current_pipeline"
+  column-list="dealsCtrl.current_pipeline.pipeline.stages"
+  drop-fn="dealsCtrl.droppedDeal(deal, next_stage_id)"
+  load-fn="dealFunnelCtrl.loadMoreDeals(props)"
+  column-update-fn="dealFunnelCtrl.columnUpdate(column)"
+  reached-end="dealsCtrl.reached_end"
+  sort="dealsCtrl.current_funnel_ordination"
+  can-load="!((!dealFunnelCtrl.initial_load || !dealFunnelCtrl.can_load) && !dealFunnelCtrl.reached_end)">
+</dynamic-funnel>
+<standard-loader ng-if="dealsCtrl.has_pipelines && !dealFunnelCtrl.has_error" optionalclass="'funnel-loader'" loading="!dealFunnelCtrl.initial_load"></standard-loader>
+<funnel-loader ng-if="dealsCtrl.has_pipelines && dealFunnelCtrl.initial_load && !dealFunnelCtrl.has_error" loading="!dealFunnelCtrl.can_load && !dealFunnelCtrl.reached_end" ng-if="dealFunnelCtrl.initial_load" optionalclass="regular-background deal-loading-custom"></funnel-loader>
+<div class="vbox d-flex align-items-center justify-content-center" ng-if="dealsCtrl.initial_load && dealFunnelCtrl.has_error">
+  <div class="text-center text-muted">
+    <span class="font-monster-size d-block">
+      <i class="fas fa-bomb"></i>
+    </span>
+    <h3 class="mt-10">
+      Erro ao carregar o módulo
+    </h2>
+    <h5>
+      Tente atualizar a página. Caso o erro persistir, acesse nosso canal de suporte.
+    </h5>
+  </div>
+</div>

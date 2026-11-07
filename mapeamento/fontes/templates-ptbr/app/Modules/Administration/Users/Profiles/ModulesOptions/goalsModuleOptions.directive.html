@@ -1,0 +1,202 @@
+<div class="tab-pane" id="goals">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Tem acesso ao módulo de metas?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsModule" ng-value="true"><strong>Sim</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsModule" ng-value="false"><strong>Não</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Para quais usuários pode criar metas de clientes?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="2"><strong>Para si mesmo e membros de suas equipes</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="3"><strong>Para si mesmo</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="4"><strong>Nenhum</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="goalsModuleOptionsCtrl.activeDealsModule || goalsModuleOptionsCtrl.activeQuoteModule">
+      <div class="font-thin font-title">
+        Para quais usuários pode criar metas de (name:deal::s) e propostas?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="2"><strong>Para si mesmo e membros de suas equipes</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="3"><strong>Para si mesmo</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="4"><strong>Nenhum</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="goalsModuleOptionsCtrl.activeOrderModule">
+      <div class="font-thin font-title">
+        Para quais usuários pode criar metas de vendas?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="2"><strong>Para si mesmo e membros de suas equipes</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="3"><strong>Para si mesmo</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="4"><strong>Nenhum</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="goalsModuleOptionsCtrl.activeDocumentModule">
+      <div class="font-thin font-title">
+        Para quais usuários pode criar metas de documentos?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="2"><strong>Para si mesmo e membros de suas equipes</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="3"><strong>Para si mesmo</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="4"><strong>Nenhum</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Para quais usuários pode criar metas de leads?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="2"><strong>Para si mesmo e membros de suas equipes</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="3"><strong>Para si mesmo</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="4"><strong>Nenhum</strong>
+        </label>
+      </div> 
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Para quais usuários pode criar metas de registros de interação?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="2"><strong>Para si mesmo e membros de suas equipes</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="3"><strong>Para si mesmo</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="4"><strong>Nenhum</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Para quais usuários pode criar metas de tarefas?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="1"><strong>Todos</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="2"><strong>Para si mesmo e membros de suas equipes</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="3"><strong>Para si mesmo</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="4"><strong>Nenhum</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

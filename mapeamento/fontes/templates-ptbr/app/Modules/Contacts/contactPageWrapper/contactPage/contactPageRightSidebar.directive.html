@@ -1,0 +1,9 @@
+<aside class="width-33-percent">
+  <div class="little-wrapper">
+    <contact-page-infos contact-id="contactId" contact-model="contactModel"></contact-page-infos>
+    <contact-page-deals contact-id="contactId" contact-model="contactModel" ng-if="rightSidebarCtrl.activeDealsModule"></contact-page-deals>
+    <contact-page-persons ng-show="contactTypeId === 1" contact-id="contactId" contact-model="contactModel"></contact-page-persons>
+    <contact-page-documents contact-model="contactModel"></contact-page-documents>
+    <attachments-widget model="contactModel" api-url="Contacts"></attachments-widget>
+  </div>
+</aside>

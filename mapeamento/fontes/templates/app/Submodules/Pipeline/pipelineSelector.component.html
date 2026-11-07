@@ -1,0 +1,27 @@
+<div class="dropdown clearfix margin-auto" tooltip-append-to-body="true" uib-tooltip="{{ $ctrl.selectorTooltip }}" tooltip-placement="top">
+  <a href class="dropdown-toggle button button-white-light-border" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+    ng-class="{ 'disabled': !$ctrl.hasActivePipeline }">
+    <span>{{$ctrl.customizables.deals_module.pipeline_singular_unit_name}}: {{$ctrl.selected_pipeline.Name}}</span>
+    <span ng-if="$ctrl.pipelines.length > 1">
+      <i class="fal fa-angle-down dropdown-sign"></i>
+    </span>
+  </a>
+  <ul class="dropdown-menu white-dropdown-menu no-padding-top" aria-labelledby="more_options" ng-if="$ctrl.pipelines.length > 1">
+    <div class="dropdown-subtitle">
+      {{ 'PIPELINES.SELECT_PIPELINE' | translate_sentence }}
+    </div>
+    <li ng-repeat="pipeline in $ctrl.pipelines" ng-if="pipeline.Id !== $ctrl.selected_pipeline.Id" ng-click="$ctrl.changePipeline(pipeline)">
+      <a href class="white-dropdown-link">
+        <div class="hbox">
+          <aside class="v-middle width-20 font-big">
+            <i class="activity-icon fad" ng-class="pipeline.Icon && pipeline.Icon.Class ? pipeline.Icon.Class : 'fa-money-bill-wave'"></i>
+          </aside>
+          <aside class="v-middle">
+            {{pipeline.Name}}
+          </aside>
+          
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

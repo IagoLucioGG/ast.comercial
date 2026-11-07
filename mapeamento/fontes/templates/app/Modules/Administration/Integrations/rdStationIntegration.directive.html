@@ -1,0 +1,172 @@
+<div class="vbox header-or-footer scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <div class="regular-background b-b-1 wrapper">
+      <div class="gap-15"></div>
+      <div>
+        <div class="hbox">
+          <aside class="width-10 text-center">
+            <div class="side-wrapper">
+              <img class="avatar-select" src="assets/images/rd.png">
+            </div>
+          </aside>
+          <aside>
+            <div class="side-wrapper">
+              {{ 'INTEGRATIONS.RD_STATION.RD_STATION_DESCRIPTION' | translate }}
+              <div class="gap-10"></div>
+              {{ 'INTEGRATIONS.RD_STATION.INTEGRATION_DESCRIPTION' | translate }}
+              <div class="gap-20"></div>
+              <!-- <a class="inline-link-blue" href target="_blank">
+                <div class="font-big font-bold">
+                  Material Explicativo
+                </div>
+              </a> -->
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="gap-15"></div>
+    </div>
+    <div class="gap-15"></div>
+    <form class="clearfix">
+      <div class="form-group col-sm-12">
+        <div class="darkest-background top-wrapper b-1 rounded-regular">
+          <div class="font-big side-wrapper">
+            <strong>
+              {{ 'INTEGRATIONS.RD_STATION.STEP_ONE' | translate }}
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div class="clearfix">
+            <div class="form-group col-sm-12">
+              <label>{{rdStationIntegrationCtrl.rd_behaviors_field.label}}</label>
+              <new-field field="rdStationIntegrationCtrl.rd_behaviors_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_behavior'" required="false" disabled="false" wide="true"></new-field>
+            </div>
+            <div class="form-group col-sm-12">
+              <label>{{rdStationIntegrationCtrl.rd_stage_field.label}}</label>
+              <new-field field="rdStationIntegrationCtrl.rd_stage_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_stage'" required="false" disabled="false" wide="true"></new-field>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    {{ 'INTEGRATIONS.RD_STATION.SYNC_RD_TAGS_WITH_COMPANYS' | translate }}
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-1" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_company_tag === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_company_tag">
+                    <label class="pull-right" for="cmn-toggle-1"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    {{ 'INTEGRATIONS.RD_STATION.SYNC_RD_TAGS_WITH_PERSONS' | translate }}
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-2" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_person_tag === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_person_tag">
+                    <label class="pull-right" for="cmn-toggle-2"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    {{ 'INTEGRATIONS.RD_STATION.SYNC_RD_TAGS_WITH_DEALS' | translate }}
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-3" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_deal_tag === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_deal_tag">
+                    <label class="pull-right" for="cmn-toggle-3"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="font-semi-big">
+                    {{ 'INTEGRATIONS.RD_STATION.SEND_PLOOMES_CONTACTS_TO_RD' | translate }}
+                  </div>
+                </aside>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-8" type="checkbox" ng-checked="rdStationIntegrationCtrl.rd_integration_model.rd_send_persons === true" ng-model="rdStationIntegrationCtrl.rd_integration_model.rd_send_persons">
+                    <label class="pull-right" for="cmn-toggle-8"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12 text-muted">
+              <div class="gap-15"></div>
+              {{ 'INTEGRATIONS.RD_STATION.TO_SAVE_LEAD_LINK' | translate }}
+              <div class="gap-10"></div>
+              {{ 'INTEGRATIONS.RD_STATION.IF_THERE_ARE_CUSTOM_FIELDS_WITH_SAME_NAME' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <div class="darkest-background wrapper b-1 rounded-regular">
+          <div class="font-big">
+            <strong>
+              {{ 'INTEGRATIONS.RD_STATION.STEP_TWO' | translate }}
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div class="hbox">
+            <aside class="width-50-percent">
+              <div class="wrapper-right">
+                <label>{{ 'INTEGRATIONS.RD_STATION.PUBLIC_TOKEN' | translate }}</label>
+                <div class="input-group">
+                  <new-field field="rdStationIntegrationCtrl.rd_public_token_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_public_token'" required="false" disabled="false" wide="true"></new-field>
+                </div>
+              </div>
+            </aside>
+            <aside class="width-50-percent">
+              <div class="wrapper-left">
+                <label>{{ 'INTEGRATIONS.RD_STATION.PRIVATE_TOKEN' | translate }}</label>
+                <div class="input-group">
+                  <new-field field="rdStationIntegrationCtrl.rd_private_token_field" model="rdStationIntegrationCtrl.rd_integration_model" property="'rd_private_token'" required="false" disabled="false" wide="true"></new-field>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-12 font-big">
+        <div class="darkest-background wrapper b-1 rounded-regular">
+          <div class="font-big">
+            <strong>
+              {{ 'INTEGRATIONS.RD_STATION.STEP_THREE' | translate }}
+            </strong>
+          </div>
+          <div class="gap-10"></div>
+          <div class="nowrap side-scroll">
+            <div class="side-scroll-container wrapper regular-background b-1 rounded-regular">
+              https://api.ploomes.com/1/oportunidades/rdstation?aplk={{account.PublicKey}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="wrapper">
+      <div class="text-center">
+        <a class="button button-big button-action" ng-click="rdStationIntegrationCtrl.updateIntegration(true)">
+          <div class="font-big">{{ (account.RDStationIntegration && account.RDStationIntegration.Enabled ? 'INTEGRATIONS.UPDATE_INTEGRATION' : 'INTEGRATIONS.ENABLE_INTEGRATION') | translate }}</div>
+        </a>
+        <a class="button button-big button-neutral" ng-if="account.RDStationIntegration && account.RDStationIntegration.Enabled" ng-click="rdStationIntegrationCtrl.updateIntegration(false)">
+          <div class="font-big">{{ 'INTEGRATIONS.DISABLE_INTEGRATION' | translate }}</div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

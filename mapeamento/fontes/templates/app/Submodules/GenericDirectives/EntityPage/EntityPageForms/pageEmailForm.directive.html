@@ -1,0 +1,102 @@
+<div class="tab-pane active dark-background b-t-1" ng-class="{'page-email-form__wrapper' : emailFormCtrl.can_load}">
+  <div class="page-email-form__loader" ng-if="emailFormCtrl.can_load">
+    <standard-loader margin-top="0" loading="true"></standard-loader>
+  </div> 
+  <div class="white-content wrapper b-b-1">
+    <div class="hbox row-space">
+      <div class="hbox-row">
+        <aside class="v-middle max-width-200 min-width-100 text-right nowrap width-10">
+            <div class="right-wrapper ellipsis">
+              <span class="margin-right-5">
+                {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ENTITY_PAGE_FORMS.TO' | translate }}:
+              </span>
+              <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true" ng-class="{'text-neutral': emailFormCtrl.To.length, 'text-danger': !emailFormCtrl.To.length}"><i class="fas fa-exclamation-circle font-super-small"></i></span>
+            </div>
+        </aside>
+        <aside class="v-middle">
+          <tags-input ng-model="emailFormCtrl.To" on-tag-added="emailFormCtrl.contactChangedCallback()" on-tag-removed="emailFormCtrl.contactChangedCallback()" replace-spaces-with-dashes="false" template="item-template" placeholder="{{ 'GENERICS.ADD' | translate }}..." class="email-tags-input-hack">
+          <auto-complete grouped-template source="emailFormCtrl.getEmails($query)" min-length="{{emailFormCtrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" load-on-empty="true" debounce-delay="300" max-results-to-show="50" select-first-match="false"></auto-complete>
+        </tags-input>
+        </aside>
+      </div>
+      <div class="hbox-row">
+        <aside class="v-middle max-width-200 min-width-100 text-right nowrap width-10">
+            <div class="right-wrapper ellipsis">
+              {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ENTITY_PAGE_FORMS.CC' | translate }}:
+            </div>
+        </aside>
+        <aside class="v-middle">
+          <tags-input ng-model="emailFormCtrl.Cc" replace-spaces-with-dashes="false" template="item-template" placeholder="{{ 'GENERICS.ADD' | translate }}..." class="email-tags-input-hack">
+          <auto-complete grouped-template source="emailFormCtrl.getEmails($query)" min-length="{{emailFormCtrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" load-on-empty="true" debounce-delay="300" max-results-to-show="50" select-first-match="false"></auto-complete>
+        </tags-input>
+        </aside>
+      </div>
+      <div class="hbox-row">
+        <aside class="v-middle max-width-200 min-width-100 text-right nowrap width-10">
+            <div class="right-wrapper ellipsis">
+              {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ENTITY_PAGE_FORMS.BCC' | translate }}:
+            </div>
+        </aside>
+        <aside class="v-middle">
+          <tags-input ng-model="emailFormCtrl.Bcc" replace-spaces-with-dashes="false" template="item-template" placeholder="{{ 'GENERICS.ADD' | translate }}..." class="email-tags-input-hack">
+          <auto-complete grouped-template source="emailFormCtrl.getEmails($query)" min-length="{{emailFormCtrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" load-on-empty="true" debounce-delay="300" max-results-to-show="50" select-first-match="false"></auto-complete>
+        </tags-input>
+        </aside>
+      </div>
+      <div class="hbox-row">
+        <aside class="v-middle max-width-200 min-width-100 text-right nowrap width-10">
+            <div class="right-wrapper ellipsis">
+              <span class="margin-right-5">
+                {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ENTITY_PAGE_FORMS.SUBJECT' | translate }}:
+              </span>
+              <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true" ng-class="{'text-neutral': emailFormCtrl.Subject, 'text-danger': !emailFormCtrl.Subject}"><i class="fas fa-exclamation-circle font-super-small"></i></span>
+            </div>
+        </aside>
+        <aside class="v-middle">
+          <input 
+            ng-change="emailFormCtrl.changeSubjectInput()"
+            class="form-control input-sm"
+            ng-class="{'is-invalid-input': emailFormCtrl.errorSubject}"
+            placeholder=""
+            ng-model="emailFormCtrl.Subject"
+          />
+        </aside>
+      </div>
+      <div class="hbox-row">
+        <aside class="v-middle max-width-200 min-width-100 text-right nowrap width-10">
+          <div class="right-wrapper ellipsis">
+            {{ 'QUOTES.QUOTE_PAGE_SHARE.EMAIL_MODEL_SELECTED' | translate }}
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div style="width: 300px;">
+            <email-template-selector
+              template-id="emailFormCtrl.current_template_id"
+              on-template-change="emailFormCtrl.changeTemplate"
+            ></email-template-selector>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+      
+    <div class="gap-10"></div>
+    <div pl-ckeditor="emailFormCtrl.options" ng-model="emailFormCtrl.Content" ckeditor-loaded="emailFormCtrl.ckeditor_loaded" ng-if="!emailFormCtrl.rich_text_editor_feature && emailFormCtrl.initial_load"></div>
+    <rich-text-editor
+      ng-if="emailFormCtrl.rich_text_editor_feature && emailFormCtrl.initial_load"
+      mode="'email'"
+      value="emailFormCtrl.Content"
+      min-height="260"
+      language="emailFormCtrl.language"
+      on-change-value="emailFormCtrl.onRichTextEditorChangeValue"
+    ></rich-text-editor>
+    <script type="text/ng-template" id="item-template">
+      <a class="light-badge neutral-content badge-border pull-left">
+        <div class="text-darkest-neutral font-bold table-cell-align-top">
+          <span class="align-middle">{{data.text}}</span>
+          <i class="fas fa-times remove-mail" ng-click="$removeTag()"></i>
+        </div>
+      </a>
+    </script>
+  </div>
+</div>

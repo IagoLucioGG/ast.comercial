@@ -1,0 +1,10 @@
+<ul class="nav text-center">
+  <li class="b-b-1 regular-background" ng-repeat="dynamic_option in documentDynamicOptionsCtrl.dynamic_options | filter:documentDynamicOptionsCtrl.isOptionAllowed">
+    <a class="regular-menu-link open-side-slide" ng-click="documentDynamicOptionsCtrl.openSideSlide(dynamic_option)">
+      <span class="text-muted font-bold font-small">
+        <i class="fa font-big-title" ng-class="dynamic_option.Icon"></i>
+        <div class="gap-5"></div>{{::dynamic_option.Name}}
+      </span>
+    </a>
+  </li>
+</ul>

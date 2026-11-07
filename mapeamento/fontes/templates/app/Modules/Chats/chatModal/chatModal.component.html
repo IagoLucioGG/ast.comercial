@@ -1,0 +1,150 @@
+<dynamic-modal
+  modal-id="chat-modal"
+  footer="true"
+  dark="true"
+  skip-height="true"
+  modal-title="{{ ($ctrl.is_new_chat ? 'CHATS.CHAT_MODAL.NEW_CHAT_TITLE' : 'CHATS.CHAT_MODAL.EDIT_CHAT_TITLE') | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  block-back-state="true"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+    <modal-content>
+      <ul class="nav nav-tabs b-b-1 border-tabs arrange-mid">
+        <li
+          ng-repeat="tab in $ctrl.enabled_tabs"
+          ng-class="{ 'active': tab.Id === $ctrl.selected_tab.Id }"
+          ng-click="$ctrl.selectTab(tab)">
+          <a class="text-muted" href>
+            {{tab.Name}}
+          </a>
+        </li>
+      </ul>
+      <div class="vbox tab-header scroll-shadow neutral-shadow">
+        <section class="scrollable scroll-shadow-container">
+          <div class="tab-content">
+            <div class="tab-pane" ng-class="{ 'active': $ctrl.selected_tab.Id === 1 }" ng-if="$ctrl.selected_tab.Id === 1">
+              <div class="gap-15"></div>
+              <div class="hbox">
+                <aside class="width-160 text-center v-top">
+                  <img class="avatar-select" ng-src="{{$ctrl.avatar_url}}">
+                  <label
+                    href
+                    id="group-avatar-wrapper"
+                    ng-show="$ctrl.is_self_adm"
+                    class="button button-action button-short avatar-select-button">
+                    {{ 'CHATS.CHAT_MODAL.CHOOSE_AVATAR' | translate }}
+                    <input id="group-avatar" type="file" style="display: none;" />
+                  </label>
+                </aside>
+                <aside class="v-middle">
+                  <form class="clearfix">
+                    <div class="form-group col-sm-12">
+                      <label>
+                        {{ 'CHATS.CHAT_MODAL.CHAT_NAME_LABEL' | translate }}
+                      </label>
+                      <div class="input-group full-width">
+                        <input class="form-control input-sm" ng-model="$ctrl.chat_model.chat_name" ng-disabled="!$ctrl.is_self_adm">
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                      <label>
+                        {{ 'CHATS.CHAT_MODAL.CHAT_DESCRIPTION_LABEL' | translate }}
+                      </label>
+                      <div class="input-group full-width">
+                        <textarea class="form-control" ng-model="$ctrl.chat_model.chat_description" ng-disabled="!$ctrl.is_self_adm"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                      <label>
+                        {{ 'CHATS.CHAT_MODAL.CHAT_PARTICIPANTS_LABEL' | translate }}
+                      </label>
+                      <div class="input-group full-width">
+                        <select-fk
+                          ng-if="$ctrl.participant_users_field"
+                          model="$ctrl.chat_model[$ctrl.participant_users_field.key]"
+                          parent-model="$ctrl.chat_model"
+                          field="$ctrl.participant_users_field"
+                          api-url="{{$ctrl.participant_users_field.apiUrl}}"
+                          display-property="{{$ctrl.participant_users_field.displayProperty}}"
+                          required="false"
+                          disabled="$ctrl.participant_users_field.disabled"
+                          not-suggest-new-item="true"
+                          placeholder="('CHATS.CHAT_MODAL.CHAT_PARTICIPANTS_PLACEHOLDER' | translate)">
+                        </select-fk>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                      <label>
+                        {{ 'CHATS.CHAT_MODAL.CHAT_ADMINS_LABEL' | translate }}
+                      </label>
+                      <div class="input-group full-width">
+                        <select-fk
+                          ng-if="$ctrl.admin_users_field"
+                          model="$ctrl.chat_model[$ctrl.admin_users_field.key]"
+                          parent-model="$ctrl.chat_model"
+                          field="$ctrl.admin_users_field"
+                          api-url="{{$ctrl.admin_users_field.apiUrl}}"
+                          display-property="{{$ctrl.admin_users_field.displayProperty}}"
+                          required="false"
+                          disabled="$ctrl.admin_users_field.disabled"
+                          not-suggest-new-item="true"
+                          placeholder="('CHATS.CHAT_MODAL.CHAT_ADMINS_PLACEHOLDER' | translate)">
+                        </select-fk>
+                      </div>
+                    </div>
+                  </form>
+                </aside>
+              </div>
+            </div>
+            <div class="tab-pane" ng-class="{ 'active': $ctrl.selected_tab.Id === 2 }" ng-if="$ctrl.selected_tab.Id === 2">
+              <div class="simple-inline v-top" ng-repeat="image in $ctrl.images">
+                <div class="mini-wrapper">
+                  <a class="panel medium-shadow width-170 height-170 display-inline-block image-button" href ng-click="$ctrl.openImageModal(image)">
+                    <img class="stretch full-width max-width-170 max-height-170" ng-src="{{image.Url}}">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" ng-class="{ 'active': $ctrl.selected_tab.Id === 3 }" ng-if="$ctrl.selected_tab.Id === 3">
+              <ul class="fake-u no-wrapper">
+                <li
+                  class="button button-full-width button-white-no-border-semi-light-hover text-left drag-button button-square no-border button-very-big"
+                  ng-repeat="attachment in $ctrl.attachments"
+                  ng-click="$ctrl.downloadAttachment(attachment)">
+                  <div class="hbox font-regular-weight fixed-size">
+                    <aside class="width-30 v-middle wrapper">
+                      <i ng-class="attachment.Icon"></i>
+                    </aside>
+                    <aside class="v-middle wrapper">
+                      <div class="width-500">
+                        <div class="font-regular-weight font-regular-size overflow-hidden ellipsis">
+                          {{attachment.FileName}}
+                        </div>
+                      </div>
+                    </aside>
+                    <aside class="width-30 v-middle">
+                      <i class="simple-line-arrow-down-circle text-muted font-very-big"></i>
+                    </aside>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+  </modal-content>
+  <modal-footer>
+    <aside class="v-middle text-left" ng-if="$ctrl.chat.IsGroup && $ctrl.is_self_adm">
+      <a href class="button button-white" ng-click="$ctrl.deleteChat()" ng-click-confirm="{{ 'CHATS.CHAT_MODAL.DELETE_CHAT_CONFIRM' | translate }}" hard-check-message="::($ctrl.buildHardCheckMessage())" hard-check-word="{{ 'CHATS.CHAT_MODAL.DELETE_CHAT_WORD' | translate }}">
+        <span class="font-big text-muted">
+          <i class="fal fa-trash fixing-fixed-size-button"></i>
+        </span>
+      </a>
+    </aside>
+    <aside class="v-middle" ng-if="($ctrl.is_new_chat || $ctrl.chat.IsGroup) && $ctrl.is_self_adm">
+      <a class="button button-action" href ng-click="$ctrl.submitControl()">
+        {{ ($ctrl.is_new_chat ? 'GENERICS.CREATE' : 'GENERICS.SAVE') | translate }}
+      </a>
+    </aside>
+  </modal-footer>
+</dynamic-modal>

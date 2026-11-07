@@ -1,0 +1,168 @@
+<div class="stretch">
+  <div class="overflow-hidden">
+    <div>
+      <div class="wrapper text-center light-background">
+        <div class="d-flex justify-content-between" ng-if="!$ctrl.hideOptions" data-cy="contact-page-options-wrapper">
+          <div class="d-flex text-left">
+            <span class="width-30 d-inline-block">
+              <helper-button helper-key="'CONTACT_PAGE'" tooltip-placement="'bottom'"></helper-button>
+            </span>
+            <merge-edit-blocked-indicator
+              ng-if="$ctrl.isMergeContactAvailable"
+              contact-id="$ctrl.model.Id"
+              on-absorbed="$ctrl.handleMergeAbsorbed"
+              on-merge-settled="$ctrl.handleMergeSettled"
+            ></merge-edit-blocked-indicator>
+          </div>
+          <div class="text-right dropdown" ng-if="$ctrl.model.Editable || $ctrl.model.Deletable">
+            <a class="button button-white-light-border dropdown-toggle nowrap" href data-toggle="dropdown" aria-expanded="false" role="button" aria-label="{{ 'ARIA_LABELS.CONTACT.OPTIONS_DROPDOWN_BUTTON' | translate }}" data-cy="contact-page-options-button">
+              <span class="text-action"><i class="fal fa-pen button-icon"></i></span>
+              {{ 'CONTACTS.CONTACT_PAGE.OPTIONS' | translate }}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" ng-if="$ctrl.model.Editable || $ctrl.model.Deletable">
+              <div class="dropdown-subtitle">
+                {{ 'CONTACTS.CONTACT_PAGE.ACTIONS' | translate }}
+              </div>
+              <li ng-if="$ctrl.model.Editable">
+                <a class="white-dropdown-link" ng-click="$ctrl.editContact()" role="button" aria-label="{{ 'ARIA_LABELS.CONTACT.OPTIONS_DROPDOWN_EDIT_BUTTON' | translate }}" data-cy="contact-page-options-edit-action-button">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-pen-square simple-line list-simple-line"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'CONTACTS.CONTACT_PAGE.EDIT_CONTACT' | translate }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="$ctrl.model.Editable && $ctrl.isMergeContactAvailable"
+                ng-class="{'disabled': !$ctrl.isMergeContactEnabled}"
+                ng-click="!$ctrl.isMergeContactEnabled && $event.stopPropagation()"
+                uib-tooltip-html="$ctrl.htmlMergeContactTooltip"
+                tooltip-enable="!$ctrl.isMergeContactEnabled"
+                tooltip-placement="top"
+                tooltip-append-to-body="true"
+                data-cy="contact-page-options-merge-action-item">
+                <a class="white-dropdown-link" ng-click="$ctrl.openMergeContactModal()" role="button" data-cy="contact-page-options-merge-action-button">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-merge simple-line list-simple-line"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'MERGE_FEATURE.CONTACT_MERGE_MODAL.MERGE_BUTTON' | translate_sentence }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="$ctrl.model.Deletable">
+                <a role="button" class="white-dropdown-link" ng-click="$ctrl.sendDeleteClientEvent()" reversible="false" aria-label="{{ 'ARIA_LABELS.CONTACT.OPTIONS_DROPDOWN_DELETE_BUTTON' | translate }}">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <span class="text-darkest-neutral">
+                        <i class="fal fa-trash simple-line list-simple-line"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'CONTACTS.CONTACT_PAGE.DELETE_CONTACT' | translate }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <div class="dropdown-subtitle" ng-if="$ctrl.model.Editable && $ctrl.model.TypeId === 1">
+                {{ 'CONTACTS.CONTACT_PAGE.CONFIG' | translate }}
+              </div>
+              <li ng-if="$ctrl.model.Editable && $ctrl.model.TypeId === 1">
+                <a class="white-dropdown-link" ng-click="$ctrl.toggleShowChildCompanies()">
+                  <div class="hbox">
+                    <aside class="width-25 v-middle text-center">
+                      <span ng-show="$ctrl.show_child_companies" class="text-darkest-neutral">
+                        <i class="fal fa-check-circle simple-line list-simple-line"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'CONTACTS.CONTACT_PAGE.SHOW_PARENT_COMPANY_INFO' | translate }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="width-160 text-center v-middle height-130"
+          style="margin: auto"
+          ng-mouseover="$ctrl.toggle_avatar_button = true"
+          ng-mouseleave="$ctrl.toggle_avatar_button = false">
+          <img
+            class="avatar-select b-3 dark-background"
+            ng-src="{{$ctrl.model.AvatarUrl ? $ctrl.model.AvatarUrl : $ctrl.model.TypeId === 1 ? 'assets/images/company_picture.png' : 'assets/images/person_picture.png'}}">
+          <label
+            href
+            id="contact-avatar-wrapper"
+            class="button button-white button-short avatar-select-button"
+            ng-show="$ctrl.model.Editable && ($ctrl.model.AvatarUrl ? $ctrl.toggle_avatar_button : true)">
+            <span class="text-action"><i class="fal fa-image button-icon"></i></span>
+            {{ $ctrl.model.AvatarUrl ? 'CONTACTS.CONTACT_PAGE.CHANGE_AVATAR' : 'CONTACTS.CONTACT_PAGE.CHOOSE_AVATAR'  | translate }}
+            <input id="contact-avatar" type="file" style="display: none;" />
+          </label>
+          <label
+            href
+            id="contact-avatar-remove-wrapper"
+            class="button button-white button-short avatar-select-button"
+            ng-show="$ctrl.model.Editable && $ctrl.model.AvatarUrl && $ctrl.toggle_avatar_button"
+            ng-click="$ctrl.removeAvatar()"
+            >
+            <span><i class="fal fa-times button-icon"></i></span>
+            {{ 'CONTACTS.CONTACT_PAGE.REMOVE_AVATAR' | translate }}
+          </label>
+        </div>
+        <div class="gap-30" ng-show="$ctrl.model.AvatarUrl && $ctrl.toggle_avatar_button"></div>
+        <div class="gap-10" ng-show="!$ctrl.model.Editable"></div>
+        <div 
+          class="text-ellipsis font-very-big"
+          uib-tooltip="{{ $ctrl.model.Name }}"
+          tooltip-enable="$ctrl.isTooltipEnabled('new-contact-page-side-contact-name')"
+          tooltip-append-to-body="true"
+          id="new-contact-page-side-contact-name"
+          aria-label="{{ 'ARIA_LABELS.CONTACT.NAME' | translate }}"
+        >
+          {{$ctrl.model.Name}}
+        </div>
+        <div class="gap-3"></div>
+        <div class="text-darkest-neutral" ng-if="$ctrl.model.CPF">{{$ctrl.cpf}}</div>
+        <div class="text-darkest-neutral" ng-if="$ctrl.model.CNPJ">{{$ctrl.cnpj | uppercase }}</div>
+        <div class="gap-10"></div>
+        <div class="d-flex align-items-center justify-content-center gap-flex-10" >
+          <omie-entity-status
+            entity-id="$ctrl.contactEntityId"
+            item-value="$ctrl.model"
+          ></omie-entity-status>
+          <sankhya-entity-status-modal
+            ng-if="$ctrl.sankhyaIntegrationModule && $ctrl.sankhyaIntegration.Active"
+            entity-id="1"
+            item-id="$ctrl.model.Id"
+            item-value="$ctrl.model">
+          </sankhya-entity-status-modal>
+          <contact-neppo
+            ng-if="$ctrl.model.TypeId === 2"
+            item-value="$ctrl.model"
+          ></contact-neppo>
+          <company-neppo
+            ng-if="$ctrl.model.TypeId === 1"
+            item-value="$ctrl.model"
+          ></company-neppo>
+        </div>
+        <div class="gap-10"></div>
+      </div>
+    </div>
+    <new-contact-page-info model="$ctrl.model"></new-contact-page-info>
+  </div>
+  <div class="gap-30" ng-if="$ctrl.model.Company"></div>
+  <div class="panel dark-background overflow-hidden b-1" ng-if="$ctrl.model.Company">
+    <new-contact-page-company model="$ctrl.model"></new-contact-page-company>
+  </div>
+  <trigger-delete-contact-modal callback="$ctrl.deleteContact" contact="$ctrl.model"></trigger-delete-contact-modal>
+</div>

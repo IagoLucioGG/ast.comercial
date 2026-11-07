@@ -1,0 +1,5 @@
+<a ng-if="dealStagesCtrl.stage" href class="light-badge neutral-content badge-border nowrap" ng-class="{'success-badge' : dealStagesCtrl.stage.StatusId === 2, 'danger-badge' : dealStagesCtrl.stage.StatusId === 3}">
+  <div class="text-darkest-neutral font-bold table-cell-align-top">
+    <span class="align-middle">{{dealStagesCtrl.stage.Stage.Name}}</span>
+  </div>
+</a>

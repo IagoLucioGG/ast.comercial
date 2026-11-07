@@ -47,3 +47,11 @@ appsettings.*.json
 
 # Old reference folder
 ODataPloomes/
+
+# Material de engenharia reversa da Ploomes que NÃO deve ser versionado em repositório público:
+# screenshots/HTML com dados reais de clientes de terceiros e código/textos proprietários da Ploomes.
+mapeamento/telas/
+mapeamento/fontes/bundles/
+mapeamento/fontes/templates/
+mapeamento/fontes/templates-ptbr/
+mapeamento/fontes/i18n/

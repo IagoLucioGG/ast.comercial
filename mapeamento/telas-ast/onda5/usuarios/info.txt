@@ -1,0 +1,7 @@
+passo: usuarios
+url: http://localhost:5173/admin/usuarios
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: not_requested
+dom: not_requested

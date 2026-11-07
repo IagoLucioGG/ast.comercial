@@ -1,0 +1,7 @@
+passo: automacoes
+url: http://localhost:5173/admin/automacoes
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: not_requested
+dom: not_requested

@@ -194,19 +194,6 @@ app.MapOpenApi().AllowAnonymous();
 
 app.UseStaticFiles();
 
-app.MapGet("/odata", () => Results.Json(new
-{
-    documentacao = "/index.html",
-    metadata = "/odata/$metadata",
-    entidades = new[]
-    {
-        "Clientes", "PessoasContato", "Negocios", "Propostas", "Produtos",
-        "Atividades", "Funis", "Campos", "Formularios", "Automacoes",
-        "FluxosAprovacao", "Integracoes", "Usuarios", "Empresas", "Equipes",
-        "Departamentos", "Cargos", "Etiquetas", "Moedas", "Localidades"
-    }
-})).AllowAnonymous();
-
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseMiddleware<SegurancaHeadersMiddleware>();

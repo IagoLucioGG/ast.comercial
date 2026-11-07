@@ -1,0 +1,7 @@
+passo: produto
+url: http://localhost:5173/produtos/38
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: not_requested
+dom: not_requested

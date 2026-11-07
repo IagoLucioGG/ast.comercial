@@ -1,0 +1,7 @@
+passo: aba_produtos
+url: http://localhost:5173/negocios/176
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: not_requested
+dom: not_requested

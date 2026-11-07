@@ -1,0 +1,7 @@
+passo: importacao
+url: http://localhost:5173/admin/importacao-dados
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: not_requested
+dom: not_requested

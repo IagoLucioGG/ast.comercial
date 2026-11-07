@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
+import { usePermissoes } from '@/composables/usePermissoes'
 
 interface UsuarioLogado {
   usuarioId: number
@@ -46,6 +47,8 @@ export const useAuthStore = defineStore('auth', () => {
       nome: dados.nome,
       perfil: dados.perfil,
     }))
+    // Permissões do perfil (menus, botões e rotas); o servidor valida de qualquer forma.
+    void usePermissoes().carregar(true)
   }
 
   function logout() {
@@ -53,6 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('usuario')
+    usePermissoes().limpar()
     router.push({ name: 'login' })
   }
 

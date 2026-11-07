@@ -1,0 +1,7 @@
+passo: scenario_start
+url: http://localhost:5173/admin/funis
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: not_requested
+dom: not_requested

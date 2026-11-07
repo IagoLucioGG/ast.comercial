@@ -5,7 +5,8 @@ import UiModal from '@/components/ui/UiModal.vue'
 import UiBadge from '@/components/ui/UiBadge.vue'
 import { odataQuery, odataRequest, odataAction, montarQuery } from '@/services/api'
 import { useToast } from '@/composables/useToast'
-import { msgErro, iniciais, nomePerfil, ehIntegracao, dataHoraBr, PERFIS } from './comum/adminApi'
+import { inicialDe } from '@/composables/useEntidadeDetalhe'
+import { msgErro, nomePerfil, ehIntegracao, dataHoraBr, PERFIS } from './comum/adminApi'
 import './comum/admin-comum.css'
 
 interface Usuario {
@@ -225,7 +226,7 @@ async function copiarSenha() {
             <tr v-for="u in filtrados" :key="u.Id">
               <td>
                 <div class="adm-celula-pessoa">
-                  <span class="adm-avatar"><img v-if="u.FotoUrl" :src="u.FotoUrl" :alt="u.Nome" /><template v-else>{{ iniciais(u.Nome) }}</template></span>
+                  <span class="adm-avatar"><img v-if="u.FotoUrl" :src="u.FotoUrl" :alt="u.Nome" /><template v-else>{{ inicialDe(u.Nome) }}</template></span>
                   <div><div class="adm-principal">{{ u.Nome }}</div><div class="adm-sub">{{ u.Email }}</div></div>
                 </div>
               </td>

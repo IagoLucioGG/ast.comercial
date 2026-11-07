@@ -8,8 +8,12 @@ public class Usuario : EntidadeBase
 {
     public string Nome { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    /// <summary>Nunca exposto pela API (OData/JSON): IgnoreDataMember.</summary>
+    /// <summary>
+    /// Nunca exposto pela API. IgnoreDataMember cobre o serializador OData;
+    /// JsonIgnore cobre rotas que não são OData (ex.: odata/Usuarios@Todos), serializadas pelo System.Text.Json.
+    /// </summary>
     [System.Runtime.Serialization.IgnoreDataMember]
+    [System.Text.Json.Serialization.JsonIgnore]
     public string? SenhaHash { get; set; }
     public TipoUsuario Tipo { get; set; } = TipoUsuario.Normal;
     public PerfilUsuario Perfil { get; set; } = PerfilUsuario.Vendedor;
@@ -21,6 +25,7 @@ public class Usuario : EntidadeBase
     /// Gerado uma vez, não expira (pode ser revogado desativando o usuário).
     /// </summary>
     [System.Runtime.Serialization.IgnoreDataMember]
+    [System.Text.Json.Serialization.JsonIgnore]
     public string? TokenIntegracao { get; set; }
 
     /// <summary>

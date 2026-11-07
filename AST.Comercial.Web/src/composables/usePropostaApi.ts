@@ -59,9 +59,10 @@ const NOMES_STATUS = ['Pendente', 'Aprovada', 'Rejeitada', 'EmRevisao']
 
 /** O backend pode serializar o enum como texto ou número; normaliza para o nome. */
 export function statusAprovacaoNome(v: string | number | null | undefined): string {
-  if (v === null || v === undefined || v === '') return 'Pendente'
-  if (typeof v === 'number') return NOMES_STATUS[v] ?? 'Pendente'
-  return /^\d+$/.test(v) ? (NOMES_STATUS[Number(v)] ?? 'Pendente') : v
+  // Nulo = nenhum fluxo exige aprovação (neutro), não "Pendente".
+  if (v === null || v === undefined || v === '') return 'SemAprovacao'
+  if (typeof v === 'number') return NOMES_STATUS[v] ?? 'SemAprovacao'
+  return /^\d+$/.test(v) ? (NOMES_STATUS[Number(v)] ?? 'SemAprovacao') : v
 }
 
 export function statusAprovacaoVisual(v: string | number | null | undefined): { rotulo: string; tom: 'neutro' | 'sucesso' | 'perigo' | 'aviso' | 'info' } {
@@ -69,7 +70,8 @@ export function statusAprovacaoVisual(v: string | number | null | undefined): { 
     case 'Aprovada': return { rotulo: 'Aprovada', tom: 'sucesso' }
     case 'Rejeitada': return { rotulo: 'Rejeitada', tom: 'perigo' }
     case 'EmRevisao': return { rotulo: 'Em revisão', tom: 'info' }
-    default: return { rotulo: 'Pendente', tom: 'aviso' }
+    case 'Pendente': return { rotulo: 'Pendente', tom: 'aviso' }
+    default: return { rotulo: 'Sem aprovação', tom: 'neutro' }
   }
 }
 

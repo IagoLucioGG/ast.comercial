@@ -5,12 +5,19 @@ import TabsFiltro from '@/components/shared/TabsFiltro.vue'
 import FormModal from '@/components/shared/FormModal.vue'
 import ModalColunas from '@/components/shared/ModalColunas.vue'
 import ModalFiltro from '@/components/shared/ModalFiltro.vue'
+import UiBadge from '@/components/ui/UiBadge.vue'
+import { useToast } from '@/composables/useToast'
+import { exportarCsv } from '@/components/shared/exportacao/exportarCsv'
+import { carregarMoedas, simboloDaMoeda } from '@/components/shared/exportacao/moedas'
+import type { MoedaCsv } from '@/components/shared/exportacao/csv'
 
 export interface ColunaConfig {
   campo: string
   label: string
-  tipo?: 'texto' | 'data' | 'badge' | 'status' | 'moeda' | 'avatar' | 'booleano'
+  tipo?: 'texto' | 'data' | 'badge' | 'status' | 'moeda' | 'avatar' | 'booleano' | 'enum'
   largura?: string
+  /** Só para `enum`: rótulo e tom (UiBadge) por valor cru. Valor sem mapa vira texto legível automaticamente. */
+  mapa?: Record<string, { rotulo: string; tom?: 'neutro' | 'sucesso' | 'perigo' | 'aviso' | 'info' | 'destaque' }>
 }
 
 export interface CampoEstaticoConfig {
@@ -31,6 +38,8 @@ const props = withDefaults(defineProps<{
   camposEstaticos?: CampoEstaticoConfig[]
   filtroBase?: string
   semFormInterno?: boolean
+  /** Campo do registro com o Id da moeda (ex.: 'MoedaId'), usado pelas colunas `moeda`. Sem ele, usa a moeda padrão. */
+  campoMoeda?: string
 }>(), {
   ordenacaoPadrao: 'Nome asc',
   placeholderBusca: 'Buscar...',
@@ -111,9 +120,26 @@ const selectFields = computed(() => {
     }
   }
   if (props.colunas.some(c => c.tipo === 'status')) camposDiretos.add('Ativo')
+  if (props.campoMoeda && props.colunas.some(c => c.tipo === 'moeda')) camposDiretos.add(props.campoMoeda)
   
   return { select: Array.from(camposDiretos).join(','), expand: Array.from(expands).join(',') }
 })
+
+/** Filtro atual (base + aba + busca), usado pela grade e pela exportação. */
+function montarFiltro(): string {
+  const filtros: string[] = []
+  if (props.filtroBase) filtros.push(props.filtroBase)
+  if (filtroAba.value) filtros.push(filtroAba.value)
+  if (busca.value && props.camposBusca?.length) {
+    const buscaFiltros = props.camposBusca.map(c => `contains(${c},'${busca.value}')`)
+    filtros.push(`(${buscaFiltros.join(' or ')})`)
+  }
+  return filtros.join(' and ')
+}
+
+function ordenacaoAtual(): string {
+  return ordenacaoColuna.value ? `${ordenacaoColuna.value} ${ordenacaoDirecao.value}` : (ordenacaoAba.value ?? props.ordenacaoPadrao)
+}
 
 async function carregar() {
   carregando.value = true
@@ -127,14 +153,8 @@ async function carregar() {
       select,
     }
     if (expand) params.expand = expand
-    const filtros: string[] = []
-    if (props.filtroBase) filtros.push(props.filtroBase)
-    if (filtroAba.value) filtros.push(filtroAba.value)
-    if (busca.value && props.camposBusca?.length) {
-      const buscaFiltros = props.camposBusca.map(c => `contains(${c},'${busca.value}')`)
-      filtros.push(`(${buscaFiltros.join(' or ')})`)
-    }
-    if (filtros.length) params.filter = filtros.join(' and ')
+    const filtro = montarFiltro()
+    if (filtro) params.filter = filtro
     const res = await odataGet<any>(props.endpoint, params)
     itens.value = res.value
     total.value = res['@odata.count'] ?? 0
@@ -214,15 +234,61 @@ function formatarValor(item: any, col: ColunaConfig): string {
   if (val === null || val === undefined) return '-'
   switch (col.tipo) {
     case 'data': return new Date(val).toLocaleDateString('pt-BR')
-    case 'moeda': return `R$ ${Number(val).toLocaleString('pt-BR')}`
+    case 'moeda': return `${simboloDaMoeda(moedas.value, props.campoMoeda ? item[props.campoMoeda] : null)} ${Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    case 'enum': return rotuloEnum(val, col)
     case 'status': return val ? 'Ativo' : 'Inativo'
     case 'booleano': return val ? 'Sim' : 'Não'
     default: return String(val)
   }
 }
 
+const moedas = ref<MoedaCsv[]>([])
+
+function humanizar(v: string): string {
+  const s = v.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/_/g, ' ').trim()
+  return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s
+}
+function rotuloEnum(val: unknown, col: ColunaConfig): string {
+  const chave = String(val)
+  return col.mapa?.[chave]?.rotulo ?? humanizar(chave)
+}
+function tomEnum(val: unknown, col: ColunaConfig) {
+  return col.mapa?.[String(val)]?.tom ?? 'neutro'
+}
+
+// ---- exportação CSV
+const toast = useToast()
+const exportando = ref(false)
+async function exportar() {
+  if (exportando.value) return
+  exportando.value = true
+  try {
+    const { select, expand } = selectFields.value
+    const r = await exportarCsv({
+      entidade: props.entidade,
+      endpoint: props.endpoint,
+      colunas: colunasAtivas.value.map(c => ({
+        campo: c.campo, label: c.label, tipo: c.tipo,
+        rotulos: c.mapa ? Object.fromEntries(Object.entries(c.mapa).map(([k, v]) => [k, v.rotulo])) : undefined,
+      })),
+      filtro: montarFiltro(),
+      orderby: ordenacaoAtual(),
+      select,
+      expand,
+      campoMoeda: props.campoMoeda,
+    })
+    if (r.truncado) toast.warning(`Exportados apenas os primeiros ${r.total.toLocaleString('pt-BR')} registros (limite). Refine o filtro para exportar o restante.`)
+    else toast.success(`Exportados ${r.total.toLocaleString('pt-BR')} registro(s) em ${r.arquivo}.`)
+  } catch (e) {
+    toast.error(e instanceof Error && e.message ? `Não foi possível exportar: ${e.message}` : 'Não foi possível exportar.')
+  } finally { exportando.value = false }
+}
+
 watch(() => props.colunas, inicializarColunas, { immediate: true })
-onMounted(carregar)
+onMounted(() => {
+  carregar()
+  if (props.colunas.some(c => c.tipo === 'moeda')) carregarMoedas().then(m => { moedas.value = m })
+})
 </script>
 
 <template>
@@ -238,6 +304,7 @@ onMounted(carregar)
           <ModalFiltro :aberto="mostrarFiltroDropdown" :entidade="entidade" :filtros-salvos="[]" @fechar="mostrarFiltroDropdown = false" @aplicar="onAplicarFiltro" />
         </div>
         <button class="btn-colunas" @click="mostrarModalColunas = true"><i class="mdi mdi-view-column-outline"></i> Colunas</button>
+        <button class="btn-colunas" :disabled="exportando" aria-label="Exportar CSV" title="Exportar CSV com o filtro e as colunas atuais" @click="exportar"><i class="mdi" :class="exportando ? 'mdi-loading mdi-spin' : 'mdi-download'"></i> {{ exportando ? 'Exportando...' : 'Exportar' }}</button>
         <span class="total">{{ total }} registros</span>
         <button class="btn-novo" @click="abrirNovo"><i class="mdi mdi-plus"></i> Novo</button>
       </div>
@@ -267,6 +334,7 @@ onMounted(carregar)
                     <span>{{ item[col.campo] ?? '-' }}</span>
                   </div>
                   <span v-else-if="col.tipo === 'status'"><span class="dot" :class="{ on: item[col.campo] }"></span>{{ item[col.campo] ? 'Ativo' : 'Inativo' }}</span>
+                  <UiBadge v-else-if="col.tipo === 'enum' && item[col.campo] != null" :tom="tomEnum(item[col.campo], col)">{{ rotuloEnum(item[col.campo], col) }}</UiBadge>
                   <span v-else-if="col.tipo === 'badge'" class="badge">{{ item[col.campo] ?? '-' }}</span>
                   <span v-else>{{ formatarValor(item, col) }}</span>
                 </td>

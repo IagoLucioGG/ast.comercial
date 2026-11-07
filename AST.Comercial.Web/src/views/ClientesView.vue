@@ -13,7 +13,10 @@ const colunas: ColunaConfig[] = [
   { campo: 'Email', label: 'Email' },
   { campo: 'Telefone', label: 'Telefone' },
   { campo: 'Cidade', label: 'Cidade' },
-  { campo: 'Ativo', label: 'Status', tipo: 'status' },
+  { campo: 'Estado', label: 'UF', largura: '70px' },
+  { campo: 'StatusCliente/Nome', label: 'Status' },
+  { campo: 'Origem/Nome', label: 'Origem' },
+  { campo: 'Ativo', label: 'Situação', tipo: 'status' },
   { campo: 'CriadoEm', label: 'Criado em', tipo: 'data' },
 ]
 

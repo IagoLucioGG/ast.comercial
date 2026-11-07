@@ -42,7 +42,7 @@ const categorias: AdminCategoria[] = [
       { icon: 'mdi-account-supervisor', label: 'Equipes e colaboradores', componente: 'Equipes', slug: 'equipes' },
       { icon: 'mdi-briefcase-outline', label: 'Cargos', componente: 'Cargos', slug: 'cargos' },
       { icon: 'mdi-sitemap-outline', label: 'Departamentos', componente: 'Departamentos', slug: 'departamentos' },
-      { icon: 'mdi-shield-account-outline', label: 'Perfis e permissões', componente: 'Perfis', slug: 'perfis', emBreve: true },
+      { icon: 'mdi-shield-account-outline', label: 'Perfis e permissões', componente: 'Perfis', slug: 'perfis' },
       { icon: 'mdi-history', label: 'Registro de atividades', componente: 'RegistroAtividades', slug: 'atividades' },
     ],
   },
@@ -63,6 +63,7 @@ const categorias: AdminCategoria[] = [
       { icon: 'mdi-file-document-multiple-outline', label: 'Modelos de documentos', componente: 'ModelosDocumentos', slug: 'modelos-documentos' },
       { icon: 'mdi-flag-variant-outline', label: 'Status de negócio', componente: 'StatusNegocio', slug: 'status-negocio' },
       { icon: 'mdi-thumb-down-outline', label: 'Motivos de perda', componente: 'MotivosPerda', slug: 'motivos-perda' },
+      { icon: 'mdi-shield-check-outline', label: 'Fluxos de aprovação', componente: 'FluxosAprovacao', slug: 'fluxos-aprovacao' },
     ],
   },
   {
@@ -71,6 +72,7 @@ const categorias: AdminCategoria[] = [
       { icon: 'mdi-puzzle-outline', label: 'Integrações e aplicativos', componente: 'Integracoes', slug: 'integracoes' },
       { icon: 'mdi-account-convert-outline', label: 'Usuários de integração', componente: 'UsuariosIntegracao', slug: 'usuarios-integracao' },
       { icon: 'mdi-cloud-download-outline', label: 'Importar da Ploomes', componente: 'ImportadorPloomes', slug: 'importar-ploomes' },
+      { icon: 'mdi-database-import-outline', label: 'Importação de dados', componente: 'ImportacaoDados', slug: 'importacao-dados' },
     ],
   },
 ]

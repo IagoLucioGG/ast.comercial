@@ -1,4 +1,5 @@
 using System.Text.Json;
+using AST.Comercial.Application.Dtos;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace AST.Comercial.Controllers;
 
+[AcessoNegadoAprovacaoFilter]
 public class PropostasController(IPropostaServico servico) : ODataController
 {
     [EnableQuery]
@@ -54,12 +56,16 @@ public class PropostasController(IPropostaServico servico) : ODataController
         return resultado is null ? NotFound() : Entidade(resultado);
     }
 
+    /// <summary>
+    /// Aprova a proposta. Com fluxo de aprovação aplicável, só o aprovador do nível atual (ou Administrador) pode (403)
+    /// e a aprovação avança de nível; sem fluxo, mantém o comportamento anterior. Corpo opcional: { "comentario": "..." }.
+    /// </summary>
     [HttpPost("odata/Propostas({key})/Aprovar")]
-    public async Task<ActionResult> Aprovar(long key, CancellationToken cancellationToken)
+    public async Task<ActionResult> Aprovar(long key, [FromBody] DecisaoAprovacaoRequest? corpo, CancellationToken cancellationToken)
     {
         try
         {
-            await servico.AprovarAsync(key, cancellationToken);
+            await servico.AprovarAsync(key, corpo?.Comentario ?? corpo?.Observacao, cancellationToken);
             return NoContent();
         }
         catch (KeyNotFoundException)
@@ -68,12 +74,13 @@ public class PropostasController(IPropostaServico servico) : ODataController
         }
     }
 
+    /// <summary>Rejeita a proposta. Com fluxo aplicável o comentário é obrigatório (422).</summary>
     [HttpPost("odata/Propostas({key})/Rejeitar")]
-    public async Task<ActionResult> Rejeitar(long key, CancellationToken cancellationToken)
+    public async Task<ActionResult> Rejeitar(long key, [FromBody] DecisaoAprovacaoRequest? corpo, CancellationToken cancellationToken)
     {
         try
         {
-            await servico.RejeitarAsync(key, cancellationToken);
+            await servico.RejeitarAsync(key, corpo?.Comentario ?? corpo?.Observacao, cancellationToken);
             return NoContent();
         }
         catch (KeyNotFoundException)
@@ -81,6 +88,23 @@ public class PropostasController(IPropostaServico servico) : ODataController
             return NotFound();
         }
     }
+
+    /// <summary>Pede a aprovação (avalia os fluxos ativos). 422 se nenhum fluxo se aplicar. Corpo opcional: { "observacao": "..." }.</summary>
+    [HttpPost("odata/Propostas({key})/SolicitarAprovacao")]
+    public async Task<ActionResult> SolicitarAprovacao(long key, [FromBody] SolicitarAprovacaoRequest? corpo, CancellationToken ct)
+    {
+        try
+        {
+            var resultado = await servico.SolicitarAprovacaoAsync(key, corpo?.Observacao, ct);
+            return new JsonResult(resultado, OpcoesApi);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
+    private static readonly JsonSerializerOptions OpcoesApi = new(JsonSerializerDefaults.Web);
 
     [EnableQuery]
     [HttpGet("odata/Propostas@Produtos")]

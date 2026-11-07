@@ -84,6 +84,13 @@ public class SolicitacaoAprovacao : EntidadeBase
     public DateTime? AprovadoEm { get; set; }
     public DateTime? RejeitadoEm { get; set; }
     public string? Observacao { get; set; }
+
+    /// <summary>Quem solicitou a aprovação (nulo para sistema/automação).</summary>
+    public long? SolicitadoPorId { get; set; }
+    public Usuario? SolicitadoPor { get; set; }
+
+    /// <summary>Comentário de quem decidiu (aprovou ou rejeitou). O decisor é AprovadoPorId; a data é AprovadoEm/RejeitadoEm.</summary>
+    public string? ComentarioDecisao { get; set; }
 }
 
 public enum StatusSolicitacaoAprovacao

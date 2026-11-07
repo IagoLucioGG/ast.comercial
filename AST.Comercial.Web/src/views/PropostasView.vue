@@ -13,8 +13,17 @@ const colunas: ColunaConfig[] = [
   { campo: 'Numero', label: 'Nº' },
   { campo: 'Titulo', label: 'Título', tipo: 'avatar' },
   { campo: 'Valor', label: 'Valor', tipo: 'moeda' },
-  { campo: 'StatusAprovacao', label: 'Status', tipo: 'badge' },
-  { campo: 'StatusResposta', label: 'Resposta do cliente', tipo: 'badge' },
+  { campo: 'StatusAprovacao', label: 'Status', tipo: 'enum', mapa: {
+    Pendente: { rotulo: 'Pendente', tom: 'aviso' },
+    Aprovada: { rotulo: 'Aprovada', tom: 'sucesso' },
+    Rejeitada: { rotulo: 'Rejeitada', tom: 'perigo' },
+    EmRevisao: { rotulo: 'Em revisão', tom: 'info' },
+  } },
+  { campo: 'StatusResposta', label: 'Resposta do cliente', tipo: 'enum', mapa: {
+    Aguardando: { rotulo: 'Aguardando', tom: 'neutro' },
+    Aceita: { rotulo: 'Aceita', tom: 'sucesso' },
+    Recusada: { rotulo: 'Recusada', tom: 'perigo' },
+  } },
   { campo: 'Ativo', label: 'Situação', tipo: 'status' },
   { campo: 'CriadoEm', label: 'Criado em', tipo: 'data' },
 ]
@@ -60,6 +69,7 @@ function aoCriar(id: number, modeloId: number | null) {
     :campos-busca="['Titulo']"
     placeholder-busca="Buscar proposta..."
     ordenacao-padrao="CriadoEm desc"
+    campo-moeda="MoedaId"
     sem-form-interno
     @novo="modalAberto = true"
     @editar="(id: number) => router.push(`/propostas/${id}`)"

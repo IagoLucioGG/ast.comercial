@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import NegocioCard from '@/components/funil/NegocioCard.vue'
+import NegocioCard, { type ProgressoChecklist } from '@/components/funil/NegocioCard.vue'
 import { useFunisStore, type EtapaItem } from '@/stores/funis'
 import { formatarValor } from '@/composables/useFunilFormato'
 import type { EstadoColuna, TotalMoeda } from '@/composables/useFunilKanban'
@@ -15,6 +15,8 @@ const props = defineProps<{
   buscando: boolean
   /** Texto do estado vazio conforme o recorte (abertos, ganhos...). */
   vazioTexto?: string
+  /** Progresso de checklist por id de negócio (uma consulta agregada por quadro). */
+  progresso?: Record<number, ProgressoChecklist>
 }>()
 
 const emit = defineEmits<{
@@ -84,7 +86,7 @@ function aoSoltar() {
       </div>
       <template v-else>
         <NegocioCard
-          v-for="c in estado.cards" :key="c.id" :card="c" :etapas="etapas" :arrastando="arrastandoId === c.id"
+          v-for="c in estado.cards" :key="c.id" :card="c" :etapas="etapas" :arrastando="arrastandoId === c.id" :checklist="progresso?.[c.id]"
           @abrir="emit('abrir', $event)" @mover="(id, e) => emit('mover', id, e)" @ganhar="emit('ganhar', $event)"
           @perder="emit('perder', $event)" @reabrir="emit('reabrir', $event)"
           @dragstart="(id, ev) => emit('iniciarArraste', id, ev)" @dragend="emit('fimArraste')"

@@ -23,6 +23,7 @@ public class Produto : EntidadeBase
     public long? MoedaId { get; set; }
 
     public ICollection<ValorCampo> OutrasPropriedades { get; set; } = [];
+    public ICollection<ItemListaPreco> ItensListaPreco { get; set; } = [];
 }
 
 public enum CategoriaProduto

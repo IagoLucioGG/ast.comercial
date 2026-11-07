@@ -11,11 +11,13 @@ import IntegracoesAdmin from './IntegracoesAdmin.vue'
 import DadosEmpresa from './DadosEmpresa.vue'
 import CamposFormularios from './CamposFormularios.vue'
 import ImportadorPloomes from './ImportadorPloomes.vue'
+import ImportacaoAdmin from './importacao/ImportacaoAdmin.vue'
 import ModelosDocumentoAdmin from './ModelosDocumentoAdmin.vue'
 import CargosAdmin from './CargosAdmin.vue'
 import DepartamentosAdmin from './DepartamentosAdmin.vue'
 import MoedasAdmin from './MoedasAdmin.vue'
-import PerfisEmBreve from './PerfisEmBreve.vue'
+import PerfisPermissoes from './permissoes/PerfisPermissoes.vue'
+import FluxosAprovacaoAdmin from './aprovacoes/FluxosAprovacaoAdmin.vue'
 import {
   OrigensAdmin, RamosAdmin, PortesAdmin, StatusClienteAdmin,
   MotivosPerdaAdmin, StatusNegocioAdmin, FamiliasProdutoAdmin, GruposProdutoAdmin,
@@ -37,11 +39,13 @@ const componentes: Record<string, any> = {
   DadosEmpresa,
   CamposFormularios,
   ImportadorPloomes,
+  ImportacaoDados: ImportacaoAdmin,
   ModelosDocumentos: ModelosDocumentoAdmin,
   Cargos: CargosAdmin,
   Departamentos: DepartamentosAdmin,
   Moedas: MoedasAdmin,
-  Perfis: PerfisEmBreve,
+  Perfis: PerfisPermissoes,
+  FluxosAprovacao: FluxosAprovacaoAdmin,
   Origens: OrigensAdmin,
   Ramos: RamosAdmin,
   Portes: PortesAdmin,

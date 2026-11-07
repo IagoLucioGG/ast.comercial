@@ -1,0 +1,7 @@
+passo: aprovacoes
+url: http://localhost:5173/aprovacoes
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: not_requested
+dom: not_requested

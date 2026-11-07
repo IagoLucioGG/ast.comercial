@@ -47,4 +47,29 @@ public class FunisController(IFunilServico servico) : ODataController
         var resultado = await servico.CriarEtapaAsync(key, delta);
         return Created(resultado);
     }
+
+    /// <summary>Edita nome, ordem e dias para expirar da etapa.</summary>
+    [HttpPatch("odata/Funis({key})/Etapas({etapaId})")]
+    public async Task<ActionResult> AtualizarEtapa(long key, long etapaId, [FromBody] Delta<EtapaFunil> delta, CancellationToken ct)
+    {
+        var resultado = await servico.AtualizarEtapaAsync(key, etapaId, delta, ct);
+        return resultado is null ? NotFound() : Ok(resultado);
+    }
+
+    /// <summary>Inativa a etapa. 422 se houver negócios abertos nela.</summary>
+    [HttpDelete("odata/Funis({key})/Etapas({etapaId})")]
+    public async Task<ActionResult> RemoverEtapa(long key, long etapaId, CancellationToken ct)
+    {
+        var removido = await servico.RemoverEtapaAsync(key, etapaId, ct);
+        return removido ? NoContent() : NotFound();
+    }
+
+    /// <summary>Corpo: { "Ids": [etapa1, etapa2, ...] } na nova ordem.</summary>
+    [HttpPost("odata/Funis({key})/ReordenarEtapas")]
+    public async Task<ActionResult> ReordenarEtapas(long key, [FromBody] ReordenarItensRequest? corpo, CancellationToken ct)
+    {
+        if (corpo?.Ids is null) return BadRequest(new { erro = "Informe a lista de ids na nova ordem.", status = 400 });
+        await servico.ReordenarEtapasAsync(key, corpo.Ids, ct);
+        return NoContent();
+    }
 }

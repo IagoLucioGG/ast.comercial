@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Application.Servicos;
 using AST.Comercial.Domain.Entidades;
@@ -59,14 +59,19 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 // Serviços
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IPermissaoServico, AST.Comercial.Infrastructure.Autorizacao.PermissaoServico>();
 builder.Services.AddScoped<IClienteServico, ClienteServico>();
 builder.Services.AddScoped<IPessoaContatoServico, PessoaContatoServico>();
 builder.Services.AddScoped<INegocioServico, NegocioServico>();
 builder.Services.AddScoped<IFunilServico, FunilServico>();
+builder.Services.AddScoped<IItemNegocioServico, ItemNegocioServico>();
+builder.Services.AddScoped<IChecklistServico, ChecklistServico>();
 builder.Services.AddScoped<IAtividadeServico, AtividadeServico>();
 builder.Services.AddScoped<IAutenticacaoServico, AutenticacaoServico>();
 builder.Services.AddScoped<IPropostaServico, PropostaServico>();
 builder.Services.AddScoped<IProdutoServico, ProdutoServico>();
+builder.Services.AddScoped<IListaPrecoServico, ListaPrecoServico>();
 builder.Services.AddScoped<ICampoServico, CampoServico>();
 builder.Services.AddScoped<IAutomacaoServico, AutomacaoServico>();
 builder.Services.AddScoped<IUsuarioServico, UsuarioServico>();
@@ -80,7 +85,11 @@ builder.Services.AddScoped<IIntegracaoServico, IntegracaoServico>();
 builder.Services.AddScoped<IIntegracaoEventoPublicador, AST.Comercial.Infrastructure.Integracoes.IntegracaoEventoPublicador>();
 builder.Services.AddScoped<AST.Comercial.Infrastructure.Integracoes.ExecutorFluxoSaida>();
 builder.Services.AddScoped<IEtiquetaServico, EtiquetaServico>();
+builder.Services.AddScoped<IMetaServico, MetaServico>();
 builder.Services.AddScoped<IMoedaServico, MoedaServico>();
+builder.Services.AddSingleton<AST.Comercial.Application.Importacoes.ExecutorImportacao>();
+builder.Services.AddScoped<IImportacaoServico, ImportacaoServico>();
+builder.Services.AddScoped<IRelatorioServico, RelatorioServico>();
 builder.Services.AddScoped<ILocalidadeServico, LocalidadeServico>();
 builder.Services.AddScoped<IModeloDocumentoServico, ModeloDocumentoServico>();
 builder.Services.AddScoped<IFilaAutomacaoPublicador, AST.Comercial.Infrastructure.Automacoes.FilaAutomacaoPublicador>();
@@ -142,6 +151,17 @@ modelBuilder.EntitySet<AcaoAutomacao>("AcoesAutomacao");
 modelBuilder.EntitySet<ExecucaoAutomacao>("ExecucoesAutomacao");
 modelBuilder.EntitySet<FilaAutomacao>("FilaAutomacao");
 modelBuilder.EntitySet<VisualizacaoSalva>("Visualizacoes");
+modelBuilder.EntitySet<PermissaoPerfil>("PermissoesPerfil");
+modelBuilder.EntitySet<ItemNegocio>("ItensNegocio");
+modelBuilder.EntitySet<ListaPreco>("ListasPreco");
+modelBuilder.EntitySet<ItemListaPreco>("ItensListaPreco");
+modelBuilder.EntitySet<ChecklistEtapa>("ChecklistsEtapa");
+modelBuilder.EntitySet<ItemChecklistEtapa>("ItensChecklistEtapa");
+modelBuilder.EntitySet<RespostaChecklistNegocio>("RespostasChecklistNegocio");
+modelBuilder.EntitySet<Meta>("Metas");
+modelBuilder.EntitySet<PainelRelatorio>("PaineisRelatorio");
+modelBuilder.EntitySet<GraficoRelatorio>("GraficosRelatorio");
+modelBuilder.EntitySet<Importacao>("Importacoes");
 
 // Controllers + OData (autenticação global obrigatória)
 builder.Services.AddControllers(options =>
@@ -196,6 +216,7 @@ app.UseAuthentication();
 app.UseMiddleware<RateLimitMiddleware>();
 app.UseAuthorization();
 app.UseMiddleware<TenantMiddleware>();
+app.UseMiddleware<AST.Comercial.Infrastructure.Autorizacao.AutorizacaoMiddleware>(); // 403 por perfil × entidade × ação
 app.MapControllers();
 
 // Fallback: retornar 404 JSON para rotas não mapeadas (evita exposição de info)
@@ -250,6 +271,7 @@ if (app.Environment.IsDevelopment())
         db.EmpresaIdAtual = empresaId;
         await AST.Comercial.Infrastructure.Data.SeedCamposNativos.SeedAsync(db, empresaId);
         await AST.Comercial.Infrastructure.Data.SeedFormulariosPadrao.SeedAsync(db, empresaId);
+        await AST.Comercial.Infrastructure.Data.SeedPermissoes.SeedAsync(db, empresaId);
     }
 }
 

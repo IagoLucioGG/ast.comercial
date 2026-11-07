@@ -21,6 +21,39 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     /// Empresa do usuário logado (define o tenant para filtro global)
     /// </summary>
     public long EmpresaIdAtual { get; set; }
+
+    // ---- Visibilidade por escopo (preenchida pelo TenantMiddleware) ----
+    // Padrão = sem restrição: serviços de fundo (automações, polling) criam o próprio contexto e só têm tenant.
+
+    /// <summary>Perfil do usuário da requisição. Nulo = sem usuário (anônimo/serviço de fundo).</summary>
+    public PerfilUsuario? PerfilAtual { get; set; }
+
+    /// <summary>Escopo de visibilidade do usuário sobre Negócios (ResponsavelId).</summary>
+    public EscopoVisibilidade EscopoNegocio { get; set; } = EscopoVisibilidade.Todos;
+
+    /// <summary>Escopo de visibilidade do usuário sobre Atividades (ResponsavelId).</summary>
+    public EscopoVisibilidade EscopoAtividade { get; set; } = EscopoVisibilidade.Todos;
+
+    /// <summary>Usuários que compartilham equipe com o usuário atual (para o escopo Equipe).</summary>
+    public long[] UsuariosDaEquipeAtual { get; set; } = [];
+
+    // Propriedades lidas pelos filtros globais (o EF as avalia por consulta, como EmpresaIdAtual).
+    public bool RestringirNegocios => EscopoNegocio != EscopoVisibilidade.Todos;
+    public bool RestringirAtividades => EscopoAtividade != EscopoVisibilidade.Todos;
+    public long?[] ResponsaveisVisiveisNegocios => ResponsaveisPara(EscopoNegocio);
+    public long?[] ResponsaveisVisiveisAtividades => ResponsaveisPara(EscopoAtividade);
+
+    private long?[] ResponsaveisPara(EscopoVisibilidade escopo)
+    {
+        if (UsuarioIdAtual is not { } eu) return [];
+        return escopo switch
+        {
+            EscopoVisibilidade.Proprios => [eu],
+            EscopoVisibilidade.Equipe => [eu, .. UsuariosDaEquipeAtual.Select(id => (long?)id)],
+            _ => []
+        };
+    }
+
     public DbSet<Cliente> Clientes => Set<Cliente>();
     public DbSet<PessoaContato> PessoasContato => Set<PessoaContato>();
     public DbSet<Negocio> Negocios => Set<Negocio>();
@@ -78,6 +111,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Departamento> Departamentos => Set<Departamento>();
     public DbSet<Cargo> Cargos => Set<Cargo>();
     public DbSet<VisualizacaoSalva> VisualizacoesSalvas => Set<VisualizacaoSalva>();
+    public DbSet<PermissaoPerfil> PermissoesPerfil => Set<PermissaoPerfil>();
+    public DbSet<ItemNegocio> ItensNegocio => Set<ItemNegocio>();
+    public DbSet<ListaPreco> ListasPreco => Set<ListaPreco>();
+    public DbSet<ItemListaPreco> ItensListaPreco => Set<ItemListaPreco>();
+    public DbSet<ChecklistEtapa> ChecklistsEtapa => Set<ChecklistEtapa>();
+    public DbSet<ItemChecklistEtapa> ItensChecklistEtapa => Set<ItemChecklistEtapa>();
+    public DbSet<RespostaChecklistNegocio> RespostasChecklistNegocio => Set<RespostaChecklistNegocio>();
+    public DbSet<Meta> Metas => Set<Meta>();
+    public DbSet<PainelRelatorio> PaineisRelatorio => Set<PainelRelatorio>();
+    public DbSet<GraficoRelatorio> GraficosRelatorio => Set<GraficoRelatorio>();
+    public DbSet<Importacao> Importacoes => Set<Importacao>();
 
     /// <summary>
     /// Npgsql (timestamptz) só aceita DateTime com Kind=Utc. Todo DateTime gravado ou usado em parâmetro de consulta
@@ -141,10 +185,31 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 var filtroAtivo = System.Linq.Expressions.Expression.Equal(ativoProp, System.Linq.Expressions.Expression.Constant(true));
                 var filtroCompleto = System.Linq.Expressions.Expression.AndAlso(filtroEmpresa, filtroAtivo);
 
+                // Visibilidade por dono (escopo Próprios/Equipe) para as entidades que têm ResponsavelId.
+                if (entityType.ClrType == typeof(Negocio))
+                    filtroCompleto = AdicionarVisibilidade(filtroCompleto, parameter, nameof(RestringirNegocios), nameof(ResponsaveisVisiveisNegocios));
+                else if (entityType.ClrType == typeof(Atividade))
+                    filtroCompleto = AdicionarVisibilidade(filtroCompleto, parameter, nameof(RestringirAtividades), nameof(ResponsaveisVisiveisAtividades));
+
                 var lambda = System.Linq.Expressions.Expression.Lambda(filtroCompleto, parameter);
                 entityType.SetQueryFilter(lambda);
             }
         }
+    }
+
+    /// <summary>filtro AND (!restringir OR responsaveisVisiveis.Contains(e.ResponsavelId)).</summary>
+    private System.Linq.Expressions.BinaryExpression AdicionarVisibilidade(
+        System.Linq.Expressions.Expression filtroBase, System.Linq.Expressions.ParameterExpression e,
+        string propRestringir, string propLista)
+    {
+        var ctx = System.Linq.Expressions.Expression.Constant(this);
+        var restringir = System.Linq.Expressions.Expression.Property(ctx, propRestringir);
+        var lista = System.Linq.Expressions.Expression.Property(ctx, propLista);
+        var responsavel = System.Linq.Expressions.Expression.Property(e, "ResponsavelId");
+        var contem = System.Linq.Expressions.Expression.Call(
+            typeof(Enumerable), nameof(Enumerable.Contains), [typeof(long?)], lista, responsavel);
+        var visivel = System.Linq.Expressions.Expression.OrElse(System.Linq.Expressions.Expression.Not(restringir), contem);
+        return System.Linq.Expressions.Expression.AndAlso(filtroBase, visivel);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

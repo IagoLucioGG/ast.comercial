@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue'
+import { computed, ref, toRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import KanbanColuna from '@/components/funil/KanbanColuna.vue'
 import PerderNegocioModal from '@/components/negocio/PerderNegocioModal.vue'
 import { useFunisStore } from '@/stores/funis'
 import { useFunilKanban, type FiltroStatus } from '@/composables/useFunilKanban'
 import { useAcoesNegocio } from '@/composables/useAcoesNegocio'
+import { odataRequest } from '@/services/api'
+import { campo, lista, type Registro } from '@/composables/useEntidadeDetalhe'
+import type { ProgressoChecklist } from '@/components/funil/NegocioCard.vue'
 
 const props = defineProps<{ funilId: number | null; busca: string; status: FiltroStatus; responsavelId: number | null }>()
 const emit = defineEmits<{ novo: [etapaId: number | null] }>()
@@ -35,6 +38,41 @@ const perderAberto = computed({
   set: (v: boolean) => { if (!v) perdendo.value = null },
 })
 
+// Progresso de checklist: UMA consulta agregada por quadro (não uma por cartão). É um enfeite:
+// se falhar (inclusive 403), o quadro continua funcionando sem os indicadores.
+const progresso = ref<Record<number, ProgressoChecklist>>({})
+let geracaoProgresso = 0
+async function carregarProgresso() {
+  const funil = props.funilId
+  const minha = ++geracaoProgresso
+  if (!funil) { progresso.value = {}; return }
+  try {
+    const r = await odataRequest<unknown>('GET', `Funis(${funil})/ChecklistProgresso`)
+    if (minha !== geracaoProgresso) return
+    const mapa: Record<number, ProgressoChecklist> = {}
+    for (const p of lista<Registro>(r)) {
+      mapa[Number(campo(p, 'NegocioId'))] = {
+        total: Number(campo(p, 'Total') ?? 0),
+        concluidos: Number(campo(p, 'Concluidos') ?? 0),
+        obrigatoriosPendentes: Number(campo(p, 'ObrigatoriosPendentes') ?? 0),
+      }
+    }
+    progresso.value = mapa
+  } catch {
+    if (minha === geracaoProgresso) progresso.value = {}
+  }
+}
+watch(funilIdRef, carregarProgresso, { immediate: true })
+
+async function mover(id: number, etapaId: number) {
+  await kanban.mover(id, etapaId)
+  carregarProgresso()
+}
+
+async function recarregarTudo() {
+  await Promise.all([kanban.carregarTudo(), carregarProgresso()])
+}
+
 function abrir(id: number) { router.push(`/negocios/${id}`) }
 
 function iniciarArraste(id: number, ev: DragEvent) {
@@ -51,7 +89,7 @@ function fimArraste() { kanban.arrastando.value = null }
 async function soltar(etapaId: number) {
   const a = kanban.arrastando.value
   kanban.arrastando.value = null
-  if (a && a.deEtapaId !== etapaId) await kanban.mover(a.id, etapaId)
+  if (a && a.deEtapaId !== etapaId) await mover(a.id, etapaId)
 }
 
 async function ganhar(id: number) {
@@ -66,11 +104,11 @@ function perder(id: number) {
 }
 
 async function reabrir(id: number) {
-  if (await acoes.reabrir(id)) await kanban.carregarTudo()
+  if (await acoes.reabrir(id)) await recarregarTudo()
 }
 
 defineExpose({
-  recarregar: kanban.carregarTudo,
+  recarregar: recarregarTudo,
   recarregarEtapa: (etapaId: number) => kanban.recarregarColunas(etapaId),
 })
 </script>
@@ -85,9 +123,9 @@ defineExpose({
       v-for="e in etapas" :key="e.id" :etapa="e" :etapas="etapas"
       :estado="kanban.colunas[e.id] ?? { cards: [], qtd: 0, carregando: true, carregandoMais: false, fim: false, erro: null, totaisServidor: null }"
       :totais="kanban.totaisDaColuna(e.id)" :parcial="kanban.totaisParciais.value"
-      :arrastando-id="kanban.arrastando.value?.id ?? null" :buscando="!!busca.trim()" :vazio-texto="vazioTexto"
+      :arrastando-id="kanban.arrastando.value?.id ?? null" :buscando="!!busca.trim()" :vazio-texto="vazioTexto" :progresso="progresso"
       @mais="kanban.carregarMais(e.id)" @novo="emit('novo', $event)" @soltar="soltar"
-      @abrir="abrir" @mover="(id, et) => kanban.mover(id, et)" @ganhar="ganhar" @perder="perder" @reabrir="reabrir"
+      @abrir="abrir" @mover="mover" @ganhar="ganhar" @perder="perder" @reabrir="reabrir"
       @iniciar-arraste="iniciarArraste" @fim-arraste="fimArraste" @recarregar="(id) => kanban.recarregarColunas(id)"
     />
   </div>

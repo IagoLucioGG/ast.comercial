@@ -6,6 +6,9 @@ import UiBadge from '@/components/ui/UiBadge.vue'
 import PropostaItensTab from '@/components/propostas/PropostaItensTab.vue'
 import PropostaParcelasTab from '@/components/propostas/PropostaParcelasTab.vue'
 import PropostaDocumentoTab from '@/components/propostas/PropostaDocumentoTab.vue'
+import PropostaAprovacaoBloco from '@/components/aprovacoes/PropostaAprovacaoBloco.vue'
+import DecisaoModal from '@/components/aprovacoes/DecisaoModal.vue'
+import { apiAprov, type Solicitacao } from '@/components/aprovacoes/aprovacaoApi'
 import { ApiError, odataAction, odataRequest, montarQuery } from '@/services/api'
 import { useToast } from '@/composables/useToast'
 import {
@@ -42,7 +45,14 @@ const abas = computed<AbaConfig[]>(() => [
   { chave: 'documento', rotulo: 'Documento', icone: 'mdi-file-document-outline' },
 ])
 
-const status = computed(() => statusAprovacaoVisual(proposta.value?.StatusAprovacao))
+// Sem status gravado = nenhum fluxo de aprovação exige aprovação desta proposta.
+const statusNome = computed(() => {
+  const v = proposta.value?.StatusAprovacao
+  return v === null || v === undefined || v === '' ? null : statusAprovacaoNome(v)
+})
+const status = computed(() => statusNome.value === null
+  ? { rotulo: 'Sem aprovação necessária', tom: 'neutro' as const }
+  : statusAprovacaoVisual(proposta.value?.StatusAprovacao))
 const linkPublico = computed(() =>
   proposta.value?.Chave ? `${window.location.origin}/p/${proposta.value.Chave}` : '')
 
@@ -63,6 +73,7 @@ async function carregar() {
     itens.value = its
     parcelas.value = pcs
     carregarComplementos(p)
+    carregarAprovacao()
   } catch (e) {
     erro.value = e instanceof ApiError && e.status === 404 ? 'Proposta não encontrada.' : (e instanceof Error ? e.message : 'Falha ao carregar a proposta.')
   } finally {
@@ -108,6 +119,7 @@ async function sincronizar() {
       proposta.value.Valor = r.Valor
       divergencia.value = Math.abs(arredondar(r.Valor) - totais.total.value) > 0.005
     }
+    await recarregarAprovacao(true)
   } catch (e) {
     if (e instanceof ApiError && [404, 405, 501].includes(e.status)) {
       // Recalcular ainda não existe no servidor: grava o total do navegador
@@ -126,18 +138,86 @@ async function sincronizar() {
 
 onBeforeUnmount(() => { if (temporizador) clearTimeout(temporizador) })
 
+// ---------- aprovação (fluxos) ----------
+const solicitacoes = ref<Solicitacao[]>([])
+const carregandoAprov = ref(false)
+const erroAprov = ref('')
+const emFluxo = computed(() => solicitacoes.value[0]?.situacao === 'EmAndamento')
+
+async function carregarAprovacao() {
+  carregandoAprov.value = true
+  erroAprov.value = ''
+  try {
+    solicitacoes.value = await apiAprov<Solicitacao[]>('GET', `/api/aprovacoes/historico?entidade=Proposta&id=${id.value}`)
+  } catch (e) {
+    erroAprov.value = e instanceof Error ? e.message : 'Não foi possível carregar a aprovação.'
+  } finally {
+    carregandoAprov.value = false
+  }
+}
+
+/** Relê status/compartilhamento da proposta e a trilha (o servidor reavalia os fluxos ao salvar). */
+async function recarregarAprovacao(avisar = false) {
+  if (!proposta.value) return
+  const antes = statusNome.value
+  try {
+    const p = await odataRequest<Proposta>('GET', `Propostas(${id.value})${montarQuery({ $select: 'StatusAprovacao,AprovadorId,Compartilhada,Chave,Valor,StatusResposta' })}`)
+    Object.assign(proposta.value, p)
+  } catch { /* o bloco mostra o estado carregado por último */ }
+  await carregarAprovacao()
+  if (avisar && antes !== 'Pendente' && statusNome.value === 'Pendente')
+    toast.info('Esta proposta se enquadra em um fluxo de aprovação e foi enviada para aprovação.')
+}
+
+const bloqueioCompartilhar = computed(() => {
+  if (statusNome.value === 'Pendente')
+    return 'Esta proposta está aguardando aprovação e só pode ser compartilhada depois de aprovada.'
+  if (statusNome.value === 'Rejeitada' && respostaNome.value !== 'Recusada')
+    return 'Esta proposta foi rejeitada na aprovação. Ajuste-a e solicite uma nova aprovação para poder compartilhar.'
+  return ''
+})
+
+const solicitando = ref(false)
+async function solicitarAprovacao() {
+  solicitando.value = true
+  try {
+    await odataAction('Propostas', id.value, 'SolicitarAprovacao', {})
+    toast.success('Aprovação solicitada.')
+    await recarregarAprovacao()
+  } catch (e) {
+    toast.error(e instanceof Error ? e.message : 'Não foi possível solicitar a aprovação.')
+  } finally {
+    solicitando.value = false
+  }
+}
+
 // ---------- ações ----------
 const executando = ref(false)
+const modalDecisao = ref(false)
+const modoDecisao = ref<'aprovar' | 'rejeitar'>('aprovar')
 
-async function acao(nome: 'Aprovar' | 'Rejeitar') {
+function pedirDecisao(modo: 'aprovar' | 'rejeitar') {
+  // Aprovar sem fluxo em andamento mantém o clique único; rejeitar sempre pede o motivo.
+  if (modo === 'aprovar' && !emFluxo.value) { decidir('aprovar', ''); return }
+  modoDecisao.value = modo
+  modalDecisao.value = true
+}
+
+async function decidir(modo: 'aprovar' | 'rejeitar', comentario: string) {
   if (!proposta.value) return
   executando.value = true
   try {
-    await odataAction('Propostas', id.value, nome)
-    proposta.value.StatusAprovacao = nome === 'Aprovar' ? 'Aprovada' : 'Rejeitada'
-    toast.success(nome === 'Aprovar' ? 'Proposta aprovada.' : 'Proposta rejeitada.')
+    await odataAction('Propostas', id.value, modo === 'aprovar' ? 'Aprovar' : 'Rejeitar', comentario ? { comentario } : {})
+    modalDecisao.value = false
+    await recarregarAprovacao()
+    toast.success(modo === 'aprovar'
+      ? (statusNome.value === 'Aprovada' ? 'Proposta aprovada.' : 'Nível aprovado. A proposta segue para o próximo nível.')
+      : 'Proposta rejeitada.')
   } catch (e) {
-    toast.error(e instanceof Error ? e.message : `Não foi possível ${nome.toLowerCase()} a proposta.`)
+    // 403 (não é aprovador do nível) e 422 (comentário obrigatório etc.) trazem mensagem legível
+    modalDecisao.value = false
+    toast.error(e instanceof Error ? e.message : 'Não foi possível registrar a decisão.')
+    await recarregarAprovacao()
   } finally {
     executando.value = false
   }
@@ -207,6 +287,7 @@ async function salvarCondicoes() {
     await odataRequest('PATCH', `Propostas(${id.value})`, corpo)
     Object.assign(proposta.value, corpo)
     toast.success('Condições salvas.')
+    await recarregarAprovacao(true)
     agendarSincronia()
   } catch (e) {
     toast.error(e instanceof Error ? e.message : 'Não foi possível salvar as condições.')
@@ -277,11 +358,20 @@ watch(id, carregar)
           <strong>{{ formatarMoeda(totais.total.value, moeda) }}</strong>
         </div>
         <div class="acoes">
-          <button type="button" class="btn sucesso" :disabled="executando || statusAprovacaoNome(proposta.StatusAprovacao) === 'Aprovada'" @click="acao('Aprovar')"><i class="mdi mdi-check"></i> Aprovar</button>
-          <button type="button" class="btn perigo" :disabled="executando || statusAprovacaoNome(proposta.StatusAprovacao) === 'Rejeitada'" @click="acao('Rejeitar')"><i class="mdi mdi-close"></i> Rejeitar</button>
-          <button type="button" class="btn primario" :disabled="compartilhando" @click="compartilhar"><i class="mdi mdi-share-variant"></i> Compartilhar</button>
+          <button type="button" class="btn sucesso" :disabled="executando || statusNome === 'Aprovada'" @click="pedirDecisao('aprovar')"><i class="mdi mdi-check"></i> Aprovar</button>
+          <button type="button" class="btn perigo" :disabled="executando || statusNome === 'Rejeitada'" @click="pedirDecisao('rejeitar')"><i class="mdi mdi-close"></i> Rejeitar</button>
+          <button
+            type="button" class="btn primario" :disabled="compartilhando || !!bloqueioCompartilhar"
+            :title="bloqueioCompartilhar" @click="compartilhar"
+          ><i class="mdi" :class="bloqueioCompartilhar ? 'mdi-lock-outline' : 'mdi-share-variant'"></i> Compartilhar</button>
         </div>
       </header>
+
+      <PropostaAprovacaoBloco
+        :solicitacoes="solicitacoes" :carregando="carregandoAprov" :erro="erroAprov" :ocupado="executando || solicitando"
+        :bloqueio="bloqueioCompartilhar" @solicitar="solicitarAprovacao" @aprovar="pedirDecisao('aprovar')"
+        @rejeitar="pedirDecisao('rejeitar')" @recarregar="carregarAprovacao"
+      />
 
       <section class="resposta" aria-label="Resposta do cliente">
         <h2>Resposta do cliente</h2>
@@ -350,6 +440,11 @@ watch(id, carregar)
         <p v-if="divergencia" class="nota aviso">O servidor calculou um valor diferente: {{ formatarMoeda(proposta.Valor, moeda) }}.</p>
       </footer>
     </template>
+
+    <DecisaoModal
+      v-model="modalDecisao" :modo="modoDecisao" :obrigatorio="modoDecisao === 'rejeitar' && emFluxo" :enviando="executando"
+      :contexto="proposta?.Titulo ?? ''" @confirmar="decidir(modoDecisao, $event)"
+    />
   </div>
 </template>
 

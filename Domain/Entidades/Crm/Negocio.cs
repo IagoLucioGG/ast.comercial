@@ -1,4 +1,4 @@
-namespace AST.Comercial.Domain.Entidades;
+﻿namespace AST.Comercial.Domain.Entidades;
 
 public class Negocio : EntidadeBase
 {
@@ -26,6 +26,10 @@ public class Negocio : EntidadeBase
     public MotivoPerda? MotivoPerda { get; set; }
 
     public long? MoedaId { get; set; }
+
+    /// <summary>Usuário responsável pelo negócio (preenchido com o usuário do token ao criar, se não informado).</summary>
+    public long? ResponsavelId { get; set; }
+    public Usuario? Responsavel { get; set; }
 
     public ICollection<Atividade> Atividades { get; set; } = [];
     public ICollection<Proposta> Propostas { get; set; } = [];

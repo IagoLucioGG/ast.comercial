@@ -1,4 +1,4 @@
-using AST.Comercial.Application.Dtos;
+﻿using AST.Comercial.Application.Dtos;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Domain.Entidades;
 using AST.Comercial.Infrastructure.Data;
@@ -15,10 +15,11 @@ public class ClienteServico(AppDbContext db, IFilaAutomacaoPublicador publicador
     public async Task<Cliente?> ObterPorIdAsync(long id, CancellationToken ct = default)
         => await db.Clientes.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id, ct);
 
-    public async Task<ClienteDto> CriarAsync(Delta<Cliente> delta, CancellationToken ct = default)
+    public async Task<Cliente> CriarAsync(Delta<Cliente> delta, CancellationToken ct = default)
     {
         var cliente = new Cliente { EmpresaId = db.EmpresaIdAtual };
         delta.Patch(cliente);
+        cliente.EmpresaId = db.EmpresaIdAtual;
 
         db.Clientes.Add(cliente);
         await db.SaveChangesAsync(ct);
@@ -32,26 +33,10 @@ public class ClienteServico(AppDbContext db, IFilaAutomacaoPublicador publicador
             DisparadoPor = db.UsuarioAtual
         }, ct);
 
-        return new ClienteDto
-        {
-            Id = cliente.Id,
-            Nome = cliente.Nome,
-            RazaoSocial = cliente.RazaoSocial,
-            Email = cliente.Email,
-            Telefone = cliente.Telefone,
-            Documento = cliente.Documento,
-            Cidade = cliente.Cidade,
-            Estado = cliente.Estado,
-            Endereco = cliente.Endereco,
-            Cep = cliente.Cep,
-            Observacoes = cliente.Observacoes,
-            Site = cliente.Site,
-            StatusClienteId = cliente.StatusClienteId,
-            CriadoEm = cliente.CriadoEm,
-        };
+        return cliente;
     }
 
-    public async Task<ClienteDto?> AtualizarAsync(long id, Delta<Cliente> delta, CancellationToken ct = default)
+    public async Task<Cliente?> AtualizarAsync(long id, Delta<Cliente> delta, CancellationToken ct = default)
     {
         var cliente = await db.Clientes.FirstOrDefaultAsync(c => c.Id == id, ct);
         if (cliente is null) return null;
@@ -68,23 +53,7 @@ public class ClienteServico(AppDbContext db, IFilaAutomacaoPublicador publicador
             DisparadoPor = db.UsuarioAtual
         }, ct);
 
-        return new ClienteDto
-        {
-            Id = cliente.Id,
-            Nome = cliente.Nome,
-            RazaoSocial = cliente.RazaoSocial,
-            Email = cliente.Email,
-            Telefone = cliente.Telefone,
-            Documento = cliente.Documento,
-            Cidade = cliente.Cidade,
-            Estado = cliente.Estado,
-            Endereco = cliente.Endereco,
-            Cep = cliente.Cep,
-            Observacoes = cliente.Observacoes,
-            Site = cliente.Site,
-            StatusClienteId = cliente.StatusClienteId,
-            CriadoEm = cliente.CriadoEm,
-        };
+        return cliente;
     }
 
     public async Task<bool> RemoverAsync(long id, CancellationToken ct = default)

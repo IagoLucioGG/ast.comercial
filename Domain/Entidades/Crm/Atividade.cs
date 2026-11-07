@@ -1,4 +1,4 @@
-namespace AST.Comercial.Domain.Entidades;
+﻿namespace AST.Comercial.Domain.Entidades;
 
 public class Atividade : EntidadeBase
 {
@@ -17,6 +17,10 @@ public class Atividade : EntidadeBase
 
     public long? NegocioId { get; set; }
     public Negocio? Negocio { get; set; }
+
+    /// <summary>Usuário responsável pela atividade (preenchido com o usuário do token ao criar, se não informado).</summary>
+    public long? ResponsavelId { get; set; }
+    public Usuario? Responsavel { get; set; }
 
     public ICollection<ValorCampo> OutrasPropriedades { get; set; } = [];
 }

@@ -1,4 +1,4 @@
-using AST.Comercial.Domain.Entidades;
+﻿using AST.Comercial.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,6 +20,11 @@ public class PropostaConfiguracao : IEntityTypeConfiguration<Proposta>
         builder.Property(p => p.NomeArquivo).HasMaxLength(300);
         builder.Property(p => p.UrlDocumento).HasMaxLength(1000);
         builder.Property(p => p.Chave).HasMaxLength(200);
+        builder.Property(p => p.StatusResposta).HasMaxLength(20).HasDefaultValueSql("'Aguardando'");
+        builder.Property(p => p.RespondidaIp).HasMaxLength(64);
+        builder.Property(p => p.RespondidaPorNome).HasMaxLength(200);
+        builder.Property(p => p.RespondidaPorEmail).HasMaxLength(254);
+        builder.Property(p => p.MotivoRecusa).HasMaxLength(1000);
         builder.Property(p => p.Valor).HasPrecision(18, 2);
         builder.Property(p => p.Desconto).HasPrecision(18, 2);
         builder.Property(p => p.CustoFrete).HasPrecision(18, 2);

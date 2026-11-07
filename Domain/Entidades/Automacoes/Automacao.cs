@@ -1,4 +1,4 @@
-namespace AST.Comercial.Domain.Entidades;
+﻿namespace AST.Comercial.Domain.Entidades;
 
 /// <summary>
 /// Automação configurável pelo admin.
@@ -35,6 +35,13 @@ public class Automacao : EntidadeBase
     /// Condição JS opcional para filtros complexos (ex: $registro.Valor > 10000 && $campos.Negocio_abc != null)
     /// </summary>
     public string? FormulaCondicao { get; set; }
+
+    /// <summary>Exclusão lógica (some das listagens). Ao excluir também fica Ativo=false.</summary>
+    public bool Excluida { get; set; }
+
+    /// <summary>Usuário que criou a automação.</summary>
+    public long? CriadoPorUsuarioId { get; set; }
+    public Usuario? CriadoPor { get; set; }
 
     public ICollection<FiltroAutomacao> Filtros { get; set; } = [];
     public ICollection<AcaoAutomacao> Acoes { get; set; } = [];

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace AST.Comercial.Controllers;
 
+/// <summary>Corpo opcional da ação Perder.</summary>
+public record PerderNegocioRequest(long? MotivoPerdaId);
+
 public class NegociosController(INegocioServico servico) : ODataController
 {
     [EnableQuery]
@@ -52,11 +55,11 @@ public class NegociosController(INegocioServico servico) : ODataController
     }
 
     [HttpPost("odata/Negocios({key})/Perder")]
-    public async Task<ActionResult> Perder(long key, CancellationToken cancellationToken)
+    public async Task<ActionResult> Perder(long key, [FromBody] PerderNegocioRequest? corpo, CancellationToken cancellationToken)
     {
         try
         {
-            await servico.PerderAsync(key, cancellationToken);
+            await servico.PerderAsync(key, corpo?.MotivoPerdaId, cancellationToken);
             return NoContent();
         }
         catch (KeyNotFoundException)

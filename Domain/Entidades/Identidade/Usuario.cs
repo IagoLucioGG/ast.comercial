@@ -8,6 +8,8 @@ public class Usuario : EntidadeBase
 {
     public string Nome { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    /// <summary>Nunca exposto pela API (OData/JSON): IgnoreDataMember.</summary>
+    [System.Runtime.Serialization.IgnoreDataMember]
     public string? SenhaHash { get; set; }
     public TipoUsuario Tipo { get; set; } = TipoUsuario.Normal;
     public PerfilUsuario Perfil { get; set; } = PerfilUsuario.Vendedor;
@@ -18,6 +20,7 @@ public class Usuario : EntidadeBase
     /// Token fixo para usuários de integração (API Key).
     /// Gerado uma vez, não expira (pode ser revogado desativando o usuário).
     /// </summary>
+    [System.Runtime.Serialization.IgnoreDataMember]
     public string? TokenIntegracao { get; set; }
 
     /// <summary>

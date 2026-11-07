@@ -1,3 +1,4 @@
+using AST.Comercial.Application.Dtos;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,13 @@ public class UsuariosController(IUsuarioServico servico) : ODataController
         return resultado is null ? NotFound() : Ok(resultado);
     }
 
-    public async Task<ActionResult> Post([FromBody] Delta<Usuario> delta, CancellationToken ct)
+    [EnableQuery]
+    [HttpGet("odata/Usuarios@Todos")]
+    public IQueryable<Usuario> ObterTodosInclusiveInativos() => servico.ObterTodosInclusiveInativos();
+
+    public async Task<ActionResult> Post([FromBody] NovoUsuarioRequest request, CancellationToken ct)
     {
-        var resultado = await servico.CriarAsync(delta, ct);
+        var resultado = await servico.CriarAsync(request, ct);
         return Created(resultado);
     }
 
@@ -65,6 +70,18 @@ public class UsuariosController(IUsuarioServico servico) : ODataController
         catch (InvalidOperationException ex) { return BadRequest(new { erro = ex.Message }); }
     }
 
+    [HttpPost("odata/Usuarios({key})/RedefinirSenha")]
+    public async Task<ActionResult> RedefinirSenha(long key, [FromBody] RedefinirSenhaRequest request, CancellationToken ct)
+    {
+        try
+        {
+            await servico.RedefinirSenhaAsync(key, request.NovaSenha ?? "", ct);
+            return NoContent();
+        }
+        catch (KeyNotFoundException) { return NotFound(); }
+        catch (InvalidOperationException ex) { return BadRequest(new { erro = ex.Message }); }
+    }
+
     [HttpGet("odata/Usuarios@Perfis")]
     public ActionResult ObterPerfis()
     {
@@ -81,3 +98,5 @@ public class UsuariosController(IUsuarioServico servico) : ODataController
 }
 
 public record AlterarSenhaRequest(string? SenhaAtual, string NovaSenha);
+
+public record RedefinirSenhaRequest(string? NovaSenha);

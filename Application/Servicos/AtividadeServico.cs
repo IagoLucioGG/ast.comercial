@@ -1,4 +1,4 @@
-using AST.Comercial.Application.Dtos;
+﻿using AST.Comercial.Application.Dtos;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Domain.Entidades;
 using AST.Comercial.Infrastructure.Data;
@@ -9,49 +9,20 @@ namespace AST.Comercial.Application.Servicos;
 
 public class AtividadeServico(AppDbContext db, IFilaAutomacaoPublicador publicador) : IAtividadeServico
 {
-    public IQueryable<AtividadeDto> ObterTodos()
-    {
-        return db.Atividades.AsNoTracking().Select(a => new AtividadeDto
-        {
-            Id = a.Id,
-            Titulo = a.Titulo,
-            Descricao = a.Descricao,
-            Tipo = a.Tipo,
-            DataVencimento = a.DataVencimento,
-            ConcluidaEm = a.ConcluidaEm,
-            Concluida = a.Concluida,
-            ClienteId = a.ClienteId,
-            PessoaContatoId = a.PessoaContatoId,
-            NegocioId = a.NegocioId,
-            CriadoEm = a.CriadoEm,
-        });
-    }
+    // Retorna a entidade (e não DTO) para casar com o EDM "Atividades" e permitir $expand/$select/$count.
+    public IQueryable<Atividade> ObterTodos()
+        => db.Atividades.AsNoTracking();
 
-    public async Task<AtividadeDto?> ObterPorIdAsync(long id, CancellationToken ct = default)
-    {
-        return await db.Atividades.AsNoTracking()
-            .Where(a => a.Id == id)
-            .Select(a => new AtividadeDto
-            {
-                Id = a.Id,
-                Titulo = a.Titulo,
-                Descricao = a.Descricao,
-                Tipo = a.Tipo,
-                DataVencimento = a.DataVencimento,
-                ConcluidaEm = a.ConcluidaEm,
-                Concluida = a.Concluida,
-                ClienteId = a.ClienteId,
-                PessoaContatoId = a.PessoaContatoId,
-                NegocioId = a.NegocioId,
-                CriadoEm = a.CriadoEm,
-            })
-            .FirstOrDefaultAsync(ct);
-    }
+    public async Task<Atividade?> ObterPorIdAsync(long id, CancellationToken ct = default)
+        => await db.Atividades.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id, ct);
 
-    public async Task<AtividadeDto> CriarAsync(Delta<Atividade> delta, CancellationToken ct = default)
+    public async Task<Atividade> CriarAsync(Delta<Atividade> delta, CancellationToken ct = default)
     {
         var atividade = new Atividade { EmpresaId = db.EmpresaIdAtual };
         delta.Patch(atividade);
+        atividade.EmpresaId = db.EmpresaIdAtual;
+        atividade.ResponsavelId ??= db.UsuarioIdAtual;
+        await ValidarResponsavelAsync(atividade.ResponsavelId, ct);
 
         db.Atividades.Add(atividade);
         await db.SaveChangesAsync(ct);
@@ -65,27 +36,23 @@ public class AtividadeServico(AppDbContext db, IFilaAutomacaoPublicador publicad
             DisparadoPor = db.UsuarioAtual
         }, ct);
 
-        return new AtividadeDto
-        {
-            Id = atividade.Id,
-            Titulo = atividade.Titulo,
-            Descricao = atividade.Descricao,
-            Tipo = atividade.Tipo,
-            DataVencimento = atividade.DataVencimento,
-            Concluida = atividade.Concluida,
-            ClienteId = atividade.ClienteId,
-            PessoaContatoId = atividade.PessoaContatoId,
-            NegocioId = atividade.NegocioId,
-            CriadoEm = atividade.CriadoEm,
-        };
+        return atividade;
     }
 
-    public async Task<AtividadeDto?> AtualizarAsync(long id, Delta<Atividade> delta, CancellationToken ct = default)
+    public async Task<Atividade?> AtualizarAsync(long id, Delta<Atividade> delta, CancellationToken ct = default)
     {
         var atividade = await db.Atividades.FirstOrDefaultAsync(a => a.Id == id, ct);
         if (atividade is null) return null;
 
+        var empresaId = atividade.EmpresaId;
+        var responsavelAnterior = atividade.ResponsavelId;
         delta.Patch(atividade);
+        atividade.EmpresaId = empresaId; // o tenant nunca muda via PATCH
+        if (atividade.ResponsavelId != responsavelAnterior)
+        {
+            try { await ValidarResponsavelAsync(atividade.ResponsavelId, ct); }
+            catch { await db.Entry(atividade).ReloadAsync(ct); throw; }
+        }
         await db.SaveChangesAsync(ct);
 
         await publicador.PublicarEventoAsync(new EventoAutomacao
@@ -97,20 +64,15 @@ public class AtividadeServico(AppDbContext db, IFilaAutomacaoPublicador publicad
             DisparadoPor = db.UsuarioAtual
         }, ct);
 
-        return new AtividadeDto
-        {
-            Id = atividade.Id,
-            Titulo = atividade.Titulo,
-            Descricao = atividade.Descricao,
-            Tipo = atividade.Tipo,
-            DataVencimento = atividade.DataVencimento,
-            ConcluidaEm = atividade.ConcluidaEm,
-            Concluida = atividade.Concluida,
-            ClienteId = atividade.ClienteId,
-            PessoaContatoId = atividade.PessoaContatoId,
-            NegocioId = atividade.NegocioId,
-            CriadoEm = atividade.CriadoEm,
-        };
+        return atividade;
+    }
+
+    /// <summary>O responsável precisa ser um usuário ativo da mesma empresa (filtro global do EF).</summary>
+    private async Task ValidarResponsavelAsync(long? responsavelId, CancellationToken ct)
+    {
+        if (responsavelId is null) return;
+        if (!await db.Usuarios.AnyAsync(u => u.Id == responsavelId, ct))
+            throw new RegraNegocioException("O responsável informado não existe.");
     }
 
     public async Task<bool> ConcluirAsync(long id, CancellationToken ct = default)

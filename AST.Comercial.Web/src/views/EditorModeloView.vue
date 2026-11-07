@@ -33,7 +33,7 @@ async function carregar() {
   if (res.value.length) modeloNome.value = res.value[0].Nome
   const resS = await odataGet<Secao>('SecoesModelo', { filter: `ModeloDocumentoId eq ${modeloId}`, orderby: 'Ordem asc', top: 20 })
   secoes.value = resS.value
-  if (secoes.value.length && !secaoAtiva.value) { secaoAtiva.value = secoes.value[0]; await nextTick(); sincronizarEditor() }
+  if (secoes.value.length && !secaoAtiva.value) { secaoAtiva.value = secoes.value[0] ?? null; await nextTick(); sincronizarEditor() }
 }
 
 async function carregarCampos() {
@@ -65,7 +65,7 @@ function toggleFonte() {
 
 function inserirCampo(c: CampoDisp) {
   if (!secaoAtiva.value) return
-  const entidade = c.caminho.split('.')[0].replace('$', '')
+  const entidade = (c.caminho.split('.')[0] ?? '').replace('$', '')
   const fieldHtml = `<field key="${c.chave}" entity="${entidade}" path="${c.caminho}" contenteditable="false">[${entidade}.${c.nome}]</field>&nbsp;`
   if (modoFonte.value) { secaoAtiva.value.ConteudoHtml += fieldHtml; return }
   editorRef.value?.focus()

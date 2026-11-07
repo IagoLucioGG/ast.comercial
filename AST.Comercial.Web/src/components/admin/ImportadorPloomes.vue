@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { odataGet, odataPost } from '@/services/api'
+import { odataGet, odataPost, odataTodos } from '@/services/api'
 
 interface PloomesEntidade { Id: number; Name: string }
 interface PloomesCampo {
@@ -79,7 +79,7 @@ function converterFormula(formula: string | null): string {
   return formula.replace(/\[([^\]]+)\]/g, (_, ref: string) => {
     const partes = ref.split('.')
     if (partes.length >= 2) {
-      const entidade = partes[0].trim().toLowerCase().replace(/\s+/g, '')
+      const entidade = (partes[0] ?? '').trim().toLowerCase().replace(/\s+/g, '')
       const campo = partes.slice(1).join('.').trim().replace(/\s+/g, '')
       const mapaEnt: Record<string, string> = { 'produto': '$registro', 'proposta': '$proposta', 'cliente': '$contato', 'negócio': '$negocio', 'contatodevenda': '$negocio', 'contato': '$contato', 'criador': '$usuario', 'perfildeusuário': '$usuario', 'bloco': '$registro', 'produtodaproposta': '$registro' }
       const prefixo = mapaEnt[entidade] || `$${entidade}`
@@ -103,7 +103,8 @@ async function importarCampos() {
   // Carregar nomes existentes para evitar duplicidade
   let nomesExistentes = new Set<string>()
   try {
-    const res = await odataGet<any>('Campos', { filter: `EntidadeAlvo eq '${entAlvo}'`, select: 'Nome', top: 1000 })
+    const itensCampos = await odataTodos<any>(`Campos?$filter=${encodeURIComponent(`EntidadeAlvo eq '${entAlvo}'`)}&$select=Nome&$orderby=Id`)
+    const res = { value: itensCampos }
     nomesExistentes = new Set(res.value.map((c: any) => (c.Nome as string).toLowerCase()))
   } catch {}
 

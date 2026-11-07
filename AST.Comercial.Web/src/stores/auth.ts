@@ -21,8 +21,8 @@ export const useAuthStore = defineStore('auth', () => {
     if (!usuario.value?.nome) return '?'
     const partes = usuario.value.nome.split(' ')
     return partes.length > 1
-      ? (partes[0][0] + partes[partes.length - 1][0]).toUpperCase()
-      : partes[0][0].toUpperCase()
+      ? ((partes[0]?.[0] ?? '') + (partes[partes.length - 1]?.[0] ?? '')).toUpperCase()
+      : (partes[0]?.[0] ?? '').toUpperCase()
   })
 
   function carregarUsuario(): UsuarioLogado | null {

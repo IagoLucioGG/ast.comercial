@@ -11,7 +11,9 @@ const route = useRoute()
 const menuItems = [
   { icon: 'mdi-view-dashboard-outline', label: 'Resumo', to: '/' },
   { icon: 'mdi-account-group-outline', label: 'Clientes', to: '/clientes' },
+  { icon: 'mdi-card-account-details-outline', label: 'Contatos', to: '/contatos' },
   { icon: 'mdi-handshake-outline', label: 'Negócios', to: '/negocios' },
+  { icon: 'mdi-calendar-check-outline', label: 'Atividades', to: '/atividades' },
   { icon: 'mdi-file-document-outline', label: 'Propostas', to: '/propostas' },
   { icon: 'mdi-package-variant-closed', label: 'Produtos', to: '/produtos' },
   { icon: 'mdi-chart-bar', label: 'Relatórios', to: '/relatorios' },

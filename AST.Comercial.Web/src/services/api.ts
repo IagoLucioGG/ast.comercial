@@ -109,3 +109,101 @@ export async function odataDelete(endpoint: string, id: number): Promise<void> {
   const res = await fetchComRefresh(url, { method: 'DELETE', headers: headers() })
   if (!res.ok) tratarErro(res, url)
 }
+
+// ---------------------------------------------------------------------------
+// API v2 (usada pelas telas novas): erro tipado, corpo vazio tolerado, consulta
+// com query bruta ($apply, $expand aninhado) e ações OData.
+// As funções acima continuam valendo para o código existente.
+// ---------------------------------------------------------------------------
+
+export class ApiError extends Error {
+  status: number
+  body: unknown
+  constructor(status: number, message: string, body?: unknown) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+    this.body = body
+  }
+}
+
+async function lerCorpo(res: Response): Promise<unknown> {
+  const txt = await res.text()
+  if (!txt) return null
+  try { return JSON.parse(txt) } catch { return txt }
+}
+
+function mensagemDoCorpo(corpo: unknown, fallback: string): string {
+  if (corpo && typeof corpo === 'object') {
+    const o = corpo as Record<string, unknown>
+    if (typeof o.erro === 'string') return o.erro
+    if (typeof o.message === 'string') return o.message
+    const err = o.error as Record<string, unknown> | undefined
+    if (err && typeof err.message === 'string') return err.message
+  }
+  return fallback
+}
+
+/**
+ * Requisição OData com erro tipado (ApiError). `path` é relativo a /odata/,
+ * ex.: "Negocios(5)" ou "Negocios?$top=15&$filter=...". Já deve vir com a query codificada.
+ */
+export async function odataRequest<T>(
+  method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE',
+  path: string,
+  body?: unknown,
+): Promise<T> {
+  const url = `${BASE}/odata/${path}`
+  const res = await fetchComRefresh(url, {
+    method,
+    headers: headers(),
+    body: body === undefined ? undefined : JSON.stringify(body),
+  })
+  if (res.status === 401) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
+    window.location.href = '/login'
+    throw new ApiError(401, 'Sessão expirada')
+  }
+  const corpo = await lerCorpo(res)
+  if (!res.ok) throw new ApiError(res.status, mensagemDoCorpo(corpo, `${res.status} em ${url}`), corpo)
+  return corpo as T
+}
+
+/** GET de coleção com query montada à mão (use encodeURIComponent nos valores). */
+export function odataQuery<T>(path: string): Promise<ODataResponse<T>> {
+  return odataRequest<ODataResponse<T>>('GET', path)
+}
+
+/** POST de ação OData: odata/Entidade(id)/Acao */
+export function odataAction<T = unknown>(endpoint: string, id: number, acao: string, body?: unknown): Promise<T> {
+  return odataRequest<T>('POST', `${endpoint}(${id})/${acao}`, body ?? {})
+}
+
+/** Monta "?$a=1&$b=2" codificando só os valores; ignora undefined/vazio. */
+export function montarQuery(opcoes: Record<string, string | number | boolean | undefined | null>): string {
+  const partes: string[] = []
+  for (const [k, v] of Object.entries(opcoes)) {
+    if (v === undefined || v === null || v === '') continue
+    partes.push(`${k}=${encodeURIComponent(String(v))}`)
+  }
+  return partes.length ? '?' + partes.join('&') : ''
+}
+
+/**
+ * Busca TODOS os itens de uma coleção paginando de 100 em 100 (o servidor limita $top a 100).
+ * `path` NÃO deve conter $top nem $skip e DEVE ter $orderby estável (senão a paginação pode repetir ou perder itens).
+ * Aceita tanto a resposta OData ({ value: [...] }) quanto as rotas "@" que devolvem array puro.
+ * `maximo` limita o total de itens (padrão 2000) para evitar carregar tabelas enormes por engano.
+ */
+export async function odataTodos<T>(path: string, maximo = 2000): Promise<T[]> {
+  const sep = path.includes('?') ? '&' : '?'
+  const itens: T[] = []
+  for (let skip = 0; skip < maximo; skip += 100) {
+    const r = await odataRequest<unknown>('GET', `${path}${sep}$top=100&$skip=${skip}`)
+    const pagina: T[] = Array.isArray(r) ? (r as T[]) : (((r as { value?: T[] } | null)?.value) ?? [])
+    itens.push(...pagina)
+    if (pagina.length < 100) break
+  }
+  return itens
+}

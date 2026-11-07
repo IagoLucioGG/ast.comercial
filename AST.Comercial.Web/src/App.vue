@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import UiToastHost from '@/components/ui/UiToastHost.vue'
 </script>
 
 <template>
   <RouterView />
+  <UiToastHost />
 </template>
 
 <style>

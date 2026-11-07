@@ -4,7 +4,10 @@ import { useFunisStore, type EtapaItem } from '@/stores/funis'
 import { formatarData, formatarValor, iniciais } from '@/composables/useFunilFormato'
 import type { CardNegocio } from '@/composables/useFunilKanban'
 
-const props = defineProps<{ card: CardNegocio; etapas: EtapaItem[]; arrastando?: boolean }>()
+/** Progresso do checklist da etapa atual do negócio (só informado quando a etapa tem itens). */
+export interface ProgressoChecklist { total: number; concluidos: number; obrigatoriosPendentes: number }
+
+const props = defineProps<{ card: CardNegocio; etapas: EtapaItem[]; arrastando?: boolean; checklist?: ProgressoChecklist }>()
 const emit = defineEmits<{
   abrir: [id: number]
   mover: [id: number, etapaId: number]
@@ -27,6 +30,16 @@ const tagStatus = computed(() => {
   const tipo = statusInfo.value?.tipoBase
   const texto = statusInfo.value?.nome ?? 'Fechado'
   return { texto, classe: tipo === 1 ? 'nc-tag-ganho' : tipo === 2 ? 'nc-tag-perdido' : '' }
+})
+const progressoCk = computed(() => {
+  const c = props.checklist
+  if (!c || c.total <= 0) return null
+  return {
+    texto: `${c.concluidos}/${c.total}`,
+    pct: Math.round((c.concluidos / c.total) * 100),
+    bloqueia: c.obrigatoriosPendentes > 0,
+    rotulo: `Checklist: ${c.concluidos} de ${c.total} itens concluídos${c.obrigatoriosPendentes ? `, ${c.obrigatoriosPendentes} obrigatório(s) pendente(s)` : ''}`,
+  }
 })
 const respIniciais = computed(() => iniciais(props.card.responsavelNome))
 const respRotulo = computed(() => `Responsável: ${props.card.responsavelNome}`)
@@ -109,6 +122,11 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', foraDoMenu))
       ><i class="mdi mdi-dots-vertical" aria-hidden="true"></i></button>
     </div>
     <p v-if="card.clienteNome" class="nc-cliente"><i class="mdi mdi-domain" aria-hidden="true"></i> {{ card.clienteNome }}</p>
+    <div v-if="progressoCk" class="nc-ck" role="img" :aria-label="progressoCk.rotulo" :title="progressoCk.rotulo">
+      <i class="mdi" :class="progressoCk.bloqueia ? 'mdi-lock-outline' : 'mdi-checkbox-marked-outline'" aria-hidden="true"></i>
+      <span class="nc-ck-barra"><span :style="{ width: progressoCk.pct + '%' }"></span></span>
+      <span class="nc-ck-txt">{{ progressoCk.texto }}</span>
+    </div>
     <div class="nc-base">
       <span class="nc-valor">{{ valorTxt }}</span>
       <span class="nc-direita">
@@ -153,6 +171,10 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', foraDoMenu))
 .nc-menu-btn { flex-shrink: 0; width: 24px; height: 24px; border: 0; border-radius: 6px; background: none; color: var(--text-muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .nc-menu-btn:hover, .nc-menu-btn:focus-visible { background: var(--bg-elevated); color: var(--text-primary); }
 .nc-cliente { margin-top: 4px; font-size: 12px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nc-ck { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11px; color: var(--text-muted); }
+.nc-ck .mdi { font-size: 14px; }
+.nc-ck-barra { flex: 1; height: 4px; border-radius: 2px; background: var(--bg-elevated); overflow: hidden; }
+.nc-ck-barra span { display: block; height: 100%; background: var(--accent); }
 .nc-base { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 8px; }
 .nc-valor { font-size: 13px; font-weight: 700; color: var(--accent); }
 .nc-tag { font-size: 10px; padding: 2px 8px; border-radius: 4px; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-secondary); white-space: nowrap; }

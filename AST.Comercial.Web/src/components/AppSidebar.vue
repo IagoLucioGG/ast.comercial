@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { usePermissoes } from '@/composables/usePermissoes'
 import logoMenor from '@/assets/logo-menor.png'
 import emblema from '@/assets/emblema.png'
 
@@ -7,18 +9,30 @@ defineProps<{ collapsed: boolean }>()
 defineEmits<{ toggle: [] }>()
 
 const route = useRoute()
+const { pode, administrador } = usePermissoes()
 
-const menuItems = [
+// entidade: chave do catálogo de permissões (o item some do menu sem permissão de Ver).
+// somenteAdmin: só o perfil Administrador vê.
+interface ItemMenu { icon: string; label: string; to: string; entidade?: string; somenteAdmin?: boolean }
+
+const menuItems: ItemMenu[] = [
   { icon: 'mdi-view-dashboard-outline', label: 'Resumo', to: '/' },
-  { icon: 'mdi-account-group-outline', label: 'Clientes', to: '/clientes' },
-  { icon: 'mdi-card-account-details-outline', label: 'Contatos', to: '/contatos' },
-  { icon: 'mdi-handshake-outline', label: 'Negócios', to: '/negocios' },
-  { icon: 'mdi-calendar-check-outline', label: 'Atividades', to: '/atividades' },
-  { icon: 'mdi-file-document-outline', label: 'Propostas', to: '/propostas' },
-  { icon: 'mdi-package-variant-closed', label: 'Produtos', to: '/produtos' },
-  { icon: 'mdi-chart-bar', label: 'Relatórios', to: '/relatorios' },
-  { icon: 'mdi-cog-outline', label: 'Administração', to: '/admin' },
+  { icon: 'mdi-account-group-outline', label: 'Clientes', to: '/clientes', entidade: 'Cliente' },
+  { icon: 'mdi-card-account-details-outline', label: 'Contatos', to: '/contatos', entidade: 'PessoaContato' },
+  { icon: 'mdi-handshake-outline', label: 'Negócios', to: '/negocios', entidade: 'Negocio' },
+  { icon: 'mdi-calendar-check-outline', label: 'Atividades', to: '/atividades', entidade: 'Atividade' },
+  { icon: 'mdi-file-document-outline', label: 'Propostas', to: '/propostas', entidade: 'Proposta' },
+  { icon: 'mdi-package-variant-closed', label: 'Produtos', to: '/produtos', entidade: 'Produto' },
+  { icon: 'mdi-chart-bar', label: 'Relatórios', to: '/relatorios', entidade: 'PainelRelatorio' },
+  { icon: 'mdi-bullseye-arrow', label: 'Metas', to: '/metas', entidade: 'Meta' },
+  { icon: 'mdi-check-decagram-outline', label: 'Aprovações', to: '/aprovacoes' },
+  { icon: 'mdi-cog-outline', label: 'Administração', to: '/admin', somenteAdmin: true },
 ]
+
+const itensVisiveis = computed(() => menuItems.filter((i) => {
+  if (i.somenteAdmin) return administrador.value
+  return !i.entidade || pode(i.entidade, 'ver')
+}))
 
 function isActive(to: string) {
   if (to === '/') return route.path === '/'
@@ -35,7 +49,7 @@ function isActive(to: string) {
 
     <nav class="sidebar-nav">
       <router-link
-        v-for="item in menuItems"
+        v-for="item in itensVisiveis"
         :key="item.to"
         :to="item.to"
         class="nav-item"

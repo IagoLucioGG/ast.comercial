@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
-import { odataRequest, odataTodos, montarQuery } from '@/services/api'
+import { ApiError, odataRequest, odataTodos, montarQuery } from '@/services/api'
 import {
-  useEntidadeDetalhe, campo, lista, mensagemErro, formatarValorMoeda, formatarData, carregarMoedas, type Registro, type MoedaInfo,
+  campo, lista, mensagemErro, formatarValorMoeda, formatarData, carregarMoedas, type Registro, type MoedaInfo,
 } from '@/composables/useEntidadeDetalhe'
 import { useAcoesNegocio } from '@/composables/useAcoesNegocio'
 import { useToast } from '@/composables/useToast'
@@ -16,13 +16,33 @@ import AtividadesEntidade from '@/components/detalhe/AtividadesEntidade.vue'
 import PropostasEntidade from '@/components/detalhe/PropostasEntidade.vue'
 import TimelineEntidade from '@/components/detalhe/TimelineEntidade.vue'
 import DetalheEstado from '@/components/detalhe/DetalheEstado.vue'
+import ProdutosNegocio from '@/components/negocio/ProdutosNegocio.vue'
+import ChecklistNegocio from '@/components/negocio/ChecklistNegocio.vue'
 
 const route = useRoute()
 const toast = useToast()
 const id = computed(() => Number(route.params.id))
 
 const EXPANDIR = 'Cliente($select=Id,Nome),Etapa($select=Id,Nome,Ordem),Status($select=Id,Nome,TipoBase),Funil($select=Id,Nome),MotivoPerda($select=Id,Nome),PessoaContato($select=Id,Nome),Responsavel($select=Id,Nome)'
-const { registro: negocio, carregando, erro, naoEncontrado, carregar } = useEntidadeDetalhe('Negocios', EXPANDIR)
+// Registro único (odata/Negocios(id)?$expand=...): o servidor aplica o $expand (inclusive Responsavel) também nesta rota.
+const negocio = ref<Registro | null>(null)
+const carregando = ref(false)
+const erro = ref('')
+const naoEncontrado = ref(false)
+async function carregar(idNegocio: number, silencioso = false) {
+  if (!silencioso) carregando.value = true
+  erro.value = ''
+  naoEncontrado.value = false
+  try {
+    negocio.value = await odataRequest<Registro>('GET', `Negocios(${idNegocio})${montarQuery({ $expand: EXPANDIR })}`)
+  } catch (e) {
+    negocio.value = null
+    if (e instanceof ApiError && e.status === 404) naoEncontrado.value = true
+    else erro.value = mensagemErro(e, 'Não foi possível carregar o negócio')
+  } finally {
+    carregando.value = false
+  }
+}
 const { ganhar, reabrir, processando } = useAcoesNegocio()
 
 interface EtapaItem { id: number; nome: string; ordem: number }
@@ -44,6 +64,8 @@ const abas: AbaConfig[] = [
   { chave: 'contatos', rotulo: 'Contatos', icone: 'mdi-account-multiple-outline' },
   { chave: 'atividades', rotulo: 'Atividades', icone: 'mdi-calendar-check-outline' },
   { chave: 'propostas', rotulo: 'Propostas', icone: 'mdi-file-document-outline' },
+  { chave: 'produtos', rotulo: 'Produtos', icone: 'mdi-package-variant-closed' },
+  { chave: 'checklist', rotulo: 'Checklist', icone: 'mdi-checkbox-marked-outline' },
   { chave: 'historico', rotulo: 'Histórico', icone: 'mdi-history' },
 ]
 
@@ -263,6 +285,11 @@ onMounted(iniciar)
           </template>
           <AtividadesEntidade v-else-if="abaAtiva === 'atividades'" endpoint="Negocios" :pai-id="id" :vinculo="{ NegocioId: id, ...(clienteId ? { ClienteId: clienteId } : {}) }" @alterado="chaveTimeline++" />
           <PropostasEntidade v-else-if="abaAtiva === 'propostas'" filtro-campo="NegocioId" :pai-id="id" :nova-query="{ negocioId: id, ...(clienteId ? { clienteId } : {}) }" />
+          <ProdutosNegocio
+            v-else-if="abaAtiva === 'produtos'" :negocio-id="id" :simbolo="moeda?.simbolo" :codigo="moeda?.codigo"
+            :valor-negocio="campo(negocio, 'Valor')" :fechado="fechado" @valor-atualizado="recarregar"
+          />
+          <ChecklistNegocio v-else-if="abaAtiva === 'checklist'" :negocio-id="id" :etapa-id="etapaAtualId" :fechado="fechado" />
           <TimelineEntidade v-else :key="chaveTimeline" entidade="Negocio" endpoint="Negocios" :registro-id="id" :nomes="nomesTimeline" />
         </section>
 

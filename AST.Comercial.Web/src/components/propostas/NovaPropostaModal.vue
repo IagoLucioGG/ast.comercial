@@ -77,7 +77,6 @@ async function criar() {
       Titulo: titulo.value.trim(),
       ClienteId: clienteId.value,
       NegocioId: negocioId.value ?? undefined,
-      StatusAprovacao: 'Pendente',
       Data: new Date().toISOString(),
     })
     // O servidor não gera o número: usa o Id (único por proposta) como Numero; exibido como PRO-000042

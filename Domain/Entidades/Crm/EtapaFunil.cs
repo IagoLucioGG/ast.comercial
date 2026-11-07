@@ -11,6 +11,7 @@ public class EtapaFunil : EntidadeBase
 
     public ICollection<Negocio> Negocios { get; set; } = [];
     public ICollection<ValorCampo> OutrasPropriedades { get; set; } = [];
+    public ICollection<ChecklistEtapa> Checklists { get; set; } = [];
 }
 
 

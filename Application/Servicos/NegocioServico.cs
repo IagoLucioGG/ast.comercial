@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AST.Comercial.Application.Servicos;
 
-public class NegocioServico(AppDbContext db, IFilaAutomacaoPublicador publicador, IIntegracaoEventoPublicador integracaoPublicador) : INegocioServico
+public class NegocioServico(AppDbContext db, IFilaAutomacaoPublicador publicador, IIntegracaoEventoPublicador integracaoPublicador, IChecklistServico checklists) : INegocioServico
 {
     public IQueryable<Negocio> ObterTodos()
         => db.Negocios.AsNoTracking();
@@ -78,6 +78,7 @@ public class NegocioServico(AppDbContext db, IFilaAutomacaoPublicador publicador
             try
             {
                 await ValidarMudancaDeEtapaAsync(negocio, etapaAnteriorId, funilAnteriorId, ct);
+                await ValidarChecklistAoSairAsync(negocio, etapaAnteriorId, funilAnteriorId, ct);
             }
             catch
             {
@@ -204,6 +205,24 @@ public class NegocioServico(AppDbContext db, IFilaAutomacaoPublicador publicador
             Gatilho = "StatusMudou",
             DisparadoPor = db.UsuarioAtual
         }, ct);
+    }
+
+    /// <summary>
+    /// Bloqueia o avanço (ou a troca de funil) quando a etapa ATUAL tem itens obrigatórios de checklist não concluídos.
+    /// Voltar para uma etapa anterior (mesmo funil) não é bloqueado. Lança RegraNegocioException (HTTP 422).
+    /// </summary>
+    private async Task ValidarChecklistAoSairAsync(Negocio negocio, long etapaAnteriorId, long funilAnteriorId, CancellationToken ct)
+    {
+        if (negocio.EtapaId == etapaAnteriorId && negocio.FunilId == funilAnteriorId) return;
+        if (negocio.FunilId == funilAnteriorId)
+        {
+            var ordens = await db.EtapasFunil.AsNoTracking()
+                .Where(e => e.Id == etapaAnteriorId || e.Id == negocio.EtapaId)
+                .ToDictionaryAsync(e => e.Id, e => e.Ordem, ct);
+            if (ordens.TryGetValue(etapaAnteriorId, out var atual) && ordens.TryGetValue(negocio.EtapaId, out var destino) && destino <= atual)
+                return;
+        }
+        await checklists.ValidarObrigatoriosAsync(negocio.Id, etapaAnteriorId, ct);
     }
 
     /// <summary>O responsável precisa ser um usuário ativo da mesma empresa (filtro global do EF).</summary>

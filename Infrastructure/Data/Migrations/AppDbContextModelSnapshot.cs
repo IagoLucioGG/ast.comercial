@@ -523,6 +523,47 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.ToTable("Cargo");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ChecklistEtapa", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EtapaFunilId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EtapaFunilId", "Ordem");
+
+                    b.ToTable("ChecklistEtapa");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Cliente", b =>
                 {
                     b.Property<long>("Id")
@@ -1628,6 +1669,87 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.ToTable("Funil");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.GraficoRelatorio", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Agregacao")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CampoAgrupamento")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("CampoValor")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Entidade")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("FiltroJson")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Largura")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(2);
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("PainelRelatorioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PeriodoCampo")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PeriodoRelativo")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PainelRelatorioId", "Ordem");
+
+                    b.ToTable("GraficoRelatorio", t =>
+                        {
+                            t.HasCheckConstraint("CK_GraficoRelatorio_Largura", "\"Largura\" BETWEEN 1 AND 4");
+                        });
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.GrupoProduto", b =>
                 {
                     b.Property<long>("Id")
@@ -1666,6 +1788,75 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.HasIndex("FamiliaProdutoId");
 
                     b.ToTable("GrupoProduto");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.Importacao", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ConcluidaEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Entidade")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("ErrosJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Falhas")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MapeamentoJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NomeArquivo")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Sucesso")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalLinhas")
+                        .HasColumnType("integer");
+
+                    b.Property<long?>("UsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.HasIndex("EmpresaId", "CriadoEm");
+
+                    b.ToTable("Importacao");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Integracao", b =>
@@ -1788,6 +1979,155 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.ToTable("Integracao");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemChecklistEtapa", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<long>("ChecklistEtapaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Obrigatorio")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChecklistEtapaId", "Ordem");
+
+                    b.ToTable("ItemChecklistEtapa");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemListaPreco", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ListaPrecoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Preco")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<long>("ProdutoId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.HasIndex("ListaPrecoId", "ProdutoId")
+                        .IsUnique();
+
+                    b.ToTable("ItemListaPreco");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemNegocio", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Desconto")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("NegocioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PrecoUnitario")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<long?>("ProdutoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Quantidade")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("numeric(18,4)");
+
+                    b.Property<decimal>("Total")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.HasIndex("NegocioId", "Ordem");
+
+                    b.ToTable("ItemNegocio");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemProposta", b =>
                 {
                     b.Property<long>("Id")
@@ -1857,6 +2197,59 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.HasIndex("PropostaId", "Ordem");
 
                     b.ToTable("ItemProposta");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ListaPreco", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("MoedaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("Padrao")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("VigenciaFim")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("VigenciaInicio")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MoedaId");
+
+                    b.HasIndex("EmpresaId", "Nome");
+
+                    b.ToTable("ListaPreco");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Localidade", b =>
@@ -2076,6 +2469,75 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("MembroEquipe");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.Meta", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Alvo")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("EquipeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Fim")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("FunilId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Inicio")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Metrica")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long?>("MoedaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<long?>("UsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipeId");
+
+                    b.HasIndex("FunilId");
+
+                    b.HasIndex("MoedaId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.HasIndex("EmpresaId", "Inicio", "Fim");
+
+                    b.ToTable("Meta");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ModeloDocumento", b =>
@@ -2418,6 +2880,56 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.ToTable("OrigemContato");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.PainelRelatorio", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Compartilhado")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("CriadoPorUsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CriadoPorUsuarioId");
+
+                    b.HasIndex("EmpresaId", "Ordem");
+
+                    b.ToTable("PainelRelatorio");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ParcelaProposta", b =>
                 {
                     b.Property<long>("Id")
@@ -2467,6 +2979,62 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.HasIndex("PropostaId", "Numero");
 
                     b.ToTable("ParcelaProposta");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.PermissaoPerfil", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Entidade")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("Escopo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Perfil")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PodeCriar")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("PodeEditar")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("PodeExcluir")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("PodeVer")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpresaId", "Perfil", "Entidade")
+                        .IsUnique();
+
+                    b.ToTable("PermissaoPerfil");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.PessoaContato", b =>
@@ -3011,6 +3579,56 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.ToTable("RegraCampo");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.RespostaChecklistNegocio", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Concluido")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ConcluidoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("ConcluidoPorUsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ItemChecklistEtapaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("NegocioId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConcluidoPorUsuarioId");
+
+                    b.HasIndex("ItemChecklistEtapaId");
+
+                    b.HasIndex("NegocioId", "ItemChecklistEtapaId")
+                        .IsUnique();
+
+                    b.ToTable("RespostaChecklistNegocio");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.SecaoFormulario", b =>
                 {
                     b.Property<long>("Id")
@@ -3173,6 +3791,10 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Property<string>("ChaveExterna")
                         .HasColumnType("text");
 
+                    b.Property<string>("ComentarioDecisao")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
                     b.Property<DateTime>("CriadoEm")
                         .HasColumnType("timestamp with time zone");
 
@@ -3199,6 +3821,9 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("RejeitadoEm")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long?>("SolicitadoPorId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
@@ -3208,6 +3833,8 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.HasIndex("AprovadoPorId");
 
                     b.HasIndex("FluxoAprovacaoId");
+
+                    b.HasIndex("SolicitadoPorId");
 
                     b.HasIndex("Status");
 
@@ -3801,6 +4428,17 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("SecaoFormulario");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ChecklistEtapa", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.EtapaFunil", "EtapaFunil")
+                        .WithMany("Checklists")
+                        .HasForeignKey("EtapaFunilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EtapaFunil");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Cliente", b =>
                 {
                     b.HasOne("AST.Comercial.Domain.Entidades.OrigemContato", "Origem")
@@ -3954,6 +4592,17 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("Integracao");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.GraficoRelatorio", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.PainelRelatorio", "PainelRelatorio")
+                        .WithMany("Graficos")
+                        .HasForeignKey("PainelRelatorioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PainelRelatorio");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.GrupoProduto", b =>
                 {
                     b.HasOne("AST.Comercial.Domain.Entidades.FamiliaProduto", "FamiliaProduto")
@@ -3961,6 +4610,64 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                         .HasForeignKey("FamiliaProdutoId");
 
                     b.Navigation("FamiliaProduto");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.Importacao", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemChecklistEtapa", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.ChecklistEtapa", "ChecklistEtapa")
+                        .WithMany("Itens")
+                        .HasForeignKey("ChecklistEtapaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChecklistEtapa");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemListaPreco", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.ListaPreco", "ListaPreco")
+                        .WithMany("Itens")
+                        .HasForeignKey("ListaPrecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Produto", "Produto")
+                        .WithMany("ItensListaPreco")
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ListaPreco");
+
+                    b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemNegocio", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Negocio", "Negocio")
+                        .WithMany("Itens")
+                        .HasForeignKey("NegocioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Negocio");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemProposta", b =>
@@ -3986,6 +4693,16 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("Proposta");
 
                     b.Navigation("Secao");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ListaPreco", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Moeda", "Moeda")
+                        .WithMany()
+                        .HasForeignKey("MoedaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Moeda");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Localidade", b =>
@@ -4048,6 +4765,37 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Equipe");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.Meta", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Equipe", "Equipe")
+                        .WithMany()
+                        .HasForeignKey("EquipeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Funil", "Funil")
+                        .WithMany()
+                        .HasForeignKey("FunilId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Moeda", "Moeda")
+                        .WithMany()
+                        .HasForeignKey("MoedaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Equipe");
+
+                    b.Navigation("Funil");
+
+                    b.Navigation("Moeda");
 
                     b.Navigation("Usuario");
                 });
@@ -4139,6 +4887,16 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("Campo");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.PainelRelatorio", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Usuario", "CriadoPorUsuario")
+                        .WithMany()
+                        .HasForeignKey("CriadoPorUsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CriadoPorUsuario");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ParcelaProposta", b =>
                 {
                     b.HasOne("AST.Comercial.Domain.Entidades.Proposta", "Proposta")
@@ -4212,6 +4970,32 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("CampoOrigem");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.RespostaChecklistNegocio", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Usuario", "ConcluidoPorUsuario")
+                        .WithMany()
+                        .HasForeignKey("ConcluidoPorUsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.ItemChecklistEtapa", "ItemChecklistEtapa")
+                        .WithMany()
+                        .HasForeignKey("ItemChecklistEtapaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Negocio", "Negocio")
+                        .WithMany("RespostasChecklist")
+                        .HasForeignKey("NegocioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConcluidoPorUsuario");
+
+                    b.Navigation("ItemChecklistEtapa");
+
+                    b.Navigation("Negocio");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.SecaoFormulario", b =>
                 {
                     b.HasOne("AST.Comercial.Domain.Entidades.Formulario", "Formulario")
@@ -4258,9 +5042,16 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("AST.Comercial.Domain.Entidades.Usuario", "SolicitadoPor")
+                        .WithMany()
+                        .HasForeignKey("SolicitadoPorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("AprovadoPor");
 
                     b.Navigation("FluxoAprovacao");
+
+                    b.Navigation("SolicitadoPor");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.TokenAcesso", b =>
@@ -4398,6 +5189,11 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("OutrasPropriedades");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ChecklistEtapa", b =>
+                {
+                    b.Navigation("Itens");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Cliente", b =>
                 {
                     b.Navigation("Atividades");
@@ -4432,6 +5228,8 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.EtapaFunil", b =>
                 {
+                    b.Navigation("Checklists");
+
                     b.Navigation("Negocios");
 
                     b.Navigation("OutrasPropriedades");
@@ -4482,6 +5280,11 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("OutrasPropriedades");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ListaPreco", b =>
+                {
+                    b.Navigation("Itens");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Localidade", b =>
                 {
                     b.Navigation("Filhos");
@@ -4496,14 +5299,23 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                 {
                     b.Navigation("Atividades");
 
+                    b.Navigation("Itens");
+
                     b.Navigation("OutrasPropriedades");
 
                     b.Navigation("Propostas");
+
+                    b.Navigation("RespostasChecklist");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.NivelAprovacao", b =>
                 {
                     b.Navigation("Aprovadores");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.PainelRelatorio", b =>
+                {
+                    b.Navigation("Graficos");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ParcelaProposta", b =>
@@ -4520,6 +5332,8 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Produto", b =>
                 {
+                    b.Navigation("ItensListaPreco");
+
                     b.Navigation("OutrasPropriedades");
                 });
 

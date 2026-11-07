@@ -34,4 +34,6 @@ public class Negocio : EntidadeBase
     public ICollection<Atividade> Atividades { get; set; } = [];
     public ICollection<Proposta> Propostas { get; set; } = [];
     public ICollection<ValorCampo> OutrasPropriedades { get; set; } = [];
+    public ICollection<ItemNegocio> Itens { get; set; } = [];
+    public ICollection<RespostaChecklistNegocio> RespostasChecklist { get; set; } = [];
 }

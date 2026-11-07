@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AST.Comercial.Application.Servicos;
 
-public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador publicador) : IPropostaServico
+public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador publicador, IFluxoAprovacaoServico fluxos) : IPropostaServico
 {
     public IQueryable<Proposta> ObterTodos()
         => db.Propostas.AsNoTracking();
@@ -45,8 +45,16 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
                 DisparadoPor = db.UsuarioAtual
             }, ct);
 
+        // Fluxos de aprovação ativos: se a proposta se enquadrar, nasce com aprovação Pendente
+        if (!entidade.IsTemplate)
+            await fluxos.AvaliarPropostaAsync(entidade.Id, ct);
+
         return entidade;
     }
+
+    /// <summary>Valores que decidem o enquadramento nos fluxos de aprovação.</summary>
+    private static (decimal?, decimal?, decimal?, long?, long?, long?, int?) AssinaturaAprovacao(Proposta p)
+        => (p.Valor, p.Desconto, p.CustoFrete, p.MoedaId, p.ClienteId, p.ResponsavelId, p.NumeroParcelas);
 
     public async Task<Proposta?> AtualizarAsync(long id, Delta<Proposta> delta, CancellationToken ct = default)
     {
@@ -54,6 +62,8 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
         if (entidade is null) return null;
         var chaveOriginal = entidade.Chave;
         var empresaOriginal = entidade.EmpresaId;
+        var assinaturaAntes = AssinaturaAprovacao(entidade);
+        var (statusAprovOriginal, aprovadorOriginal) = (entidade.StatusAprovacao, entidade.AprovadorId);
         var (respStatus, respEm, respIp, respNome, respEmail, respMotivo) =
             (entidade.StatusResposta, entidade.RespondidaEm, entidade.RespondidaIp, entidade.RespondidaPorNome, entidade.RespondidaPorEmail, entidade.MotivoRecusa);
         delta.Patch(entidade);
@@ -64,7 +74,17 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
         if (entidade.Chave is not null && entidade.Chave != chaveOriginal) entidade.Chave = chaveOriginal;
         if (entidade.Compartilhada && string.IsNullOrWhiteSpace(entidade.Chave)) entidade.Compartilhada = false;
         entidade.EmpresaId = empresaOriginal;
+        // Com fluxo de aprovação em jogo, o status só muda pelo fluxo (Aprovar/Rejeitar/SolicitarAprovacao), nunca por PATCH
+        if ((entidade.StatusAprovacao != statusAprovOriginal || entidade.AprovadorId != aprovadorOriginal)
+            && await fluxos.PropostaGovernadaPorFluxoAsync(id, ct))
+        {
+            entidade.StatusAprovacao = statusAprovOriginal;
+            entidade.AprovadorId = aprovadorOriginal;
+        }
         await db.SaveChangesAsync(ct);
+        // Mudou valor, desconto, frete etc.: reavalia (reabre a aprovação de proposta já aprovada)
+        if (!entidade.IsTemplate && AssinaturaAprovacao(entidade) != assinaturaAntes)
+            await fluxos.AvaliarPropostaAsync(id, ct);
         return entidade;
     }
 
@@ -77,8 +97,15 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
         return true;
     }
 
-    public async Task AprovarAsync(long id, CancellationToken ct = default)
+    public Task<SolicitacaoAprovacaoDto> SolicitarAprovacaoAsync(long id, string? observacao, CancellationToken ct = default)
+        => fluxos.SolicitarAprovacaoPropostaAsync(id, observacao, ct);
+
+    public async Task AprovarAsync(long id, string? comentario, CancellationToken ct = default)
     {
+        // Com fluxo aplicável: só o aprovador do nível atual (ou Administrador) decide e a proposta avança de nível.
+        if (await fluxos.DecidirPropostaAsync(id, true, comentario, ct)) return;
+
+        // Sem fluxo aplicável: comportamento anterior
         var proposta = await db.Propostas.FirstOrDefaultAsync(p => p.Id == id, ct)
             ?? throw new KeyNotFoundException($"Proposta {id} não encontrada.");
         proposta.StatusAprovacao = StatusAprovacaoProposta.Aprovada;
@@ -94,8 +121,11 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
         }, ct);
     }
 
-    public async Task RejeitarAsync(long id, CancellationToken ct = default)
+    public async Task RejeitarAsync(long id, string? comentario, CancellationToken ct = default)
     {
+        // Com fluxo aplicável o comentário é obrigatório (validado no motor)
+        if (await fluxos.DecidirPropostaAsync(id, false, comentario, ct)) return;
+
         var proposta = await db.Propostas.FirstOrDefaultAsync(p => p.Id == id, ct)
             ?? throw new KeyNotFoundException($"Proposta {id} não encontrada.");
         proposta.StatusAprovacao = StatusAprovacaoProposta.Rejeitada;
@@ -117,6 +147,13 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
     {
         var proposta = await db.Propostas.FirstOrDefaultAsync(p => p.Id == id, ct);
         if (proposta is null) return null;
+
+        // Bloqueio por aprovação: só compartilha (envia) proposta que não aguarda nem foi rejeitada na aprovação.
+        // Rejeitada por recusa do cliente no link público não conta como bloqueio.
+        if (proposta.StatusAprovacao == StatusAprovacaoProposta.Pendente)
+            throw new RegraNegocioException("Esta proposta está aguardando aprovação e só pode ser compartilhada depois de aprovada.");
+        if (proposta.StatusAprovacao == StatusAprovacaoProposta.Rejeitada && proposta.StatusResposta != StatusRespostaProposta.Recusada)
+            throw new RegraNegocioException("Esta proposta foi rejeitada na aprovação e não pode ser compartilhada. Ajuste-a e solicite uma nova aprovação.");
 
         var primeiraVez = !proposta.Compartilhada || proposta.DataCompartilhamento is null;
         if (!proposta.Compartilhada) proposta.AceitaExternamente = true;
@@ -161,9 +198,12 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
             subtotal += item.Total.Value;
         }
 
+        var valorAntes = proposta.Valor;
         var valor = subtotal - (proposta.Desconto ?? 0m) + (proposta.CustoFrete ?? 0m);
         proposta.Valor = Arredondar(valor < 0m ? 0m : valor);
         await db.SaveChangesAsync(ct);
+        if (!proposta.IsTemplate && proposta.Valor != valorAntes)
+            await fluxos.AvaliarPropostaAsync(id, ct);
         // Recarrega sem rastreamento: a entidade rastreada tem Produtos↔Proposta ligados (ciclo na serialização)
         return await ObterPorIdAsync(id, ct);
     }
@@ -377,6 +417,7 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
         NormalizarDatasUtc(entidade);
         db.ItensProposta.Add(entidade);
         await db.SaveChangesAsync(ct);
+        await fluxos.AvaliarPropostaAsync(entidade.PropostaId, ct);
         return entidade;
     }
 
@@ -384,9 +425,15 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
     {
         var entidade = await db.ItensProposta.FirstOrDefaultAsync(x => x.Id == id, ct);
         if (entidade is null) return null;
+        var antes = (entidade.ProdutoId, entidade.Quantidade, entidade.PrecoUnitario, entidade.Desconto);
+        var propostaAntes = entidade.PropostaId;
         delta.Patch(entidade);
         NormalizarDatasUtc(entidade);
         await db.SaveChangesAsync(ct);
+        if ((entidade.ProdutoId, entidade.Quantidade, entidade.PrecoUnitario, entidade.Desconto) != antes)
+            await fluxos.AvaliarPropostaAsync(entidade.PropostaId, ct);
+        if (entidade.PropostaId != propostaAntes)
+            await fluxos.AvaliarPropostaAsync(propostaAntes, ct);
         return entidade;
     }
 
@@ -396,6 +443,7 @@ public partial class PropostaServico(AppDbContext db, IFilaAutomacaoPublicador p
         if (entidade is null) return false;
         entidade.Ativo = false;
         await db.SaveChangesAsync(ct);
+        await fluxos.AvaliarPropostaAsync(entidade.PropostaId, ct);
         return true;
     }
 

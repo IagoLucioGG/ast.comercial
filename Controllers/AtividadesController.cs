@@ -4,6 +4,7 @@ using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace AST.Comercial.Controllers;
@@ -14,11 +15,8 @@ public class AtividadesController(IAtividadeServico servico) : ODataController
     public IQueryable<Atividade> Get() => servico.ObterTodos();
 
     [EnableQuery]
-    public async Task<ActionResult<Atividade>> Get(long key)
-    {
-        var resultado = await servico.ObterPorIdAsync(key);
-        return resultado is null ? NotFound() : Ok(resultado);
-    }
+    // SingleResult (e não a entidade já materializada) para o [EnableQuery] aplicar $expand/$select no registro único.
+    public SingleResult<Atividade> Get(long key) => SingleResult.Create(servico.ObterTodos().Where(a => a.Id == key));
 
     public async Task<ActionResult<Atividade>> Post([FromBody] Delta<Atividade> delta)
     {

@@ -1,4 +1,4 @@
-using AST.Comercial.Application.Dtos;
+﻿using AST.Comercial.Application.Dtos;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.OData.Deltas;
 
@@ -11,8 +11,9 @@ public interface IPropostaServico
     Task<Proposta> CriarAsync(Delta<Proposta> delta, CancellationToken ct = default);
     Task<Proposta?> AtualizarAsync(long id, Delta<Proposta> delta, CancellationToken ct = default);
     Task<bool> RemoverAsync(long id, CancellationToken ct = default);
-    Task AprovarAsync(long id, CancellationToken ct = default);
-    Task RejeitarAsync(long id, CancellationToken ct = default);
+    Task AprovarAsync(long id, string? comentario, CancellationToken ct = default);
+    Task RejeitarAsync(long id, string? comentario, CancellationToken ct = default);
+    Task<SolicitacaoAprovacaoDto> SolicitarAprovacaoAsync(long id, string? observacao, CancellationToken ct = default);
     Task<CompartilhamentoPropostaDto?> CompartilharAsync(long id, CancellationToken ct = default);
     Task<Proposta?> RecalcularAsync(long id, CancellationToken ct = default);
     Task<PropostaPublicaDto?> ObterPublicaAsync(string chave, CancellationToken ct = default);
@@ -34,3 +35,4 @@ public interface IPropostaServico
     Task<ParcelaProposta?> AtualizarParcelaAsync(long id, Delta<ParcelaProposta> delta, CancellationToken ct = default);
     Task<bool> RemoverParcelaAsync(long id, CancellationToken ct = default);
 }
+

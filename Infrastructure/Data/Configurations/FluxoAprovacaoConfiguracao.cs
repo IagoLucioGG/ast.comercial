@@ -81,6 +81,12 @@ public class SolicitacaoAprovacaoConfiguracao : IEntityTypeConfiguration<Solicit
             .HasForeignKey(s => s.AprovadoPorId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.Property(s => s.ComentarioDecisao).HasMaxLength(1000);
+        builder.HasOne(s => s.SolicitadoPor)
+            .WithMany()
+            .HasForeignKey(s => s.SolicitadoPorId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasIndex(s => new { s.EntidadeAlvo, s.RegistroId, s.Status });
         builder.HasIndex(s => s.Status);
     }

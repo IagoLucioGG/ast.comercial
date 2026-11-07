@@ -6,6 +6,7 @@ import UiBadge from '@/components/ui/UiBadge.vue'
 import PropostaItensTab from '@/components/propostas/PropostaItensTab.vue'
 import PropostaParcelasTab from '@/components/propostas/PropostaParcelasTab.vue'
 import PropostaDocumentoTab from '@/components/propostas/PropostaDocumentoTab.vue'
+import GerarPedidoBotao from '@/components/pedidos/GerarPedidoBotao.vue'
 import PropostaAprovacaoBloco from '@/components/aprovacoes/PropostaAprovacaoBloco.vue'
 import DecisaoModal from '@/components/aprovacoes/DecisaoModal.vue'
 import { apiAprov, type Solicitacao } from '@/components/aprovacoes/aprovacaoApi'
@@ -364,6 +365,7 @@ watch(id, carregar)
             type="button" class="btn primario" :disabled="compartilhando || !!bloqueioCompartilhar"
             :title="bloqueioCompartilhar" @click="compartilhar"
           ><i class="mdi" :class="bloqueioCompartilhar ? 'mdi-lock-outline' : 'mdi-share-variant'"></i> Compartilhar</button>
+          <GerarPedidoBotao :proposta-id="id" :liberada="statusNome === 'Aprovada' || respostaNome === 'Aceita'" />
         </div>
       </header>
 

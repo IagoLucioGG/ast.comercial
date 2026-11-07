@@ -122,6 +122,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<PainelRelatorio> PaineisRelatorio => Set<PainelRelatorio>();
     public DbSet<GraficoRelatorio> GraficosRelatorio => Set<GraficoRelatorio>();
     public DbSet<Importacao> Importacoes => Set<Importacao>();
+    public DbSet<Pedido> Pedidos => Set<Pedido>();
+    public DbSet<ItemPedido> ItensPedido => Set<ItemPedido>();
+    public DbSet<EtapaPedido> EtapasPedido => Set<EtapaPedido>();
 
     /// <summary>
     /// Npgsql (timestamptz) só aceita DateTime com Kind=Utc. Todo DateTime gravado ou usado em parâmetro de consulta

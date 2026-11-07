@@ -22,6 +22,7 @@ const menuItems: ItemMenu[] = [
   { icon: 'mdi-handshake-outline', label: 'Negócios', to: '/negocios', entidade: 'Negocio' },
   { icon: 'mdi-calendar-check-outline', label: 'Atividades', to: '/atividades', entidade: 'Atividade' },
   { icon: 'mdi-file-document-outline', label: 'Propostas', to: '/propostas', entidade: 'Proposta' },
+  { icon: 'mdi-cart-outline', label: 'Pedidos', to: '/pedidos', entidade: 'Pedido' },
   { icon: 'mdi-package-variant-closed', label: 'Produtos', to: '/produtos', entidade: 'Produto' },
   { icon: 'mdi-chart-bar', label: 'Relatórios', to: '/relatorios', entidade: 'PainelRelatorio' },
   { icon: 'mdi-bullseye-arrow', label: 'Metas', to: '/metas', entidade: 'Meta' },

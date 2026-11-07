@@ -17,6 +17,7 @@ public static class CatalogoEntidades
     public const string Negocio = "Negocio";
     public const string Atividade = "Atividade";
     public const string Proposta = "Proposta";
+    public const string Pedido = "Pedido";
     public const string Produto = "Produto";
     public const string ListaPreco = "ListaPreco";
     public const string Meta = "Meta";
@@ -44,6 +45,7 @@ public static class CatalogoEntidades
         new(Negocio, "Negócios", GrupoComercial),
         new(Atividade, "Atividades", GrupoComercial),
         new(Proposta, "Propostas", GrupoComercial),
+        new(Pedido, "Pedidos", GrupoComercial),
         new(Produto, "Produtos", GrupoComercial),
         new(ListaPreco, "Listas de preço", GrupoComercial),
         new(Meta, "Metas", GrupoComercial),

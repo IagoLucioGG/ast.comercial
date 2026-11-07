@@ -1063,6 +1063,48 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.ToTable("EtapaFunil");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.EtapaPedido", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Cor")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpresaId", "Ordem");
+
+                    b.ToTable("EtapaPedido");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.Etiqueta", b =>
                 {
                     b.Property<long>("Id")
@@ -2128,6 +2170,72 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.ToTable("ItemNegocio");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemPedido", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double?>("Desconto")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("MoedaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("PedidoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("PrecoUnitario")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("ProdutoCodigo")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<long?>("ProdutoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProdutoNome")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<double?>("Quantidade")
+                        .HasColumnType("double precision");
+
+                    b.Property<decimal?>("Total")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.HasIndex("PedidoId", "Ordem");
+
+                    b.ToTable("ItemPedido");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemProposta", b =>
                 {
                     b.Property<long>("Id")
@@ -2979,6 +3087,96 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.HasIndex("PropostaId", "Numero");
 
                     b.ToTable("ParcelaProposta");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.Pedido", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AtualizadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChaveExterna")
+                        .HasColumnType("text");
+
+                    b.Property<long?>("ClienteId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("CustoFrete")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("Desconto")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<long>("EmpresaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("EtapaPedidoId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FormaPagamento")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<long?>("MoedaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("NegocioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("NumeroParcelas")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Observacoes")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<long?>("PropostaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ResponsavelId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Titulo")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<decimal?>("Valor")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("EtapaPedidoId");
+
+                    b.HasIndex("NegocioId");
+
+                    b.HasIndex("PropostaId");
+
+                    b.HasIndex("EmpresaId", "Numero")
+                        .IsUnique();
+
+                    b.ToTable("Pedido");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.PermissaoPerfil", b =>
@@ -4670,6 +4868,24 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                     b.Navigation("Produto");
                 });
 
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemPedido", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Pedido", "Pedido")
+                        .WithMany("Itens")
+                        .HasForeignKey("PedidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Pedido");
+
+                    b.Navigation("Produto");
+                });
+
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ItemProposta", b =>
                 {
                     b.HasOne("AST.Comercial.Domain.Entidades.Produto", "Produto")
@@ -4904,6 +5120,37 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
                         .HasForeignKey("PropostaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Proposta");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.Pedido", b =>
+                {
+                    b.HasOne("AST.Comercial.Domain.Entidades.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.EtapaPedido", "Etapa")
+                        .WithMany()
+                        .HasForeignKey("EtapaPedidoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Negocio", "Negocio")
+                        .WithMany()
+                        .HasForeignKey("NegocioId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AST.Comercial.Domain.Entidades.Proposta", "Proposta")
+                        .WithMany()
+                        .HasForeignKey("PropostaId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Etapa");
+
+                    b.Navigation("Negocio");
 
                     b.Navigation("Proposta");
                 });
@@ -5321,6 +5568,11 @@ namespace AST.Comercial.Infrastructure.Data.Migrations
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.ParcelaProposta", b =>
                 {
                     b.Navigation("OutrasPropriedades");
+                });
+
+            modelBuilder.Entity("AST.Comercial.Domain.Entidades.Pedido", b =>
+                {
+                    b.Navigation("Itens");
                 });
 
             modelBuilder.Entity("AST.Comercial.Domain.Entidades.PessoaContato", b =>

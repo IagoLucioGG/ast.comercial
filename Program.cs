@@ -86,6 +86,7 @@ builder.Services.AddScoped<IIntegracaoEventoPublicador, AST.Comercial.Infrastruc
 builder.Services.AddScoped<AST.Comercial.Infrastructure.Integracoes.ExecutorFluxoSaida>();
 builder.Services.AddScoped<IEtiquetaServico, EtiquetaServico>();
 builder.Services.AddScoped<IMetaServico, MetaServico>();
+builder.Services.AddScoped<IPedidoServico, PedidoServico>();
 builder.Services.AddScoped<IMoedaServico, MoedaServico>();
 builder.Services.AddSingleton<AST.Comercial.Application.Importacoes.ExecutorImportacao>();
 builder.Services.AddScoped<IImportacaoServico, ImportacaoServico>();
@@ -162,6 +163,9 @@ modelBuilder.EntitySet<Meta>("Metas");
 modelBuilder.EntitySet<PainelRelatorio>("PaineisRelatorio");
 modelBuilder.EntitySet<GraficoRelatorio>("GraficosRelatorio");
 modelBuilder.EntitySet<Importacao>("Importacoes");
+modelBuilder.EntitySet<Pedido>("Pedidos");
+modelBuilder.EntitySet<ItemPedido>("ItensPedido");
+modelBuilder.EntitySet<EtapaPedido>("EtapasPedido");
 
 // Controllers + OData (autenticação global obrigatória)
 builder.Services.AddControllers(options =>

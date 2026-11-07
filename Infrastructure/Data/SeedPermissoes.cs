@@ -66,6 +66,7 @@ public static class SeedPermissoes
                     case CatalogoEntidades.Cliente:
                     case CatalogoEntidades.PessoaContato:
                     case CatalogoEntidades.Proposta:
+                    case CatalogoEntidades.Pedido:
                         return (true, true, true, false, EscopoVisibilidade.Todos);
                     case CatalogoEntidades.Negocio:
                     case CatalogoEntidades.Atividade:

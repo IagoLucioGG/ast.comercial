@@ -1,0 +1,112 @@
+<!-- Display data that is multiple -->
+<span class="item-not-read" ng-if="$ctrl.column.ordination === 0 && $ctrl.object.Pipeline.EnableDealsRead && !$ctrl.object.IsRead"></span>
+
+<span class="d-contents" ng-if="$ctrl.column.field.multiple && $ctrl.column.field.typeId !== 19 && !$ctrl.column.field.key.includes('_tasks') && !$ctrl.column.field.key.includes('_phones') && !$ctrl.column.field.key.includes('_email_addresses') && !$ctrl.column.field.key.includes('_stages')">
+  <span ng-repeat="item in $ctrl.display track by $index">
+    <a ng-if="!$ctrl.whiteDisplay" href class="light-badge neutral-content badge-border nowrap light-badge-overflow" ng-class="{'success-badge' : item.object.StatusId === 2, 'danger-badge' : item.object.StatusId === 3}">
+      <div class="text-darkest-neutral font-bold table-cell-align-top">
+        <i
+          class="fal"
+          ng-class="{ 'fa-industry': $ctrl.object.Contacts[$index].TypeId === 1, 'fa-user': $ctrl.object.Contacts[$index].TypeId !== 1 }" ng-if="$ctrl.column.field.key.endsWith('_contacts')">
+        </i>
+        <img ng-if="$ctrl.column.field.key.includes('_users')" ng-src="{{item.object.User.AvatarUrl}}" class="avatar-timeline">
+        <i ng-if="$ctrl.column.field.key.includes('_tags')" class="fas fa-tag" ng-style="{'color': item.object.Tag.Color}"></i>
+        <i ng-if="$ctrl.column.field.key.includes('_lists')" class="fas fa-tag" ng-style="{'color': item.object.List.Color}"></i>
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.display || item}}</span>
+      </div>
+    </a>
+  </span>
+</span>
+
+<!-- Display data that is stages -->
+<span ng-if="$ctrl.column.field.key.includes('_stages')">
+  <deal-stages stages-array="$ctrl.object"></deal-stages>
+</span>
+
+<!-- Display data that is lead status -->
+<span ng-if="$ctrl.column.field.key.includes('lead_status')">
+  <a ng-if="!$ctrl.whiteDisplay && $ctrl.display" href class="light-badge neutral-content badge-border nowrap text-darkest-neutral" ng-class="{'warning-badge' : $ctrl.object.Status.Id === 2, 'danger-badge' : $ctrl.object.Status.Id === 4, 'action-badge' : $ctrl.object.Status.Id === 5 || $ctrl.object.Status.Id === 6}">
+    <div class="font-bold table-cell-align-top">
+      <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{$ctrl.display}}</span>
+    </div>
+  </a>
+</span>
+
+<!-- Display data that is phones -->
+<span class="d-contents" class="d-inline" ng-if="$ctrl.column.field.key.includes('_phones') && !$ctrl.whiteDisplay" class="" style="max-width:inherit;">
+  <span class="d-inline" ng-repeat="item in $ctrl.display track by $index">
+    <div class="hbox">
+      <aside>
+        <a href class="light-badge neutral-content badge-border nowrap"
+          ng-click="$ctrl.triggerPhoneCall(item); $event.stopPropagation()">
+          <div class="text-darkest-neutral font-bold table-cell-align-top badge-size-limiter">
+            <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item}}</span>
+          </div>
+        </a>
+      </aside>
+      <aside>
+        <a ng-if="$ctrl.whatsapp_integration_object && $ctrl.whatsapp_integration_object[item]" href
+          class="light-badge neutral-content badge-border nowrap"
+          ng-click="$ctrl.openWhatsAppWeb($ctrl.whatsapp_integration_object[item]); $event.stopPropagation()">
+          <div class="text-darkest-neutral font-bold table-cell-align-top badge-size-limiter">
+            <i class="fab fa-whatsapp text-success font-title m0"></i>
+          </div>
+        </a>
+      </aside>
+    </div>
+  </span>
+</span>
+
+<!-- Display data that is emails -->
+<span class="d-contents" class="d-inline" ng-if="$ctrl.column.field.key.includes('_email_addresses') && !$ctrl.whiteDisplay" class="" style="max-width:inherit;">
+<span class="d-inline" ng-repeat="item in $ctrl.display track by $index">
+  <div class="hbox">
+    <aside>
+      <a href class="light-badge neutral-content badge-border nowrap">
+        <div class="text-darkest-neutral font-bold table-cell-align-top email-badge-size-limiter">
+          <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item}}</span>
+        </div>
+      </a>
+      </aside>
+    </div>
+  </span>
+</span>
+
+<!-- Display data that is of the owner type or dynamic user field -->
+<span ng-if="(!$ctrl.column.field.multiple && ($ctrl.column.field.key.includes('owner') || $ctrl.column.field.key.includes('creator'))) || ($ctrl.column.field.dynamic && $ctrl.display.hasOwnProperty('AvatarUrl') && $ctrl.display.AvatarUrl !== null)" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}" class="single-user-badge">
+  <a ng-if="!$ctrl.whiteDisplay && $ctrl.display.Name" href class="light-badge neutral-content badge-border nowrap">
+    <div class="text-darkest-neutral font-bold table-cell-align-top">
+      <img ng-src="{{$ctrl.display.AvatarUrl}}" class="avatar-timeline">
+      <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{$ctrl.display.Name}}</span>
+    </div>
+  </a>
+</span>
+
+<!-- Display data of image type -->
+<span ng-if="$ctrl.column.field.typeId === 18" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">
+  <img ng-if="$ctrl.display" ng-src="{{$ctrl.display.replace('Images/', 'Images/Thumb/')}}" alt="" class="dynamic-image dynamic-table-image" ng-click="$ctrl.openImageModal(); $event.stopPropagation(); $event.preventDefault;">
+</span>
+
+<!-- Display data of all other types -->
+<span class="display-inline" ng-if="!$ctrl.column.field.multiple && !$ctrl.column.field.key.includes('owner') && !$ctrl.column.field.key.includes('creator') && !($ctrl.column.field.dynamic && $ctrl.display.hasOwnProperty('AvatarUrl') && $ctrl.display.AvatarUrl !== null) && !$ctrl.column.field.key.includes('lead_status') && $ctrl.column.field.typeId !== 18 && $ctrl.column.field.typeId !== 19 && $ctrl.column.field.typeId !== 20" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">
+  <span class="display-inline" ng-if="$ctrl.new_sanitize_front && $ctrl.column.field.typeId !== 20 && $ctrl.column.field.typeId !== 2" ng-bind-html="$ctrl.sanitizeHTML($ctrl.buildDisplayValue($ctrl.display)) | to_trusted"></span>
+  <span class="display-inline" ng-if="$ctrl.new_sanitize_front && $ctrl.column.field.typeId === 2" ng-bind-html="$ctrl.sanitizeHTML($ctrl.display) | to_trusted_text_area_in_display_table"></span>
+  
+  <span class="display-inline" ng-if="!$ctrl.new_sanitize_front && $ctrl.column.field.typeId !== 20 && $ctrl.column.field.typeId !== 2" ng-bind-html="$ctrl.buildDisplayValue($ctrl.display) | to_trusted"></span>
+  <span class="display-inline" ng-if="!$ctrl.new_sanitize_front && $ctrl.column.field.typeId === 2" ng-bind-html="$ctrl.display | to_trusted_text_area_in_display_table"></span>
+</span>
+
+<span class="display-inline" ng-if="$ctrl.column.field.typeId === 20">
+  <i ng-if="($ctrl.column.field.typeId === 20 && $ctrl.display)" class="fas fa-tag" ng-style="{'color': $ctrl.display }"></i>
+</span>
+
+<!-- Display of attachment data -->
+<span class="d-contents" ng-if="$ctrl.column.field.dynamic && $ctrl.column.field.typeId === 19">
+  <span ng-repeat="file in $ctrl.display track by $index">
+    <a class="light-badge neutral-content badge-border nowrap" ng-click="$ctrl.downloadUrl(file, $event)">
+      <div class="text-darkest-neutral font-bold table-cell-align-top badge-size-limiter">
+        <span class="align-middle attachment-file-name">{{file.Name}}</span>
+      </div>
+    </a>
+  </span>
+</span>

@@ -1,0 +1,90 @@
+<div class="vbox small-header" ng-form="new_quote_form">
+  <header>
+    <div class="white-content b-b-1 side-wrapper" ng-class="{ 'height-40': !$ctrl.deal, 'height-50 neutral-background-rgba': $ctrl.deal }">
+      <div class="hbox-flex stretch">
+        <aside class="v-middle v-middle-flex">
+          <div class="font-thin font-title big-simple-inline max-width-400 ellipsis align-middle nowrap">
+            {{ 'QUOTES.CREATE_FULL_PAGE_QUOTE_MODAL.TITLE' | translate }}
+          </div>
+        </aside>
+        <aside class="v-middle v-middle-flex text-right" ng-if="$ctrl.template_load && !$ctrl.show_document_template_list">
+          <div class="mini-side-wrapper mini-side-wrapper-flex">  
+            
+            <div style="margin-left: 20px !important;" class="f-1">
+                <a class="button button-white nowrap" ng-click="$ctrl.openModal()">
+                  <span class="text-action"><i class="button-icon fal fa-times"></i></span>
+                  {{ 'GENERICS.CANCEL' | translate}}
+                </a>
+
+                <div ng-if="!$ctrl.deal && !$ctrl.hasPendingProducts && !$ctrl.display_no_templates && !$ctrl.formulaCalculating && !$ctrl.externalFormulaCalculating" class="button button-action position-relative pull-right width-110 full-page-loading-tooltip" ng-class="{ 'disabled': !$ctrl.can_load }" ng-click="$ctrl.applyQuote(new_quote_form)">
+                  <i class="fas fa-save button-icon"></i>
+                  {{ 'GENERICS.SAVE' | translate }}
+                  <loading-tooltip loading="!$ctrl.can_load" form="new_quote_form" use-default-icon="true"></loading-tooltip>
+                </div>
+
+                <div ng-if="!$ctrl.deal && $ctrl.hasPendingProducts && !$ctrl.display_no_templates && !$ctrl.formulaCalculating && !$ctrl.externalFormulaCalculating" class="button button-action position-relative pull-right width-110 full-page-loading-tooltip" ng-class="{ 'disabled': !$ctrl.can_load }" ng-click-confirm="{{ 'GENERICS.PRODUCT_PENDING_SAVE_CONFIRMATION' | translate }}" ng-click="$ctrl.applyQuote(new_quote_form)">
+                  <i class="fas fa-save button-icon"></i>
+                  {{ 'GENERICS.SAVE' | translate }}
+                  <loading-tooltip loading="!$ctrl.can_load" form="new_quote_form" use-default-icon="true"></loading-tooltip>
+                </div>
+
+                <div ng-if="!$ctrl.deal && ($ctrl.formulaCalculating || $ctrl.externalFormulaCalculating)"
+                  class="button button-action position-relative pull-right width-110 disabled full-page-loading-tooltip"
+                  uib-tooltip="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.WAIT_END_OF_CALCULATION' | translate }}"
+                  tooltip-append-to-body="true"
+                  tooltip-placement="bottom">
+                  {{ 'GENERICS.WAIT' | translate }}
+                  <loading-tooltip loading="$ctrl.formulaCalculating || $ctrl.externalFormulaCalculating" form="edit_quote_form" use-default-icon="true">
+                  </loading-tooltip>
+                </div>
+              </div>
+              <a class="open-side-slide button nowrap" ng-class="{ 'button-white-no-border pull-right': $ctrl.front_deal && $ctrl.front_deal.deal_contact && $ctrl.front_deal.deal_contact[0], 'button-light-background-border pull-right disabled anchor-contact-data-modal': !($ctrl.front_deal && $ctrl.front_deal.deal_contact && $ctrl.front_deal.deal_contact[0]) }" href ng-disabled="!($ctrl.front_deal && $ctrl.front_deal.deal_contact && $ctrl.front_deal.deal_contact[0])" ng-click="$ctrl.openDocumentEntityPreview()">
+                <span class="text-action"><i class="fal fa-id-card button-icon"></i></span>
+                {{ 'QUOTES.CREATE_FULL_PAGE_QUOTE_MODAL.CONTACT_DATA' | translate }}
+              </a>
+            <div class="dropdown pull-right" ng-if="!$ctrl.display_no_templates">
+              <a class="button" ng-class="{ 'button-white-no-border dropdown-toggle': !$ctrl.deal, 'button-light-background-border dropdown-toggle': $ctrl.deal }" data-toggle="dropdown">
+                <span class="text-action"><i class="fal fa-file-image button-icon"></i></span>
+                {{'QUOTES.CREATE_FULL_PAGE_QUOTE_MODAL.TEMPLATE_NAME' | translate }}:
+                {{$ctrl.selected_template.Name}}<i class="fal fa-angle-down dropdown-sign"></i>
+              </a>
+              <ul class="dropdown-menu white-dropdown-menu pull-right field-pick">
+                <li ng-repeat="model in $ctrl.quote_templates track by model.Id" ng-click="$ctrl.changeTemplate(model)"
+                  ng-show="model.Id !== $ctrl.selected_template.Id && $ctrl.quote_templates.length > 1">
+                  <a class="white-dropdown-link" href>{{model.Name}}</a>
+                </li>
+                <li ng-show="$ctrl.quote_templates.length === 1">
+                  <a class="white-dropdown-link" href> {{ 'QUOTES.CREATE_FULL_PAGE_QUOTE_MODAL.ONE_QUOTE_MODEL' | translate }} </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </header>
+  <idle-cover start-idle="$ctrl.template_load" ng-if="!$ctrl.display_no_templates"></idle-cover>
+  <no-templates ng-if="$ctrl.display_no_templates" entity-id="7"></no-templates>
+  <section ng-class="{ 'scrollable': !$ctrl.deal }">
+    <standard-loader margin-top="10" loading="!$ctrl.template_load"></standard-loader>
+    <div class="top-wrapper" ng-if="!$ctrl.show_document_template_list">
+      <forms model="$ctrl.new_quote" fields="$ctrl.selected_form" form="new_quote_form" document-template-format="$ctrl.selected_template.NewFormat" ng-if="$ctrl.template_load && !$ctrl.display_no_templates && !$ctrl.show_document_template_list" is-modal-full-screen="true" use-new-product-section="true"></forms>
+    </div>
+    <div class="regular-background min-height-100-percent" ng-if="$ctrl.show_document_template_list">
+      <div class="width-700 margin-auto">
+        <document-template-select
+          entity-id="7"
+          document-templates="$ctrl.quote_templates"
+          select-document-template-callback-fn="$ctrl.selectDocumentTemplateCallback(template)">
+        </document-template-select>
+      </div>
+      <div class="gap-90 regular-background" ng-if="$ctrl.show_document_template_list"></div>
+    </div>
+    <div class="gap-90" ng-if="!$ctrl.show_document_template_list"></div>
+    <div class="gap-90" ng-if="!$ctrl.show_document_template_list"></div>
+    <div class="gap-90" ng-if="!$ctrl.show_document_template_list"></div>
+  </section>
+</div>
+<document-entity-preview>
+  <contact-entity-preview fields="$ctrl.selected_form" contact-id="$ctrl.new_quote.quote_deal[0].deal_contact[0].Id || $ctrl.deal.deal_contact[0].Id"></contact-entity-preview>
+</document-entity-preview>

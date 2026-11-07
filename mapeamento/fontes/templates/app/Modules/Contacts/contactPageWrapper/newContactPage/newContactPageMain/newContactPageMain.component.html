@@ -1,0 +1,314 @@
+<div class="stretch">
+  <div class="">
+    <div class="white-content overflow-hidden">
+      <ul class="nav nav-tabs b-b-1 border-tabs customer-tabs-density">
+        <li ng-class="{ 'active': $ctrl.currentTab === 'timeline' }">
+          <a ng-click="$ctrl.toggleTab('timeline')" href>
+            {{ 'CONTACTS.CONTACT_PAGE.TIMELINE' | translate }}
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'companies_list' }">
+          <a ng-click="$ctrl.toggleTab('companies_list')" href ng-if="$ctrl.model.TypeId === 1">
+            {{ 'CONTACTS.CONTACT_PAGE.RELATED_COMPANIES' | translate }} <div ng-if="$ctrl.counters.companies > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.companies}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'people_list' }">
+          <a ng-click="$ctrl.toggleTab('people_list')" href ng-if="$ctrl.model.TypeId === 1">
+            {{ 'CONTACTS.CONTACT_PAGE.PEOPLE' | translate }} <div ng-if="$ctrl.counters.people > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.people}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'deals_list' }" ng-if="$ctrl.self.Account.DealsModule && $ctrl.self.Profile.DealsModule">
+          <a href
+            role="button"
+            ng-click="$ctrl.toggleTab('deals_list')"
+            aria-label="{{ 'ARIA_LABELS.DEAL.ENTER_DEAL_TAB_BUTTON' | translate_sentence }}"
+          >
+            {{ 'CONTACTS.CONTACT_PAGE.DEALS' | translate_sentence }} <div ng-if="$ctrl.counters.deals > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.deals}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'quotes_list' }" ng-if="$ctrl.activeQuoteModule && $ctrl.self.Profile.QuotesModule">
+          <a ng-click="$ctrl.toggleTab('quotes_list')" href>
+            {{ 'CONTACTS.CONTACT_PAGE.QUOTES' | translate }} <div ng-if="$ctrl.counters.quotes > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.quotes}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'documents_list' }" ng-if="$ctrl.activeDocumentModule && $ctrl.self.Profile.DocumentsModule">
+          <a ng-click="$ctrl.toggleTab('documents_list')" href>
+            {{ 'CONTACTS.CONTACT_PAGE.DOCUMENTS' | translate }} <div ng-if="$ctrl.counters.documents > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.documents}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'orders_list' }" ng-if="$ctrl.activeOrderModule && $ctrl.self.Profile.OrdersModule">
+          <a ng-click="$ctrl.toggleTab('orders_list')" href>
+            {{ 'CONTACTS.CONTACT_PAGE.ORDERS' | translate }} <div ng-if="$ctrl.counters.orders > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.orders}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'contact_products_list' }" ng-if="$ctrl.activeContactProductModule && $ctrl.self.Profile.ContactsProductsViewPermission">
+          <a ng-click="$ctrl.toggleTab('contact_products_list')" href>
+            {{ 'CONTACTS.CONTACT_PAGE.CONTACT_PRODUCTS' | translate_sentence }} <div ng-if="$ctrl.counters.contact_products > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.contact_products}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'attachments_list' }">
+          <a ng-click="$ctrl.toggleTab('attachments_list')" href>
+            {{ 'CONTACTS.CONTACT_PAGE.ATTACHMENTS' | translate }} <div ng-if="($ctrl.counters.attachments + $ctrl.counters.library_attachments) > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.attachments + $ctrl.counters.library_attachments}}</div>
+          </a>
+        </li>
+        <li ng-class="{ 'active': $ctrl.currentTab === 'external_forms_list' }" ng-if="$ctrl.activePublicFormModule">
+          <a ng-click="$ctrl.toggleTab('external_forms_list')" href>
+            {{ 'CONTACTS.CONTACT_PAGE.EXTERNAL_FORMS' | translate }} <div ng-if="$ctrl.counters.external_forms > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">{{$ctrl.counters.external_forms}}</div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content stretch-40" ng-if="$ctrl.initialLoad">
+
+    <div class="tab-pane active stretch regular-background" id="timeline" ng-if="$ctrl.currentTab === 'timeline'">
+      <new-contact-page-timeline model="$ctrl.model"></new-contact-page-timeline>
+    </div>
+
+    <div class="tab-pane active" id="companies_list" ng-if="$ctrl.model.TypeId === 1 && $ctrl.currentTab === 'companies_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.companies">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold text-neutral-light">
+          <i class="fal fa-store font-monster-size"></i>
+          <div class="gap-30"></div>
+          <div>
+            {{ 'CONTACTS.CONTACT_PAGE.NO_RELATED_COMPANIES_FOUND' | translate }}
+          </div>
+          <div class="gap-50"></div>
+          <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewCompany()">
+            <div class="font-very-big">
+              <i class="fas fa-store button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_RELATED_COMPANY' | translate }}
+            </div>
+          </a>
+        </div>
+      </div>
+      <new-contact-page-companies ng-if="$ctrl.counters.companies" model="$ctrl.model" reload-contact="$ctrl.reloadContact" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-companies>
+    </div>
+
+    <div class="tab-pane active" id="people_list" ng-if="$ctrl.model.TypeId === 1 && $ctrl.currentTab === 'people_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.people">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold text-neutral-light">
+          <i class="fal fa-user font-monster-size"></i>
+          <div class="gap-30"></div>
+          <div>{{ 'CONTACTS.CONTACT_PAGE.NO_PEOPLE_FOUND' | translate }}</div>
+          <div class="gap-50"></div>
+          <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewPerson()">
+            <div class="font-very-big">
+              <i class="fas fa-user button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_PERSON' | translate }}
+            </div>
+          </a>
+        </div>
+      </div>
+      <new-contact-page-people ng-if="$ctrl.counters.people" model="$ctrl.model" reload-contact="$ctrl.reloadContact" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-people>
+    </div>
+
+    <div class="tab-pane active" id="deals_list" ng-if="$ctrl.currentTab === 'deals_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.deals">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold text-neutral-light">
+          <i class="fal font-monster-size" ng-class="$ctrl.customizables.deals_module.icon_class"></i>
+          <div class="gap-30"></div>
+          <div>
+            {{ 'CONTACTS.CONTACT_PAGE.NO_DEALS_FOUND' | translate_sentence }}
+          </div>
+          <div class="gap-50"></div>
+          <div ng-if="$ctrl.self.Profile.DealsCreatePermission">
+            <button
+              class="button button-action nowrap button-very-big"
+              ng-if="$ctrl.model.TypeId === 1 || ($ctrl.model.TypeId === 2 && !$ctrl.model.CompanyId)"
+              ng-click="$ctrl.openNewDeal()"
+              uib-tooltip="{{ $ctrl.newDealButtonTooltip }}" 
+              tooltip-placement="left" 
+              ng-disabled="!$ctrl.hasActivePipeline"
+              ng-class="{disabled: !$ctrl.hasActivePipeline}"
+            >
+              <div class="font-very-big">
+                <i class="fas button-icon" ng-class="$ctrl.customizables.deals_module.icon_class"></i>
+                {{ 'CONTACTS.CONTACT_PAGE.NEW_DEAL' | translate_sentence }}
+              </div>
+            </button>
+            <div
+              class="width-200 margin-auto"
+              uib-dropdown
+              uib-dropdown-append-to-body="true"
+              ng-if="$ctrl.model.TypeId === 2 && $ctrl.model.CompanyId">
+              <button class="button button-action nowrap button-very-big" uib-dropdown-toggle
+                uib-tooltip="{{ $ctrl.newDealButtonTooltip }}"
+                tooltip-placement="left"
+                ng-disabled="!$ctrl.hasActivePipeline"
+                ng-class="{disabled: !$ctrl.hasActivePipeline}"
+              >
+                <div class="font-very-big">
+                  {{ 'CONTACTS.CONTACT_PAGE.NEW_DEAL' | translate_sentence }}
+                  <i class="fal fa-angle-down dropdown-sign"></i>
+                </div>
+              </button>
+              <ul class="white-dropdown-menu pull-right" uib-dropdown-menu>
+                <li>
+                  <a class="white-dropdown-link" href ng-click="$ctrl.openNewDeal(true)">
+                    <div class="hbox">
+                      <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                        <span class="text-darkest-neutral">
+                          <i class="fal fa-industry list-simple-line"></i>
+                        </span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{ 'CONTACTS.CONTACT_PAGE.FOR_COMPANY_AND_PERSON' | translate }}
+                      </aside>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="white-dropdown-link" href ng-click="$ctrl.openNewDeal()">
+                    <div class="hbox">
+                      <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                        <span class="text-darkest-neutral">
+                          <i class="fal fa-user list-simple-line"></i>
+                        </span>
+                      </aside>
+                      <aside class="v-middle">
+                        {{ 'CONTACTS.CONTACT_PAGE.FOR_PERSON' | translate }}
+                      </aside>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <new-contact-page-deals ng-if="$ctrl.counters.deals" model="$ctrl.model" deals-count="$ctrl.counters.deals" reload-contact="$ctrl.reloadContact" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-deals>
+    </div>
+
+    <div class="tab-pane active" id="quotes_list" ng-if="$ctrl.currentTab === 'quotes_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.quotes">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold text-neutral-light">
+          <i class="fal fa-file-invoice-dollar font-monster-size"></i>
+          <div class="gap-30"></div>
+          <div>{{ 'CONTACTS.CONTACT_PAGE.NO_QUOTES_FOUND' | translate }}</div>
+          <div class="gap-50"></div>
+          <button class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewQuote()" ng-if="$ctrl.self.Profile.QuotesCreatePermission"
+            uib-tooltip="{{ $ctrl.newDealButtonTooltip }}" 
+            tooltip-placement="left" 
+            ng-disabled="!$ctrl.hasActivePipeline"
+            ng-class="{disabled: !$ctrl.hasActivePipeline}"
+          >
+            <div class="font-very-big">
+              <i class="fas fa-file-invoice-dollar button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_QUOTE' | translate }}
+            </div>
+          </button>
+          <div class="gap-10"></div>
+          <button ng-if="$ctrl.cpq_beta_button_enabled" class="button button-action nowrap button-very-big" ng-click="$ctrl.openBetaNewQuote()"
+            uib-tooltip="{{ $ctrl.newDealButtonTooltip }}" 
+            tooltip-placement="left" 
+            ng-disabled="!$ctrl.hasActivePipeline"
+            ng-class="{disabled: !$ctrl.hasActivePipeline}"
+          >
+            <div class="font-very-big">
+              <i class="fas fa-file-invoice-dollar button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_QUOTE' | translate }}&nbsp;{{ 'GENERICS.BETA_UPPER' | translate }}
+            </div>
+          </button>
+        </div>
+      </div>
+      <new-contact-page-quotes ng-if="$ctrl.counters.quotes" model="$ctrl.model" use-erp-format="$ctrl.isQuotesFullPage" reload-contact="$ctrl.reloadContact" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-quotes>
+    </div>
+
+    <div class="tab-pane active" id="documents_list" ng-if="$ctrl.currentTab === 'documents_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.documents">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold text-neutral-light">
+          <i class="fal fa-file-alt font-monster-size"></i>
+          <div class="gap-30"></div>
+          <div>{{ 'CONTACTS.CONTACT_PAGE.NO_DOCUMENTS_FOUND' | translate }}</div>
+          <div class="gap-50"></div>
+          <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewDocument()" ng-if="$ctrl.self.Profile.DocumentsCreatePermission">
+            <div class="font-very-big">
+              <i class="fas fa-file-alt button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_DOCUMENT' | translate }}
+            </div>
+          </a>
+          <div class="gap-10"></div>
+          <a ng-if="$ctrl.cpq_beta_button_enabled" class="button button-action nowrap button-very-big" ng-click="$ctrl.openBetaNewDocument()">
+            <div class="font-very-big">
+              <i class="fas fa-file-alt button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_DOCUMENT' | translate }}&nbsp;{{ 'GENERICS.BETA_UPPER' | translate }}
+            </div>
+          </a>
+        </div>
+      </div>
+      <new-contact-page-documents ng-if="$ctrl.counters.documents" model="$ctrl.model" reload-contact="$ctrl.reloadContact" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-documents>
+    </div>
+
+    <div class="tab-pane active" id="orders_list" ng-if="$ctrl.currentTab === 'orders_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.orders">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold text-neutral-light">
+          <i class="fal fa-money-check-edit-alt font-monster-size"></i>
+          <div class="gap-30"></div>
+          <div>{{ 'CONTACTS.CONTACT_PAGE.NO_ORDERS_FOUND' | translate }}</div>
+          <div class="gap-50"></div>
+          <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewOrder()" ng-if="$ctrl.self.Profile.OrdersCreatePermission">
+            <div class="font-very-big">
+              <i class="fas fa-money-check-edit-alt button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_ORDER' | translate }}
+            </div>
+          </a>
+          <div class="gap-10"></div>
+          <a ng-if="$ctrl.cpq_beta_button_enabled" class="button button-action nowrap button-very-big" ng-click="$ctrl.openBetaNewOrder()">
+            <div class="font-very-big">
+              <i class="fas fa-money-check-edit-alt button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_ORDER' | translate }}&nbsp;{{ 'GENERICS.BETA_UPPER' | translate }}
+            </div>
+          </a>
+        </div>
+      </div>
+      <new-contact-page-orders ng-if="$ctrl.counters.orders" model="$ctrl.model" use-erp-format="$ctrl.isOrdersFullPage" reload-contact="$ctrl.reloadContact" prevent-action-navigations="$ctrl.preventActionNavigations"></new-contact-page-orders>
+    </div>
+
+    <div class="tab-pane active" id="orders_list" ng-if="$ctrl.currentTab === 'contact_products_list' && $ctrl.can_load">
+      <div class="big-top-left-wrapper" ng-if="!$ctrl.counters.contact_products">
+        <div class="gap-50"></div>
+        <div class="text-center font-very-big-title font-bold text-neutral-light">
+          <i class="fal {{ $ctrl.customizables.contacts_products_module.icon_class }} font-monster-size"></i>
+          <div class="gap-30"></div>
+          <div>{{ 'CONTACTS.CONTACT_PAGE.NO_CONTACT_PRODUCTS_FOUND' | translate_sentence }}</div>
+          <div class="gap-50"></div>
+          <a class="button button-action nowrap button-very-big" ng-click="$ctrl.openNewContactProduct()" ng-if="$ctrl.self.Profile.ContactsProductsCreatePermission">
+            <div class="font-very-big">
+              <i class="fas {{ $ctrl.customizables.contacts_products_module.icon_class }} button-icon"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_CONTACT_PRODUCT' | translate_sentence }}
+            </div>
+          </a>
+        </div>
+      </div>
+      <new-contact-page-products ng-if="$ctrl.counters.contact_products" model="$ctrl.model"></new-contact-page-products>
+    </div>
+
+    <div class="tab-pane active" id="attachments_list" ng-if="$ctrl.currentTab === 'attachments_list' && $ctrl.can_load">
+      <page-attachments
+        model="$ctrl.model"
+        api-url="'Contacts'"
+        actions="$ctrl.attachments_actions",
+        attachments-count="$ctrl.attachmentsCount"
+        change-attachments-count-fn="$ctrl.changeAttachmentsCount">
+      </page-attachments>
+    </div>
+
+    <div class="tab-pane active" id="external_forms_list" ng-if="$ctrl.currentTab === 'external_forms_list' && $ctrl.can_load">
+      <page-external-forms
+        model="$ctrl.model"
+        api-url="'Contacts'"
+        can-create-new="$ctrl.model.Editable"
+        external-forms-count="$ctrl.externalFormsCount"
+        change-external-forms-count-fn="$ctrl.changeExternalFormsCount">
+      </page-external-forms>
+    </div>
+
+  </div>
+</div>

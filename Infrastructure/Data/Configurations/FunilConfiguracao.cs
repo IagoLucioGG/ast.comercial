@@ -13,6 +13,8 @@ public class FunilConfiguracao : IEntityTypeConfiguration<Funil>
 
         builder.Property(f => f.Nome).IsRequired().HasMaxLength(150);
         builder.Property(f => f.Descricao).HasMaxLength(500);
+        builder.Property(f => f.ProibirRetornoEtapa).HasDefaultValue(false);
+        builder.Property(f => f.ExigirTodasEtapas).HasDefaultValue(false);
     }
 }
 

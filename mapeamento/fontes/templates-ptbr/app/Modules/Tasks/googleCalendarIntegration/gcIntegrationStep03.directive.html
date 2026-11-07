@@ -1,0 +1,29 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="false"
+  footer="false"
+  dark="true"
+  modal-title="Google Agenda"
+  toggle-modal="step03Ctrl.toggle_modal"
+  block-back-state="true"
+  disassociate-toggle="true"
+  is-fetching-modal-content="step03Ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="big-wrapper">
+          <div class="hbox">
+            <aside class="width-40 text-success font-very-big">
+              <div class="font-big-title"><i class="fad fa-check-circle"></i></div>
+            </aside>
+            <aside class="font-big"><span class="font-bold">INTEGRAÇÃO HABILITADA</span>
+              <div class="line"> </div>Calendário integrado: <span class="font-bold">{{step03Ctrl.selected_calendar.name}}</span>
+              <div class="gap-10"></div>E-mail integrado: <span class="font-bold">{{step03Ctrl.selected_calendar.email}}</span>
+            </aside>
+          </div><br><br><a class="button button-neutral" ng-click="step03Ctrl.disableIntegration()">DESABILITAR INTEGRAÇÃO</a>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

@@ -1,0 +1,120 @@
+<div class="height-40 regular-background b-b-1 b-t-1 mini-side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle">
+      <select-fk
+        ng-if="$ctrl.selected_user_field"
+        model="$ctrl.selected_user_model[$ctrl.selected_user_field.key]"
+        parent-model="$ctrl.selected_user_model"
+        field="$ctrl.selected_user_field"
+        api-url="{{$ctrl.selected_user_field.apiUrl}}"
+        display-property="{{$ctrl.selected_user_field.displayProperty}}"
+        list="true"
+        required="required"
+        not-suggest-new-item="true"
+        option-change-callback="$ctrl.selectUser(model)"
+        custom-data-source="$ctrl.listChats"
+        placeholder="('CHATS.CHATS_SIDEBAR.SEARCH_FOR_USER_OR_GROUP' | translate)">
+      </select-fk>
+    </aside>
+    <aside class="v-middle width-40 text-right" uib-dropdown dropdown-append-to-body>
+      <a class="button button-action" href uib-dropdown-toggle>
+        <i class="fas fa-plus font-semi-big new-chat-icon"></i>
+      </a>
+      <ul class="dropdown-max-height dropdown-menu white-dropdown-menu no-padding-top width-200" uib-dropdown-menu>
+        <div class="dropdown-subtitle">
+          Ações
+        </div>
+        <li ng-click="$ctrl.openNewChatModal()">
+          <a class="white-dropdown-link">
+            Criar conversa em grupo
+          </a>
+        </li>
+      </ul>
+    </aside>
+  </div>
+</div>
+<div class="regular-background b-b-1">
+  <ul class="nav nav-tabs b-b-1 gray-border-tabs">
+    <li
+      ng-class="{ 'active': $ctrl.current_chats_view === 'inbox' }"
+      ng-click="$ctrl.changeChatsCurrentView('inbox')">
+      <a class="text-muted" href>
+        Caixa de entrada
+      </a>
+    </li>
+    <li
+      ng-class="{ 'active': $ctrl.current_chats_view === 'unread' }"
+      ng-click="$ctrl.changeChatsCurrentView('unread')">
+      <a class="text-muted" href>
+        Não lidas
+      </a>
+    </li>
+    <li
+      ng-class="{ 'active': $ctrl.current_chats_view === 'archived' }"
+      ng-click="$ctrl.changeChatsCurrentView('archived')">
+      <a class="text-muted" href>
+        Arquivadas
+      </a>
+    </li>
+  </ul>
+</div>
+<div ng-if="($ctrl.chats | filter:$ctrl.filterChatsByFolder).length === 0 && $ctrl.first_load" ng-click="$ctrl.changeChatsCurrentView('inbox')" class="mtop10">
+  <a href class="button-background button button-full-width">
+    <div class="hbox text-neutral text-center">
+      <aside class="v-middle mini-wrapper-left">
+        <div class="gap-30"></div>
+        <div class="font-monster-size fad fa-comment-alt-exclamation"></div>
+        <div class="gap-30"></div>
+        <div class="font-big font-regular-weight">
+          {{ ($ctrl.current_chats_view === 'unread' ? 'CHATS.CHATS_SIDEBAR.NO_MESSAGES_FOUND_IN_UNREAD' : 'CHATS.CHATS_SIDEBAR.NO_MESSAGES_FOUND_IN_ARCHIVED') | translate }}
+        </div>
+        <div class="gap-10"></div>
+        <div class="font-big" ng-if="$ctrl.current_chats_view !== 'inbox'">
+          <span ng-bind-html="('CHATS.CHATS_SIDEBAR.BACK_TO_INBOX' | translate) | to_trusted"></span>
+        </div>
+        <div class="gap-30"></div>
+      </aside>
+    </div>
+  </a>
+</div>
+<a
+  href
+  class="chat-item mini-top-right-wrapper regular-background"
+  ng-repeat="chat in $ctrl.chats | filter:$ctrl.filterChatsByFolder track by $index"
+  ng-class="{ 'chat-open': chat.Id === $ctrl.selected_chat.Id }"
+  ng-click="$ctrl.selectChat(chat)">
+  <div class="hbox">
+    <aside class="width-60 text-center v-middle">
+      <div class="position-relative mini-wrapper-left">
+        <div class="chat-status" ng-if="$ctrl.self.Account.UsersOnlineModule && !chat.IsGroup">
+          <div ng-class="{ 'online': chat.TargetUser.Online, 'offline': !chat.TargetUser.Online }"></div>
+        </div>
+        <img class="chat-avatar" ng-src="{{chat.IsGroup ? (chat.AvatarUrl || 'images/avatar_default.jpg') : (chat.TargetUser.AvatarUrl || 'images/avatar_default.jpg')}}">
+      </div>
+    </aside>
+    <aside class="v-middle mini-wrapper-left">
+      <div class="font-bold font-big width-200 ellipsis nowrap">{{chat.IsGroup ? chat.Name : chat.TargetUser.Name}}</div>
+      <div class="mtop3 width-200 ellipsis nowrap" ng-class="{ 'font-bold': chat.HasUnreadMessages, 'text-muted': !chat.HasUnreadMessages }">
+        <span ng-if="chat.LastMessage && chat.LastMessage.IsDeletedForUser">
+          Mensagem apagada
+        </span>
+        <span ng-if="!chat.LastMessage || (chat.LastMessage && !chat.LastMessage.IsDeletedForUser)">
+          {{chat.LastMessageSenderUserId === $ctrl.self.Id ? ('CHATS.CHATS_SIDEBAR.YOU' | translate) : ''}}{{chat.LastMessageContent || ''}}
+        </span>
+      </div>
+    </aside>
+    <aside class="v-middle text-right right-wrapper">
+      <span>{{chat.FormattedLastMessageDateTime || ''}}</span>
+      <div class="mtop3 height-22 font-very-big text-neutral nowrap">
+        <i class="fal fa-volume-mute" ng-if="chat.IsMuted"></i>
+        <chat-options chat="chat" ng-click="$event.stopPropagation()"></chat-options>
+        <div class="chat-conversation-counter font-small v-top mtop1" ng-if="chat.HasUnreadMessages">
+          <i class="fad fa-bells"></i>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="chat-separator">
+    <div class="line-chat-separator"></div>
+  </div>
+</a>

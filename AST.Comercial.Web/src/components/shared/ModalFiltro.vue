@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 
 interface FiltroSalvo { Id: number; Nome: string; Filtro: string | null }
@@ -61,6 +61,7 @@ function parsearPropriedades(obj: any, prefixo: string): CampoDisponivel[] {
 
 function getCamposParaNivel(condIdx: number): CampoDisponivel[] {
   const cond = condicoes.value[condIdx]
+  if (!cond) return []
   const data = esquema.value
 
   if (cond.nav.length === 0) {
@@ -82,24 +83,27 @@ function getCamposParaNivel(condIdx: number): CampoDisponivel[] {
 function camposFiltradosParaNivel(condIdx: number): CampoDisponivel[] {
   const cond = condicoes.value[condIdx]
   const lista = getCamposParaNivel(condIdx)
+  if (!cond) return lista
   if (!cond.busca) return lista
   return lista.filter(c => c.nome.toLowerCase().includes(cond.busca.toLowerCase()))
 }
 
 function selecionarCampo(idx: number, campo: CampoDisponivel) {
+  const cond = condicoes.value[idx]
+  if (!cond) return
   if (campo.expandivel) {
-    condicoes.value[idx].nav.push(campo.nome)
-    condicoes.value[idx].busca = ''
+    cond.nav.push(campo.nome)
+    cond.busca = ''
     return
   }
-  condicoes.value[idx].campo = campo.caminho ?? campo.nome
-  condicoes.value[idx].dropdownAberto = false
-  condicoes.value[idx].busca = ''
-  condicoes.value[idx].nav = []
+  cond.campo = campo.caminho ?? campo.nome
+  cond.dropdownAberto = false
+  cond.busca = ''
+  cond.nav = []
 }
 
 function voltarNavegacao(idx: number) {
-  condicoes.value[idx].nav.pop()
+  condicoes.value[idx]?.nav.pop()
 }
 
 function aplicarSalvo(filtro: FiltroSalvo) {

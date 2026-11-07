@@ -1,0 +1,98 @@
+<div class="vbox">
+  <section class="scrollable" style="height: 100%">
+    <div class="wrapper">
+      <ul class="tree">
+        <li class="wrapper"
+            ng-repeat="email_folder in $ctrl.top_folders"
+            ng-include="'email_folder_tree'"
+            ng-click="$ctrl.changeFolder(email_folder)"
+            data-cy="email-sidebar-tab"
+            ></li>
+      </ul>
+    </div>
+    <div class="line"></div>
+    <div class="wrapper" style="height: -webkit-fit-content">
+      <div ng-repeat="email_folder in $ctrl.bottom_folders" ng-click="$ctrl.changeFolder(email_folder)">
+        <a href class="nowrap data-visualization button button-full-width button-very-big text-left"
+          ng-class="{'button-light-background': email_folder.folder_id !== $ctrl.selectedFolder.folder_id, 'button-dry-background': email_folder.folder_id === $ctrl.selectedFolder.folder_id}"
+          uib-tooltip="{{ email_folder.name }}"
+          tooltip-append-to-body="true"
+          tooltip-placement="auto right"
+          tooltip-enable="!$ctrl.toggleSidebar"
+          >
+          <div class="hbox">
+            <aside class="v-middle width-40 font-thin"
+            ng-class="{'width-40': $ctrl.toggleSidebar, 'width-20': !$ctrl.toggleSidebar}">
+              <i class="fal font-title text-white title-icon {{email_folder.icon && email_folder.icon.Class ? email_folder.icon.Class : 'fa-folder'}}"
+                style="color: {{email_folder.color || '#333333' + ' !important'}}"
+                ng-style="!$ctrl.toggleSidebar && {'margin':'0px'}"
+                ng-class="{ 'text-regular': $ctrl.selectedFolder.folder_id !== email_folder.folder_id }">
+              </i>
+            </aside>
+            <aside class="v-middle" ng-if="$ctrl.toggleSidebar">
+              <span class="font-regular-weight font-regular-size"
+                ng-class="{'text-regular': email_folder.folder_id !== $ctrl.selectedFolder.folder_id}">{{email_folder.name}}</span>
+            </aside>
+            <aside class="v-middle width-20 text-right" ng-class="{'text-regular': email_folder.folder_id !== $ctrl.selectedFolder.folder_id}">
+              {{email_folder.unread_messages > 0 ? email_folder.unread_messages : ''}}
+            </aside>
+          </div>
+        </a>
+        <div class="gap-5"></div>
+      </div>
+    </div>
+  </section>
+  <aside class="position-relative light-background" style="width: 0.1px;">
+    <a class="button button-white size-slide-button hidden-panel-button" ng-click="$ctrl.toggleSizeSlide()"
+      ng-class="{'hidden-panel-button': $ctrl.toggleSidebar, 'visible-panel-button': !$ctrl.toggleSidebar}"
+      style="right: -15px; padding-top: 6px; padding-bottom: 4px;">
+      <span class="font-big"><i class="fal fa-long-arrow-left"
+          ng-class="{'fa-long-arrow-left': $ctrl.toggleSidebar, 'fa-long-arrow-right': !$ctrl.toggleSidebar}"></i></span>
+    </a>
+  </aside>
+</div>
+
+<script type="text/ng-template" id="email_folder_tree">
+  <a href
+    class="nowrap data-visualization button button-full-width button-very-big text-left email-folder-siderbar__subfolders-button"
+    ng-class="{'button-light-background': email_folder.folder_id !== $ctrl.selectedFolder.folder_id, 'button-dry-background': email_folder.folder_id === $ctrl.selectedFolder.folder_id}"
+    uib-tooltip="{{ email_folder.name }}"
+    tooltip-append-to-body="true"
+    tooltip-placement="auto right"
+    tooltip-enable="email_folder.name.length >= 20 || !$ctrl.toggleSidebar">
+    <div class="hbox">
+      <aside class="v-middle width-40 font-thin"
+      ng-class="{'width-40': $ctrl.toggleSidebar, 'width-20': !$ctrl.toggleSidebar}">
+        <i class="fal font-title text-white title-icon {{email_folder.icon && email_folder.icon.Class ? email_folder.icon.Class : 'fa-folder'}}"
+          style="color: {{email_folder.color || '#333333' + ' !important'}}"
+          ng-style="!$ctrl.toggleSidebar && {'margin':'0px'}"
+          ng-class="{ 'text-regular': $ctrl.selectedFolder.folder_id !== email_folder.folder_id }">
+        </i>
+      </aside>
+      <aside class="v-middle" ng-if="$ctrl.toggleSidebar">
+        <span class="font-regular-weight font-regular-size"
+          ng-class="{'text-regular': email_folder.folder_id !== $ctrl.selectedFolder.folder_id}"
+          >{{email_folder.name.length < 20 ? email_folder.name : email_folder.name.substring(0, 17) + '...'}}</span>
+      </aside>
+      <aside class="v-middle width-20 text-right email-folder-siderbar__folder-counter" ng-class="{'text-regular': email_folder.folder_id !== $ctrl.selectedFolder.folder_id}" style="padding-left: 8px; min-width: 20px;">
+        {{email_folder.unread_messages > 0 ? email_folder.unread_messages : ''}}
+      </aside>
+      <aside ng-if="email_folder.subFolders.length > 0"
+            class="v-middle width-20 email-folder-siderbar__subfolders-toggle"
+            ng-click="$event.stopPropagation(); $event.preventDefault(); $ctrl.toggleSubFolders(email_folder);"
+            ng-class="{'--aside': email_folder.total_unread_messages > email_folder.unread_messages && !$ctrl.updatingFolders}"
+            uib-tooltip="{{ 'EMAILS.FOLDERS_SIDE_BAR.NOT_READ_SUBFOLDER' | translate_with_replace: { number: email_folder.total_unread_messages - email_folder.unread_messages } }}"
+            tooltip-placement="auto right"
+            tooltip-append-to-body="true"
+            tooltip-enable="email_folder.total_unread_messages > email_folder.unread_messages && !$ctrl.updatingFolders">
+        <i class="email-folder-siderbar__subfolders-toggle__icon fas fa-angle-down" ng-class="{ 'text-regular': email_folder.folder_id !== $ctrl.selectedFolder.folder_id, '--active': email_folder.show_children_folders}"></i>
+        <i class="fas fa-circle text-action email-folder-sidebar__subfolder-notification"
+            ng-if="email_folder.total_unread_messages > email_folder.unread_messages && !$ctrl.updatingFolders"
+            ></i>
+      </aside>
+    </div>
+  </a>
+  <ul class="tree" ng-show="email_folder.show_children_folders" ng-if="email_folder.subFolders">
+    <li ng-repeat="email_folder in email_folder.subFolders" ng-include="'email_folder_tree'" ng-click="$event.stopPropagation(); $ctrl.changeFolder(email_folder)"></li>
+  </ul>
+</script>

@@ -1,0 +1,307 @@
+<dynamic-modal
+  modal-id="fields"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  ng-form="system_form"
+  cypress-prefix="administration-system-config"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container" ng-if="$ctrl.initial_load">
+        <div class="gap-15"></div>
+        <form class="clearfix">
+          <div class="form-group col-sm-12">
+            <a class="hbox font-title font-thin white-content b-b-1" href
+              ng-click="$ctrl.show_general_config = !$ctrl.show_general_config" data-cy="administration-system-general-config-title">
+              <aside class="v-middle">
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.GENERAL_CONFIG' | translate }}
+              </aside>
+              <aside class="v-middle text-right">
+                <i class="fal dropdown-sign"
+                  ng-class="{'fa-angle-down': !$ctrl.show_general_config, 'fa-angle-up': $ctrl.show_general_config}"></i>
+              </aside>
+            </a>
+          </div>
+          <div ng-show="$ctrl.show_general_config">
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SAVE_EMAIL_COPY_LABEL' | translate }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SAVE_EMAIL_COPY_HELPER' | translate }}
+                    </small>
+                  </label>
+                </aside>
+                <aside class="v-middle">
+                  <div class="left-wrapper">
+                    <div class="switch">
+                      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-save-inbox" type="checkbox"
+                        ng-model="$ctrl.save_inbox">
+                      <label class="pull-right" for="cmn-toggle-save-inbox"></label>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <label>
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.FIRST_LOGIN_LABEL' | translate }}
+              </label>
+              <select class="form-control input-sm" ng-options="type.Name for type in $ctrl.first_login_types"
+                ng-model="$ctrl.first_login_selected_type"></select>
+            </div>
+            <language-select language-select-callback-fn="$ctrl.languageChangeCallback" is-changing-for-account="true">
+            </language-select>
+            <div class="form-group col-sm-12">
+              <label>
+                <span class="font-semi-big">
+                  {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.DEFAULT_MASK_LABEL' | translate }}
+                </span>
+                <br>
+                <small class="text-muted">
+                  {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.DEFAULT_MASK_HELPER' | translate }}
+                </small>
+              </label>
+              <select class="form-control input-sm" ng-options="country.Name for country in $ctrl.mask_countries" ng-model="$ctrl.default_mask_country"></select>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.CONFIG_CURRENCIES_LABEL' | translate }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.CONFIG_CURRENCIES_HELPER' | translate }}
+                    </small>
+                  </label>
+                </aside>
+                <aside class="v-middle text-right">
+                  <div class="left-wrapper">
+                    <a class="button button-white" ng-click="$ctrl.openCurrencyConfig()">
+                      <span class="text-action"><i class="button-icon fal fa-usd-circle"></i></span>
+                      {{ 'GENERICS.CONFIG' | translate }}
+                    </a>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.TIMEZONE' | translate }}
+                    </span>
+                  </label>
+                  <select class="form-control input-sm" ng-options="item.value as item.text for item in $ctrl.timezones" ng-model="$ctrl.selectTimezone"></select>
+                </aside>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-sm-12">
+            <a class="hbox font-title font-thin white-content b-b-1" href
+              ng-click="$ctrl.show_security_config = !$ctrl.show_security_config">
+              <aside class="v-middle">
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SECURITY_CONFIG' | translate }}
+              </aside>
+              <aside class="v-middle text-right">
+                <i class="fal dropdown-sign"
+                  ng-class="{'fa-angle-down': !$ctrl.show_security_config, 'fa-angle-up': $ctrl.show_security_config}"></i>
+              </aside>
+            </a>
+          </div>
+          <div ng-show="$ctrl.show_security_config">
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.FORCE_STRONG_PASSWORD_LABEL' | translate }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.FORCE_STRONG_PASSWORD_HELPER' | translate }}
+                    </small>
+                  </label>
+                </aside>
+                <aside class="v-middle">
+                  <div class="left-wrapper">
+                    <div class="switch">
+                      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-has-strong-password"
+                        type="checkbox" ng-model="$ctrl.has_strong_password">
+                      <label class="pull-right" for="cmn-toggle-has-strong-password"></label>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.NEVER_EXPIRE_PASSWORDS_LABEL' | translate }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.NEVER_EXPIRE_PASSWORDS_HELPER' | translate }}
+                    </small>
+                  </label>
+                </aside>
+                <aside class="v-middle">
+                  <div class="left-wrapper">
+                    <div class="switch">
+                      <input class="cmn-toggle cmn-toggle-round-flat" ng-disabled="$ctrl.login_options_selected_type" id="cmn-toggle-never-expire-password"
+                        type="checkbox" ng-model="$ctrl.neverExpirePasswords">
+                      <label class="pull-right" for="cmn-toggle-never-expire-password"></label>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12" ng-show="!$ctrl.neverExpirePasswords">
+              <div class="hbox">
+                <label>
+                  <span class="font-semi-big">
+                    {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.DAYS_FOR_PASSWORD_EXPIRATION_LABEL' | translate }}
+                  </span>
+                  <br>
+                  <small class="text-muted">
+                    {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.DAYS_FOR_PASSWORD_EXPIRATION_HELPER' | translate }}
+                  </small>
+                </label>
+                <input class="form-control input-sm" type="number" ng-model="$ctrl.daysToExpirePassword" ng-change="$ctrl.clampValue('daysToExpirePassword', 1, 365)">
+              </div>
+            </div>
+            <div class="form-group col-sm-12" ng-show="!$ctrl.neverExpirePasswords">
+              <div class="hbox">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.DAYS_TO_NOTIFY_PASSWORD_EXPIRATION_LABEL' | translate }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.DAYS_TO_NOTIFY_PASSWORD_EXPIRATION_HELPER' | translate }}
+                    </small>
+                  </label>
+                  <input class="form-control input-sm" type="number" ng-model="$ctrl.daysToNotifyPassword" ng-change="$ctrl.clampValue('daysToNotifyPassword', 1, ($ctrl.daysToExpirePassword || 2) - 1)">
+              </div>
+            </div>
+            <div class="form-group col-sm-12" ng-show="!$ctrl.neverExpirePasswords">
+              <div class="hbox">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.NUMBER_OF_PASSWORD_KEPT_LABEL' | translate }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                      {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.NUMBER_OF_PASSWORD_KEPT_HELPER' | translate }}
+                    </small>
+                  </label>
+                <input class="form-control input-sm" type="number" ng-model="$ctrl.passwordQuantitiesLimit" ng-change="$ctrl.clampValue('passwordQuantitiesLimit', 1, 10)">
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label>
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SUPPORT_ACCESS_POLICY_LABEL' | translate }}
+              </label>
+              <select class="form-control input-sm" ng-options="type.Name for type in $ctrl.support_access_types"
+                ng-model="$ctrl.support_access_selected_type"></select>
+            </div>
+            <div class="form-group col-sm-12">
+              <label>
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.MULTI_FACTOR_AUTHENTICATION_LABEL' | translate }}
+              </label>
+              <select class="form-control input-sm" ng-options="mfa.Name for mfa in $ctrl.mfa_types"
+                ng-model="$ctrl.mfa_selected_type">
+                <option value="">
+                  {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.MFA_NONE_OPTION' | translate }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-sm-12" ng-if="$ctrl.mfa_selected_type && $ctrl.mfa_selected_type.Id === 1">
+              <label>
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.MFA_EXPIRATION_IN_SECONDS' | translate }}
+              </label>
+              <input type="number" class="form-control input-sm" ng-model="$ctrl.mfa_expiration" />
+            </div>
+            <div class="form-group col-sm-12">
+              <label>
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.LOGIN_OPTIONS_LABEL' | translate }}
+              </label>
+              <select 
+                class="form-control input-sm"
+                ng-model="$ctrl.login_options_selected_type"
+                ng-disabled="$ctrl.microsoftSSOActived"
+                >
+                <option ng-value="false">
+                  {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.LOGIN_OPTIONS_PLOOMES_AND_SSO' | translate }}
+                </option>
+                <option ng-value="true">
+                  {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.LOGIN_OPTIONS_ONLY_SSO' | translate }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-sm-12">
+              <label>
+                {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SSO_PROVIDER_OPTIONS_LABEL' | translate }}
+                 <i
+                  ng-if="$ctrl.microsoftSSOActived && $ctrl.sso_selected_type === 'SankhyaPass'"
+                  class="fas fa-exclamation-triangle text-danger warning tiny-icon"
+                  uib-tooltip="{{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SSO_PROVIDER_NOT_AUTHORIZED_TOOLTIP' | translate }}"
+                  tooltip-append-to-body="true"
+                ></i>
+              </label>
+              <select 
+                class="form-control input-sm"
+                ng-model="$ctrl.sso_selected_type"
+                >
+                <option value="Microsoft">
+                  {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SSO_PROVIDER_OPTIONS_MICROSOFT' | translate }}
+                </option>
+                <option value="SankhyaPass">
+                  {{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.SSO_PROVIDER_OPTIONS_SANKHYA' | translate }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="currency_slide" modal-side-slide-title="{{ 'ADMINISTRATION.GENERAL.SYSTEM_CONFIG_MODAL.CONFIG_CURRENCY' | translate }}">
+    <div class="vbox header-or-footer scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="col-sm-12 clearfix product-section">
+          <currency-select></currency-select>
+        </div>
+      </section>
+    </div>
+  </modal-side-slide>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button
+            class="button button-action pull-right"
+            ng-click="$ctrl.saveSettings()">
+            <i class="button-icon fas fa-save"></i>
+            {{ 'GENERICS.SAVE' | translate }}
+          </button>
+          <loading-tooltip loading="$ctrl.loading" form="system_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

@@ -1,0 +1,509 @@
+<div class="external-form__side-slide vbox big-header-or-footer scroll-shadow neutral-shadow" ng-form name="external_form_form">
+  <section class="scrollable scroll-shadow-container">
+    <standard-loader margin-top="15" loading="$ctrl.loading"></standard-loader>
+    <div class="side-wrapper" ng-if="!$ctrl.loading">
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Form Logo -->
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="new-approval-item white-content b-1">
+              <span class="font-bold font-regular-size">
+                1
+              </span>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width">
+            <div class="width-120 text-center">
+              <img class="avatar-select" ng-src="{{ $ctrl.formAvatarUrl }}">
+              <label ng-click="$ctrl.$postLink()" class="button button-action button-short avatar-select-button" id="external-form-avatar-wrapper" href="">
+                Escolher logo
+                <input id="external-form-avatar" type="file" style="display: none;">
+              </label>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Form Name -->
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  2
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': external_form_form.$submitted && !$ctrl.model.Name }">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Nome do formulário
+                      </div>
+                      <div class="gap-5"></div>
+                      <new-field
+                        field="$ctrl.nameField"
+                        model="$ctrl.model"
+                        property="'Name'"
+                        hide-label="true"
+                        outside-form="true"
+                        not-trigger-formula="true">
+                      </new-field>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Form Description -->
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  3
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Descrição do formulário
+                      </div>
+                      <div class="gap-5"></div>
+                      <new-field
+                        field="$ctrl.descriptionField"
+                        model="$ctrl.model"
+                        property="'Description'"
+                        hide-label="true"
+                        not-trigger-formula="true">
+                      </new-field>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Form Color -->
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  4
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox" ng-class="{ 'invalid-input': $ctrl.invalidColor }">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Cor de fundo do formulário
+                      </div>
+                      <div class="gap-5"></div>
+                      <div class="position-relative">
+                        <input
+                          class="form-control input-sm"
+                          colorpicker="hex"
+                          ng-style="{ 'background-color': $ctrl.model.Color }"
+                          ng-model="$ctrl.model.Color"
+                          colorpicker-parent>
+                      </div>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Edit Only -->
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  5
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap"
+                      ng-class="{ 'invalid-input': external_form_form.$submitted && $ctrl.model.EditOnly === undefined }">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Finalidade do formulário
+                      </div>
+                      <div class="gap-5"></div>
+                      <select
+                        class="form-control input-sm"
+                        ng-options="option.Value as option.Name for option in $ctrl.formPurposeOptions"
+                        ng-model="$ctrl.model.EditOnly"
+                        ng-required="true"
+                        ng-disabled="$ctrl.editing">
+                      </select>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Pipeline select -->
+      <div ng-if="$ctrl.isDealForm">
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  6
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap" ng-class="{
+                      'invalid-input-ploomes-host': external_form_form.$submitted && !$ctrl.pipelineModel.external_form_pipeline
+                    }">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Em qual (name:pipeline:aa:s) (esse:deal:aa:s) (name:deal::s) será (executado:deal:aa:s)?
+                      </div>
+                      <div class="gap-5"></div>
+                      <new-field
+                        field="$ctrl.pipelineField"
+                        model="$ctrl.pipelineModel"
+                        model-change-callback="$ctrl.updateStageField(new_val, old_val)"
+                        property="'external_form_pipeline'"
+                        required="true"
+                        disabled="$ctrl.currentPipeline"
+                        wide="true">
+                      </new-field>
+                    </aside>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="stage-height-110 white-content top-wrapper b-1 rounded-regular neutral-background-rgba">
+                  <div class="stage-margin" ng-class="{ 'invalid-input-ploomes-host': external_form_form.$submitted && !$ctrl.stageModel.external_form_stage }">
+                      <div class="stage-display">
+                          <span class="stage-width-80">
+                              Estágio
+                          </span>
+                          <div class="stage-input-100">
+                            <new-field
+                              field="$ctrl.stageField"
+                              model="$ctrl.stageModel"
+                              property="'external_form_stage'"
+                              required="true"
+                              disabled="$ctrl.stageDisable"
+                              wide="true">
+                            </new-field> 
+                        </div>
+                      </div>
+                      <div class="gap-10"></div>
+                      <div class="stage-checkbox-display-flex">
+                        <new-field
+                        field="$ctrl.ignoreStageField"
+                        model="$ctrl.ignoreStageModel"
+                        property="'external_form_ignore_stage'"
+                        required="false"
+                        disabled="$ctrl.stageDisable"
+                        wide="true">
+                        </new-field> 
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Field Mapping -->
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  {{ $ctrl.isDealForm ? 7 : 6 }}
+                </span>
+              </div>
+            </div>  
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Campos do formulário
+                      </div>
+                      <div class="gap-5"></div>
+                      <external-forms-field-mapping
+                        mapped-fields="$ctrl.model.Fields"
+                        default-fields="$ctrl.model.DefaultFields"
+                        edit-only="$ctrl.model.EditOnly"
+                        select-field-callback-fn="$ctrl.selectFieldCallback"
+                        remove-field-callback-fn="$ctrl.removeFieldCallback"
+                        importation-template="$ctrl.importationTemplate">
+                      </external-forms-field-mapping>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Default Field Mapping -->
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  {{ $ctrl.isDealForm ? 8 : 7 }}
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Mapear valor padrão
+                      </div>
+                      <div class="gap-5"></div>
+                      <external-forms-default-field-mapping
+                        deal-pipeline-id="$ctrl.pipelineModel.external_form_pipeline[0].Id"
+                        default-mapped-fields="$ctrl.model.DefaultFields"
+                        default-mapped-fields-update-fn="$ctrl.updateDefaultMappedFields"
+                        save-default-mapped-fields="$ctrl.saveDefaultMappedFields"
+                        importation-template="$ctrl.importationTemplate">
+                      </external-forms-default-field-mapping>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Form Language -->
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  {{ $ctrl.isDealForm ? 9 : 8 }}
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        Linguagem
+                      </div>
+                      <div class="gap-5"></div>
+                      <select
+                      class="form-control input-sm"
+                      ng-options="option.Value as option.Name for option in $ctrl.languageFieldOptions"
+                      ng-model="$ctrl.model.LanguageId"
+                      ng-change="$ctrl.updateFieldNames()"
+                      ng-required="true">
+                      </select>
+                      
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+
+      <!-- Form URL -->
+      <div ng-if="$ctrl.editing && !$ctrl.model.EditOnly">
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div
+                uib-tooltip="Copiar para a área de transferência"
+                tooltip-append-to-body="true"
+                class="add-condition button-avoid button-action external-form__external-form-side-slide__copy-btn"
+                ng-click="$ctrl.copyToClipboard($ctrl.formUrl)"
+              >
+                <i class="fal fa-copy activity-icon"></i>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">URL do formulário</div>
+                      <a ng-href="{{ $ctrl.formUrl }}" target="_blank" class="inline-link-blue">
+                        Visualizar
+                      </a>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="nowrap side-scroll">
+              <div class="side-scroll-container wrapper regular-background b-1 rounded-regular">
+                {{ $ctrl.formUrl }}
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Iframe snippet -->
+      <div ng-if="$ctrl.editing && !$ctrl.model.EditOnly">
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div
+                uib-tooltip="Copiar para a área de transferência"
+                tooltip-append-to-body="true"
+                class="add-condition button-avoid button-action external-form__external-form-side-slide__copy-btn"
+                ng-click="$ctrl.copyToClipboard($ctrl.iframeSnippet)"
+              >
+                <i class="fal fa-copy activity-icon"></i>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">Copie o trecho de código abaixo para inserir o formulário no seu site</div>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="side-scroll">
+              <div class="side-scroll-container wrapper regular-background b-1 rounded-regular">
+                {{ $ctrl.iframeSnippet }}
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle" ng-if="!$ctrl.loading">
+      <a href class="button button-white-no-border" ng-click="$ctrl.backToExternalFormsList()">
+        <span class="text-action"><i class="fal fa-arrow-left button-icon"></i></span>
+        Voltar
+      </a>
+    </aside>
+    <aside class="v-middle text-right" ng-if="!$ctrl.loading">
+      <loading-tooltip use-default-icon="false" loading="$ctrl.loading" form="external_form_form" class="v-middle" invalid-options="$ctrl.invalid_options_field"></loading-tooltip>
+      <a class="button button-action" href ng-click="$ctrl.submitControl(external_form_form)">
+        <i class="fas fa-save button-icon"></i>
+        Salvar
+      </a>
+    </aside>
+  </div>
+</div>

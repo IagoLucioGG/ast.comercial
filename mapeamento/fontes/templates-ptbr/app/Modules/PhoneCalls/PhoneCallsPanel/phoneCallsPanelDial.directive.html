@@ -1,0 +1,43 @@
+<div class="wrapper">
+  <div class="hbox">
+    <div class="input-group">
+      <input ng-model="phoneCallsPanelDialCtrl.phone_number"
+             type="text"
+             class="form-control input-sm"
+             uib-typeahead="contact.PhoneNumber for contact in phoneCallsPanelDialCtrl.getContactWithPhoneNumber($viewValue)"
+             typeahead-min-length="0"
+             typeahead-loading="loadingTypeahead"
+             typeahead-wait-ms="300"
+             typeahead-popup-template-url="phone-contact-search-popup.html"
+             typeahead-on-select="phoneCallsPanelDialCtrl.selectModel($item)"
+             autocomplete="off"/>
+
+      <script type="text/ng-template" id="phone-contact-search-popup.html">
+        <ul class="dropdown-menu deal-title-suggestion" role="listbox" ng-show="isOpen() && !moveInProgress">
+          <li class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-if="match.model !== undefined && match.model !== null && !$parent.$parent.loadingTypeahead" ng-class="{'quicksearch-keyboard': isActive($index)}" ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.Id}}">
+            {{match.label}}
+            <div class="text-muted text-small">
+              {{match.model.Name}}
+            </div>
+          </li>
+          <li ng-if="$parent.loadingTypeahead">
+            <standard-loader margin-top="15" loading="$parent.$parent.loadingTypeahead" optionalclass="'timeline-loader'"></standard-loader>
+          </li>
+        </ul>
+      </script>
+    </div>
+  </div>
+  <div class="gap-20"></div>
+  <phone-calls-panel-keyboard phone-number="phoneCallsPanelDialCtrl.phone_number" send-dtmf-callback-fn="phoneCallsPanelDialCtrl.sendDtmf(number)"></phone-calls-panel-keyboard>
+  <div class="gap-20"></div>
+  <div ng-if="!isInCall">
+    <div class="button full-width" ng-class="{'button-action': phoneCallsPanelDialCtrl.raw_phone_number.length >= 8, 'button-neutral': phoneCallsPanelDialCtrl.raw_phone_number.length < 8}" ng-click="phoneCallsPanelDialCtrl.call()">
+      <div class="font-big">Ligar</div>
+    </div>
+  </div>
+  <div ng-if="isInCall">
+    <div class="button button-neutral full-width" ng-click="switchDialingFn('dialing')">
+      <div class="font-big">Voltar</div>
+    </div>
+  </div>
+</div>

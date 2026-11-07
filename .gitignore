@@ -47,3 +47,9 @@ appsettings.*.json
 
 # Old reference folder
 ODataPloomes/
+
+# Mapeamento: só os screenshots das telas capturadas da Ploomes ficam fora do repositório
+# (mostram dados reais de clientes). HTML, textos e bundles foram versionados com e-mails,
+# CNPJ/CPF e a chave do Google mascarados (scripts/Mascarar-Pii.ps1).
+mapeamento/telas/**/*.png
+mapeamento/telas/**/*.jpg

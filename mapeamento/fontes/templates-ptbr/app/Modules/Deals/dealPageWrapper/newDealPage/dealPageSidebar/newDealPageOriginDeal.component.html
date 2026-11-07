@@ -1,0 +1,12 @@
+<div class="overflow-hidden originated-deal" ng-if="$ctrl.origin_deal">
+  <div class="text-uppercase light-background b-b-1 rectangular-wrapper">
+    <i class="simple-line-space-small fal" ng-class="$ctrl.customizables.deals_module.icon_class"></i>
+    <span>
+      (name:deal::s) origem
+    </span>
+  </div>
+  <div class="scrollable-docs-list mini-wrapper">
+    <dynamic-funnel-card card="$ctrl.origin_deal" pipeline="$ctrl.origin_deal.Pipeline"
+      block-inline-edit="true"></dynamic-funnel-card>
+  </div>
+</div>

@@ -1,0 +1,187 @@
+  <div class="tab-pane active white-content b-t-1">
+    <div ng-if="interactionRecordFormCtrl.can_load">
+      <div class="mini-top-wrapper white-content">
+        <div class="hbox">
+          <aside class="text-muted width-30 v-bottom display-none">
+            <span class="validation-icon-align">
+              <field-symbol-validation field="interactionRecordFormCtrl.interaction_record_form.interaction_record_content" form="form" model="interactionRecordFormCtrl.newInteractionRecord"></field-symbol-validation>
+            </span>
+          </aside>
+          <aside class="v-middle nowrap width-10">
+            <div class="simple-inline" ng-repeat="type in interactionRecordFormCtrl.all_types">
+              <a href class="button-fixed-size button-white-no-border button-fixed-size-big button-fixed-side-round" ng-click="interactionRecordFormCtrl.typeSelect(type)" ng-style="type.Id === interactionRecordFormCtrl.current_type.Id && {'background-color': type.Color}">
+                <i class="fal font-big" ng-class="type.Icon" ng-style="type.Id === interactionRecordFormCtrl.current_type.Id && {'color': 'white'}"></i>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="hbox">
+        <aside class="v-middle">
+          <div class="mini-wrapper" ng-class="{ 'invalid-input': form.$submitted && !interactionRecordFormCtrl.newInteractionRecord.interaction_record_content }">
+            <new-field
+              field="interactionRecordFormCtrl.interaction_record_form.interaction_record_content"
+              model="interactionRecordFormCtrl.newInteractionRecord"
+              property="'interaction_record_content'"
+              required="interactionRecordFormCtrl.interaction_record_form.interaction_record_content.required"
+              disabled="interactionRecordFormCtrl.interaction_record_form.interaction_record_content.disabled"
+              wide="interactionRecordFormCtrl.interaction_record_form.interaction_record_content.wide"
+              hide-label="interactionRecordFormCtrl.interaction_record_form.interaction_record_content.hideLabel"
+              dropdown-append-contact-filter="interactionRecordFormCtrl.dropdownAppendContactFilter"
+              not-trigger-formula="true" >
+            </new-field>
+          </div>
+        </aside>
+      </div>
+      <div class="white-content b-b-1 mini-wrapper more-fields-wrapper">
+        <div class="hbox mb-5">
+          <aside class="width-90 nowrap">
+            <div>
+              <button
+                type="button"
+                class="button button-white-light-border dropdown-toggle nowrap btn-more-fields-page-interaction-record-form"
+                data-toggle="collapse"
+                data-target="#extra_fields-interaction-record"
+                ng-init="interactionRecordFormCtrl.onInitCollapse('extra_fields-interaction-record');"
+              >
+                <span class="d-flex align-items-center justify-content-center gap-flex-10">
+                  <span class="leading-1 text-action">
+                    <i class="far fa-list-alt"></i>
+                  </span>
+                  <span ng-if="!interactionRecordFormCtrl.is_open_collapse">
+                    Mais campos
+                  </span>
+                  <span  ng-if="interactionRecordFormCtrl.is_open_collapse">
+                    Menos campos
+                  </span>
+                  <span class="leading-1" style="font-size: 15px;">
+                    <i class="fal fa-angle-down" ng-if="!interactionRecordFormCtrl.is_open_collapse"></i>
+                    <i class="fal fa-angle-up" ng-if="interactionRecordFormCtrl.is_open_collapse"></i>
+                  </span>
+                </span>
+              </button>
+            </div>
+          </aside>
+        </div>
+        <div class="collapse" id="extra_fields-interaction-record">
+          <div class="white-content">
+            <div class="hbox row-space interaction-record-extra-fields-wrapper">
+              <div class="hbox-row interaction-record-extra-field-wrapper">
+                <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10 interaction-record-extra-field-label">
+                    <div class="right-wrapper ellipsis">
+                      {{ interactionRecordFormCtrl.interaction_record_form.interaction_record_date.label }}:
+                      <span class="validation-icon-align">
+                        <field-symbol-validation field="interactionRecordFormCtrl.interaction_record_form.interaction_record_date" form="form" model="interactionRecordFormCtrl.newInteractionRecord"></field-symbol-validation>
+                      </span>
+                    </div>
+                  </aside>
+                  <aside class="v-middle interaction-record-extra-field-input">
+                    <new-field 
+                      field="interactionRecordFormCtrl.interaction_record_form.interaction_record_date" 
+                      model="interactionRecordFormCtrl.newInteractionRecord" 
+                      property="'interaction_record_date'" 
+                      required="interactionRecordFormCtrl.interaction_record_form.interaction_record_date.required" 
+                      disabled="interactionRecordFormCtrl.interaction_record_form.interaction_record_date.disabled" 
+                      wide="interactionRecordFormCtrl.interaction_record_form.interaction_record_date.wide" 
+                      hide-label="interactionRecordFormCtrl.interaction_record_form.interaction_record_date.hideLabel" 
+                      not-trigger-formula="true"
+                      dropdown-append-contact-filter="interactionRecordFormCtrl.dropdownAppendContactFilter"
+                    ></new-field>
+                  </aside>
+              </div>
+              <div class="hbox-row interaction-record-extra-field-wrapper">
+                <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10 interaction-record-extra-field-label">
+                  <div class="right-wrapper ellipsis">
+                    {{ interactionRecordFormCtrl.interaction_record_form.interaction_record_contacts.label }}:
+                    <span class="validation-icon-align">
+                      <field-symbol-validation field="interactionRecordFormCtrl.interaction_record_form.interaction_record_contacts" form="form" model="interactionRecordFormCtrl.newInteractionRecord"></field-symbol-validation>
+                    </span>
+                  </div>
+                </aside>
+                <aside class="v-middle interaction-record-extra-field-input">
+                  <new-field 
+                    field="interactionRecordFormCtrl.interaction_record_form.interaction_record_contacts" 
+                    model="interactionRecordFormCtrl.newInteractionRecord" 
+                    property="'interaction_record_contacts'" 
+                    required="interactionRecordFormCtrl.interaction_record_form.interaction_record_contacts.required" 
+                    disabled="interactionRecordFormCtrl.interaction_record_form.interaction_record_contacts.disabled" 
+                    wide="interactionRecordFormCtrl.interaction_record_form.interaction_record_contacts.wide" 
+                    not-trigger-formula="true" 
+                    hide-label="interactionRecordFormCtrl.interaction_record_form.interaction_record_contacts.hideLabel" 
+                    form="form" 
+                    dynamic-validation-new-field="true"
+                    dropdown-append-contact-filter="interactionRecordFormCtrl.dropdownAppendContactFilter"
+                  ></new-field>
+                </aside>
+              </div>
+              <div class="hbox-row interaction-record-extra-field-wrapper">
+                <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10 interaction-record-extra-field-label">
+                      <div class="right-wrapper ellipsis">
+                        {{interactionRecordFormCtrl.interaction_record_form.interaction_record_tags.label}}:
+                        <span class="validation-icon-align">
+                          <field-symbol-validation field="interactionRecordFormCtrl.interaction_record_form.interaction_record_tags" form="form" model="interactionRecordFormCtrl.newInteractionRecord"></field-symbol-validation>
+                        </span>
+                      </div>
+                    </aside>
+                    <aside class="v-middle interaction-record-extra-field-input">
+                      <new-field 
+                        field="interactionRecordFormCtrl.interaction_record_form.interaction_record_tags" 
+                        model="interactionRecordFormCtrl.newInteractionRecord" 
+                        property="'interaction_record_tags'" 
+                        required="interactionRecordFormCtrl.interaction_record_form.interaction_record_tags.required" 
+                        disabled="interactionRecordFormCtrl.interaction_record_form.interaction_record_tags.disabled" 
+                        wide="interactionRecordFormCtrl.interaction_record_form.interaction_record_tags.wide" 
+                        not-trigger-formula="true" 
+                        hide-label="interactionRecordFormCtrl.interaction_record_form.interaction_record_tags.hideLabel" 
+                        form="form" 
+                        dynamic-validation-new-field="true"
+                        dropdown-append-contact-filter="interactionRecordFormCtrl.dropdownAppendContactFilter"
+                      ></new-field>
+                    </aside>
+              </div>
+              <div class="hbox-row interaction-record-extra-field-wrapper" ng-repeat="field in interactionRecordFormCtrl.form_dynamic_field | filter: { hidden: false }">
+                <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10 interaction-record-extra-field-label">
+                  <div class="right-wrapper">
+                    <span
+                        class="d-block truncate-span ellipsis interaction-record-extra-field-label-span"
+                        uib-tooltip="{{field.label}}"
+                        tooltip-append-to-body="true"
+                        tooltip-enable="interactionRecordFormCtrl.isActiveTooltipBadge($index, field.label)">{{field.label}}:</span>
+                    <span class="validation-icon-align">
+                      <field-symbol-validation
+                        field="field"
+                        form="form"
+                        model="interactionRecordFormCtrl.newInteractionRecord"
+                        validation-callback-fn="interactionRecordFormCtrl.validationCallback">
+                      </field-symbol-validation>
+                    </span>
+                  </div>
+                </aside>
+                <aside
+                  class="v-middle interaction-record-extra-field-input"
+                  ng-class="
+                    {
+                      'invalid-input': form.$submitted && field.typeId !== 7 && field.typeId !== 19 && interactionRecordFormCtrl.invalid_fields_map[field.key],
+                      'invalid-input-ploomes-host': form.$submitted && (field.typeId === 7 || field.typeId === 19) && interactionRecordFormCtrl.invalid_fields_map[field.key]
+                    }
+                  ">
+                  <new-field
+                    field="field"
+                    model="interactionRecordFormCtrl.newInteractionRecord"
+                    property="field.key"
+                    required="field.required"
+                    disabled="field.disabled"
+                    wide="field.wide"
+                    not-trigger-formula="true"
+                    dropdown-append-contact-filter="interactionRecordFormCtrl.dropdownAppendContactFilter"
+                    hide-label="true">
+                  </new-field>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

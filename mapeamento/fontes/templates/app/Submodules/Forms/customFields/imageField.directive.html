@@ -1,0 +1,18 @@
+<div class="input-group">
+  <input
+    ng-model="model"
+    ng-required="required"
+    ng-disabled="disabled"
+    name="{{field.key}}"
+    class="form-control input-sm min-width-image-field"
+    uib-tooltip="{{ model }}"
+    tooltip-append-to-body="true"
+    tooltip-placement="auto top"
+    aria-label="{{ 'ARIA_LABELS.FIELD.IMAGE' | translate_with_replace: { fieldLabel: field.label } }}"
+  />
+  <div class="input-group-btn dropdown" ng-if="!disabled">
+    <a class="btn button button-white" ng-disabled="disabled" href ng-click="imageFieldCtrl.openImagePopup()">
+      {{ 'GENERICS.SELECT' | translate }}...
+    </a>
+  </div>
+</div>

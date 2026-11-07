@@ -1,4 +1,3 @@
-using AST.Comercial.Application.Dtos;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +10,16 @@ namespace AST.Comercial.Controllers;
 public class FunisController(IFunilServico servico) : ODataController
 {
     [EnableQuery]
-    public IQueryable<FunilDto> Get() => servico.ObterTodos();
+    public IQueryable<Funil> Get() => servico.ObterTodos();
 
     [EnableQuery]
-    public async Task<ActionResult<FunilDto>> Get(long key)
+    public async Task<ActionResult<Funil>> Get(long key)
     {
         var resultado = await servico.ObterPorIdAsync(key);
         return resultado is null ? NotFound() : Ok(resultado);
     }
 
-    public async Task<ActionResult<FunilDto>> Post([FromBody] Delta<Funil> delta)
+    public async Task<ActionResult<Funil>> Post([FromBody] Delta<Funil> delta)
     {
         var resultado = await servico.CriarAsync(delta);
         return Created(resultado);
@@ -40,12 +39,12 @@ public class FunisController(IFunilServico servico) : ODataController
 
     [EnableQuery]
     [HttpGet("odata/Funis({key})/Etapas")]
-    public IQueryable<EtapaFunilDto> ObterEtapas(long key) => servico.ObterEtapas(key);
+    public IQueryable<EtapaFunil> ObterEtapas(long key) => servico.ObterEtapas(key);
 
     [HttpPost("odata/Funis({key})/Etapas")]
-    public async Task<ActionResult<EtapaFunilDto>> CriarEtapa(long key, [FromBody] Delta<EtapaFunil> delta)
+    public async Task<ActionResult<EtapaFunil>> CriarEtapa(long key, [FromBody] Delta<EtapaFunil> delta)
     {
-        var resultado = await servico.CriarEtapaAsync(delta);
+        var resultado = await servico.CriarEtapaAsync(key, delta);
         return Created(resultado);
     }
 }

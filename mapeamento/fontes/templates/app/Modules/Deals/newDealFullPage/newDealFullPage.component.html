@@ -1,0 +1,103 @@
+<div class="vbox small-header" ng-form="new_deal_form">
+    <header ng-show="!$ctrl.documentEntityPreviewOpened">
+        <div class="white-content b-b-1 side-wrapper height-40">
+            <div class="hbox stretch">
+                <aside class="v-middle">
+                    <div class="font-thin font-title big-simple-inline max-width-400 ellipsis align-middle nowrap">
+                        {{ $ctrl.buildHeaderTitle() }}
+                    </div>
+                </aside>
+                <aside class="v-middle text-right" ng-if="$ctrl.show_pipeline_list">
+                    <div class="mini-side-wrapper">
+                        <pipeline-search-input on-search="$ctrl.onPipelineSearch"></pipeline-search-input>
+                        <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="$ctrl.closePipelineList()">
+                            <i class="fal fa-times"></i>
+                        </a>
+                    </div>
+                </aside>
+                <aside class="v-middle text-right" ng-if="!$ctrl.show_pipeline_list">
+                    <div class="mini-side-wrapper">
+                        <a class="btn button button-white dropdown-toggle border-left-square" data-toggle="dropdown" aria-expanded="false" ng-click="$ctrl.openPipelineList()">
+                            <span class="text-action">
+                                <i class="fal button-icon" ng-class="$ctrl.selected_pipeline.pipeline_icon.Class" ng-style="{'color': $ctrl.invertColor($ctrl.selected_pipeline.pipeline_icon_color)}"></i>
+                            </span>
+                            {{ 'DEALS.FUNNEL' | translate }}: {{ $ctrl.selected_pipeline.Name }}<i class="fal fa-angle-down dropdown-sign"></i>
+                          </a>
+                          <a class="button button-white nowrap" ng-click="$ctrl.openModal()">
+                            <span class="text-action"><i class="button-icon fal fa-times"></i></span>
+                            {{ 'GENERICS.CANCEL' | translate}}
+                          </a>
+                        <div class="button button-action position-relative pull-right width-100 full-page-loading-tooltip"
+                            ng-class="{ 'disabled': $ctrl.loading || !$ctrl.selected_pipeline || $ctrl.disabled_button_save }"
+                            ng-click="$ctrl.submitControl($ctrl.new_deal, new_deal_form)"
+                            ng-if="!$ctrl.formulaCalculating && !$ctrl.externalFormulaCalculating && !$ctrl.no_quote_template">
+                            <i class="fas fa-save button-icon"></i>
+                            {{ 'GENERICS.SAVE' | translate }}
+                            <loading-tooltip loading="$ctrl.loading" form="new_deal_form" use-default-icon="true"></loading-tooltip>
+                        </div>
+
+                        <div ng-if="$ctrl.formulaCalculating || $ctrl.externalFormulaCalculating"
+                            class="button button-action position-relative pull-right width-110 disabled full-page-loading-tooltip"
+                            uib-tooltip="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.WAIT_END_OF_CALCULATION' | translate }}"
+                            tooltip-append-to-body="true"
+                            tooltip-placement="bottom">
+                            {{ 'GENERICS.WAIT' | translate }}
+                            <loading-tooltip loading="$ctrl.formulaCalculating || $ctrl.externalFormulaCalculating" form="edit_quote_form" use-default-icon="true">
+                            </loading-tooltip>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </header>
+    <div class="hbox stretch white-content" ng-show="$ctrl.initial_load && !$ctrl.show_pipeline_list">
+        <aside class="overflow-hidden width-550">
+            <div class="vbox scroll-shadow darkest-background-shadow"
+                ng-class="{ 'deals-vbox': !(model || $ctrl.selected_pipeline.pipeline.stages.length === 1), 'document-entity-preview-inherit': $ctrl.documentEntityPreviewOpened }">
+                <section class="scrollable scroll-shadow-container" ng-if="$ctrl.can_load_form">
+                    <div ng-show="!$ctrl.documentEntityPreviewOpened">
+                        <div class="wizard arrange-mid" ng-hide="model || $ctrl.selected_pipeline.pipeline.stages.length === 1">
+                            <a ng-repeat="stage in $ctrl.selected_pipeline.pipeline.stages track by $index"
+                                ng-click="$ctrl.changeStage($index)"
+                                ng-style="{'width': 100/$ctrl.selected_pipeline.pipeline.stages.length + '%'}"
+                                ng-class="{'past-stage': $index <= $ctrl.selected_stage_index, 'disabled-wizard': $ctrl.selected_pipeline.pipeline.must_pass_all_stages && $index > $ctrl.selected_stage_index}"
+                                href tooltip-placement="bottom" uib-tooltip="{{stage.Name}}" tooltip-append-to-body="true">
+                                <div>{{stage.Name}}</div>
+                            </a>
+                        </div>
+                        <div class="line line-border arrange-top"></div>
+                        <div class="gap-15"></div>
+                        <div ng-repeat="section in ::$ctrl.sections track by $index">
+                            <div ng-if="section.Id === 'null'">
+                                <forms model="$ctrl.new_deal" fields="$ctrl.forms[$index]" form="new_deal_form"
+                                    formula-trigger-hide-or-disable="true"></forms>
+                                <div class="gap-20"></div>
+                            </div>
+                            <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+                                <modal-section section-form="new_deal_form" name="section.name" section-id="section.Id">
+                                    <forms model="$ctrl.new_deal" fields="$ctrl.forms[$index]" form="new_deal_form"
+                                        formula-trigger-hide-or-disable="true" name="'section_form_' + section.Id"></forms>
+                                </modal-section>
+                                <div class="gap-20"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line line-border arrange-top"></div>
+                    <div class="vbox" ng-class="{ 'overflow-hidden': $ctrl.documentEntityPreviewOpened }">
+                        <new-quote-full-page deal="$ctrl.new_deal" deal-form="$ctrl.forms" new-quote-form="new_deal_form"></new-quote-full-page>
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </div>
+    <div class="vbox" ng-if="$ctrl.initial_load && $ctrl.show_pipeline_list">
+        <section class="scrollable">
+            <new-deal-pipeline-selector-full-page
+                pipelines="$ctrl.pipelines"
+                select-pipeline-fn="$ctrl.selectPipelineCallback"
+                search-text="$ctrl.pipelineSearchText"
+            ></new-deal-pipeline-selector-full-page>
+            <div class="gap-40"></div>
+        </section>
+    </div>
+</div>

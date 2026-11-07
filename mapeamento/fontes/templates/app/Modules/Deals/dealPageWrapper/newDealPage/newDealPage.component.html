@@ -1,0 +1,57 @@
+<div class="deal-or-contact-domain stretch">
+  <div class="vbox" ng-if="!$ctrl.not_found">
+    <section class="scrollable">
+      <new-deal-page-header
+        deal="$ctrl.deal_view"
+        ng-if="$ctrl.initial_load"
+        pipelines="$ctrl.pipelines"
+        edit-deal-fn="$ctrl.editDeal"
+        delete-deal-fn="$ctrl.deleteDeal"
+        extend-deal-fn="$ctrl.extendDeal"
+        current-pipeline="$ctrl.current_pipeline"
+        deal-field-status="$ctrl.deal_field_status"
+        duplicate-deal-fn="$ctrl.duplicateDeal"
+        change-pipeline-fn="$ctrl.changePipeline"
+        reload-deal-fn="$ctrl.reloadDealModel"
+        prevent-action-navigations="$ctrl.preventActionNavigations"
+        id="new-deal-page-header">
+      </new-deal-page-header>
+
+      <div class="hbox stretch fixed-size" ng-if="$ctrl.initial_load">
+        <aside class="width-500 light-background b-r-1 mini-wrapper">
+          <new-deal-page-sidebar deal="$ctrl.deal_view" extend-deal-fn="$ctrl.extendDeal"></new-deal-page-sidebar>
+        </aside>
+        <aside>
+          <div class="white-content stretch">
+            <div>
+              <deal-page-tabs model="$ctrl.deal_view" change-tab-callback-fn="$ctrl.changeTab" set-attachment-count="$ctrl.setAttachmentsCount" reload-deal-fn="$ctrl.reloadDealModel" prevent-action-navigations="$ctrl.preventActionNavigations"></deal-page-tabs>
+            </div>
+            <deal-page-main ng-if="$ctrl.current_tab"
+              model="$ctrl.deal_view"
+              ng-cloak
+              current-tab="$ctrl.current_tab"
+              attachments-count="$ctrl.attachmentsCount"
+              deal-field-status="$ctrl.deal_field_status"
+              reload-deal-fn="$ctrl.reloadDealModel"
+              prevent-action-navigations="$ctrl.preventActionNavigations"
+            ></deal-page-main>
+          </div>
+        </aside>
+      </div>
+
+      <standard-loader margin-top="15" optionalclass="'funnel-loader'" loading="!$ctrl.initial_load"></standard-loader>
+    </section>
+  </div>
+  <div class="vbox" ng-if="$ctrl.not_found">
+    <section class="scrollable">
+      <div class="hbox stretch">
+        <page-not-found></page-not-found>
+      </div>
+    </section>
+  </div>
+  <processing-indicator message="$ctrl.automationIndicatorMessage" is-visible="$ctrl.showAutomationIndicator"></processing-indicator>
+</div>
+<!-- MODALS -->
+<edit-quote-modal ng-if="$ctrl.state.current.name.includes('.duplicatequote')"></edit-quote-modal>
+<order-modal ng-if="$ctrl.state.current.name.includes('.duplicateorder')"></order-modal>
+<document-modal ng-if="$ctrl.state.current.name.includes('.duplicatedocument')"></document-modal>

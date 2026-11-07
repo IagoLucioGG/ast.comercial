@@ -1,0 +1,202 @@
+<div class="tab-pane" id="goals">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.GOALS_MODULE_ACCESS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsModule" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsModule" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_WHICH_USERS_CAN_CREATE_CONTACTS_GOALS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsContactsCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="goalsModuleOptionsCtrl.activeDealsModule || goalsModuleOptionsCtrl.activeQuoteModule">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_WHICH_USERS_CAN_CREATE_DEALS_AND_QUOTES_GOALS' | translate_sentence }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDealsCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="goalsModuleOptionsCtrl.activeOrderModule">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_WHICH_USERS_CAN_CREATE_ORDERS_GOALS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsOrdersCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="goalsModuleOptionsCtrl.activeDocumentModule">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_WHICH_USERS_CAN_CREATE_DOCUMENTS_GOALS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsDocumentsCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_WHICH_USERS_CAN_CREATE_LEADS_GOALS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsLeadsCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div> 
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_WHICH_USERS_CAN_CREATE_INTERACTION_RECORDS_GOALS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsInteractionRecordsCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_WHICH_USERS_CAN_CREATE_TASKS_GOALS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF_AND_TEAM_MEMBERS' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.FOR_YOURSELF' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.GoalsTasksCreate" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.GOALS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

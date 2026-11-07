@@ -1,0 +1,11 @@
+<div class="overflow-hidden">
+  <infos-widget form-key="{{$ctrl.form_key}}" entity-type="Deal" patch-fn="$ctrl.dealPatchFn(model)" patch-fn-callback="$ctrl.updatedModel(data, 1)" model="$ctrl.deal" new-layout="true"></infos-widget>
+</div>
+<!--<div class="gap-30" ng-if="$ctrl.contact_load && $ctrl.deal_contact"></div>-->
+<div class="overflow-hidden" ng-if="$ctrl.contact_load && $ctrl.deal_contact">
+  <infos-widget form-key="{{$ctrl.deal_contact.TypeId === 1 ? 'contact_company_quick_form' : 'contact_person_quick_form'}}" entity-type="Contact" patch-fn="$ctrl.contactPatchFn(model)" patch-fn-callback="$ctrl.updatedModel(data, 2)" model="$ctrl.deal_contact" replace-section-title="{{$ctrl.deal_contact.Name}}" replace-section-title-icon="{{$ctrl.deal_contact.TypeId === 1 ? 'fal fa-industry' : 'fal fa-user'}}" replace-section-title-link="contact({ contactid: {{$ctrl.deal_contact.Id}} })" new-layout="true"></infos-widget>
+</div>
+<!--<<div class="gap-30" ng-if="$ctrl.deal.PersonId && $ctrl.person_load && $ctrl.deal_person"></div>-->
+<div class="overflow-hidden" ng-if="$ctrl.deal.PersonId && $ctrl.person_load && $ctrl.deal_person">
+  <infos-widget form-key="contact_person_quick_form" entity-type="Contact" patch-fn="$ctrl.contactPatchFn(model)" patch-fn-callback="$ctrl.updatedModel(data, 3)" model="$ctrl.deal_person" replace-section-title="{{$ctrl.deal_person.Name}}" replace-section-title-icon="fal fa-user" replace-section-title-link="contact({ contactid: {{$ctrl.deal_person.Id}} })" new-layout="true"></infos-widget>
+</div>

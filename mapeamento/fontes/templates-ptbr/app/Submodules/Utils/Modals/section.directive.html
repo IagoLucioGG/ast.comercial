@@ -1,0 +1,29 @@
+<div>
+  <div class="side-wrapper">
+    <a
+      href
+      role="button"
+      class="button font-regular-size text-left button-full-width button-neutral-gray"
+      ng-class="{ 'button-neutral-gray': useLightButton, 'button-neutral-gray': !useLightButton }"
+      data-toggle="collapse"
+      data-target="#toggle-section-{{sectionId}}"
+      aria-expanded="false"
+      aria-controls="{{sectionId}}"
+      ng-click="sectionCtrl.toggleCollapse()"
+      data-cy="form-section"
+      >
+      {{name}}<i class="fal fa-angle-down dropdown-sign"></i>
+      <span class="text-danger" ng-if="sectionForm && sectionForm.$submitted && sectionForm.$$controls[sectionCtrl.index].$invalid">
+        <i class="fad fa-exclamation-circle"></i>
+      </span>
+    </a>
+  </div>
+  <div class="collapse" ng-class="{'in': collapsed}" id="toggle-section-{{sectionId}}" aria-expanded="false">
+    <div class="side-wrapper">
+      <div class="clearfix b-l-1 b-r-1 b-b-1 border-bottom-fix white-content text-left neutral-background-rgba">
+        <div class="gap-10" ng-if="!productTableSelect"></div>
+        <ng-transclude></ng-transclude>
+      </div>
+    </div>
+  </div>
+</div>

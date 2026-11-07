@@ -1,0 +1,192 @@
+<div ng-if="productPartCtrl.product_parts_form.length > 0">
+  <div class="gap-15"></div>
+  <div class="side-wrapper">
+    <a class="button-neutral-gray button font-regular-size text-left button-full-width" role="button" data-toggle="collapse" data-target="#{{'product_parts_' + partIndex}}">
+      {{field.productPartName}}<i class="fal fa-angle-down dropdown-sign"></i>
+    </a>
+  </div>
+  <form class="form-group" >
+    <div class="collapse in" id="{{'product_parts_' + partIndex}}">
+      <div class="side-wrapper">
+        <div class="b-l-1 b-r-1 b-b-1 border-bottom-fix darkest-background overflow-hidden">
+          <div class="darkest-background clearfix border-bottom-fix">
+            <div class="hbox stretch" ng-if="productPartCtrl.can_load">
+              <aside class="width-50 darkest-background b-r-1 arrange-mid">
+                <table class="table table-last-line sub-products-check-table table-smaller-header dynamic-table-class height-dynamic-table table-no-last-line darkest-background side-scroll-shadow">
+                  <thead>
+                    <tr class="height-38">
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="part in productPartCtrl.initializedPartsCheck() track by part.Id">
+                      <td class="small-cell">
+                        <span ng-class="{'group-options': !(part.product_part_product && part.product_part_product[0])}">
+                          <div class="data-edit data-edit-checkbox" ng-if="!(part.product_part_required || part.disabled)">
+                            <div class="round-checkbox pull-right" ng-click="productPartCtrl.togglePart(part)">
+                              <div ng-class="part.checked ? 'b-2 file-checked': 'b-2'">
+                                <i class="fas fa-check activity-icon"></i>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="data-edit data-edit-checkbox" ng-if="(part.product_part_required || part.disabled)">
+                            <div class="round-checkbox pull-right required-checkbox-option" uib-tooltip="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.PART_REQUIRED' | translate_with_replace : { name: productPartCtrl.product_parts_field.productPartName } }}" tooltip-append-to-body="true">
+                              <div ng-class="part.checked ? 'b-2 file-checked': 'b-2'">
+                                <i class="fas fa-check activity-icon"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr ng-if="field.productPartUseSelector && (productPartCtrl.product_parts_copy | filter: { checked: false }).length > 0 && productPartCtrl.canSelectMultipleLinks(field, productPartCtrl.part_selector_field)">
+                      <td class="small-cell">
+                        <span></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </aside>
+              <aside class="regular-background position-relative parts-container">
+                <div class="vbox scroll-shadow small-neutral-shadow side-scroll-only parts-container-scroll">
+                  <section class="side-scroll-shadow-container">
+                    <table class="table table-last-line sub-products-table table-smaller-header dynamic-table-class height-dynamic-table table-no-last-line no-last-right-line">
+                      <thead>
+                        <tr>
+                          <th class="small-cell nowrap" ng-repeat="field in productPartCtrl.product_parts_form" ng-hide="field.hidden || field.defaultFormHidden">
+                            {{field.label}}
+                            <span class="field-label-alerts">
+                              <field-symbol-validation field="field" model="parentProduct" always-valid="true">
+                              </field-symbol-validation>
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="part in productPartCtrl.initializedPartsCheck() track by part.Id" ng-if="!part.hide">
+                          <td class="small-cell" ng-repeat="field in productPartCtrl.product_parts_form_map[part.unique_id] track by $index" ng-hide="field.hidden || field.defaultFormHidden">
+                            <span ng-class="{'group-options': field.key === productPartCtrl.entity_prefix + '_product_part_product' && !(part.product_part_product && part.product_part_product[0])}">
+                              <div class="product-options-group-label" ng-if="field.key === productPartCtrl.entity_prefix + '_product_part_product' && !(part.product_part_product && part.product_part_product[0]) && !(part.product_part_list && part.product_part_list[0])">
+                                {{part.product_part_group[0].Name}}
+                              </div>
+                              <div class="product-options-group-label" ng-if="field.key === productPartCtrl.entity_prefix + '_product_part_product' && !(part.product_part_product && part.product_part_product[0]) && !(part.product_part_group && part.product_part_group[0])">
+                                {{part.product_part_list[0].Name}}
+                              </div>
+                              <div class="data-edit input-group full-width">
+                                <span ng-if="field.key === productPartCtrl.entity_prefix + '_product_part_product' && part.product_part_product && part.product_part_product[0]" uib-tooltip="{{part.product_part_product[0].Name}}" tooltip-append-to-body="true">
+                                  {{part.product_part_product[0].Name}}
+                                </span>
+                                <!-- <field-symbol-validation ng-if="field.key !== productPartCtrl.entity_prefix + '_product_part_product' || (field.key === productPartCtrl.entity_prefix + '_product_part_product' && !(part.product_part_product && part.product_part_product[0]))" field="field" form="form" model="model"></field-symbol-validation> -->
+                                <div class="invisible-input input-sm form-control" disabled="disabled" ng-show="field.formHidden">
+                                  <i class="fad fa-eye-slash text-darkest-neutral"></i>
+                                </div>
+                                <new-field
+                                  ng-if="field.key !== productPartCtrl.entity_prefix + '_product_part_product'"
+                                  ng-hide="field.typeId === 2 || field.typeId === 22 || field.formHidden"
+                                  force-hide-label="true"
+                                  field="field"
+                                  model="part"
+                                  property="field.key"
+                                  required="field.required && part.checked"
+                                  disabled="productPartCtrl.disableField(part, field)"
+                                  formula-check-path-fn="productPartCtrl.checkFormulaPath"
+                                  formula-trigger-hide-or-disable="true"
+                                  wide="field.wide"
+                                  model-change-callback="productPartCtrl.modelChangeCallback(new_val, old_val, first_trigger, field, part)"
+                                  formula-scope="$parent.$parent">
+                                </new-field>
+  
+                                <new-field
+                                  ng-if="(field.key === productPartCtrl.entity_prefix + '_product_part_product' && !(part.product_part_product &&
+                                  part.product_part_product[0]) && !(part.product_part_list && part.product_part_list[0])) && field.typeId !== 2"
+                                  ng-hide="field.formHidden"
+                                  force-hide-label="true"
+                                  field="part.product_group_field"
+                                  model="part"
+                                  property="field.key"
+                                  required="field.required && part.checked"
+                                  disabled="productPartCtrl.disableField(part, field)"
+                                  formula-check-path-fn="productPartCtrl.checkFormulaPath"
+                                  formula-trigger-hide-or-disable="true"
+                                  wide="field.wide"
+                                  model-change-callback="productPartCtrl.modelChangeCallback(new_val, old_val, first_trigger, field, part)"
+                                  formula-scope="$parent.$parent">
+                                </new-field>
+  
+                                <new-field
+                                  ng-if="(field.key === productPartCtrl.entity_prefix + '_product_part_product' && !(part.product_part_product &&
+                                  part.product_part_product[0]) && !(part.product_part_group && part.product_part_group[0])) && field.typeId !== 2"
+                                  ng-hide="field.formHidden"
+                                  force-hide-label="true"
+                                  field="part.product_list_field"
+                                  model="part"
+                                  property="field.key"
+                                  required="field.required && part.checked"
+                                  disabled="productPartCtrl.disableField(part, field)"
+                                  formula-check-path-fn="productPartCtrl.checkFormulaPath"
+                                  formula-trigger-hide-or-disable="true"
+                                  wide="field.wide"
+                                  model-change-callback="productPartCtrl.modelChangeCallback(new_val, old_val, first_trigger, field, part)"
+                                  formula-scope="$parent.$parent">
+                                </new-field>
+  
+                                <a
+                                  href
+                                  ng-if="field.typeId === 2 || field.typeId === 22"
+                                  ng-hide="field.formHidden"
+                                  inline-edit
+                                  model="part"
+                                  properties="[field.key]"
+                                  has-dynamic-field="field.dynamic"
+                                  patch-api="'Contacts'"
+                                  submit-fn="productPartCtrl.textAreaEdit(item, field_key)"
+                                  non-editable="!(field.inlineEditable || field.typeId === 22)">
+                                    <span ng-if="productPartCtrl.new_sanitize_front && part[field.key] && field.typeId === 2" ng-bind-html="productPartCtrl.sanitizeHTML(part[field.key]) | to_trusted"></span>
+                                    <span ng-if="!productPartCtrl.new_sanitize_front && part[field.key] && field.typeId === 2" ng-bind-html="part[field.key] | to_trusted"></span>
+                                    <span class="text-muted" ng-if="part[field.key] && field.typeId === 22">
+                                      {{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.VIEW' | translate }}
+                                    </span>
+                                    <span ng-if="!part[field.key]" class="inline-link-neutral font-small collapsed">{{ 'GENERICS.ADD' | translate }}...</span>
+                                </a>
+  
+                              </div>
+                            </span>
+                          </td>
+                        </tr>
+                        <tr ng-if="field.productPartUseSelector && (productPartCtrl.product_parts_copy | filter: { checked: false }).length > 0 && productPartCtrl.canSelectMultipleLinks(field, productPartCtrl.part_selector_field)">
+                          <td class="product-select-td">
+                            <span>
+                              <div class="data-edit input-group full-width">
+                                <select-fk
+                                  model="productPartCtrl.part_selector_model"
+                                  option-change-callback="productPartCtrl.partSelect(model)"
+                                  api-url="Custom"
+                                  field="productPartCtrl.part_selector_field"
+                                  display-property="Name"
+                                  list="true"
+                                  required="false"
+                                  disabled="false"
+                                  placeholder="('GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.SELECT_PART' | translate_with_replace : { name: field.productPartName })"
+                                  custom-data-source="productPartCtrl.getUncheckedParts"
+                                  not-suggest-new-item="true">
+                                </select-fk>
+                              </div>
+                            </span>
+                          </td>
+                          <td colspan="{{productPartCtrl.product_parts_form.length - 1}}"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
+              </aside>
+            </div>
+            <standard-loader margin-top="15" loading="!productPartCtrl.can_load" optionalclass="'timeline-loader'"></standard-loader>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <div class="gap-15"></div>
+</div>

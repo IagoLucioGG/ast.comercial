@@ -1,0 +1,12 @@
+<div class="input-group-btn dropdown">
+    <button class="btn button button-white dropdown-toggle" data-toggle="dropdown" ng-disabled="disabled" aria-haspopup="true" aria-expanded="more_options">
+        {{currencyCtrl.current_currency}}
+    </button>
+    <ul class="dropdown-menu white-dropdown-menu" aria-labelledby=" more_options">
+        <li ng-repeat="currency in currencyCtrl.currencies">
+            <a href class="white-dropdown-link" ng-click="currencyCtrl.changeCurrency(currency)">
+                {{::currency.Symbol}}
+            </a>
+        </li>
+    </ul>
+</div>

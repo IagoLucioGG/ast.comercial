@@ -1,0 +1,144 @@
+<reset-password ng-if="$ctrl.state.current.name.includes('.resetpassword') && $ctrl.ready_to_reset_password"></reset-password>
+<div class="vbox stretch" ng-if="$ctrl.initial_load" ng-hide="$ctrl.state.current.name.includes('docgenerator') || $ctrl.state.current.name.includes('ai-chat-form')">
+  <section>
+    <sandbox-banner sandbox-environment="$ctrl.self.Account.IsSandboxAccount" sandbox-next-refresh-date="$ctrl.self.Account.SandboxNextRefreshDate"></sandbox-banner>
+    <degraded-data-banner mode="$ctrl.getFieldsLoadMode()" on-reload="$ctrl.reloadPage"></degraded-data-banner>
+    <pop-up-navigation></pop-up-navigation>
+    <div class="hbox stretch users-online-fix w-100 h-100 f-1 fd-row" ng-if="!$ctrl.first_load_error || $ctrl.isBlockExpiredState()" ng-style="($ctrl.self.Account.IsSandboxAccount || $ctrl.getFieldsLoadMode() !== 'fresh') && { 'height': 'calc(100% - ' + (($ctrl.self.Account.IsSandboxAccount ? 36 : 0) + ($ctrl.getFieldsLoadMode() !== 'fresh' ? 36 : 0)) + 'px)' }">
+      <aside class="td-quickly position-relative">
+        <left-side-menu ng-if="!$ctrl.isBlockExpiredState()" ></left-side-menu>
+      </aside>
+      <aside class="d-flex-important f-1 fd-col ovf-hidden bg-app test-dias-class">
+        <horizontal-menu
+          ng-if="!$ctrl.first_load_error"
+          class="zi-999"
+          should-fetch-exportation-queue="$ctrl.shouldFetchExportationQueue"
+        ></horizontal-menu>
+        <div ui-view="app" class="position-relative f-1 bg-app app-wrapper-header-height-hack"></div>
+        <neppo ng-if="!$ctrl.disabledNeppo" ng-hide="$ctrl.state.current.name.includes('editpipeline')"></neppo>
+      </aside>
+      <aside
+        id="users-status-sidebar-size-slide"
+        ng-if="(($ctrl.self.Account.ChatModule && $ctrl.self.Profile.ChatModule) || $ctrl.self.Account.UsersOnlineModule)"
+        class="darker-content size-slide aside-slide width-200 position-relative"
+        ng-style="$ctrl.users_sidebar_start_open ? { 'display': 'table-cell' } : { 'display': 'none' }"
+        ng-class="{ 'expanded-online-users': $ctrl.users_sidebar_extended, 'minified-online-users': !$ctrl.users_sidebar_extended, 'hide-size-slide': !$ctrl.users_sidebar_start_open }">
+          <mini-chat ng-if="$ctrl.selected_chat" chat="$ctrl.selected_chat"></mini-chat>
+          <users-status-sidebar class="vbox" chat-initialized="$ctrl.chat_initialized"></users-status-sidebar>
+      </aside>
+    </div>
+    <div class="vbox all-in-center-flex" ng-if="$ctrl.first_load_error && !$ctrl.isBlockExpiredState()">
+      <system-error-fallback></system-error-fallback>
+    </div>
+  </section>
+
+  <!-- GENERAL MODALS -->
+  <menu-module-config ng-if="$ctrl.isAiBuilderEnabled()"></menu-module-config>
+  <tags-modal ng-if="$ctrl.state.current.name.endsWith('.newtag')" modal-id="new_tag_modal"></tags-modal>
+  <new-task ng-if="$ctrl.state.current.name.endsWith('.newtask')" modal-id="new_task"></new-task>
+  <task-modal ng-if="$ctrl.state.current.name.endsWith('.task')" modal-id="main_task_modal" task-id="$ctrl.state.params.id"></task-modal>
+  <new-deal-modal ng-if="$ctrl.state.current.name.endsWith('.newdeal') || $ctrl.state.current.name.endsWith('.editdeal')" modal-id="new_deal_modal" current-pipeline="$ctrl.state.params.pipeline" model="$ctrl.state.params.model"></new-deal-modal>
+  <new-quote-outside-modal ng-if="$ctrl.state.current.name.endsWith('newquotelegacy')"></new-quote-outside-modal>
+  <new-contact-modal ng-if="$ctrl.state.current.name.endsWith('.newcompany') || $ctrl.state.current.name.endsWith('.newperson') || $ctrl.state.current.name.endsWith('.editcompany') || $ctrl.state.current.name.endsWith('.editperson')" modal-id="new_contact_modal" type="$ctrl.state.params.type" model="$ctrl.state.params.model"></new-contact-modal>
+  <new-email ng-if="$ctrl.state.current.name.endsWith('.newemail')" modal-id="new_email_modal"></new-email>
+  <email-directive ng-if="$ctrl.state.current.name.endsWith('.email')" modal-id="email_modal"></email-directive>
+  <mass-edit ng-if="$ctrl.state.current.name.endsWith('.massedit')" modal-id="mass_edit"></mass-edit>
+  <order-modal ng-if="$ctrl.state.current.name.endsWith('.neworder')" modal-id="new_order_modal"></order-modal>
+  <document-modal ng-if="$ctrl.state.current.name.endsWith('.newdoccontact') || $ctrl.state.current.name.endsWith('.newdocument') || $ctrl.state.current.name.endsWith('.newdocdeal')"></document-modal>
+  <new-lead-modal ng-if="$ctrl.state.current.name.endsWith('.newlead')" modal-id="new_lead_modal"></new-lead-modal>
+  <lead-modal ng-if="$ctrl.state.current.name.endsWith('.lead')" modal-id="lead_modal"></lead-modal>
+  <lead-conversion-modal ng-if="$ctrl.state.current.name.endsWith('.convertlead')" modal-id="lead_conversion_modal"></lead-conversion-modal>
+  <new-product-entity-modal ng-if="($ctrl.state.current.name.endsWith('.newproduct') || $ctrl.state.current.name.endsWith('.newgroup') || $ctrl.state.current.name.endsWith('.newfamily') || $ctrl.state.current.name.endsWith('.newlist') || $ctrl.state.current.name.endsWith('.newpart'))" modal-id="new_product_entity_modal"></new-product-entity-modal>
+  <product-entity-modal ng-if="($ctrl.state.current.name.endsWith('.product') || $ctrl.state.current.name.endsWith('.group') || $ctrl.state.current.name.endsWith('.family') || $ctrl.state.current.name.endsWith('.productlist') || $ctrl.state.current.name.endsWith('.part'))" modal-id="product_entity_modal"></product-entity-modal>
+  <self-modal ng-if="$ctrl.state.current.name.endsWith('.self')"></self-modal>
+  <deal-quotes ng-if="$ctrl.state.current.name.endsWith('.dealquotes')"></deal-quotes>
+  <new-cpq-deal-quotes ng-if="$ctrl.state.current.name.endsWith('.newcpqdealquotesfororder')" type="'order'"></new-cpq-deal-quotes>
+  <new-cpq-deal-quotes ng-if="$ctrl.state.current.name.endsWith('.newcpqdealquotesfordocument')" type="'document'"></new-cpq-deal-quotes>
+  <goal-modal ng-if="$ctrl.state.current.name.endsWith('newgoal') || $ctrl.state.current.name.endsWith('editgoal')"></goal-modal>
+  <new-interaction-record-modal ng-if="$ctrl.state.current.name.endsWith('.newinteractionrecord')" modal-id="interaction_record_modal"></new-interaction-record-modal>
+  <interaction-record-modal ng-if="$ctrl.state.current.name.endsWith('.interactionrecord')" modal-id="interaction_record_modal"></interaction-record-modal>
+  <whatsapp-coex-raw-content-modal ng-if="$ctrl.state.current.name.endsWith('.whatsappcoexinteractionrecord')" interaction-record-id="$ctrl.state.params.interactionrecordid" on-close="$ctrl.closeWhatsAppCoexModal"></whatsapp-coex-raw-content-modal>
+  <contact-product-modal ng-if="$ctrl.state.current.name.endsWith('.contactproduct')"></contact-product-modal>
+  <product-part-groups-modal ng-if="$ctrl.state.current.name.endsWith('.partgroups')"></product-part-groups-modal>
+  <product-lists-modal ng-if="$ctrl.state.current.name.endsWith('.productlists')"></product-lists-modal>
+  <document-share-modal ng-if="$ctrl.state.current.name.endsWith('.share')"></document-share-modal>
+  <user-config-modal ng-if="$ctrl.state.current.name === 'user.config'"></user-config-modal>
+  <report-panel-modal ng-if="$ctrl.state.current.name.endsWith('reportslegacy.panel.newpanel') || $ctrl.state.current.name.endsWith('reportslegacy.panel.editpanel')"></report-panel-modal>
+  <report-chart-modal ng-if="$ctrl.state.current.name.endsWith('chart')"></report-chart-modal>
+  <merge-modal ng-if="$ctrl.mergeModalType($ctrl.state.current.name)" type="$ctrl.mergeModalType($ctrl.state.current.name)"></merge-modal>
+  <changelog-modal ng-if="$ctrl.state.current.name.endsWith('.log')"></changelog-modal>
+  <ploo-store-modal ng-if="$ctrl.state.current.name.endsWith('ploostore')"></ploo-store-modal>
+  <processing-queue ng-if="$ctrl.state.current.name.endsWith('.processingqueue')"></processing-queue>
+
+  <!-- MODAL CONFIRM WHATSAPP-->
+  <modal-confirm ng-if="$ctrl.modalWhatsapp.show" on-close="$ctrl.modalWhatsapp.onClose" on-shown="$ctrl.modalWhatsapp.onShow" buttons="$ctrl.modalWhatsapp.buttons" on-save="$ctrl.modalWhatsapp.onSave" modal-id="modal-confirm-whatsapp-{{$ctrl.modalWhatsapp.id}}">
+    <div class="text-regular text-left mb-20" ng-bind-html="('MODALS.WHATSAPP.BODY' | translate) | to_trusted"></div>
+    <div class="modal_body_whatsapp" ng-if="$ctrl.modalWhatsapp.showBody">
+      <div class="modal_body_whatsapp-box">
+        <div class="modal_body_whatsapp-brand">
+          <select-ddi
+            ref-wrapper="'.modal_body_whatsapp-brand'"
+            prefix-class="'confirm_modal_whatsapp'"
+            data="$ctrl.modalWhatsapp.listDDI"
+            show-label-selected-option="false"
+            on-select="$ctrl.modalWhatsapp.onSelectDDI"
+          ></select-ddi>
+        </div>
+        <div class="modal_body_whatsapp-wrapper-input">
+          <input
+            type="tel"
+            name="modal-whatsapp-number"
+            ng-model="$ctrl.modalWhatsapp.model.phoneNumber"
+            ref="$ctrl.modalWhatsapp.refInput"
+            ng-init="$ctrl.modalWhatsapp.onInitWhatsappInput()"
+          >
+        </div>
+        <div class="modal_body_whatsapp-badge">
+          {{ $ctrl.modalWhatsapp.model.typeName }}
+        </div>
+      </div>
+    </div>
+  </modal-confirm>
+
+  <attachments-item-modal ng-if="$ctrl.state.current.name === 'library.item'"></attachments-item-modal>
+
+  <field-config ng-if="$ctrl.state.current.name.endsWith('fieldconfig') && !$ctrl.state.current.name.includes('docgenerator')"></field-config>
+  <initial-info></initial-info>
+  <new-message ng-if="$ctrl.state.current.name.includes('.newmessage')"></new-message>
+  <message-modal ng-if="$ctrl.state.current.name.includes('.message')"></message-modal>
+  <logs-api-modal ng-if="$ctrl.state.current.name.endsWith('apilog')"></logs-api-modal>
+
+  <new-importation
+    entity="$ctrl.importationEntity"
+    modal-id="importation"
+    ng-if="$ctrl.state.current.name.endsWith('.contactimportation')
+    || $ctrl.state.current.name.endsWith('.contactproductimportation')
+    || $ctrl.state.current.name.endsWith('.dealimportation')
+    || $ctrl.state.current.name.endsWith('.interactionrecordsimportation')
+    || $ctrl.state.current.name.endsWith('.leadimportation')
+    || $ctrl.state.current.name.endsWith('.productimportation')">
+  </new-importation>
+
+  <external-forms-modal ng-if="$ctrl.state.current.name.endsWith('.externalforms')"></external-forms-modal>
+
+  <nps-survey ng-if="$ctrl.self.ShowNPSSurvey" close-survey-fn="$ctrl.closeNpsSurvey"></nps-survey>
+
+  <item-quick-select-angular-wrapper
+    ng-if="$ctrl.item_quick_select_open"
+    save-selected-items-callback="$ctrl.saveSelectedItemsCallback"
+    cancel-selected-items-callback="$ctrl.cancelSelectedItemsCallback"
+    current-selected-items="$ctrl.items">
+  </item-quick-select-angular-wrapper>
+
+  <general-loader></general-loader>
+</div>
+
+<div class="d-flex-important fd-col h-100 w-100" ng-if="$ctrl.initial_load && $ctrl.state.current.name.includes('docgenerator')" ng-cloak>
+  <sandbox-banner sandbox-environment="$ctrl.self.Account.IsSandboxAccount" sandbox-next-refresh-date="$ctrl.self.Account.SandboxNextRefreshDate"></sandbox-banner>
+  <div class="position-relative f-1" ui-view="docgen"></div>
+</div>
+
+<div class="d-flex-important fd-col h-100 w-100" ng-if="$ctrl.initial_load && $ctrl.state.current.name.includes('ai-chat-form')" ng-cloak>
+  <sandbox-banner sandbox-environment="$ctrl.self.Account.IsSandboxAccount" sandbox-next-refresh-date="$ctrl.self.Account.SandboxNextRefreshDate"></sandbox-banner>
+  <div class="position-relative f-1" ui-view="aichatform"></div>
+</div>

@@ -1,0 +1,95 @@
+<div class="vbox small-header">
+  <header class="regular-header new-header b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <ul class="nav nav-tabs border-tabs special-tabs display-inline-block pull-left">
+          <li ng-repeat="entity in documentTemplateCtrl.entities|filter:{ Active: true }" ng-class="{'active': entity.Name === documentTemplateCtrl.current_entity.Name}">
+            <a class="text-muted active" href ng-click="documentTemplateCtrl.getTemplates(entity)" data-cy="administration-document-templates-entity-button">
+              {{entity.Name}}
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <aside class="v-middle clearfix">
+        <a class="button button-action pull-right" ng-if="documentTemplateCtrl.current_entity" ng-click="documentTemplateCtrl.goToEditor()" data-cy="administration-document-templates-new-entity-button">
+          {{ 'DOCUMENT_TEMPLATE.NEW_TEMPLATE' | translate_with_replace: { name: documentTemplateCtrl.current_entity.Name.toLowerCase() } }}
+        </a>
+        <div class="simple-inline width-200 v-bottom m-r-xs pull-right">
+          <div class="input-group">
+            <input class="form-control input-sm light-background" placeholder="Pesquisar" ng-model="documentTemplateCtrl.template_name_filter" ng-model-options="{debounce:300}">
+            <div class="input-group-btn">
+              <a class="btn button button-neutral-gray special-search-button">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <section class="scrollable tab-section">
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <standard-loader ng-show="!documentTemplateCtrl.can_load" loading="!documentTemplateCtrl.can_load"></standard-loader>
+        <table class="table table-static table-hover white-table" ng-show="documentTemplateCtrl.can_load">
+          <tr class="neutral-line">
+            <td class="cursor-pointer" ng-click="documentTemplateCtrl.sortBy('Name')">
+              <span class="text-neutral ng-binding">Nome</span>
+              <i ng-if="documentTemplateCtrl.sort_column === 'Name'" class="fas m-l-xs" ng-class="documentTemplateCtrl.sort_reverse ? 'fa-sort-amount-down' : 'fa-sort-amount-up'"></i>
+            </td>
+            <td class="width-10 cursor-pointer nowrap" ng-click="documentTemplateCtrl.sortBy('Default')">
+              <span class="text-neutral ng-binding">Padrão</span>
+              <i ng-if="documentTemplateCtrl.sort_column === 'Default'" class="fas m-l-xs" ng-class="documentTemplateCtrl.sort_reverse ? 'fa-sort-amount-down' : 'fa-sort-amount-up'"></i>
+            </td>
+            <td class="width-10 cursor-pointer nowrap" ng-click="documentTemplateCtrl.sortBy('NewFormat')">
+              <span class="text-neutral ng-binding">Editor</span>
+              <i ng-if="documentTemplateCtrl.sort_column === 'NewFormat'" class="fas m-l-xs" ng-class="documentTemplateCtrl.sort_reverse ? 'fa-sort-amount-down' : 'fa-sort-amount-up'"></i>
+            </td>
+            <td class="width-10">
+              <span class="text-neutral ng-binding">Duplicar</span>
+            </td>
+            <td class="text-right width-10">
+              <span class="text-neutral ng-binding">Excluir</span>
+            </td>
+          </tr>
+          <tr ng-repeat="template in documentTemplateCtrl.templates | filter:{ Name: documentTemplateCtrl.template_name_filter }:false | orderBy:documentTemplateCtrl.sort_column:documentTemplateCtrl.sort_reverse track by template.Id">
+            <td ng-click="documentTemplateCtrl.goToEditor(template)">
+              <div
+                style="display:flex;"
+                inline-edit 
+                model="template"
+                properties="['document_template_name']"
+                submit-fn="documentTemplateCtrl.renameTemplate(item)"
+                no-pull-right="true"
+                custom-popover-title="Editar nome"
+                >
+                <strong>{{template.Name}}</strong>
+              </div>
+            </td>
+            <td class="text-right">
+              <div class="switch">
+                <input class="cmn-toggle cmn-toggle-round-flat" id="{{template.Id}}" ng-model="template.Default" ng-checked="template.Default" type="checkbox" ng-change="documentTemplateCtrl.changeDefault(template)">
+                <label for="{{template.Id}}"></label>
+              </div>
+            </td>
+            <td class="text-right">
+              {{template.NewFormat ? '2.0' : '1.0'}}
+            </td>
+            <td class="text-right">
+              <a href class="button button-white" ng-show="template.Editable && template.NewFormat" ng-click="documentTemplateCtrl.duplicateTemplate(template)">
+                <span class="font-big"><i class="fal fa-copy"></i></span>
+              </a>
+            </td>
+            <td class="text-right">
+              <span ng-show="template.Editable" uib-tooltip="Não é possível excluir todos os modelos de venda" tooltip-enable="documentTemplateCtrl.templates.length <= 1" tooltip-placement="left">
+                <a href class="button button-white" ng-class="{'disabled': documentTemplateCtrl.templates.length <= 1}" ng-click="documentTemplateCtrl.templates.length > 1 && documentTemplateCtrl.deleteTemplate(template)" ng-click-confirm="excluir o modelo &quot;{{template.Name}}&quot;?" reversible="false">
+                  <span class="font-big"><i class="fal fa-trash"></i></span>
+                </a>
+              </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>

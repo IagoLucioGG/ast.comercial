@@ -1,0 +1,39 @@
+<div class="vbox small-header">
+  <header class="regular-header b-b-1 white-content header-zindex new-header goal-header-wrapper" ng-if="$ctrl.show_panel_header">
+    <div class="goal-panel-wrapper">
+      <div class="goal-panel-text-wrapper text-ellipsis" id="goal-panel-text-wrapper" uib-tooltip="{{ $ctrl.panel.Name }}" tooltip-append-to-body="true" tooltip-enable="$ctrl.setTooltip('goal-panel-text-wrapper')">
+        <span class="font-thin font-title goal-panel-text">
+          {{$ctrl.panel.Name}}
+        </span>
+      </div>
+      <div class="goal-panel-buttons-wrapper" ng-if="$ctrl.panel_id">
+        <a class="button button-white-no-border pull-right goal-panel-button" href open-side-menu side-menu-id="goal_side_menu">
+          <span class="text-action"><i class="fal fa-eye button-icon-margin"></i></span>
+          Exibir
+        </a>
+        <a class="button button-white-no-border pull-right open-side-slide goal-panel-button" ui-sref="{{'home.goals.panel.newgoal'}}" data-cy="goals-new-goal-button">
+          <span class="text-action"><i class="fal fa-plus-circle button-icon-margin"></i></span>
+          Nova meta
+        </a>
+      </div>
+    </div>
+  </header>
+  <section class="scrollable">
+    <div class="regular-background b-r-1 h-100 overflow-auto" ng-class="{'all-in-center-flex': $ctrl.loading || !$ctrl.loading && $ctrl.goals.length === 0}" id="containment-move-goal-card">
+      <div class="widgets-board" id="goal-card-board" ng-if="!$ctrl.loading && $ctrl.goals.length > 0" ui-sortable="$ctrl.sortable_options" ng-model="$ctrl.goals">
+        <div class="wrapper width-33-percent display-inline-block font-regular-size" ng-repeat="goal in $ctrl.goals">
+          <goal-card goal="goal"></goal-card>
+        </div>
+      </div>
+      <div class="text-center text-neutral-light font-very-big-title" ng-if="!$ctrl.loading && $ctrl.goals.length === 0">
+        <i class="font-monster-size fal fa-tasks-alt"></i>
+        <div class="gap-30"></div>
+        Nenhuma meta encontrada
+      </div>
+      <standard-loader ng-if="$ctrl.loading" optionalclass="'funnel-loader'" loading="$ctrl.loading"></standard-loader>
+    </div>
+    <side-menu side-menu-id="goal_side_menu" goals-fix="true">
+      <goals-panel-sidebar filter-change-fn="$ctrl.filterChangeFn"></goals-panel-sidebar>
+    </side-menu>
+  </section>
+</div>

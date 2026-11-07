@@ -1,0 +1,7 @@
+passo: ad_account
+url: https://app10.ploomes.com/administration/account
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

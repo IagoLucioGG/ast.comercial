@@ -1,0 +1,178 @@
+<div class="wrapper full-width display-inline-block font-regular-size" ng-show="currentDealsWidgetCtrl.current_pipeline">
+  <div class="panel white-content widget-panel big-widget new-standard-shadow">
+    <header class="regular-header b-b-1 white-content new-header">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="font-big">
+            Situação (dos:deal:aa:p) (name:deal::p)
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="dropdown pull-right">
+            <filters-menu filters="currentDealsWidgetCtrl.filters" applied-filter="currentDealsWidgetCtrl.applied_filter" filter-actions-fn="currentDealsWidgetCtrl.filterActions"></filters-menu>
+          </div>
+          <div class="dropdown pull-right" ng-if="currentDealsWidgetCtrl.pipelines.length > 0">
+            <a href class="dropdown-toggle button button-white-no-border pull-right" type="button" id="deal_views" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span class="text-action"><i class="fal fa-columns button-icon"></i></span>
+              {{currentDealsWidgetCtrl.current_pipeline.Name}}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+              <li ng-repeat="pipeline in currentDealsWidgetCtrl.pipelines" ng-hide="currentDealsWidgetCtrl.current_pipeline.Id === pipeline.Id">
+                <a href class="white-dropdown-link" ng-click="currentDealsWidgetCtrl.changePipeline(pipeline)">
+                  <span>{{pipeline.Name}}</span>
+                </a>
+              </li>
+              <li ng-if="currentDealsWidgetCtrl.pipelines.length === 1">
+                <a href class="white-dropdown-link">
+                  <span>Você possui apenas (um:pipeline:aa:s) (name:pipeline:aa:s)</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown pull-right">
+            <a href="" ng-hide="currentDealsWidgetCtrl.current_view === 'table'" class="dropdown-toggle button button-white-no-border pull-right" type="button" id="population-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="text-action"><i class="fal fa-eye button-icon"></i></span>
+              Exibir
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="population-list">
+              <div class="dropdown-subtitle">
+                Situação (dos:deal:aa:p) (name:deal::p)
+              </div>
+              <li>
+                <a class="white-dropdown-link" ng-click="currentDealsWidgetCtrl.in_progress_only = !currentDealsWidgetCtrl.in_progress_only; currentDealsWidgetCtrl.changePopulation(1); $event.stopPropagation()">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="currentDealsWidgetCtrl.in_progress_only">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle ng-binding">
+                      Em andamento
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click="currentDealsWidgetCtrl.won_only = !currentDealsWidgetCtrl.won_only; currentDealsWidgetCtrl.changePopulation(2); $event.stopPropagation()">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="currentDealsWidgetCtrl.won_only">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle ng-binding">
+                      Ganho
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click="currentDealsWidgetCtrl.lost_only = !currentDealsWidgetCtrl.lost_only; currentDealsWidgetCtrl.changePopulation(3); $event.stopPropagation()">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="currentDealsWidgetCtrl.lost_only">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle ng-binding">
+                      Perdido
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <div class="dropdown-subtitle">
+                Responsáveis (pelos:deal:aa:p) (name:deal::p)
+              </div>
+              <li>
+                <a class="white-dropdown-link" ng-click="currentDealsWidgetCtrl.user_only = !currentDealsWidgetCtrl.user_only; currentDealsWidgetCtrl.changePopulation(4); $event.stopPropagation()">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="currentDealsWidgetCtrl.user_only">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle ng-binding">
+                      (meus:deal:Aa:p) (name:deal::p) (criado:deal:aa:p)
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click="currentDealsWidgetCtrl.others_only = !currentDealsWidgetCtrl.others_only; currentDealsWidgetCtrl.changePopulation(5); $event.stopPropagation()">
+                  <div class="hbox">
+                    <aside class="width-20 v-middle">
+                      <span ng-show="currentDealsWidgetCtrl.others_only">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </aside>
+                    <aside class="font-semi-big v-middle ng-binding">
+                      (name:deal::p) dos outros
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </header>
+    <standard-loader margin-top="5" loading="currentDealsWidgetCtrl.loading"></standard-loader>
+    <table class="table white-table-with-header" ng-show="!currentDealsWidgetCtrl.loading" ng-style="currentDealsWidgetCtrl.opaque && {'opacity':'0.4'}">
+      <thead>
+        <tr>
+          <td></td>
+          <td>
+            <div class="font-bold">
+              Estágio
+            </div>
+          </td>
+          <td>
+            <div class="font-bold">
+              Quantidade
+            </div>
+          </td>
+          <td>
+            <div class="font-bold">
+              Valor
+            </div>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="stage in currentDealsWidgetCtrl.widget_view" ng-show="(stage.won_stage && currentDealsWidgetCtrl.won_only) || (stage.lost_stage && currentDealsWidgetCtrl.lost_only) || (!stage.won_stage && !stage.lost_stage)">
+          <td class="width-200">
+            <div class="height-10 margin-auto current-deals-widget-percentage-bar" ng-style="{'width': stage.percentage + '%'}" ng-class="{'gray-content': !stage.won_stage && !stage.lost_stage, 'success-content': stage.won_stage, 'delete-content': stage.lost_stage}"></div>
+          </td>
+          <td>
+            <div class="font-bold" ng-class="{ 'text-regular': !stage.won_stage && !stage.lost_stage, 'text-success': stage.won_stage, 'text-danger': stage.lost_stage }">
+              {{stage.name}}
+            </div>
+          </td>
+          <td ng-class="{'text-success': stage.won_stage, 'text-danger': stage.lost_stage, 'text-regular': !stage.won_stage && !stage.lost_stage}">
+            {{stage.num_of_deals}} {{currentDealsWidgetCtrl.current_pipeline.PluralUnitName.toLowerCase()}}
+            <span class="font-bold" ng-show="currentDealsWidgetCtrl.won_only && currentDealsWidgetCtrl.lost_only && currentDealsWidgetCtrl.in_progress_only && stage.won_stage">
+              (Taxa de conversão: {{currentDealsWidgetCtrl.conversion_rate}} %)
+            </span>
+          </td>
+          <td ng-class="{'text-success': stage.won_stage, 'text-danger': stage.lost_stage, 'text-regular': !stage.won_stage && !stage.lost_stage}">{{stage.amounts}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="font-bold">
+              {{currentDealsWidgetCtrl.all_deals_count}} {{currentDealsWidgetCtrl.current_pipeline.PluralUnitName}}
+            </div>
+          </td>
+          <td>
+            <div class="font-bold">
+              {{currentDealsWidgetCtrl.all_deals_amounts}}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  modal-title="{{ 'HOME.WIDGETS.MESSAGES_WIDGET.MESSAGE_MODAL_TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  ng-form="compose_message_form"
+  custom-height="500"
+  feature-key="new_message_modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="wrapper" ng-if="$ctrl.can_load && $ctrl.message">
+          <div class="form-group">
+            <div class="hbox fixed-size">
+              <aside class="width-55">
+                <div class="gap-3"></div>
+                <img
+                  ng-src="{{$ctrl.message.Creator.AvatarUrl}}"
+                  class="chat-avatar">
+              </aside>
+              <aside class="v-middle">
+                <div class="font-bold font-big">
+                  {{$ctrl.message.Creator.Name}}
+                </div>
+                <div class="gap-3"></div>
+                <span class="timeline-clock">
+                  <i class="fal fa-clock"></i> {{$ctrl.message.formatted_time}}
+                </span>
+                <div class="gap-15"></div>
+                <message-content-parse style="word-break: break-word" message-content="$ctrl.message.Content"></message-content-parse>
+                <message-attachments class="mtop15 display-block" attachments="$ctrl.message.Attachments"></message-attachments>
+                <div class="gap-15"></div>
+                <div class="big-simple-inline text-muted" ng-if="$ctrl.can_send_global_message || $ctrl.message.Teams.length > 0">
+                  <a href>
+                    <i class="fal fa-comment-alt-lines big-simple-line"></i>
+                    <span class="font-small">
+                      {{$ctrl.message.Comments.length > 0 ? $ctrl.message.Comments.length : '0'}}
+                    </span>
+                  </a>
+                </div>
+                <div id="{{$ctrl.message.Id}}">
+                  <comments-directive
+                    api-url="'Messages(' + $ctrl.message.Id + ')/NewComment'"
+                    comments="$ctrl.message.Comments"
+                    object-id="$ctrl.message.Id"
+                    update-comments-callback="$ctrl.onUpdateComments"
+                    timeline-interface="true">
+                  </comments-directive>
+                </div>
+              </aside>
+            </div>
+
+          </div>
+
+          <div
+            class="attach-container wrapper height-150 b-b-1 nowrap overflow-overlay darkest-background"
+            ng-if="$ctrl.file_attachments.length > 0 || $ctrl.image_attachments.length > 0">
+            <div
+              class="attach-attached position-relative display-inline-block wrapper panel medium-shadow v-top"
+              ng-repeat="file in $ctrl.file_attachments track by $index">
+              <i class="fad fa-file-alt"></i>
+              <div class="gap-15"></div>
+              <div class="font-bold width-90 ellipsis nowrap">
+                {{file.name}}
+              </div>
+            </div>
+
+            <div
+              class="image-attached position-relative display-inline-block v-top"
+              ng-repeat="image in $ctrl.image_attachments track by $index">
+              <img class="panel small-shadow" ng-src="{{image.Url}}">
+            </div>
+          </div>
+        </div>
+        <page-not-found ng-if="$ctrl.can_load && !$ctrl.message"></page-not-found>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

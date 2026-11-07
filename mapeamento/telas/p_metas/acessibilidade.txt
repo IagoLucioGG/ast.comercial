@@ -1,0 +1,77 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - list:
+        - listitem:
+          - link:
+            - /url: ""
+            - complementary: 
+            - complementary: Resumo
+        - listitem:
+          - link:
+            - /url: /goals
+            - complementary: 
+            - complementary: Metas
+    - complementary
+    - complementary:
+      - complementary:
+        - text: Painel completo
+        - link " Exibir":
+          - /url: ""
+        - link " Nova meta":
+          - /url: /goals/panel/7000015/newgoal
+        - text:  Nenhuma meta encontrada
+      - complementary:
+        - complementary: Painéis
+        - complementary: Novo
+        - link:
+          - /url: ""
+          - complementary: Painel completo
+          - complementary: 
+        - link:
+          - /url: ""
+          - complementary: Goiânia - 2026 - Abertura de Contatos
+          - complementary: 
+        - link:
+          - /url: ""
+          - complementary: Valor vendido
+          - complementary: 
+        - link:
+          - /url: ""
+          - complementary: x
+          - complementary: 
+        - link:
+          - /url: ""
+          - complementary: Vendas
+          - complementary: 
+        - link:
+          - /url: ""
+          - complementary: Contatos Rio Abertura
+          - complementary: 

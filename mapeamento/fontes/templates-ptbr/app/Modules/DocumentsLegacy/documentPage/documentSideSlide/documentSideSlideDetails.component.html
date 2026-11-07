@@ -1,0 +1,12 @@
+<div ng-if="documentSideSlideDetailsCtrl.initial_load" class="wrapper deal-or-contact-domain min-height-100-percent light-background">
+  <infos-widget ng-if="documentSideSlideDetailsCtrl.document_deal && documentSideSlideDetailsCtrl.has_deals_module" form-key="deal_quick_form" entity-type="Deal" patch-fn="documentSideSlideDetailsCtrl.dealPatchFn(model)" model="documentSideSlideDetailsCtrl.document_deal" replace-section-title="{{documentSideSlideDetailsCtrl.document_deal.Title}}" replace-section-title-icon="{{documentSideSlideDetailsCtrl.customizables.deals_module.icon_class}}" replace-section-title-link="deal({ dealid: {{documentSideSlideDetailsCtrl.document_deal.Id}} })"></infos-widget>
+
+  <infos-widget ng-if="documentSideSlideDetailsCtrl.document_contact" form-key="{{ documentSideSlideDetailsCtrl.contactQuickForm }}" entity-type="Contact" patch-fn="documentSideSlideDetailsCtrl.contactPatchFn(model)" model="documentSideSlideDetailsCtrl.document_contact" replace-section-title="{{documentSideSlideDetailsCtrl.document_contact.Name}}" replace-section-title-icon="fal {{ documentSideSlideDetailsCtrl.contactIcon }}" replace-section-title-link="contact({ contactid: {{documentSideSlideDetailsCtrl.document_contact.Id}} })"></infos-widget>
+
+  <infos-widget ng-if="documentSideSlideDetailsCtrl.document_person" form-key="contact_person_quick_form" entity-type="Contact" patch-fn="documentSideSlideDetailsCtrl.contactPatchFn(model)" model="documentSideSlideDetailsCtrl.document_person" replace-section-title="{{documentSideSlideDetailsCtrl.document_person.Name}}" replace-section-title-icon="fal fa-user" replace-section-title-link="contact({ contactid: {{documentSideSlideDetailsCtrl.document_person.Id}} })"></infos-widget>
+
+  <!-- <div class="deal-or-contact-domain">
+    <attachments-widget model="documentSideSlideDetailsCtrl.document" api-url="Documents"></attachments-widget>
+  </div> -->
+</div>
+<standard-loader margin-top="15" loading="!documentSideSlideDetailsCtrl.initial_load"></standard-loader>

@@ -1,0 +1,84 @@
+<dynamic-modal
+  modal-id="user-config-modal"
+  footer="true"
+  dark="true"
+  modal-title="Configurações do usuário"
+  toggle-modal="$ctrl.toggle_modal"
+  ng-form
+  name="user_config_form"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="gap-15"></div>
+        <form class="clearfix">
+          <div class="form-group col-sm-12" ng-if="$ctrl.fields.length > 0">
+            <a class="hbox font-title font-thin white-content b-b-1" href ng-click="$ctrl.show_general_config = !$ctrl.show_general_config">
+              <aside class="v-middle">
+                Configurações gerais
+              </aside>
+              <aside class="v-middle text-right">
+                <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !$ctrl.show_general_config, 'fa-angle-up': $ctrl.show_general_config}"></i>
+              </aside>
+            </a>
+          </div>
+          <div ng-show="$ctrl.show_general_config">
+            <language-select ng-show="$ctrl.is_self" language-select-callback-fn="$ctrl.languageChangeCallback" is-changing-for-account="false">
+            </language-select>
+            <div class="form-group col-sm-12" ng-show="$ctrl.is_self">
+              <label>
+                <span class="font-semi-big">
+                  Selecione o padrão de preenchimento do sistema
+                </span>
+                <br>
+                <small class="text-muted">
+                  Escolha um país para aplicar a máscara de preenchimento de dados, como telefone e código postal. Esta opção aplica-se apenas ao seu perfil.
+                </small>
+              </label>
+              <select class="form-control input-sm" ng-options="country.Name for country in $ctrl.mask_countries" ng-model="$ctrl.default_mask_country"></select>
+            </div>
+            <forms ng-if="$ctrl.fields.length" model="$ctrl.config_model" fields="$ctrl.fields"></forms>
+          </div>
+
+          <div class="form-group col-sm-12" ng-if="$ctrl.has_security_config_enabled">
+            <a class="hbox font-title font-thin white-content b-b-1" href ng-click="$ctrl.show_security_config = !$ctrl.show_security_config">
+              <aside class="v-middle">
+                Configurações de segurança
+              </aside>
+              <aside class="v-middle text-right">
+                <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !$ctrl.show_security_config, 'fa-angle-up': $ctrl.show_security_config}"></i>
+              </aside>
+            </a>
+          </div>
+          <div ng-show="$ctrl.show_security_config">
+            <google-mfa-auth
+              is-self="$ctrl.is_self"
+              user="$ctrl.user"
+              has-mfa-configured="$ctrl.has_mfa_configured"
+              change-mfa-configuration-callback="$ctrl.changeMfaConfigurationCallback(has_mfa_configured)">
+            </google-mfa-auth>
+          </div>
+        </form>
+      </section>
+      <section class="scrollable scroll-shadow-container" ng-if="$ctrl.initial_load && $ctrl.fields.length === 0 && !$ctrl.has_security_config_enabled">
+        <div class="gap-15"></div>
+        <div class="text-muted text-center page-not-found font-title">
+          <div class="gap-50"></div>
+          <i class="fad fa-cogs font-giant-title"></i>
+          <div class="gap-30"></div>
+          Não existem configurações de usuário habilitadas
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <aside class="v-middle" ng-if="$ctrl.initial_load && ($ctrl.fields.length > 0 || $ctrl.has_security_config_enabled)">
+      <div class="button button-action pull-right" ng-disabled="$ctrl.loading" ng-click="$ctrl.submitControl(user_config_form)">
+        <i class="button-icon fas fa-save"></i>
+        Salvar
+      </div>
+      <loading-tooltip loading="$ctrl.loading" form="user_config_form"></loading-tooltip>
+    </aside>
+  </modal-footer>
+</dynamic-modal>

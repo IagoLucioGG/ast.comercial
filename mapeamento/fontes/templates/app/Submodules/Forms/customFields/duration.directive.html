@@ -1,0 +1,22 @@
+<span ng-show="disabled">
+  <input ng-disabled="disabled" class="form-control input-sm" />
+</span>
+<span ng-show="!disabled">
+  <div class="input-group full-width">
+    <input type="number" class="form-control input-sm input-group-border-fix" ng-model="durationCtrl.model_calc" ng-change="durationCtrl.changeValue()">
+    <div class="input-group-btn">
+      <button class="btn button button-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="more_options">
+        {{durationCtrl.current_unit.Name}}
+        <i class="fal fa-angle-down dropdown-sign"></i>
+      </button>
+      <ul class="dropdown-menu pull-right white-dropdown-menu" aria-labelledby="more_options">
+        <li ng-repeat="unit in durationCtrl.time_units">
+          <a href class="white-dropdown-link" ng-click="durationCtrl.changeUnit(unit, $index)">
+            {{unit.Name}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</span>

@@ -1,4 +1,4 @@
-using AST.Comercial.Domain.Entidades;
+﻿using AST.Comercial.Domain.Entidades;
 using AST.Comercial.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +26,8 @@ public class TenantMiddleware(RequestDelegate next)
             {
                 db.EmpresaIdAtual = usuario.EmpresaId;
                 db.UsuarioAtual = usuario.Nome;
+                db.UsuarioIdAtual = usuario.Id;
+                db.UsuarioNomeAtual = usuario.Nome;
                 await next(context);
                 return;
             }
@@ -41,6 +43,10 @@ public class TenantMiddleware(RequestDelegate next)
             {
                 db.EmpresaIdAtual = empresaId;
                 db.UsuarioAtual = nomeClaim ?? "Sistema";
+                db.UsuarioNomeAtual = nomeClaim;
+                var subClaim = context.User.FindFirst("sub")?.Value
+                    ?? context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                db.UsuarioIdAtual = long.TryParse(subClaim, out var usuarioId) ? usuarioId : null;
             }
         }
 

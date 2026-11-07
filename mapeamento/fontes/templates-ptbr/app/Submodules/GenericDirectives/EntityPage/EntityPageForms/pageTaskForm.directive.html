@@ -1,0 +1,213 @@
+<div class="tab-pane active white-content b-t-1">
+  <div class="mini-top-wrapper white-content">
+    <div class="hbox">
+      <aside class="v-middle nowrap width-10">
+        <div class="simple-inline" ng-repeat="type in taskFormCtrl.all_types">
+          <a href class="button-fixed-size button-white-no-border button-fixed-size-big button-fixed-side-round" ng-click="taskFormCtrl.typeSelect(type)" ng-style="type.Id === taskFormCtrl.current_type.Id && {'background-color': type.Color}">
+          <i class="fal font-big" ng-class="type.Icon" ng-style="type.Id === taskFormCtrl.current_type.Id && {'color': 'white'}"></i>
+        </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <div class="hbox">
+    <aside class="v-middle">
+      <div class="mini-wrapper">
+        <new-field field="taskFormCtrl.task_form.task_title" model="taskFormCtrl.newTask" property="'task_title'" required="taskFormCtrl.task_form.task_title.required" wide="taskFormCtrl.task_form.task_title.wide" hide-label="taskFormCtrl.task_form.task_title.hideLabel" placeholder="{{taskFormCtrl.current_type.Name}}"></new-field>
+        <div class="gap-10"></div>
+        <new-field field="taskFormCtrl.task_form.task_description" model="taskFormCtrl.newTask" property="'task_description'" required="taskFormCtrl.task_form.task_description.required" disabled="taskFormCtrl.task_form.task_description.disabled" wide="taskFormCtrl.task_form.task_description.wide" hide-label="taskFormCtrl.task_form.task_description.hideLabel" class="inline-inputs" placeholder="Marque um usuário com @"></new-field>
+        <div class="gap-10"></div>
+        <div class="hbox">
+          <aside class="width-50-percent v-middle">
+            <div class="mini-right-wrapper white-content b-r-1">
+              <div class="hbox">
+                <aside class="text-muted font-semi-big width-10 v-middle nowrap pr12">{{ taskFormCtrl.task_form.task_date.label }}:</aside>
+                <aside class="v-middle inline-inputs">
+                  <new-field field="taskFormCtrl.task_form.task_date" model="taskFormCtrl.newTask" property="'task_date'" required="taskFormCtrl.forms[0][2].required" disabled="taskFormCtrl.task_form.task_date.disabled" wide="taskFormCtrl.task_form.task_date.wide" hide-label="taskFormCtrl.task_form.task_date.hideLabel" ></new-field>
+                </aside>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="mini-left-wrapper white-content">
+              <div class="hbox">
+                <aside class="text-muted font-semi-big width-10 v-middle nowrap pr12">{{ taskFormCtrl.task_form.task_time.label }}:</aside>
+                <aside class="v-middle inline-inputs">
+                  <new-field field="taskFormCtrl.task_form.task_time" model="taskFormCtrl.newTask" property="'task_time'" required="taskFormCtrl.task_form.task_time.required" disabled="taskFormCtrl.task_form.task_time.disabled" wide="taskFormCtrl.task_form.task_time.wide" hide-label="taskFormCtrl.task_form.task_time.hideLabel" ></new-field>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="white-content b-b-1 mini-wrapper">
+    <div class="hbox mb-5">
+      <aside class="width-90 nowrap">
+        <div>
+          <button
+            type="button"
+            class="button button-white-light-border dropdown-toggle nowrap btn-more-fields-page-interaction-record-form"
+            data-toggle="collapse"
+            data-target="#extra_fields-tasks"
+            ng-init="taskFormCtrl.onInitCollapse('extra_fields-tasks');"
+          >
+            <span class="d-flex align-items-center justify-content-center gap-flex-10">
+              <span class="leading-1 text-action">
+                <i class="far fa-list-alt"></i>
+              </span>
+              <span ng-if="!taskFormCtrl.is_open_collapse">
+                Mais campos
+              </span>
+              <span  ng-if="taskFormCtrl.is_open_collapse">
+                Menos campos
+              </span>
+              <span class="leading-1" style="font-size: 15px;">
+                <i class="fal fa-angle-down" ng-if="!taskFormCtrl.is_open_collapse"></i>
+                <i class="fal fa-angle-up" ng-if="taskFormCtrl.is_open_collapse"></i>
+              </span>
+            </span>
+          </button>
+        </div>
+      </aside>
+    </div>
+    <div class="collapse" id="extra_fields-tasks" ng-class="{ 'in': openCollapse }">
+      <div class="white-content">
+        <div class="hbox row-space">
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  {{ taskFormCtrl.task_form.task_length.label }}:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="input-group full-width">
+                <new-field field="taskFormCtrl.task_form.task_length" model="taskFormCtrl.newTask" property="'task_length'" required="taskFormCtrl.task_form.task_length.required" disabled="taskFormCtrl.task_form.task_length.disabled" wide="taskFormCtrl.task_form.task_length.wide" hide-label="taskFormCtrl.task_form.task_length.hideLabel" ></new-field>
+              </div>
+            </aside>
+          </div>
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  {{ taskFormCtrl.task_form.task_repeat_interval_length.label }}:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="input-group full-width">
+                <new-field field="taskFormCtrl.task_form.task_repeat_interval_length" model="taskFormCtrl.newTask" property="'task_repeat_interval_length'" required="taskFormCtrl.task_form.task_repeat_interval_length.required" disabled="taskFormCtrl.task_form.task_repeat_interval_length.disabled" wide="taskFormCtrl.task_form.task_repeat_interval_length.wide" hide-label="taskFormCtrl.task_form.task_repeat_interval_length.hideLabel" ></new-field>
+                <new-field field="taskFormCtrl.task_form.task_repeat_interval_unit" model="taskFormCtrl.newTask" property="'task_repeat_interval_unit'" required="taskFormCtrl.task_form.task_repeat_interval_unit.required" disabled="taskFormCtrl.task_form.task_repeat_interval_unit.disabled" wide="taskFormCtrl.task_form.task_repeat_interval_unit.wide" hide-label="taskFormCtrl.task_form.task_repeat_interval_unit.hideLabel" class="is-button inline-inputs"></new-field>
+              </div>
+            </aside>
+          </div>
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  {{ taskFormCtrl.task_form.task_address.label }}:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <new-field field="taskFormCtrl.task_form.task_address" model="taskFormCtrl.newTask" property="'task_address'" required="taskFormCtrl.task_form.task_address.required" disabled="taskFormCtrl.task_form.task_address.disabled" wide="taskFormCtrl.task_form.task_address.wide" hide-label="taskFormCtrl.task_form.task_address.hideLabel" ></new-field>
+            </aside>
+          </div>
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  Lembrete por e-mail:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <new-field field="taskFormCtrl.task_form.task_email_reminder" model="taskFormCtrl.newTask" property="'task_email_reminder'" required="taskFormCtrl.task_form.task_email_reminder.required" disabled="taskFormCtrl.task_form.task_email_reminder.disabled" wide="taskFormCtrl.task_form.task_email_reminder.wide" hide-label="taskFormCtrl.task_form.task_email_reminder.hideLabel" ></new-field>
+            </aside>
+          </div>
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  {{ taskFormCtrl.task_form.task_users.label }}:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <new-field field="taskFormCtrl.task_form.task_users" model="taskFormCtrl.newTask" property="'task_users'" required="taskFormCtrl.task_form.task_users.required" disabled="taskFormCtrl.task_form.task_users.disabled" wide="taskFormCtrl.task_form.task_users.wide" hide-label="taskFormCtrl.task_form.task_users.hideLabel" ></new-field>
+            </aside>
+          </div>
+          <div ng-if="taskFormCtrl.task_form.task_owners" class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  <span uib-tooltip="Apenas usuários no campo Responsáveis ou administradores podem finalizar a tarefa. Se vazio, qualquer usuário vinculado à tarefa poderá finalizá-la." class="text-neutral">
+                    <i class="fas fa-exclamation-circle"></i>
+                  </span>
+                  {{ taskFormCtrl.task_form.task_owners.label }}:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <new-field field="taskFormCtrl.task_form.task_owners" model="taskFormCtrl.newTask" property="'task_owners'" required="taskFormCtrl.task_form.task_owners.required" disabled="taskFormCtrl.task_form.task_owners.disabled" wide="taskFormCtrl.task_form.task_owners.wide" hide-label="taskFormCtrl.task_form.task_owners.hideLabel" ></new-field>
+            </aside>
+          </div>
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  {{ taskFormCtrl.task_form.task_contacts.label }}:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <new-field field="taskFormCtrl.task_form.task_contacts" model="taskFormCtrl.newTask" property="'task_contacts'" required="taskFormCtrl.task_form.task_contacts.required" disabled="taskFormCtrl.task_form.task_contacts.disabled" wide="taskFormCtrl.task_form.task_contacts.wide" hide-label="taskFormCtrl.task_form.task_contacts.hideLabel" ></new-field>
+            </aside>
+          </div>
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right wrap width-10">
+              <div class="right-wrapper ellipsis">
+                <span uib-tooltip="Com esta opção ativa, seus contatos relacionados serão enviados ao Google / Outlook como convidados e serão notificados." class="text-neutral">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+                  Adicionar contatos relacionados à tarefa da integração:
+                </div>
+            </aside>
+            <aside class="v-middle switch-fix">
+              <new-field field="taskFormCtrl.task_form.task_creates_event" model="taskFormCtrl.newTask" property="'task_creates_event'" required="taskFormCtrl.task_form.task_creates_event.required" disabled="taskFormCtrl.task_form.task_creates_event.disabled" wide="taskFormCtrl.task_form.task_creates_event.wide" hide-label="true" ></new-field>
+            </aside>
+          </div>
+          <div class="hbox-row">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  {{ taskFormCtrl.task_form.task_tags.label }}:
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <new-field field="taskFormCtrl.task_form.task_tags" model="taskFormCtrl.newTask" property="'task_tags'" required="taskFormCtrl.task_form.task_tags.required" disabled="taskFormCtrl.task_form.task_tags.disabled" wide="taskFormCtrl.task_form.task_tags.wide" hide-label="taskFormCtrl.task_form.task_tags.hideLabel" ></new-field>
+            </aside>
+          </div>
+
+          <div class="hbox-row" ng-if="taskFormCtrl.meetingTranscriptionActive">
+            <aside class="v-middle max-width-200 min-width-150 text-right wrap width-10">
+              <div class="right-wrapper ellipsis">
+                <img src="assets/images/ai-assistant-logo.svg" class="ai-field-label-icon">
+                Transcrição automática
+              </div>
+            </aside>
+            <aside class="v-middle switch-fix">
+              <input
+                class="cmn-toggle cmn-toggle-round-flat-ai-transcription-prompt-big"
+                ng-model="taskFormCtrl.newTask.allow_meeting_transcription"
+                type="checkbox"
+                id="allow-meeting-transcription">
+              <label for="allow-meeting-transcription"></label>
+            </aside>
+          </div>
+
+          <div class="hbox-row" ng-if="taskFormCtrl.meetingTranscriptionActive">
+            <aside class="v-middle max-width-200 min-width-150 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis">
+                  <img src="assets/images/ai-assistant-logo.svg" class="ai-field-label-icon">
+                  Modelo de resumo: 
+                </div>
+            </aside>
+            <aside class="v-middle">
+              <new-field field="taskFormCtrl.task_form.task_transcription_prompt" model="taskFormCtrl.newTask" property="'task_transcription_prompt'"></new-field>
+            </aside>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="vbox tab-header scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <div class="white-content b-b-1 wrapper">
+      <div class="gap-15"></div>
+      <div>
+        <div class="hbox">
+          <aside class="width-10 text-center">
+            <div class="side-wrapper"><img class="avatar-select" src="assets/images/mchimp.jpg"></div>
+          </aside>
+          <aside>
+            <div class="side-wrapper">
+              MailChimp é uma das ferramentas para envio de e-mail marketing mais utilizadas no mundo. Por ela, você cria o design de seus e-mails de forma simples e os envia em massa.
+              <div class="gap-10"></div>
+              Com esta integração, você pode sincronizar uma aba de clientes ao Mailchimp. Todos os clientes dela serão sempre enviados para lá de forma automática.
+              <div class="gap-20"></div>
+              <a class="inline-link-blue" href="https://youtu.be/69JfEsAutDk" target="_blank">
+                <div class="font-big font-bold">
+                  Vídeo explicativo
+                </div>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="gap-15"></div>
+    </div>
+    <div class="wrapper">
+      <div class="text-center">
+        <a ng-if="!mailChimpIntegrationCtrl.has_integration" ng-href="{{mailChimpIntegrationCtrl.integration_url}}" class="button button-big button-action" target="_self">
+          <div>Ativar integração</div>
+        </a>
+        <a ng-if="mailChimpIntegrationCtrl.has_integration" class="button button-big button-white" ng-click="mailChimpIntegrationCtrl.deactivateMailChimp()">
+          <div class="text-danger">
+            <i class="fal fa-pause button-icon"></i>
+            <span class="text-regular">Desabilitar integração</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,107 @@
+<div class="wrapper display-inline-block font-regular-size" ng-class="{ 'width-50-percent': !todayTasksWidgetCtrl.self.MessagesExpandedView, 'full-width': todayTasksWidgetCtrl.self.MessagesExpandedView }">
+  <div class="panel white-content height-350 overflow-hidden new-standard-shadow">
+    <div class="vbox small-header">
+      <header class="regular-header b-b-1 white-content new-header">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <div class="font-big" data-cy="today-tasks-widget-title">
+              Tarefas do dia
+            </div>
+          </aside>
+        </div>
+      </header>
+      <section class="scrollable" infinite-scroll="todayTasksWidgetCtrl.loadMoreTasks()">
+        <div class="wrapper white-content b-b-1" ng-if="todayTasksWidgetCtrl.tasks.length > 0" ng-repeat="task in todayTasksWidgetCtrl.tasks">
+          <div class="white-dropdown-link">
+          <div class="hbox fixed-size">
+            <aside class="width-45" ng-if="task.Editable">
+              <div 
+                class="round-checkbox finish-task" 
+                ng-click="todayTasksWidgetCtrl.toggleFinishTask(task); $event.stopPropagation()"
+                ng-class="{'disabled': todayTasksWidgetCtrl.invalidFinisherOwner(task)}" 
+                ng-disabled="todayTasksWidgetCtrl.invalidFinisherOwner(task)" 
+              >
+                <div 
+                  class="b-2" 
+                  ng-if="!task.loadingIcon"
+                  uib-tooltip="{{ todayTasksWidgetCtrl.tooltipFinishMessage(task) }}" 
+                  tooltip-append-to-body="true"
+                >
+                  <i class="far fa-check activity-icon"></i>
+                </div>
+                <div class="loader modal-loader task-list-loader" uib-tooltip="Finalizando tarefa..." tooltip-append-to-body="true" style="width: 27px; height: 27px; margin: 0" ng-if="task.loadingIcon"></div>
+              </div>
+            </aside>
+            <aside>
+              <span class="font-bold">{{task.Title || task.Type.Name}}</span>
+              <div ng-if="todayTasksWidgetCtrl.new_sanitize_front" class="overflow-hidden nowrap ellipsis" ng-show="task.task_description_display.length > 0" ng-bind-html="todayTasksWidgetCtrl.sanitizeHTML(task.task_description_display) | to_trusted">
+                  {{todayTasksWidgetCtrl.sanitizeHTML(task.task_description_display)}}
+              </div>
+              <div ng-if="!todayTasksWidgetCtrl.new_sanitize_front" class="overflow-hidden nowrap ellipsis" ng-show="task.task_description_display.length > 0" ng-bind-html="task.task_description_display | to_trusted">
+                  {{task.task_description_display}}
+              </div>
+              <div class="mtop5">
+                <span class="timeline-clock">
+                  <div ng-class="{'warning-badge': todayTasksWidgetCtrl.dateClass(task) === 'warning', 'danger-badge': todayTasksWidgetCtrl.dateClass(task) === 'danger'}">
+                    <i class="fal fa-calendar"></i>  {{task.formatted_date}}
+                  </div>
+                </span>
+              </div>
+                <div class="gap-5"></div>
+                <div class="big-simple-inline text-muted font-big">
+                  <span class="inline-link-muted">
+                    <a class="font-small" ui-sref="{{'home.dashboard.task({id: task.Id})'}}">
+                      Visualizar
+                    </a>
+                  </span>
+                </div>
+                <div class="big-simple-inline text-muted font-big ng-scope" ng-if="task.DealId">
+                  <i class="activity-icon fal" ng-class="todayTasksWidgetCtrl.customizables.deals_module.icon_class"></i>
+                  <a class="inline-link-muted" ui-sref="deal({dealid: task.DealId})">
+                    <span class="font-small ng-binding">{{task.Deal.Title}}</span>
+                  </a>
+                </div>
+                <div class="big-simple-inline text-muted ng-scope" ng-if="task.Contact && task.Contact.Name">
+                  <a class="inline-link-muted" ui-sref="contact({contactid: task.ContactId})">
+                    <i class="big-simple-line big-simple-line-fix fal" ng-class="{'fa-user': task.Contact.TypeId === 2, 'fa-industry': task.Contact.TypeId === 1}"> </i>
+                    <span class="font-small ng-binding">
+                      {{task.Contact.Name}}
+                    </span>
+                  </a>
+                </div>
+                <div class="big-simple-inline text-muted">
+                  <a class="collapsed" href data-toggle="collapse" data-target="#{{task.Id}}" ng-click="todayTasksWidgetCtrl.toggleComments($index)">
+                    <i class="fal fa-comment-alt-lines big-simple-line"></i><span class="font-small">{{task.Comments.length > 0 ? task.Comments.length : '0'}}</span>
+                  </a>
+                </div>
+                <div class="collapse" id="{{task.Id}}" ng-if="todayTasksWidgetCtrl.opened_comments[$index]">
+                  <comments-directive
+                    api-url="'Tasks(' + task.Id + ')/NewComment'"
+                    comments="task.Comments"
+                    timeline-interface="true"
+                    object-id="task.Id"
+                    update-comments-callback="todayTasksWidgetCtrl.updateCommentsCallback"
+                    origin-name="'today-tasks-widget'">
+                  </comments-directive>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+        <div class="placeholder-link text-center" ng-if="todayTasksWidgetCtrl.tasks.length === 0 && todayTasksWidgetCtrl.can_load">
+          <a ui-sref="home.dashboard.newtask" class="stretch button button-white-no-border button-square placeholder-link ng-scope text-center big-wrapper font-big" ng-if="todayTasksWidgetCtrl.tasks.length === 0">
+            <div class="gap-15"></div>
+            <div>
+              <i class="font-monster-size fal fa-check"></i>
+            </div>
+            <div class="gap-30"></div>
+            <p class="mtop10 font-big font-regular-weight">
+              Parabéns! Você terminou suas tarefas do dia! Veja no calendário suas próximas tarefas ou clique aqui para criar uma nova.
+            </p>
+          </a>
+        </div>
+        <standard-loader margin-top="0" loading="!todayTasksWidgetCtrl.can_load" optionalclass="table-loader"></standard-loader>
+      </section>
+    </div>
+  </div>
+</div>

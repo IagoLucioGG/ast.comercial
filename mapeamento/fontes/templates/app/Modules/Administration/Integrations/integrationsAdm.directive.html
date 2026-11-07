@@ -1,0 +1,155 @@
+<dynamic-modal
+  modal-id="integrations"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="{{ 'INTEGRATIONS.ADM.TITLE' | translate }}"
+  toggle-modal="integrationsAdmCtrl.toggle_modal"
+  cypress-prefix="administration-integrations-plug-and-play-modal"
+  is-fetching-modal-content="integrationsAdmCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable">
+        <div class="hbox stretch">
+          <aside ng-if="integrationsAdmCtrl.initial_loading">
+            <standard-loader margin-top="15" loading="integrationsAdmCtrl.initial_loading"></standard-loader>
+          </aside>
+          <aside class="white-content" ng-if="!integrationsAdmCtrl.initial_loading">
+            <div class="vbox">
+              <section class="scrollable">
+                <div ng-if="integrationsAdmCtrl.sandboxEnvironment" class="search-integration wrapper">
+                  <alert-message
+                    status="'alert'"
+                    message="'SANDBOX.INTEGRATIONS_WARNING.MESSAGE' | translate"
+                  ></alert-message>
+                </div>
+                <div class="search-integration wrapper">
+                  <div class="input-group full-width has-feedback">
+                    <input class="form-control input-sm" type="text" ng-model="integrationsAdmCtrl.quick_search"
+                      placeholder="{{ 'INTEGRATIONS.ADM.SEARCH_INTEGRATION' | translate }}" ng-model-options="{debounce:300}">
+                    <span class="fas fa-search text-muted form-control-feedback"></span>
+                  </div>
+                </div>
+                <div class="widgets-board wrapper widget-board-integrations">
+                  <!-- Dynamic integrations -->
+                  <div class="wrapper width-25-percent display-inline-block" ng-repeat="integration in integrationsAdmCtrl.integrations" ng-if="!integration.Hidden" ng-show="integration.Name.toLowerCase().includes(integrationsAdmCtrl.quick_search.toLowerCase()) && !integration.notShow">
+                    <div class="panel white-content text-center big-shadow overflow-hidden cursor-pointer" ng-click="integration.isStatic ? integrationsAdmCtrl.openIntegrationSlide(integration.slideName) : integrationsAdmCtrl.openDynamicIntegrationSlide(integration)">
+                      <div class="wrapper">
+                        <img class="user-avatar-select" ng-class="{'microsoft-integration': integration.Key === 'microsoftsso'}" ng-src="{{integration.ImageUrl}}">
+                      </div>
+                      <div class="white-content b-t-1"></div>
+                      <div class="wrapper">
+                        <div class="font-bold font-regular-size">{{integration.Name}}</div>
+                        <div class="gap-10"></div>
+                        <div ng-if="integrationsAdmCtrl.checkShowStatusIntegration(integration)" ng-class="{'neutral-badge': integration.StatusId === 2 || !integration.StatusId || (integration.StatusId === 3 && integration.Id === 12), 'success-badge': integration.StatusId === 1, 'warning-badge': integration.StatusId === 3 && integration.Id !== 12 }">
+                          <div class="font-big">
+                            {{ (integration.StatusId === 1 ? 'INTEGRATIONS.ADM.ENABLED' : ((integration.StatusId === 3 && integration.Id !== 12) ? 'INTEGRATIONS.ADM.PENDING' : 'INTEGRATIONS.ADM.DISABLED') ) | translate }}
+                          </div>
+                        </div>
+                        <div ng-if="integration.Name === 'Zapier' && integration.Name !== 'Dataplace Business Solution'" class="warning-badge">
+                          <div class="font-big">Beta</div>
+                        </div>
+                        <div ng-if="integrationsAdmCtrl.checkShowKnowMoreStatusIntegration(integration)" class="neutral-badge">
+                          <div class="font-big">{{ 'GENERICS.KNOW_MORE' | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="wrapper width-25-percent display-inline-block" ng-show="'sankhya'.includes(integrationsAdmCtrl.quick_search.toLowerCase()) && !integrationsAdmCtrl.sandboxEnvironment">
+                    <div class="panel white-content text-center big-shadow overflow-hidden cursor-pointer" ng-click="integrationsAdmCtrl.openIntegrationSlide(integrationsAdmCtrl.sankhyaIntegrationName)">
+                      <div class="wrapper">
+                        <img class="user-avatar-select" ng-src="{{ integrationsAdmCtrl.sankhyaIntegrationImage }}">
+                      </div>
+                      <div class="white-content b-t-1"></div>
+                      <div class="wrapper">
+                        <div class="font-bold font-regular-size">{{ integrationsAdmCtrl.sankhyaIntegrationName }}</div>
+                        <div class="gap-10"></div>
+                        <div ng-class="{
+                          'neutral-badge': integrationsAdmCtrl.sankhyaIntegrationInfo.Status === 'disabled' || integrationsAdmCtrl.sankhyaIntegrationInfo.Status === 'moduleDisabled',
+                          'success-badge': integrationsAdmCtrl.sankhyaIntegrationInfo.Status === 'enabled' || integrationsAdmCtrl.sankhyaIntegrationInfo.Status === 'syncing',
+                          'warning-badge': integrationsAdmCtrl.sankhyaIntegrationInfo.Status === 'pending' || integrationsAdmCtrl.sankhyaIntegrationInfo.Status === 'halt',
+                        }">
+                          <div class="font-big">
+                            <i ng-if="integrationsAdmCtrl.sankhyaIntegrationInfo.Status === 'moduleDisabled'" class="fal fa-info-circle regular-icon"></i>
+                            {{ integrationsAdmCtrl.sankhyaIntegrationInfo.Message }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
+
+                  <!-- Meetime -->
+                  <div
+                    class="wrapper width-25-percent display-inline-block"
+                    ng-show="'meetime'.includes(integrationsAdmCtrl.quick_search.toLowerCase()) && !integrationsAdmCtrl.sandboxEnvironment"
+                  >
+                    <div
+                      class="panel white-content text-center big-shadow overflow-hidden cursor-pointer"
+                      ng-click="integrationsAdmCtrl.openIntegrationSlide(integrationsAdmCtrl.meetime.name)"
+                    >
+                      <div class="wrapper">
+                        <img class="user-avatar-select" ng-src="{{ integrationsAdmCtrl.meetime.image }}" title="Meetime">
+                      </div>
+
+                      <div class="white-content b-t-1"></div>
+
+                      <div class="wrapper">
+                        <div class="font-bold font-regular-size">{{ integrationsAdmCtrl.meetime.name }}</div>
+
+                        <div class="gap-10"></div>
+                        
+                        <div ng-class="{
+                          'neutral-badge': integrationsAdmCtrl.meetime.status === 'disabled',
+                          'success-badge': integrationsAdmCtrl.meetime.status === 'enabled',
+                          'warning-badge': integrationsAdmCtrl.meetime.status === 'pending',
+                        }">
+                          <div class="font-big">
+                            <i
+                              ng-if="integrationsAdmCtrl.meetime.status === 'moduleDisabled'"
+                              class="fal fa-info-circle regular-icon"
+                            ></i>
+
+                            <span>{{ integrationsAdmCtrl.meetime.message }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide
+    slide-id="integrations_slide"
+    modal-side-slide-title="{{ integrationsAdmCtrl.current_integration.Name || integrationsAdmCtrl.selected_integration_modal_title || ('INTEGRATIONS.ADM.MODAL_SIDE_SLIDE_TITLE' | translate) }}"
+    on-modal-close="integrationsAdmCtrl.closeIntegrationSlide"
+  >
+    <mail-chimp-integration ng-if="integrationsAdmCtrl.selected_integration === 'mailchimp'" account="integrationsAdmCtrl.account"></mail-chimp-integration>
+    <rd-station-integration ng-if="integrationsAdmCtrl.selected_integration === 'rdstation'" account="integrationsAdmCtrl.account"></rd-station-integration>
+    <zapier-integration ng-if="integrationsAdmCtrl.selected_integration === 'zapier'" account="integrationsAdmCtrl.account"></zapier-integration>
+    <google-calendar-integration-adm-form ng-if="integrationsAdmCtrl.current_integration && integrationsAdmCtrl.current_integration.Id === 12" account="integrationsAdmCtrl.account" change-enabled-callback="integrationsAdmCtrl.changeEnabledCallback(status_id)"></google-calendar-integration-adm-form>
+    <sankhya-integration ng-if="integrationsAdmCtrl.selected_integration === 'Sankhya' || integrationsAdmCtrl.selected_integration === 'Sankhya (Sandbox)'" account="integrationsAdmCtrl.account" refresh-integration-on-angular="integrationsAdmCtrl.refreshSankhyaIntegration" integration-version="integrationsAdmCtrl.sankhyaIntegrationInfo.Version"></sankhya-integration>
+    <total-voice-integration ng-if="integrationsAdmCtrl.selected_integration === 'totalvoice'" account="integrationsAdmCtrl.account"></total-voice-integration>
+    <dataplace-integration ng-if="integrationsAdmCtrl.selected_integration === 'dataplace'"></dataplace-integration>
+    <obras-online-integration ng-if="integrationsAdmCtrl.selected_integration === 'Obras Online'"></obras-online-integration>
+    <callix-integration ng-if="integrationsAdmCtrl.selected_integration === 'callix'"></callix-integration>
+    <neppo-integration ng-if="integrationsAdmCtrl.current_integration.Key === 'neppo'" integration="integrationsAdmCtrl.current_integration" ></neppo-integration>
+    <flowbiz-integration ng-if="integrationsAdmCtrl.current_integration.Key === 'flowbiz'" integration="integrationsAdmCtrl.current_integration" refresh-integration-on-angular="integrationsAdmCtrl.refreshIntegration"></flowbiz-integration>
+    <whats-app-coex-integration ng-if="integrationsAdmCtrl.current_integration.Key === 'whatsappcoex'" integration="integrationsAdmCtrl.current_integration" refresh-integration-on-angular="integrationsAdmCtrl.refreshIntegration"></whats-app-coex-integration>
+    <power-bi-integration ng-if="integrationsAdmCtrl.current_integration.Key === 'powerbi'" integration="integrationsAdmCtrl.current_integration" refresh-integration-on-angular="integrationsAdmCtrl.refreshIntegration" update-integration-form-changed="integrationsAdmCtrl.updateIntegrationFormChanged"></power-bi-integration>
+    <microsoft-sso-integration ng-if="integrationsAdmCtrl.current_integration.Key === 'microsoftsso'"  integration="integrationsAdmCtrl.current_integration"  refresh-integration-on-angular="integrationsAdmCtrl.refreshIntegration"></microsoft-sso-integration>
+    <omie-integration ng-if="integrationsAdmCtrl.current_integration.Key === 'omie' && !integrationsAdmCtrl.omieActiveOnPartners" integration="integrationsAdmCtrl.current_integration" ></omie-integration>
+    <integration-form ng-if="integrationsAdmCtrl.checkShowIntegrationForm()" account="integrationsAdmCtrl.account" integration-id="integrationsAdmCtrl.current_integration.Id" change-enabled-callback="integrationsAdmCtrl.changeEnabledCallback(status_id)"></integration-form>
+    <meetime-integration
+      ng-if="integrationsAdmCtrl.selected_integration === integrationsAdmCtrl.meetime.name"
+      integration-ids="integrationsAdmCtrl.meetime_integration_ids"
+      integration-configs="integrationsAdmCtrl.meetime"
+      change-enabled-callback="integrationsAdmCtrl.changeMeetimeEnabledCallback"
+    ></meetime-integration>
+  </modal-side-slide>
+</dynamic-modal>

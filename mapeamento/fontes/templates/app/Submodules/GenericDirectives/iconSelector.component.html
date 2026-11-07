@@ -1,0 +1,24 @@
+<div uib-dropdown dropdown-append-to-body on-toggle="$ctrl.onToggle(open)" is-open="$ctrl.isOpen">
+  <a class="button button-white button-short dropdown-toggle nowrap" uib-dropdown-toggle ng-click="$ctrl.getIcons()" ng-if="!$ctrl.useIconAsLabel">
+    {{ 'GENERIC_DIRECTIVES.CHANGE_ICON' | translate }}
+    <i class="fal fa-angle-down dropdown-sign"></i>
+  </a>
+
+  <a class="button button-white-light-border dropdown-toggle nowrap" href uib-dropdown-toggle ng-click="$ctrl.getIcons()" ng-if="$ctrl.useIconAsLabel">
+    <span>
+      <i class="fal simple-line-space" ng-class="$ctrl.iconLabel"></i>
+      <i class="fal fa-angle-down dropdown-sign"></i>
+    </span>
+  </a>
+
+  <ul class="white-dropdown-menu no-padding-top field-pick dropdown-max-height" uib-dropdown-menu style="z-index: 10000;">
+    <div class="dropdown-subtitle text-center">
+      {{ 'GENERIC_DIRECTIVES.ICON_LIST' | translate }}
+    </div>
+    <li class="text-center" ng-repeat="icon in $ctrl.icons" ng-click="$ctrl.selectIcon(icon)">
+      <a class="white-dropdown-link font-big-title" href>
+        <i class="fal activity-icon-top-3" ng-class="icon.Class"></i>
+      </a>
+    </li>
+  </ul>
+</div>

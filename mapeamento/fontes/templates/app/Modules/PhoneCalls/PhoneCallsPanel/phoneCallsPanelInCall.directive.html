@@ -1,0 +1,49 @@
+<div class="wrapper">
+  <div class="tab-content">
+    <div class="tab-pane active" id="call-status">
+      <div class="height-500 ongoing-call text-center">
+        <div class="font-semi-big">{{ 'PHONE_CALLS.IN_CALL_WITH' | translate }} {{contact ? contact.Name : ''}}
+          <div class="gap-10"></div>
+          <div class="font-bold font-big">{{phoneNumber}}</div>
+        </div>
+        <div class="gap-20"></div>
+        <div class="hbox">
+          <aside class="v-middle text-center">
+            <div class="width-40 height-40 display-inline-block phone-wrap text-center" ng-click="toggleMuteFn()">
+              <div class="mini-wrapper b-1 button-background-border rounded-regular">
+                <div class="font-big" ng-class="{'text-success': !isMuted, 'text-danger': isMuted}">
+                  <i class="fad" ng-class="{'fa-microphone-alt': !isMuted, 'fa-microphone-alt-slash': isMuted}"></i>
+                </div>
+              </div>
+            </div>
+            <div class="height-40 display-inline-block phone-wrap text-center">
+              <div class="font-big regular-background mini-wrapper rounded-regular b-1 text-darkest-neutral">
+                <i class="fad fa-clock"> </i> {{formattedTimer}}
+              </div>
+            </div>
+            <div class="width-40 height-40 display-inline-block phone-wrap text-center" ng-click="switchDialingFn('insideCall')">
+              <div class="mini-wrapper b-1 button-background-border rounded-regular">
+                <div class="font-big">
+                  <i class="fad fa-tty" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="gap-20"></div>
+        <div class="vbox height-42-vh side-wrapper">
+          <section class="scrollable">
+            <div ng-form name="call_interaction_record_form" class="phone-calls-form">
+              <forms model="interactionRecordModel" fields="interactionRecordFields" form="call_interaction_record_form">
+              </forms>
+            </div>
+          </section>
+        </div>
+        <div class="gap-20"></div>
+        <div class="button button-neutral full-width" ng-click="turnOffFn()">
+          <div class="font-big">{{ 'PHONE_CALLS.END_CALL' | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,218 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <div class="modal-body-no-padding">
+      <div class="gap-15"></div>
+      <form class="clearfix">
+        <div class="form-group col-sm-12">
+          <label>
+            Nome do fluxo
+          </label>
+          <input class="form-control input-sm" ng-model="$ctrl.model.rule_name">
+        </div>
+      </form>
+      <div class="filter-generator-adm" ng-if="!$ctrl.filter_compare_fields">
+        <filter-generator
+          ng-if="$ctrl.initial_load"
+          entity="$ctrl.entity"
+          query-object="$ctrl.query_object"
+          filter-fields-fn="$ctrl.filterFieldsFn"
+          block-set-multiple-field="true"
+          block-relative-date-fields="true">
+        </filter-generator>
+      </div>
+      <div class="filter-group-container" ng-if="$ctrl.filter_compare_fields">
+        <div class="header">
+          <i class="fas fa-filter"></i>
+          <span>Filtros</span>
+          <filter-clipboard-bar filter-fields="$ctrl.filterFields"></filter-clipboard-bar>
+        </div>
+        <div class="content">
+          <filter-container 
+            entity="$ctrl.entity" 
+            query-object="$ctrl.query_object" 
+            filter-fields="$ctrl.filterFields"
+            allow-relative-date="false"
+            update-filter-fields="$ctrl.updateFilterFields(filterFields)"
+            remove-fields-from-selector="$ctrl.removeFieldsFromSelector"
+            remove-field-paths-from-selector-by-prop="$ctrl.removeFieldPathsFromSelector"
+            block-or-operation="true"
+            compare-fields="false"
+            on-set-items-on-external-cache="$ctrl.onSetItemsOnExternalCache"
+          ></filter-container>
+        </div>
+      </div>
+      </div>
+      <div class="gap-20"></div>
+      <div class="side-wrapper">
+        <div ng-if="$ctrl.approval_message_feature">
+          <span class="font-semi-big">
+            {{ $ctrl.getApprovalMessageLabel() }}
+            <span
+              uib-tooltip="Campo obrigatório"
+              tooltip-append-to-body="true"
+              ng-class="{'text-neutral': $ctrl.model.rule_editor_custom_message.Message, 'text-danger': !$ctrl.model.rule_editor_custom_message.Message}">
+              <i class="fas fa-exclamation-circle dropdown-sign" style="vertical-align: middle; top: 0; margin-left: 2px;"></i>
+            </span>
+          </span>
+          <div class="gap-5"></div>
+          <approval-message-editor
+            entity-id="$ctrl.entity.Id"
+            value="$ctrl.model.rule_editor_custom_message"
+            on-change-message="$ctrl.onApprovalMessageChange"
+          ></approval-message-editor>
+        </div>
+        <div ng-if="!$ctrl.approval_message_feature">
+          <span class="font-semi-big">Adicione um aviso (opcional):</span>
+          <span class="align-limited-characters" uib-tooltip="Campo possui valor muito longo"
+            tooltip-append-to-body="true" tooltip-is-open="($ctrl.model.rule_description.length || 0) > 200"
+            tooltip-enable="($ctrl.model.rule_description.length || 0) > 200">
+            <span class="field-remaining-text"
+              ng-class="{'text-danger font-bold': ($ctrl.model.rule_description.length || 0) > 200 }">
+              {{ ($ctrl.model.rule_description.length || 0) + '/' + 200 }}
+            </span>
+          </span>
+          <div class="gap-5"></div>
+          <textarea ng-model="$ctrl.model.rule_description" class="form-control" placeholder="Digite o aviso que será exibido para os usuários que ativarem o fluxo"></textarea>
+        </div>
+        <div class="gap-40"></div>
+        <div class="font-thin font-very-big">
+          O que acontece caso as condições acima sejam satisfeitas?
+        </div>
+        <div class="gap-20"></div>
+        <a href
+           ng-repeat="action in $ctrl.rule_actions"
+           class="button button-very-big pull-left"
+           ng-click="$ctrl.changeAction(action)"
+           ng-class="{'button-brand': $ctrl.model.rule_action.Id === action.Id, 'button-white-light-border': $ctrl.model.rule_action.Id !== action.Id, 'text-muted': $ctrl.model.rule_action.Id !== action.Id }">
+           <span class="font-regular-weight font-regular-size">{{action.Name}}</span>
+        </a>
+      <div class="gap-40"></div>
+      <div ng-if="$ctrl.model.rule_action.Id === 2">
+        <div class="activity-history hist-separator"></div>
+        <div class="activity-history hist-separator"></div>
+        <div ng-repeat="level in $ctrl.model.rule_approval_levels" ng-mouseover="level.hovered = true" ng-mouseout="level.hovered = false">
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">{{$index + 1}}ª</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block">
+                <div class="hbox">
+                  <aside class="width-400">
+                    <div class="font-bold font-semi-big">{{$index + 1}}ª aprovação</div>
+                    <div class="gap-5"></div>
+                    <div class="line-itens-left">
+                      <a class="line-item light-badge neutral-content badge-border" href ng-repeat="user in level.Users">
+                        <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+                          <img class="mini-avatar" ng-src="{{user.User.AvatarUrl}}">
+                          <span class="align-middle">{{user.User.Name}}</span>
+                        </div>
+                      </a>
+                    </div>
+                  </aside>
+                  <aside class="width-50 text-right" ng-show="level.hovered">
+                    <a class="button-white-no-border button-fixed-size button-fixed-size-small" ng-click="$ctrl.removeLevel($index)">
+                      <i class="fixing-fixed-size-button fal fa-trash"></i>
+                    </a>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <div class="hbox min-height-50" ng-if="level.someUserHasNoModule">
+            <aside class="activity-history">
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block legacy-alert-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>
+                  {{ $ctrl.alertMessageNoModule }}
+                </span>
+              </div>
+            </aside>
+          </div>
+          <div class="activity-history hist-separator"></div>
+          <div class="activity-history hist-separator"></div>
+        </div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">{{$ctrl.model.rule_approval_levels.length + 1}}ª</span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block">
+              <div class="hbox">
+                <aside>
+                  <div class="font-bold font-semi-big">
+                    {{$ctrl.model.rule_approval_levels.length + 1}}ª aprovação
+                  </div>
+                  <div class="gap-5"></div>
+                  <div class="width-400">
+                    <new-field field="$ctrl.users_field" model="$ctrl.approval_level" property="'level_users'" required="false" disabled="false" wide="true"></new-field>
+                  </div>
+                  <div class="gap-40"></div>
+                  <a class="btn button button-white-light-border" ng-click="$ctrl.addNewLevel()">
+                    <span class="text-action"><i class="button-icon fal fa-badge-check"></i></span>  
+                    Adicionar
+                  </a>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="gap-20"></div>
+        <div class="ds-section-color b-1 py-15 rounded-5">
+          <div class="hbox-flex px-15">
+            <aside class="v-middle right-wrapper">
+              <div class="font-regular-weight font-size-14">Notificar aprovadores de solicitações desse fluxo via e-mail?</div>
+            </aside>
+            <aside class="v-middle width-70">
+              <div class="switch pull-right">
+                <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-email" type="checkbox" ng-model="$ctrl.model.rule_can_send_email">
+                <label for="cmn-toggle-email"></label>
+              </div>
+            </aside>
+          </div>
+          <div class="gap-10" ng-if="$ctrl.model.rule_can_send_email"></div>
+          <div class="hbox" ng-hide="!$ctrl.model.rule_can_send_email">
+            <allowed-users 
+              model="$ctrl.sendEmailUsersModel" 
+              block-teams-select="true"
+              block-user-profile-select="true"
+              users-filter-url="$ctrl.usersToSendEmailFilterUrl"
+              override-view-all-text="Todos aprovadores"
+              override-view-user-text="Um ou mais aprovadores"
+              ></allowed-users>
+          </div>
+        </div>
+      </div>
+      <div class="gap-20"></div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle">
+      <a href class="button button-white" ng-if="editing" ng-click-confirm="excluir esse fluxo de aprovação?" reversible="false" ng-click="$ctrl.deleteBusinessRule()">
+        <span class="font-big">
+          <i class="fal fa-trash fixing-fixed-size-button"></i>
+        </span>
+      </a>
+    </aside>
+    <aside class="v-middle text-right">
+      <a class="button button-action pull-right" href ng-click="$ctrl.submitControl()" ng-click-confirm="{{ $ctrl.editing ? 'ADMINISTRATION.BUSINESS_RULES.SAVE_EDIT_CONFIRM' : 'ADMINISTRATION.BUSINESS_RULES.CREATE_BUSINESS_RULE_CONFIRM' | translate }}">
+        <i class="button-icon fas fa-save"></i>
+        {{ ($ctrl.editing ? 'ADMINISTRATION.BUSINESS_RULES.SAVE_EDIT' : 'ADMINISTRATION.BUSINESS_RULES.CREATE_BUSINESS_RULE') | translate }}
+      </a>
+      <div class="loader modal-loader" ng-if="$ctrl.loading"></div>
+    </aside>
+  </div>
+</div>

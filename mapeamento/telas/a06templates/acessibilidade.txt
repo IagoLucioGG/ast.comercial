@@ -1,0 +1,124 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - list:
+        - listitem:
+          - link "Proposta":
+            - /url: ""
+        - listitem:
+          - link "Documento de cliente":
+            - /url: ""
+        - listitem:
+          - link "Documento de Contato de Venda":
+            - /url: ""
+    - complementary:
+      - text: Novo modelo de proposta
+      - textbox "Pesquisar"
+      - text: 
+    - table:
+      - rowgroup:
+        - row "Nome Padrão Editor Duplicar Excluir":
+          - cell "Nome"
+          - cell "Padrão"
+          - cell "Editor"
+          - cell "Duplicar"
+          - cell "Excluir"
+        - row "Proposta Comercial 3.0  2.0  ":
+          - cell "Proposta Comercial 3.0 ":
+            - strong: Proposta Comercial 3.0
+            - text: 
+          - cell
+          - cell "2.0"
+          - cell "":
+            - link "":
+              - /url: ""
+          - cell "":
+            - link "":
+              - /url: ""
+        - row "Proposta Comercial - UCA 1.0  2.0  ":
+          - cell "Proposta Comercial - UCA 1.0 ":
+            - strong: Proposta Comercial - UCA 1.0
+            - text: 
+          - cell
+          - cell "2.0"
+          - cell "":
+            - link "":
+              - /url: ""
+          - cell "":
+            - link "":
+              - /url: ""
+        - row "BACKUP NÃO APAGAR 11-09  2.0  ":
+          - cell "BACKUP NÃO APAGAR 11-09 ":
+            - strong: BACKUP NÃO APAGAR 11-09
+            - text: 
+          - cell
+          - cell "2.0"
+          - cell "":
+            - link "":
+              - /url: ""
+          - cell "":
+            - link "":
+              - /url: ""
+        - row "Proposta Comercial 3.0 - cópia suporte - não utilizar  2.0  ":
+          - cell "Proposta Comercial 3.0 - cópia suporte - não utilizar ":
+            - strong: Proposta Comercial 3.0 - cópia suporte - não utilizar
+            - text: 
+          - cell
+          - cell "2.0"
+          - cell "":
+            - link "":
+              - /url: ""
+          - cell "":
+            - link "":
+              - /url: ""
+        - row "Proposta Comercial 3.0 - cópia suporte - JOSUE  2.0  ":
+          - cell "Proposta Comercial 3.0 - cópia suporte - JOSUE ":
+            - strong: Proposta Comercial 3.0 - cópia suporte - JOSUE
+            - text: 
+          - cell
+          - cell "2.0"
+          - cell "":
+            - link "":
+              - /url: ""
+          - cell "":
+            - link "":
+              - /url: ""
+        - row "Proposta Comercial 3.0 - cópia suporte - CRISTHIAN  2.0  ":
+          - cell "Proposta Comercial 3.0 - cópia suporte - CRISTHIAN ":
+            - strong: Proposta Comercial 3.0 - cópia suporte - CRISTHIAN
+            - text: 
+          - cell
+          - cell "2.0"
+          - cell "":
+            - link "":
+              - /url: ""
+          - cell "":
+            - link "":
+              - /url: ""

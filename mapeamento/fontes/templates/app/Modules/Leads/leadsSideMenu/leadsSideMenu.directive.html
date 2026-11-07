@@ -1,0 +1,38 @@
+<div class="bottom-side-wrapper">
+  <div class="button full-width button-white-light-border b-1 button-very-big" ui-sref="{{'leads.table.leadimportation'}}" ng-if="leadsSideMenuCtrl.import_permission">
+    <div class="hbox">
+      <aside class="v-middle width-35 text-center">
+        <span>
+          <i class="fal fa-file-excel simple-line-space"></i>
+        </span>
+      </aside>
+      <aside class="text-left">
+        <span class="text-regular semi-big">{{ 'LEADS.SIDE_MENU.EXCEL_IMPORT' | translate }}</span>
+      </aside>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="leadsSideMenuCtrl.administrator_permission" ui-sref="{{'formconfig.form({formid: ' + leadsSideMenuCtrl.lead_form_id + ' })'}}">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-pen-square simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'LEADS.SIDE_MENU.FIELDS_CONFIG' | translate }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div ng-if="leadsSideMenuCtrl.tags_permission">
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-click="leadsSideMenuCtrl.state.go('leads.table.newtag', { entity: $parent.leadsCtrl.main_entity })">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-tag simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'LEADS.SIDE_MENU.TAGS_CONFIG' | translate }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

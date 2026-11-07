@@ -1,0 +1,74 @@
+<div class="vbox scroll-shadow neutral-shadow big-header-or-footer">
+  <section class="scrollable scroll-shadow-container">
+    <standard-loader margin-top="15" loading="!$ctrl.can_load"></standard-loader>
+    <div ng-if="$ctrl.can_load">
+      <ul class="fake-ul" ng-if="$ctrl.checklists.length > 0" ui-sortable="$ctrl.options" ng-model="$ctrl.checklists">
+        <li class="button button-full-width button-white-no-border-semi-light-hover text-left drag-button button-square no-border button-very-big" ng-repeat="checklist in $ctrl.checklists track by $index">
+          <div class="hbox font-regular-weight">
+            <aside class="v-middle width-20">
+              <div class="token-drag-indicator muted-token"></div>
+            </aside>
+            <aside class="v-middle" ng-click="$ctrl.editChecklist(checklist)">
+              <span class="font-regular-weight font-regular-size">{{checklist.Name || 'Checklist'}}</span>
+            </aside>
+            <aside class="width-40 position-relative">
+              <a class="options-column-button" id="more_options" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="hbox stretch">
+                  <aside class="v-middle">
+                    <i class="fal fa-cog table-options-simple-line"></i>
+                  </aside>
+                </div>
+              </a>
+              <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+                <li>
+                  <a class="white-dropdown-link" href ng-click="$ctrl.duplicateChecklist(checklist)">
+                    <div class="hbox">
+                      <aside class="width-35 text-center v-middle">
+                        <i class="simple-line-big fal fa-clone"></i>
+                      </aside>
+                      <aside class="v-middle">Duplicar</aside>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="white-dropdown-link" href ng-click="$ctrl.handleDeleteChecklist(checklist)">
+                    <div class="hbox">
+                      <aside class="width-35 text-center v-middle">
+                        <i class="simple-line-big fal fa-trash"></i>
+                      </aside>
+                      <aside class="v-middle">Excluir</aside>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+          </div>
+        </li>
+      </ul>
+      <div class="text-muted text-center page-not-found font-big-title" ng-if="$ctrl.checklists.length === 0">
+        <div class="gap-50"></div>
+        <i class="fal fa-tasks font-giant-title"></i>
+        <div class="gap-30"></div>
+        Não há checklists nesse estágio
+      </div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle text-right" ng-if="$ctrl.can_load">
+      <a class="button button-white-no-border" ng-if="$ctrl.checklists.length > 0" href 
+        mini-modal
+        mini-modal-title="Duplicar checklists em outro estágio"
+        mini-modal-fields="$ctrl.stage_fields"
+        mini-modal-callback="$ctrl.duplicateAllChecklists(model)">
+        <span class="text-action"><i class="fal fa-clone button-icon"></i></span>
+        Duplicar checklists em outro estágio
+      </a>
+      <a class="button button-action pull-right" href ng-click="$ctrl.newChecklist()">
+        <i class="fas fa-tasks button-icon"></i>
+        Novo Checklist
+      </a>
+    </aside>
+  </div>
+</div>

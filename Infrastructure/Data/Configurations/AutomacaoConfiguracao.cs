@@ -1,4 +1,4 @@
-using AST.Comercial.Domain.Entidades;
+﻿using AST.Comercial.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,6 +15,12 @@ public class AutomacaoConfiguracao : IEntityTypeConfiguration<Automacao>
         builder.Property(a => a.GatilhoCampoReferencia).HasMaxLength(200);
         builder.Property(a => a.CronExpressao).HasMaxLength(100);
         builder.Property(a => a.FormulaCondicao).HasMaxLength(4000);
+
+        builder.Property(a => a.Excluida).HasDefaultValue(false);
+        builder.HasOne(a => a.CriadoPor)
+            .WithMany()
+            .HasForeignKey(a => a.CriadoPorUsuarioId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasIndex(a => new { a.EmpresaId, a.EntidadeAlvo, a.Gatilho });
         builder.HasIndex(a => a.ProximaExecucao);

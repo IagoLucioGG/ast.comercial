@@ -1,0 +1,22 @@
+<div class="gap-10" ng-if="$ctrl.file_attachments.length > 0 || $ctrl.image_attachments.length > 0"></div>
+<a class="simple-inline-inline main-badge-darker-border b-1" ng-click="$ctrl.openFile(file)" ng-repeat="file in $ctrl.file_attachments track by $index" >
+  <div class="hbox">
+    <aside class="width-25 v-middle text-center font-big text-very-darkest-neutral">
+      <i class="fad fa-file-alt"></i>
+    </aside>
+    <aside class="v-middle mini-wrapper">
+      <div class="font-bold text-very-darkest-neutral">
+        <strong>{{file.FileName}}</strong>
+      </div>
+    </aside>
+  </div>
+</a>
+
+<a ng-href="{{image.Url}}" target="_blank">
+  <div ng-if="!$ctrl.loadedAllImages" class="chat-loader">
+    <standard-loader loading="!image.Loaded" optionalclass="chat-image-loader"></standard-loader>
+  </div>
+  <div ng-if="$ctrl.loadedAllImages" ng-repeat="image in $ctrl.image_attachments">
+    <img class="chat-image mb-5" ng-if="image.Loaded" ng-src="{{image.Url}}" ng-click="$ctrl.openImageModal(image)">
+  </div>
+</a>

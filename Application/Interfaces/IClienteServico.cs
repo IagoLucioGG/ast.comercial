@@ -1,4 +1,4 @@
-using AST.Comercial.Application.Dtos;
+﻿using AST.Comercial.Application.Dtos;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.OData.Deltas;
 
@@ -8,8 +8,8 @@ public interface IClienteServico
 {
     IQueryable<Cliente> ObterTodos();
     Task<Cliente?> ObterPorIdAsync(long id, CancellationToken ct = default);
-    Task<ClienteDto> CriarAsync(Delta<Cliente> delta, CancellationToken ct = default);
-    Task<ClienteDto?> AtualizarAsync(long id, Delta<Cliente> delta, CancellationToken ct = default);
+    Task<Cliente> CriarAsync(Delta<Cliente> delta, CancellationToken ct = default);
+    Task<Cliente?> AtualizarAsync(long id, Delta<Cliente> delta, CancellationToken ct = default);
     Task<bool> RemoverAsync(long id, CancellationToken ct = default);
 
     IQueryable<OrigemContato> ObterOrigens();

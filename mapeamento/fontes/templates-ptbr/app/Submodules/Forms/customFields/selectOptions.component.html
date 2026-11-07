@@ -1,0 +1,2 @@
+<select class="form-control input-sm" ng-options="item.Name for item in $ctrl.items" ng-model="$ctrl.selected_item" ng-required="$ctrl.required"
+  ng-disabled="$ctrl.disabled || !$ctrl.field.valueEditable" ng-change="$ctrl.selectItem()"></select>

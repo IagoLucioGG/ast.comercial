@@ -1,3 +1,4 @@
+using AST.Comercial.Application.Dtos;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.OData.Deltas;
 
@@ -12,6 +13,11 @@ public interface IPropostaServico
     Task<bool> RemoverAsync(long id, CancellationToken ct = default);
     Task AprovarAsync(long id, CancellationToken ct = default);
     Task RejeitarAsync(long id, CancellationToken ct = default);
+    Task<CompartilhamentoPropostaDto?> CompartilharAsync(long id, CancellationToken ct = default);
+    Task<Proposta?> RecalcularAsync(long id, CancellationToken ct = default);
+    Task<PropostaPublicaDto?> ObterPublicaAsync(string chave, CancellationToken ct = default);
+    Task<RespostaPublicaResultado> AceitarPublicaAsync(string chave, string? nome, string? email, string? ip, CancellationToken ct = default);
+    Task<RespostaPublicaResultado> RecusarPublicaAsync(string chave, string? motivo, string? ip, CancellationToken ct = default);
 
     IQueryable<ItemProposta> ObterProdutos();
     Task<ItemProposta> CriarProdutoAsync(Delta<ItemProposta> delta, CancellationToken ct = default);

@@ -4,6 +4,7 @@ import RegistroAtividades from './RegistroAtividades.vue'
 import UsuariosIntegracao from './UsuariosIntegracao.vue'
 import EquipesAdmin from './EquipesAdmin.vue'
 import AutomacoesAdmin from './AutomacoesAdmin.vue'
+import FilaProcessamento from './automacoes/FilaProcessamento.vue'
 import FunisAdmin from './FunisAdmin.vue'
 import EtiquetasAdmin from './EtiquetasAdmin.vue'
 import IntegracoesAdmin from './IntegracoesAdmin.vue'
@@ -11,6 +12,14 @@ import DadosEmpresa from './DadosEmpresa.vue'
 import CamposFormularios from './CamposFormularios.vue'
 import ImportadorPloomes from './ImportadorPloomes.vue'
 import ModelosDocumentoAdmin from './ModelosDocumentoAdmin.vue'
+import CargosAdmin from './CargosAdmin.vue'
+import DepartamentosAdmin from './DepartamentosAdmin.vue'
+import MoedasAdmin from './MoedasAdmin.vue'
+import PerfisEmBreve from './PerfisEmBreve.vue'
+import {
+  OrigensAdmin, RamosAdmin, PortesAdmin, StatusClienteAdmin,
+  MotivosPerdaAdmin, StatusNegocioAdmin, FamiliasProdutoAdmin, GruposProdutoAdmin,
+} from './comum/cadastrosAux'
 
 const props = defineProps<{ titulo: string; componente: string }>()
 defineEmits<{ fechar: [] }>()
@@ -21,6 +30,7 @@ const componentes: Record<string, any> = {
   UsuariosIntegracao,
   Equipes: EquipesAdmin,
   Automacoes: AutomacoesAdmin,
+  FilaProcessamento,
   Funis: FunisAdmin,
   Etiquetas: EtiquetasAdmin,
   Integracoes: IntegracoesAdmin,
@@ -28,6 +38,18 @@ const componentes: Record<string, any> = {
   CamposFormularios,
   ImportadorPloomes,
   ModelosDocumentos: ModelosDocumentoAdmin,
+  Cargos: CargosAdmin,
+  Departamentos: DepartamentosAdmin,
+  Moedas: MoedasAdmin,
+  Perfis: PerfisEmBreve,
+  Origens: OrigensAdmin,
+  Ramos: RamosAdmin,
+  Portes: PortesAdmin,
+  StatusCliente: StatusClienteAdmin,
+  MotivosPerda: MotivosPerdaAdmin,
+  StatusNegocio: StatusNegocioAdmin,
+  FamiliasProduto: FamiliasProdutoAdmin,
+  GruposProduto: GruposProdutoAdmin,
 }
 </script>
 

@@ -1,0 +1,8 @@
+<standard-loader margin-top="15" loading="!userDealsTableCtrl.can_load"></standard-loader>
+<dynamic-table
+  ng-if="userDealsTableCtrl.can_load"
+  entity="userDealsTableCtrl.entity"
+  opt-filter="userDealsTableCtrl.table_filter"
+  table-edit-fn="userDealsTableCtrl.editTablePatch"
+  current-tab="userDealsTableCtrl.front_tab">
+</dynamic-table>

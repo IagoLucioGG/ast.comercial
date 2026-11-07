@@ -1,4 +1,4 @@
-using AST.Comercial.Domain.Entidades;
+﻿using AST.Comercial.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,12 +14,14 @@ public class RegistroAlteracaoConfiguracao : IEntityTypeConfiguration<RegistroAl
         builder.Property(r => r.Usuario).IsRequired().HasMaxLength(200);
         builder.Property(r => r.Acao).IsRequired().HasMaxLength(100);
         builder.Property(r => r.Titulo).HasMaxLength(500);
+        builder.Property(r => r.UsuarioNome).HasMaxLength(200);
         builder.Property(r => r.DadosAntes).HasColumnType("jsonb");
         builder.Property(r => r.DadosDepois).HasColumnType("jsonb");
 
         builder.HasIndex(r => r.DataHora);
         builder.HasIndex(r => new { r.EntidadeAlvo, r.RegistroId });
         builder.HasIndex(r => r.Usuario);
+        builder.HasIndex(r => new { r.EmpresaId, r.DataHora });
     }
 }
 

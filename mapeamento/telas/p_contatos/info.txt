@@ -1,0 +1,7 @@
+passo: p_contatos
+url: https://app10.ploomes.com/Contacts/table
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

@@ -1,0 +1,47 @@
+<div class="mini-chat-container darker-content b-1">
+  <div class="vbox">
+    <header class="dark-content height-40 b-b-1">
+      <div class="side-wrapper stretch">
+        <div class="hbox stretch">
+          <aside class="v-middle width-40 position-relative">
+            <img class="mini-chat-avatar" ng-src="{{$ctrl.chat.IsGroup ? ($ctrl.chat.AvatarUrl || 'images/avatar_default.jpg') : ($ctrl.chat.TargetUser.AvatarUrl || 'images/avatar_default.jpg')}}">
+            <div class="chat-status" ng-if="$ctrl.self.Account.UsersOnlineModule && !$ctrl.chat.IsGroup">
+              <div ng-class="{ 'online': $ctrl.chat.TargetUser.Online, 'offline': !$ctrl.chat.TargetUser.Online }"></div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="width-200 ellipsis nowrap">
+              {{$ctrl.chat.IsGroup ? $ctrl.chat.Name : $ctrl.chat.TargetUser.Name}}
+            </div>
+          </aside>
+          <aside class="v-middle width-60 text-right nowrap">
+            <!-- <div class="button-fixed-size button-fixed-size-medium-adjusted button-dark cursor-pointer" ng-click="$ctrl.expandMiniChat()">
+              <i class="fa text-muted fa-arrows-alt"></i>
+            </div> -->
+            <div class="button-fixed-size button-fixed-size-medium-adjusted button-dark cursor-pointer" ng-click="$ctrl.closeMiniChat()">
+              <i class="fas text-muted fa-times"></i>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </header>
+    <chat-messages-content
+      chat="$ctrl.chat"
+      is-mini-chat="true"
+      id="mini-chat-scroller"
+      class="scrollable mini-chat-header special-section {{$ctrl.chat.IsGroup ? 'group-chat' : ''}}"
+      ng-style="$ctrl.text_area_style">
+    </chat-messages-content>
+    <div class="vbox-footer dark-content b-t-1">
+      <chat-footer
+        chat="$ctrl.chat"
+        is-mini-chat="true"
+        number-of-lines-callback-fn="$ctrl.numberOfLinesCallback(number_of_lines)"
+        has-attachments-callback-fn="$ctrl.hasAttachmentsCallback(has_attachments)"
+        has-inside-links-callback-fn="$ctrl.hasInsideLinksCallback(has_inside_links)"
+        is-answering-message-callback-fn="$ctrl.isAnsweringMessageCallback(is_answering)"
+        has-mini-chat-tools-callback-fn="$ctrl.hasMiniChatToolsCallback(has_mini_chat_tools)">
+      </chat-footer>
+    </div>
+  </div>
+</div>

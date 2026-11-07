@@ -1,0 +1,67 @@
+<div class="gap-10"></div>
+<a class="button-neutral-gray button font-regular-size text-left button-full-width" role="button" data-toggle="collapse" data-target="#fk_opt" aria-expanded="true" aria-controls="proposalProducts">
+  Opções cadastradas
+  <i class="fal fa-angle-down dropdown-sign"></i>
+</a>
+<div class="collapse in" id="fk_opt" aria-expanded="true" >
+  <div class="clearfix border-bottom-fix">
+    <div>
+      <div class="white-content b-1 rounded-regular overflow-hidden">
+        <div>
+          <table class="table table-striped modal-table">
+            <tbody>
+              <tr>
+                <td colspan="2">
+                  <input class="form-control input-sm" placeholder="Adicionar opção..." ng-model="$ctrl.currency_model" ng-model-options="{ debounce: 300 }" ng-change="$ctrl.filterCurrencies()">
+                </td>
+                <td class="text-center nowrap">
+                  <a class="button-fixed-size button-fixed-size-big" ng-class="{ 'button-action': $ctrl.currency_model, 'button-neutral disabled': !$ctrl.currency_model }" ng-click="$ctrl.insertNewCurrency($ctrl.currency_model)" uib-tooltip="Adicionar opção" tooltip-append-to-body="true" tooltip-enable="$ctrl.currency_model && true">
+                    <i class="fas fa-check"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr ng-repeat="currency in $ctrl.currencies track by $index">
+                <td>
+                  <span>
+                    <div class="round-checkbox" ng-click="$ctrl.toggleDefault(currency)">
+                      <div ng-class="currency.default ? 'b-2 file-checked': 'b-2'">
+                        <i class="fas fa-check activity-icon"></i>
+                      </div>
+                    </div>
+                  </span>
+                </td>
+                <td class="field-option-size">
+                  {{ currency.Symbol }}
+                </td>
+                <td class="text-center nowrap">
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" ng-if="currency.Editable" ng-click="$ctrl.openPopover(currency, $index); $event.stopPropagation()" uib-tooltip="Editar opção" tooltip-append-to-body="true">
+                    <i class="fal fa-pen activity-icon-top-3" uib-popover-template="$ctrl.popoverTemplate" popover-title="Editar opção" popover-append-to-body="true" popover-placement="auto right" popover-is-open="$ctrl.isOpen[$index]"></i>
+                  </a>
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" ng-if="currency.Editable" ng-click-confirm="excluir essa opção?" reversible="false" ng-click="$ctrl.removeCurrency(currency)" uib-tooltip="Excluir opção" tooltip-append-to-body="true">
+                    <i class="fal fa-trash fixing-fixed-size-button"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" class="text-center">
+                  <ul uib-pagination ng-model="$ctrl.current_page" ng-change="$ctrl.changePage()" total-items="$ctrl.total_items" class="pagination-sm" items-per-page="$ctrl.top" rotate="true" max-size="3" force-ellipses="true"
+                    first-text="Primeira" previous-text="Anterior" next-text="Próxima" last-text="Última"></ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gap-15"></div>
+
+<script type="text/ng-template" id="popover">
+  <div ng-show="$ctrl.isOpen" ng-form name="inline_edit_form">
+    <forms model="$ctrl.model" fields="$ctrl.form" form="inline_edit_form"></forms>
+    <button class="button button-action mleft15" ng-disabled="$ctrl.edit_loading" ng-click="$ctrl.editCurrency($ctrl.model, inline_edit_form); $event.stopPropagation()" title="Submit" aria-label="Submit">Salvar</button>
+    <button class="button button-white" ng-disabled="$ctrl.edit_loading" ng-click="$ctrl.isOpen[$index] = false; $event.stopPropagation()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <loading-tooltip loading="$ctrl.edit_loading" form="inline_edit_form"></loading-tooltip>
+  </div>
+</script>

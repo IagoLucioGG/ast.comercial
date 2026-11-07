@@ -1,0 +1,10 @@
+<dynamic-tabs
+  ng-if="$parent.interactionRecordsCtrl.initial_load && interactionRecordsTableCtrl.initial_load"
+  entity="$parent.interactionRecordsCtrl.main_entity"
+  filter="interactionRecordsTableCtrl.table_filter"
+  tabs="interactionRecordsTableCtrl.tabs"
+  current-tab="interactionRecordsTableCtrl.current_tab"
+  toggle-sidebar="$parent.interactionRecordsCtrl.table_sidebar"
+  applied-filter="$parent.interactionRecordsCtrl.applied_filter"
+  cypress-prefix="interaction-records-table"
+></dynamic-tabs>

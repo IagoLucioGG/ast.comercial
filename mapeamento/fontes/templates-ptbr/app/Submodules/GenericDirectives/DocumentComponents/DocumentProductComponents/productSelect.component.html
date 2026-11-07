@@ -1,0 +1,106 @@
+<div class="gap-15" ng-show="$ctrl.filter_product_fields.length > 0"></div>
+  <modal-section name="'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.FILTERS' | translate" section-id="0" collapsed="$ctrl.open_product_filter_section" collapse-callback="$ctrl.filterCollapseCallback" ng-if="$ctrl.filter_product_fields.length > 0 && !$ctrl.blockChangingProduct">
+    <div class="form-group" ng-class="{ 'col-sm-6': !$ctrl.toggleFullScreen, 'col-sm-3': $ctrl.toggleFullScreen }" ng-repeat="field in $ctrl.filter_product_fields track by field.key">
+      <label>{{field.label}}</label>
+      <new-field ng-class="{'is-button': field.isButton}" field="field" model="$ctrl.filter_model" property="field.key" required="field.required" disabled="field.disabled" wide="field.wide" force-hide-label="true" hide-label="field.hideLabel" not-trigger-formula="true"></new-field>
+    </div>
+    <hr class="form-group col-sm-12" ng-if="$ctrl.filter_group_fields.length > 0"></hr>
+    <div class="form-group" ng-class="{ 'col-sm-6': !$ctrl.toggleFullScreen, 'col-sm-3': $ctrl.toggleFullScreen }" ng-repeat="field in $ctrl.filter_group_fields track by field.key">
+      <label>{{field.label}}</label>
+      <new-field ng-class="{'is-button': field.isButton}" field="field" model="$ctrl.filter_model" property="field.key" required="field.required" disabled="field.disabled" wide="field.wide" force-hide-label="true" hide-label="field.hideLabel" not-trigger-formula="true"></new-field>
+    </div>
+  </modal-section>
+
+  <div class="gap-15"></div>
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="input-group full-width window-search has-feedback" ng-if="!$ctrl.blockChangingProduct">
+        <input
+          class="form-control input-sm"
+          type="text"
+          placeholder="{{ $ctrl.placeholder }}"
+          ng-model="$ctrl.new_product_model.product_name"
+          ng-change="$ctrl.filterProducts()"
+          ng-model-options="{debounce: 500}"
+          ng-keypress="$ctrl.preventSubmit($event)">
+        <span class="fas fa-search text-muted form-control-feedback"></span>
+      </div>
+      <div class="window-200 full-width">
+        <div class="vbox scroll-shadow small-neutral-shadow side-scroll">
+          <section
+            class="scrollable scroll-shadow-container border-bottom-fix white-content b-1 border-top-fix"
+            ng-class="{'ng-invalid-field': $ctrl.isInvalidField}"
+          >
+            <table class="table table-last-line table-static table-hover table-draggable products-table table-smaller-header dynamic-table-class" infinite-scroll='$ctrl.loadProducts()' infinite-scroll-disabled="!$ctrl.initial_load || $ctrl.reached_end">
+              <thead>
+                <tr>
+                  <th
+                    ng-repeat="field in $ctrl.showing_product_table track by $index"
+                    ng-hide="field.hidden || field.defaultFormHidden || field.disableHidden"
+                    class="nowrap">
+                    {{field.label}}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="product in $ctrl.products" ng-click="$ctrl.selectProduct(product)" ng-class="{'selected': $ctrl.selected_product.Id === product.Id}">
+                  <td ng-repeat="field in $ctrl.showing_product_table track by $index" ng-hide="field.hidden || field.defaultFormHidden || field.disableHidden">
+                      <span class="product-insert-cell"
+                            ng-class="{'native-field-min-width': !field.dynamic}"
+                            inline-edit
+                            model="product"
+                            properties="[field.key]"
+                            has-dynamic-field="field.dynamic"
+                            patch-api="'Products'"
+                            submit-fn="$ctrl.inlineEdit(item, field_key)"
+                            non-editable="!product.Editable || !field.inlineEditable">
+                        <dynamic-table-item display="product[field.key + '_display']" column="{ field: field }" object="product"></dynamic-table-item>
+                      </span>
+                  </td>
+                </tr>
+                <tr ng-show="$ctrl.new_product_model.product_name.length > 0 && $ctrl.can_load"
+                    ng-if="$ctrl.createPermission"
+                    ng-click="$ctrl.toggleNewProductPopover()">
+                  <td colspan="{{$ctrl.showing_product_table.length}}">
+                    <div class="wrapper">
+                      <div class="hbox">
+                        <aside class="v-middle width-35"
+                              uib-popover-template="$ctrl.popoverTemplate"
+                              popover-append-to-body="true"
+                              popover-placement="right"
+                              popover-is-open="$ctrl.new_product_popover_is_open"
+                              popover-title="Criar">
+                          <i class="fal fa-plus-square font-big-title text-action"></i>
+                        </aside>
+                        <aside class="v-middle">
+                          <div class="font-bold display-inline">Criar novo produto:</div> {{$ctrl.new_product_model.product_name}}
+                        </aside>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-if="$ctrl.products.length === 0 && ($ctrl.new_product_model.product_name.length === 0) && $ctrl.can_load && $ctrl.initial_load" class="neutral-line empty-table-config">
+                  <td colspan="{{$ctrl.showing_product_table.length}}" class="text-center empty-results">
+                    <span class="text-neutral">Nenhum item encontrado</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <standard-loader margin-top="15" loading="!$ctrl.can_load" optionalclass="'timeline-loader product-select-loader'"></standard-loader>
+          </section>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <script type="text/ng-template" id="new-product-template">
+    <div ng-form name="new_product_form">
+      <forms model="$ctrl.new_product_model" is-popover="true" watch-field-changes="true" model-change-callback="$ctrl.modelChangeCallback(new_val, old_val)" fields="$ctrl.entityName ? $ctrl.contact_product_form_fields : $ctrl.showing_product_table" form="new_product_form"></forms>
+
+      <button type="button" class="button button-action mleft15" ng-disabled="!$ctrl.can_create_load" ng-click="$ctrl.submitControl($ctrl.new_product_model, new_product_form)" title="Submit" aria-label="Submit">Salvar</button>
+
+      <button type="button" class="button button-white" ng-disabled="!$ctrl.can_create_load" ng-click="$ctrl.closePopover()" title="Cancel" aria-label="Cancel">Cancelar</button>
+      <span class="text-danger font-very-big" ng-if="new_product_form.$submitted && new_product_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="Existem campos obrigatórios não preenchidos"><i class="fad fa-exclamation-triangle"></i></span>
+      <div class="loader" ng-if="!$ctrl.can_create_load"></div>
+    </div>
+  </script>

@@ -1,0 +1,41 @@
+<div class="vbox tab-header scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container">
+    <div class="white-content b-b-1 wrapper">
+      <div class="gap-15"></div>
+      <div>
+        <div class="hbox">
+          <aside class="width-10 text-center">
+            <div class="side-wrapper"><img class="avatar-select" src="assets/images/mchimp.jpg"></div>
+          </aside>
+          <aside>
+            <div class="side-wrapper">
+              {{ 'INTEGRATIONS.MAILCHIMP.MAILCHIMP_DESCRIPTION' | translate }}
+              <div class="gap-10"></div>
+              {{ 'INTEGRATIONS.MAILCHIMP.INTEGRATION_DESCRIPTION' | translate }}
+              <div class="gap-20"></div>
+              <a class="inline-link-blue" href="https://youtu.be/69JfEsAutDk" target="_blank">
+                <div class="font-big font-bold">
+                  {{ 'INTEGRATIONS.MAILCHIMP.EXPLANATORY_VIDEO' | translate }}
+                </div>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div class="gap-15"></div>
+    </div>
+    <div class="wrapper">
+      <div class="text-center">
+        <a ng-if="!mailChimpIntegrationCtrl.has_integration" ng-href="{{mailChimpIntegrationCtrl.integration_url}}" class="button button-big button-action" target="_self">
+          <div>{{ 'INTEGRATIONS.ENABLE_INTEGRATION' | translate }}</div>
+        </a>
+        <a ng-if="mailChimpIntegrationCtrl.has_integration" class="button button-big button-white" ng-click="mailChimpIntegrationCtrl.deactivateMailChimp()">
+          <div class="text-danger">
+            <i class="fal fa-pause button-icon"></i>
+            <span class="text-regular">{{ 'INTEGRATIONS.DISABLE_INTEGRATION' | translate }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

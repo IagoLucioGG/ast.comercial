@@ -1,0 +1,140 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="false"
+  medium="productEntityModalCtrl.is_part || productEntityModalCtrl.current_tab === 'sankhya-product-stock'"
+  thin="!productEntityModalCtrl.is_part"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'PRODUCTS.ENTITY_MODAL.TITLE' | translate_with_replace : { name: productEntityModalCtrl.product_entity.name } }}"
+  toggle-modal="productEntityModalCtrl.toggle_modal"
+  ng-form
+  name="new_product_entity_form"
+  side-expands="productEntityModalCtrl.side_expands"
+  select-side-expand-callback-fn="productEntityModalCtrl.selectSideExpand(side_expand, open)"
+  is-fetching-modal-content="productEntityModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div ng-if="!productEntityModalCtrl.not_found && productEntityModalCtrl.can_load" class="hbox stretch deal-or-contact-domain">
+      <aside class="overflow-hidden" ng-class="{'width-600': productEntityModalCtrl.is_part || productEntityModalCtrl.current_tab === 'sankhya-product-stock','width-450': !productEntityModalCtrl.is_part}">
+        <div class="vbox scroll-shadow neutral-shadow">
+          <section class="scrollable scroll-shadow-container light-background">
+            <product-image-select ng-if="productEntityModalCtrl.product_entity.Id === 10" model="productEntityModalCtrl.model" image-url="productEntityModalCtrl.model.ImageUrl"></product-image-select>
+            <ul class="nav nav-tabs b-b-1 border-tabs arrange-mid" ng-if="productEntityModalCtrl.product_entity.Id === 10">
+              <li ng-class="{ 'active': productEntityModalCtrl.current_tab === 'data'}" ng-click="productEntityModalCtrl.changeTab('data')">
+                <a class="text-muted" href>
+                  {{ 'PRODUCTS.ENTITY_MODAL.PRODUCT_DATA' | translate }}
+                </a>
+              </li>
+              <li ng-if="productEntityModalCtrl.has_contacts_products_module" ng-class="{ 'active': productEntityModalCtrl.current_tab === 'serialized'}" ng-click="productEntityModalCtrl.changeTab('serialized')">
+                <a class="text-muted" href>
+                  {{productEntityModalCtrl.customizables.contacts_products_module.plural_unit_name}}
+                </a>
+              </li>
+              <li ng-if="productEntityModalCtrl.sankhyaIntegrationModule && productEntityModalCtrl.sankhyaIntegration.Active" ng-class="{ 'active': productEntityModalCtrl.current_tab === 'sankhya-product-stock'}" ng-click="productEntityModalCtrl.changeTab('sankhya-product-stock')">
+                <a class="text-muted" href>
+                  {{ 'INTEGRATIONS.SANKHYA.PRODUCT_STOCK.STOCK_TABLE' | translate }}
+                </a>
+              </li>
+            </ul>
+            <div class="gap-15 light-background" ng-if="productEntityModalCtrl.current_tab === 'data'"></div>
+            <infos-widget
+              ng-if="productEntityModalCtrl.current_tab === 'data'"
+              form-key="{{productEntityModalCtrl.entity_form_key}}"
+              replace-form="productEntityModalCtrl.forms"
+              replace-section="productEntityModalCtrl.sections"
+              entity-type="Product"
+              patch-fn="productEntityModalCtrl.patchProductEntity(model)"
+              model="productEntityModalCtrl.model">
+            </infos-widget>
+
+            <div class="mt-15">
+              <allowed-users
+                ng-if="productEntityModalCtrl.current_tab === 'data' && productEntityModalCtrl.product_entity.Id === 11 && productEntityModalCtrl.model.Editable"
+                model="productEntityModalCtrl.allowed_views_model"
+                title="('PRODUCTS.WHO_CAN_SEE_PRODUCT_GROUP' | translate)">
+              </allowed-users>
+            </div>
+
+            <serialized-products-table
+              ng-if="productEntityModalCtrl.current_tab === 'serialized'"
+              product-id="productEntityModalCtrl.model.Id"
+              update-side-slide-fn="productEntityModalCtrl.updateSideSlideInfos(is_serialized_product_slide, serialized_product_id, serialized_product_entity, current_tab, add_column_callback, remove_column_callback, reorder_column_callback)">
+            </serialized-products-table>
+
+            <product-part-arrays
+              ng-if="productEntityModalCtrl.product_entity.Id === 41"
+              model="productEntityModalCtrl.model"
+              parent-product-id="productEntityModalCtrl.model.ProductId"
+              model-change-callback-fn="productEntityModalCtrl.changedPartArrays(default_parts, required_parts, suggested_parts, blocked_parts)">
+            </product-part-arrays>
+
+            <sankhya-product-stock
+              ng-if="productEntityModalCtrl.current_tab === 'sankhya-product-stock'"
+              product-id="productEntityModalCtrl.model.Id">
+            </sankhya-product-stock>
+          </section>
+        </div>
+      </aside>
+      <aside class="regular-background b-l-1 proposal-hidden" id="new_proposal" ng-class="{'width-450-proposal': productEntityModalCtrl.selected_side_expand.open}">
+        <product-entity-side-expand
+          ng-if="productEntityModalCtrl.selected_side_expand.open"
+          editing="true"
+          side-expand="productEntityModalCtrl.selected_side_expand"
+          model="productEntityModalCtrl.model"
+          entity="productEntityModalCtrl.product_entity"
+          selected-items="productEntityModalCtrl.model_items"
+          update-product-parts-fn="productEntityModalCtrl.updateProductParts">
+        </product-entity-side-expand>
+      </aside>
+    </div>
+    <div class="vbox" ng-if="productEntityModalCtrl.can_load">
+      <section class="scrollable">
+        <div class="hbox stretch">
+          <page-not-found></page-not-found>
+        </div>
+      </section>
+    </div>
+  </modal-content>    
+  <modal-side-slide slide-id="product_entity_slide" modal-side-slide-title="{{productEntityModalCtrl.serialized_product_entity.Name}}">
+    <serialized-product-content ng-if="productEntityModalCtrl.is_serialized_product_slide" product-id="productEntityModalCtrl.model.Id" serialized-product-id="productEntityModalCtrl.serialized_product_id"></serialized-product-content>
+    <serialized-products-table-config
+      ng-if="!productEntityModalCtrl.is_serialized_product_slide"
+      entity="productEntityModalCtrl.serialized_product_entity"
+      current-tab="productEntityModalCtrl.serialized_product_tab"
+      add-column-callback="productEntityModalCtrl.add_column_callback"
+      remove-column-callback="productEntityModalCtrl.remove_column_callback"
+      reorder-column-callback="productEntityModalCtrl.reorder_column_callback">
+    </serialized-products-table-config>
+  </modal-side-slide>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <omie-entity-status
+          ng-if="productEntityModalCtrl.product_entity.Id === 10"
+          entity-id="productEntityModalCtrl.product_entity.Id"
+          item-value="productEntityModalCtrl.model"
+          ></omie-entity-status>
+          <sankhya-entity-status-modal
+            ng-if="productEntityModalCtrl.sankhyaIntegrationModule && productEntityModalCtrl.sankhyaIntegration.Active && (productEntityModalCtrl.product_entity.Id === 10 || productEntityModalCtrl.product_entity.Id === 11)"
+            entity-id="productEntityModalCtrl.product_entity.Id"
+            item-id="productEntityModalCtrl.model.Id"
+            item-value="productEntityModalCtrl.model">
+          </sankhya-entity-status-modal>
+        </aside>
+        <aside class="v-middle text-right" ng-if="productEntityModalCtrl.product_entity.Id === 41 ? productEntityModalCtrl.model.Editable : productEntityModalCtrl.model.Deletable">
+          <a href class="button button-white" ng-if="productEntityModalCtrl.product_entity.Id !== 11" ng-click-confirm="{{ 'PRODUCTS.ENTITY_MODAL.DELETE_CONFIRM' | translate }}" reversible="false" ng-click="productEntityModalCtrl.deleteProductEntity()">
+            <span class="font-big">
+              <i class="fal fa-trash fixing-fixed-size-button"></i>
+            </span>
+          </a>
+          <a href class="button button-white" ng-if="productEntityModalCtrl.product_entity.Id === 11" mini-modal mini-modal-title="{{ 'PRODUCTS.TRANSFER_GROUP_PRODUCTS' | translate }}" mini-modal-fields="productEntityModalCtrl.delete_group_fields" mini-modal-callback="productEntityModalCtrl.deleteGroup(model)">
+            <span class="font-big">
+              <i class="fal fa-trash fixing-fixed-size-button"></i>
+            </span>
+          </a>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

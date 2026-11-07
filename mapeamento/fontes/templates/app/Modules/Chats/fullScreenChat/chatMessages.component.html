@@ -1,0 +1,72 @@
+<div class="vbox side-scroll">
+  <header class="height-40 regular-background b-b-1 b-t-1">
+    <div class="hbox stretch fixed-size">
+      <aside class="v-middle left-wrapper width-40">
+        <img class="avatar-regular" ng-src="{{$ctrl.chat.IsGroup ? ($ctrl.chat.AvatarUrl  || 'images/avatar_default.jpg') : ($ctrl.chat.TargetUser.AvatarUrl  || 'images/avatar_default.jpg')}}">
+      </aside>
+      <aside class="v-middle side-wrapper font-big nowrap ellipsis" uib-tooltip="{{$ctrl.getUserStatus()}}" tooltip-append-to-body="true" tooltip-enable="$ctrl.getUserStatus().length > 10">
+        {{$ctrl.chat.IsGroup ? $ctrl.chat.Name : $ctrl.chat.TargetUser.Name}}
+        <span class="text-muted font-small" ng-if="$ctrl.self.Account.UsersOnlineModule && !$ctrl.chat.IsGroup">
+          - {{$ctrl.getUserStatus()}}
+        </span>
+      </aside>
+      <aside class="v-middle side-wrapper width-500">
+        <a class="button button-background pull-right" href ng-click="$ctrl.closeChat()">
+          <span class="text-darkest-neutral">
+            <i class="fas fa-times"></i>
+          </span>
+        </a>
+        <a class="button button-background pull-right" href ng-click="$ctrl.openChatInfo()">
+          <span class="text-darkest-neutral">
+            <i class="fad fa-info-square regular-icon"></i>
+            {{ 'CHATS.INFOS' | translate }}
+          </span>
+        </a>
+        <div class="input-group width-250 pull-right">
+          <input
+            class="form-control input-sm light-background"
+            placeholder="{{ 'CHATS.SEARCH_IN_CHAT' | translate }}"
+            ng-model="$ctrl.quick_filter"
+            ng-keyup="$event.keyCode === 13 ? $ctrl.quickFilter($ctrl.quick_filter, 'up') : null"
+            ng-disabled="$ctrl.is_filtering">
+          <div class="input-group-btn width-10" ng-if="!$ctrl.is_filtering">
+            <a class="btn button button-background-border" ng-click="$ctrl.quickFilter($ctrl.quick_filter, 'up')">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+          <div class="input-group-btn width-10" ng-if="$ctrl.is_filtering">
+            <a class="btn button button-background-border" ng-click="$ctrl.clearFilter()">
+              <i class="fas fa-times text-neutral"></i>
+            </a>
+          </div>
+          <div class="input-group-btn width-10" uib-tooltip="Próximo resultado" ng-if="$ctrl.is_filtering">
+            <a class="btn button button-background-border" ng-click="$ctrl.quickFilter($ctrl.quick_filter, 'up')">
+              <i class="fas fa-chevron-up text-neutral"></i>
+            </a>
+          </div>
+          <div class="input-group-btn width-10" uib-tooltip="Resultado anterior" ng-if="$ctrl.is_filtering">
+            <a class="btn button button-background-border" ng-click="$ctrl.quickFilter($ctrl.quick_filter, 'down')">
+              <i class="fas fa-chevron-down text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <chat-messages-content
+    chat="$ctrl.chat"
+    is-mini-chat="false"
+    id="chat-scroller"
+    class="scrollable dark-background chat-header special-section {{$ctrl.chat.IsGroup ? 'group-chat' : ''}}"
+    ng-style="$ctrl.text_area_style">
+  </chat-messages-content>
+  <div class="vbox-footer darkest-background b-t-1">
+    <chat-footer
+      chat="$ctrl.chat"
+      number-of-lines-callback-fn="$ctrl.numberOfLinesCallback(number_of_lines)"
+      has-attachments-callback-fn="$ctrl.hasAttachmentsCallback(has_attachments)"
+      has-inside-links-callback-fn="$ctrl.hasInsideLinksCallback(has_inside_links)"
+      is-answering-message-callback-fn="$ctrl.isAnsweringMessageCallback(is_answering)">
+    </chat-footer>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="false"
+  footer="false"
+  dark="true"
+  modal-title="Google Agenda"
+  toggle-modal="step02Ctrl.toggle_modal"
+  block-back-state="true"
+  disassociate-toggle="true"
+  is-fetching-modal-content="step02Ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="wrapper">
+          <div class="gap-15"></div><span class="font-title text-success"><i class="fad fa-check-circle regular-fa"></i>Autorização realizada com sucesso</span>
+          <div class="gap-15"></div>
+          <div class="gap-15"></div>
+          <div class="font-semi-big">Agora, basta selecionar o calendário que você deseja sincronizar com o Ploomes.</div>
+          <div class="gap-10"></div>
+          <select class="form-control input-sm" ng-options="calendar as calendar.Name for calendar in step02Ctrl.calendar_list track by calendar.Id" ng-model="step02Ctrl.selected_calendar"></select>
+          <div class="gap-15"></div>
+          <div class="line"></div>
+          <div class="gap-15"></div>
+          <div class="hbox">
+            <aside class="width-40 text-warning font-very-big">
+              <div class="font-big-title"><i class="fad fa-exclamation-triangle"></i></div>
+            </aside>
+            <aside class="font-semi-big"><span class="font-bold">Atenção: </span>somente as cópias dos seus eventos do Google Calendar de hoje ou de datas futuras serão criadas no Ploomes na importação inicial. Após a integração, a sincronização será total inclusive para eventos passados.<br><br>Ao desabilitar a integração, as cópias já criadas serão mantidas no Ploomes, mas a sincronização será interrompida.</aside>
+          </div><br><br><a class="button button-action font-big full-width" ng-click="step02Ctrl.goNextStep()">Habilitar integração</a>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

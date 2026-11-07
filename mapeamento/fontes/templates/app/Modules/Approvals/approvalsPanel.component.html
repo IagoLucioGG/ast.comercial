@@ -1,0 +1,101 @@
+<div uib-dropdown ng-if="$ctrl.counter > 0" is-open="$ctrl.panel_open" ng-init="$ctrl.onReadyComponent()">
+  <a
+    href
+    uib-dropdown-toggle
+    class="icon-trigger-tippy touchable-icon-button"
+    ng-class="{'active': $ctrl.panel_open, 'deactive': !$ctrl.panel_open}"
+    ng-click="$ctrl.startDropdown()">
+    <div class="touchable-icon-wrapper">
+      <i class="fal fa-badge-check touchable-icon"></i>
+    </div>
+    <div class="touchable-icon-badge" ng-cloak>
+      {{$ctrl.counter}}
+    </div>
+  </a>
+  <ul uib-dropdown-menu class="approval-dropdown-menu pull-right" aria-labelledby="approvals">
+    <div class="vbox height-350" ng-if="$ctrl.panel_open">
+      <section class="scrollable" infinite-scroll="$ctrl.loadMore()" infinite-scroll-disabled="$ctrl.reached_end">
+        <div class="loader approval-loader" ng-if="!$ctrl.initial_load"></div>
+        <div class="text-neutral text-center quick-search" ng-if="$ctrl.approvals.length === 0 && $ctrl.initial_load"><i class="fad fa-exclamation-triangle font-giant-title"></i>
+          <div class="gap-30"></div>{{'APPROVALS.NO_PENDING' | translate}}
+        </div>
+        <li ng-repeat="approval in $ctrl.approvals">
+          <a href ng-if="approval.Quote" ng-click="$ctrl.goToDocument(approval.QuoteId, 'quote')" class="approval-dropdown-link b-b-1">
+            <div class="hbox">
+              <aside class="width-50 v-middle">
+                <div>
+                  <img ng-src="{{::approval.Quote.Creator.AvatarUrl}}" class="avatar-notification">
+                </div>
+              </aside>
+              <aside>
+                {{ 'APPROVALS.A_QUOTE_FROM' | translate }}
+                <strong>{{::approval.Quote.Creator.Name}}</strong>
+                {{ 'APPROVALS.REQUIRES_YOUR_APPROVAL' | translate }}
+                <div>
+                  <div class="approval-inline text-muted" ng-if="approval.Quote.Deal.Contact">
+                    <i ng-if="::approval.Quote.Deal.Contact.TypeId === 2" class="fal fa-user simple-line-inline"></i>
+                    <i ng-if="::approval.Quote.Deal.Contact.TypeId === 1" class="fal fa-industry simple-line-inline"></i>
+                    {{::approval.Quote.Deal.Contact.Name}}
+                  </div>
+                  <div class="approval-inline text-muted">
+                    {{::formatCurrency(approval.Quote.Amount)}}
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </a>
+          <a href ng-if="approval.Order" ng-click="$ctrl.goToDocument(approval.OrderId, 'order')" class="approval-dropdown-link b-b-1">
+            <div class="hbox">
+              <aside class="width-50 v-middle">
+                <div>
+                  <img ng-src="{{::(approval.Order.Creator.AvatarUrl || approval.Order.Owner.AvatarUrl || approval.Order.Contact.Owner.AvatarUrl)}}" class="avatar-notification">
+                </div>
+              </aside>
+              <aside>
+                {{ 'APPROVALS.AN_ORDER_FROM' | translate }}
+                <strong>{{::(approval.Order.Creator.Name || approval.Order.Owner.Name || approval.Order.Contact.Owner.Name)}}</strong>
+                {{ 'APPROVALS.REQUIRES_YOUR_APPROVAL' | translate }}
+                <div>
+                  <div class="approval-inline text-muted">
+                    <i ng-if="::approval.Order.Contact.TypeId === 2" class="fal fa-user simple-line-inline"></i>
+                    <i ng-if="::approval.Order.Contact.TypeId == 1" class="fal fa-industry simple-line-inline"></i>
+                    {{::approval.Order.Contact.Name}}
+                  </div>
+                  <div class="approval-inline text-muted">
+                    {{::formatCurrency(approval.Order.Amount)}}
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </a>
+          <a href ng-if="approval.Document" ng-click="$ctrl.goToDocument(approval.DocumentId, 'document')" class="approval-dropdown-link b-b-1">
+            <div class="hbox">
+              <aside class="width-50 v-middle">
+                <div>
+                  <img ng-src="{{::approval.Document.Creator.AvatarUrl}}" class="avatar-notification">
+                </div>
+              </aside>
+              <aside>
+                {{ 'APPROVALS.A_DOCUMENT_FROM' | translate }}
+                <strong>{{::approval.Document.Creator.Name}}</strong>
+                {{ 'APPROVALS.REQUIRES_YOUR_APPROVAL' | translate }}
+                <div>
+                  <div class="approval-inline text-muted">
+                    <i ng-if="::approval.Document.Contact.TypeId === 2" class="fal fa-user simple-line-inline"></i>
+                    <i ng-if="::approval.Document.Contact.TypeId == 1" class="fal fa-industry simple-line-inline"></i>
+                    {{::approval.Document.Contact.Name}}
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </a>
+        </li>
+      </section>
+    </div>
+    <!-- <div>
+      <a href class="button button-full-width button-big button-darkest-background">
+        <strong class="font-regular-size">Ver todos os itens</strong>
+      </a>
+    </div> -->
+  </ul>
+</div>

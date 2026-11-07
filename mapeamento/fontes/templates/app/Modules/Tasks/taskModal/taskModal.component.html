@@ -1,0 +1,636 @@
+<dynamic-modal modal-id="{{::modalId}}"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'TASKS.TASK_MODAL.TITLE' | translate }}"
+  toggle-modal="mainTaskCtrl.toggle_modal"
+  is-modal-hidden="mainTaskCtrl.is_modal_hidden"
+  is-fetching-modal-content="mainTaskCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="hbox stretch task-modal" ng-if="!mainTaskCtrl.not_found">
+      <aside class="overflow-hidden width-400 white-content">
+        <div class="activities arrange-mid">
+          <a
+            ng-repeat="type in mainTaskCtrl.task_types"
+            ng-class="{ 'chosen': type.Id == mainTaskCtrl.task_view.task_type.Id }"
+            ng-style="{ 'width': $parent.$parent.tasksCtrl.widthPercentage, 'background-color': type.Id == mainTaskCtrl.task_view.task_type.Id ? type.Color : '' }"
+            ng-click="mainTaskCtrl.changeType(type)"
+            uib-tooltip="{{type.Name}}"
+            tooltip-append-to-body="true">
+            <div class="font-big {{type.Id == mainTaskCtrl.task_view.task_type.Id ? 'text-muted' : 'text-regular-color'}}">
+              <i ng-style="{ 'color': type.Id == mainTaskCtrl.task_view.task_type.Id ? '#fff' : '' }" class="fal" ng-class="type.Icon"></i>
+            </div>
+          </a>
+        </div>
+        <div class="line line-border arrange-top"></div>
+        <div class="vbox task-vbox light-background">
+          <section class="scrollable">
+            <div class="gap-15"></div>
+            <form class="clearfix">
+              <div class="form-group col-sm-12">
+                <span 
+                  inline-edit 
+                  model="mainTaskCtrl.task_view" 
+                  properties="['task_title', 'task_description']" 
+                  patch-api="Tasks" 
+                  submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)" 
+                  non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner)"
+                >
+                  <div class="font-very-big font-bold pre-wrap">{{mainTaskCtrl.task_view.task_title_display || mainTaskCtrl.task_view.task_type.Name}}</div>
+                  <div class="gap-3"></div>
+                  <div class="font-semi-big break-words" ng-if="mainTaskCtrl.task_view.task_description_display">
+                    <span ng-if="mainTaskCtrl.new_sanitize_front" class="pre-wrap" ng-bind-html="mainTaskCtrl.sanitizeHTML(mainTaskCtrl.task_view.task_description_display) | to_trusted">
+                      {{mainTaskCtrl.sanitizeHTML(mainTaskCtrl.task_view.task_description_display)}}
+                    </span>
+                    <span ng-if="!mainTaskCtrl.new_sanitize_front" class="pre-wrap" ng-bind-html="mainTaskCtrl.task_view.task_description_display | to_trusted">
+                      {{mainTaskCtrl.task_view.task_description_display}}
+                    </span>
+                  </div>
+                </span>
+              </div>
+
+              <div class="form-group col-sm-12" ng-if="mainTaskCtrl.meetingTranscriptionActive">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12" ng-if="mainTaskCtrl.meetingTranscriptionActive">
+                <div class="display-flex ai-transcription-indicator space-gap-7">
+                  <div>
+                    <i class="fal fa-sparkles font-size-20 ai-icon-soft"></i>
+                  </div>
+                  <div class="column-container width-max100-min0 width-max space-gap-7">
+                    <div class="v-middle-flex space-gap-5">
+                      <p translate="TASKS.AI_TRANSCRIPTION_PROMPT.AUTOMATIC_TRANSCRIPTION" class="font-bold font-size-14 m0"></p>
+                      <input class="cmn-toggle cmn-toggle-round-flat-ai-transcription-prompt-small" id="cmn-toggle-ai-transcription" type="checkbox"
+                        ng-model="mainTaskCtrl.task_view.AllowMeetingTranscription"
+                        ng-change="mainTaskCtrl.editAllowMeetingTranscription(mainTaskCtrl.task_view)"
+                        ng-disabled="!(mainTaskCtrl.task_view.task_editable && !mainTaskCtrl.invalidFinisherOwner)">
+                      <label class="pull-right m0" for="cmn-toggle-ai-transcription"></label>
+                    </div>
+                    <div class="v-middle-flex space-gap-5 width-max100-min0">
+                      <p class="font-bold font-size-13 m0 nowrap text-color-prompt-model">{{'TASKS.AI_TRANSCRIPTION_PROMPT.TRANSCRIPTION_PROMPT' | translate}}</p>
+                      <span
+                        inline-edit
+                        model="mainTaskCtrl.task_view"
+                        custom-fields="[mainTaskCtrl.transcriptionPromptField]"
+                        patch-api="Tasks"
+                        submit-fn="mainTaskCtrl.submitTranscriptionPrompt(item, field_key)"
+                        non-editable="!(mainTaskCtrl.task_view.task_editable && !mainTaskCtrl.invalidFinisherOwner)"
+                        class="width-max100-min0 width-max"
+                      >
+                        <p id="transcription-prompt-text" class="m0 text-ellipsis width-max100-min0 text-color-prompt-model" uib-tooltip="{{mainTaskCtrl.task_view.task_transcription_prompt.length > 0 ? mainTaskCtrl.task_view.task_transcription_prompt[0].Name : ('TASKS.AI_TRANSCRIPTION_PROMPT.DEFAULT_PROMPT' | translate)}}"tooltip-placement="top" tooltip-append-to-body="true" tooltip-enable="mainTaskCtrl.isPromptTruncated()">{{mainTaskCtrl.task_view.task_transcription_prompt.length > 0 ? mainTaskCtrl.task_view.task_transcription_prompt[0].Name : ('TASKS.AI_TRANSCRIPTION_PROMPT.DEFAULT_PROMPT' | translate)}}</p>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="hbox">
+                  <aside class="width-30">
+                    <span class="simple-inline font-semi-big mtop1">
+                      <i class="fal fa-calendar font-title"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span 
+                      inline-edit 
+                      class="font-semi-big" 
+                      model="mainTaskCtrl.task_view" 
+                      properties="['task_date', 'task_time', 'task_length', 'task_repeat_interval_length', 'task_repeat_interval_unit', 'task_email_reminder', 'task_address']" 
+                      patch-api="Tasks" 
+                      submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)" 
+                      non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner)"
+                    >
+                      <strong>
+                        {{mainTaskCtrl.show_date}}
+                      </strong>
+                      <span ng-if="!mainTaskCtrl.task_view.NoTime && mainTaskCtrl.timeView(mainTaskCtrl.task_view.task_time_display)">
+                        <div class="gap-3"></div>
+                        <span class="font-regular-size">
+                          {{mainTaskCtrl.formatted_time}}
+                        </span>
+                        <span class="font-regular-size">
+                          {{mainTaskCtrl.formatted_length}}
+                        </span>
+                      </span>
+                      <div class="gap-3"></div>
+                      <div class="hbox font-small text-muted simple-inline" ng-if="mainTaskCtrl.task_view.task_repeat_interval_length_display">
+                        <aside class="width-20">
+                          <i class="fal fa-redo simple-line-inline-3"></i>
+                        </aside>
+                        <aside>
+                          {{ 'TASKS.TASK_MODAL.REPEAT_EVERY' | translate }} {{mainTaskCtrl.task_view.task_repeat_interval_length_display + " " + mainTaskCtrl.task_view.task_repeat_interval_unit.Name.toLowerCase()}}</span>
+                        </aside>
+                      </div>
+                      <div class="hbox font-small text-muted simple-inline" ng-if="mainTaskCtrl.task_view.task_email_reminder">
+                        <aside class="width-20">
+                            <i class="fal fa-bell simple-line-inline-3"></i>
+                        </aside>
+                        <aside>
+                          {{ 'TASKS.TASK_MODAL.REMIND' | translate }} {{mainTaskCtrl.task_view.task_email_reminder.Name.toLowerCase()}}
+                        </aside>
+                      </div>
+                      <div class="hbox font-small text-muted simple-inline" ng-if="mainTaskCtrl.task_view.task_address_display">
+                        <aside class="width-20">
+                            <i class="fal fa-map-signs simple-line-inline-3"></i>
+                        </aside>
+                        <aside>
+                            {{mainTaskCtrl.task_view.task_address_display}}
+                        </aside>
+                      </div>
+                    </span>
+                  </aside>
+                </div>
+              </div>
+              <div ng-if="mainTaskCtrl.hasIntegrationActive">
+                <div ng-if="mainTaskCtrl.integrations.show_google_integration">
+                  <div class="form-group col-sm-12">
+                    <div class="line line-no-margins"></div>
+                  </div>
+                  <div class="form-group col-sm-12">
+                    <div class="hbox">
+                      <aside class="width-30">
+                        <img src="/assets/images/google_calendar_icon.svg" class="task-integration-icon" alt="" />
+                      </aside>
+                      <aside class="v-middle">
+                        <strong>{{ 'TASKS.SUCCESS_INTEGRATION' | translate }}</strong><br/>
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+                <div ng-if="mainTaskCtrl.integrations.show_outlook_integration">
+                  <div class="form-group col-sm-12">
+                    <div class="line line-no-margins"></div>
+                  </div>
+                  <div class="form-group col-sm-12">
+                    <div class="hbox">
+                      <aside class="width-30">
+                        <img src="/assets/images/outlook_icon.svg" class="task-integration-icon" alt="" />
+                      </aside>
+                      <aside class="v-middle">
+                        <strong>{{ 'TASKS.SUCCESS_INTEGRATION' | translate }}</strong><br/>
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="hbox">
+                  <aside class="width-30">
+                    <span class="simple-inline font-semi-big mtop1">
+                      <i ng-if="mainTaskCtrl.task_view.task_contact[0].TypeId == 2" class="fal fa-user font-title"></i>
+                      <i ng-if="mainTaskCtrl.task_view.task_contact[0].TypeId == 1" class="fal fa-industry font-title"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <div class="task-properties-wrapper">
+                      <span
+                        inline-edit
+                        model="mainTaskCtrl.task_view"
+                        properties="['task_contact']"
+                        patch-api="Tasks"
+                        submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)"
+                        non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner) || mainTaskCtrl.task_view.task_deal[0]"
+                      >
+                        <a class="inline-link-regular" ng-if="mainTaskCtrl.task_view.task_contact_display" ui-sref="{{'contact({contactid: mainTaskCtrl.task_view.task_contact[0].Id})'}}">
+                          <span class="font-bold">{{mainTaskCtrl.task_view.task_contact_display}}</span>
+                          <div class="gap-3"></div>
+                        </a>
+                        <a class="font-small text-muted" ng-if="!mainTaskCtrl.task_view.task_contact_display">
+                          {{ 'TASKS.TASK_MODAL.ADD_CONTACT' | translate }}
+                        </a>
+                      </span>
+                      <span
+                        inline-edit
+                        model="mainTaskCtrl.task_view"
+                        properties="['task_deal']"
+                        patch-api="Tasks"
+                        ng-if="mainTaskCtrl.accountHasDealsModule"
+                        submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)"
+                        non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner)"
+                        opt-query="{
+                          property: 'task_deal',
+                          opt_query: mainTaskCtrl.task_view.task_contact[0] ? '&$filter=ContactId+eq+' + mainTaskCtrl.task_view.task_contact[0].Id : ''
+                        }">
+                        <a class="inline-link-regular" ng-if="mainTaskCtrl.task_view.task_deal_display" ui-sref="{{'deal({dealid: mainTaskCtrl.task_view.task_deal[0].Id})'}}" style="user-select: auto;">
+                          <span>{{mainTaskCtrl.task_view.task_deal_display}}</span>
+                          <div class="gap-3"></div>
+                        </a>
+                        <a class="inline-link-regular" ng-if="!mainTaskCtrl.task_view.task_deal_display && mainTaskCtrl.task_view.task_deal_id" ui-sref="{{'deal({dealid: mainTaskCtrl.task_view.task_deal[0].Id})'}}" style="user-select: auto;">
+                          {{ 'GENERICS.UNTITLED' | translate_sentence }}
+                        </a>
+                        <a href class="font-small text-muted" ng-if="!mainTaskCtrl.task_view.task_deal_display && !mainTaskCtrl.task_view.task_deal_id">
+                          {{ 'TASKS.TASK_MODAL.ADD_DEAL' | translate_sentence }}
+                        </a>
+                      </span>
+                      <div>
+                        <span
+                          inline-edit
+                          model="mainTaskCtrl.task_view"
+                          properties="['task_contacts']"
+                          patch-api="Tasks"
+                          submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)"
+                          opt-query="{
+                            property: 'task_contacts',
+                            default_query: mainTaskCtrl.task_contacts_default_query,
+                            opt_query: mainTaskCtrl.task_contacts_opt_query
+                          }"
+                          non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner)">
+                          <a href ng-show="mainTaskCtrl.task_view.task_contacts.length === 0" class="font-small text-muted">
+                            {{ 'TASKS.TASK_MODAL.ADD_RELATED_CONTACTS' | translate }}
+                          </a>
+                          <a ng-show="mainTaskCtrl.task_view.task_contacts.length > 0" ng-repeat="contact in mainTaskCtrl.task_view.task_contacts track by $index" class="light-badge neutral-content badge-border" ui-sref="{{'contact({contactid:contact.Id})'}}">
+                            <div class="font-bold table-cell-align-top">
+                              <i class="fal fa-user"></i>
+                              <span class="align-middle">{{contact.Name}}</span>
+                            </div>
+                          </a>
+                        </span>
+                      </div>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="font-bold">
+                  {{ 'TASKS.TASK_MODAL.USER_TITLE' | translate }}
+                </div>
+                <span 
+                  inline-edit 
+                  class="simple-inline-line-edit" 
+                  model="mainTaskCtrl.task_view" 
+                  properties="['task_users']" 
+                  patch-api="Tasks" 
+                  submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)" 
+                  non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner)"
+                >
+                  <span ng-show="mainTaskCtrl.task_view.task_users.length === 0" class="font-small text-muted simple-inline">
+                    {{ 'TASKS.TASK_MODAL.ADD_USERS' | translate }}
+                  </span>
+                  <a ng-show="mainTaskCtrl.task_view.task_users.length > 0" ng-repeat="user in mainTaskCtrl.task_view.task_users" ui-sref="{{'user({userid: user.Id})'}}" class="light-badge neutral-content badge-border">
+                    <div class="font-bold table-cell-align-top">
+                      <img ng-if="user.AvatarUrl" ng-src="{{user.User.AvatarUrl || user.AvatarUrl }}" class="avatar-timeline"><i ng-if="!user.AvatarUrl" class="icon-person"></i>
+                      <span class="align-middle">{{user.User.Name || user.Name}}</span>
+                    </div>
+                  </a>
+                </span>
+              </div>
+
+              <div ng-if="mainTaskCtrl.restrickTask" class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div ng-if="mainTaskCtrl.restrickTask" class="form-group col-sm-12">
+                <div class="font-bold">
+                  {{ 'TASKS.TASK_MODAL.OWNER_TITLE' | translate }}
+                </div>
+                <span 
+                  inline-edit 
+                  class="simple-inline-line-edit" 
+                  model="mainTaskCtrl.task_view" 
+                  properties="['task_owners']"
+                  custom-fields="mainTaskCtrl.ownersCustomFields"
+                  patch-api="Tasks"
+                  submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)"
+                  non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner)"
+                >
+                  <span ng-show="mainTaskCtrl.task_view.task_owners.length === 0" class="font-small text-muted simple-inline">
+                    {{ 'TASKS.TASK_MODAL.ADD_OWNERS' | translate }}
+                  </span>
+                  <a 
+                    ng-show="mainTaskCtrl.task_view.task_owners.length > 0" 
+                    ng-repeat="owner in mainTaskCtrl.task_view.task_owners" 
+                    ui-sref="{{'user({userid: owner.Id})'}}" 
+                    class="light-badge neutral-content badge-border"
+                  >
+                    <div class="font-bold table-cell-align-top">
+                      <img ng-if="owner.AvatarUrl" ng-src="{{owner.User.AvatarUrl || owner.AvatarUrl }}" class="avatar-timeline"><i ng-if="!owner.AvatarUrl" class="icon-person"></i>
+                      <span class="align-middle">{{owner.User.Name || owner.Name}}</span>
+                    </div>
+                  </a>
+                </span>
+              </div>
+
+              <div ng-if="mainTaskCtrl.task_view.task_unregistered_emails.length > 0" class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div ng-if="mainTaskCtrl.task_view.task_unregistered_emails.length > 0" class="form-group col-sm-12">
+                <div class="font-bold">
+                  {{ 'TASKS.TASK_MODAL.OTHER_PARTICIPANTS_TITLE' | translate }}
+                </div>
+                <div class="task-unregistered-emails">
+                  <span
+                    class="task-unregistered-emails-item"
+                    ng-repeat="email in mainTaskCtrl.task_view.task_unregistered_emails track by $index"
+                    ng-if="$index < 2 || mainTaskCtrl.unregisteredEmailsExpanded"
+                  >
+                    {{email}}
+                  </span>
+                  <a
+                    href
+                    class="button button-white-no-border button-short-narrow dropdown-toggle nowrap task-unregistered-emails-toggle"
+                    ng-if="mainTaskCtrl.task_view.task_unregistered_emails.length > 2"
+                    ng-click="mainTaskCtrl.toggleUnregisteredEmailsExpanded(); $event.stopPropagation()"
+                  >
+                    {{ (mainTaskCtrl.unregisteredEmailsExpanded ? 'TASKS.TASK_MODAL.SEE_LESS' : 'TASKS.TASK_MODAL.SEE_MORE') | translate }}
+                    <i class="fal" ng-class="mainTaskCtrl.unregisteredEmailsExpanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12">
+                <span
+                  class="simple-inline-line-edit"
+                  inline-edit
+                  model="mainTaskCtrl.task_view"
+                  properties="['task_tags']"
+                  patch-api="Tasks"
+                  opt-query="{
+                    property: 'task_tags',
+                    opt_query: '&$filter=EntityId+eq+2'
+                  }"
+                  submit-fn="mainTaskCtrl.inlineTaskEdit(item, field_key)"
+                  non-editable="!(mainTaskCtrl.task_view.Editable && !mainTaskCtrl.invalidFinisherOwner)"
+                >
+                  <span ng-show="mainTaskCtrl.task_view.task_tags.length === 0" class="font-small text-muted simple-inline">
+                    {{ 'TASKS.TASK_MODAL.ADD_TAGS' | translate }}
+                  </span>
+                  <a ng-show="mainTaskCtrl.task_view.task_tags.length > 0" ng-repeat="tag in mainTaskCtrl.task_view.task_tags" href class="light-badge neutral-content badge-border">
+                    <div class="font-bold table-cell-align-top">
+                      <i class="fas fa-tag" ng-style="{ 'color': tag.Color }"></i>
+                      <span class="align-middle">{{tag.Name}}</span>
+                    </div>
+                  </a>
+                </span>
+              </div>
+              <div class="form-group col-sm-12">
+                <div class="line line-no-margins"></div>
+              </div>
+              <task-attachments model="mainTaskCtrl.task_view" api-url="Tasks" disabled="mainTaskCtrl.invalidFinisherOwner"></task-attachments>
+              <div class="form-group col-sm-12" ng-if="mainTaskCtrl.self.HasTasksIntegration">
+                <div class="line line-no-margins"></div>
+              </div>
+
+              <div class="form-group col-sm-12">
+                <span>{{ 'TASKS.TASK_MODAL.SHARE_CONTACTS' | translate }}</span>
+                <div >
+                  <input 
+                  class="cmn-toggle cmn-toggle-round-flat" 
+                  ng-model="mainTaskCtrl.task_view.task_creates_event" 
+                  ng-change="mainTaskCtrl.editCreatesEvent(mainTaskCtrl.task_view)"
+                  type="checkbox" 
+                  id="edit-task-creates-event">
+                  <label for="edit-task-creates-event"></label>
+                </div>
+              </div>
+
+              <!-- <div class="form-group col-sm-12" ng-if="mainTaskCtrl.self.HasTasksIntegration">
+                <span class="font-small display-block">
+                   <div class="font-bold">
+                     <span ng-class="{'text-success': mainTaskCtrl.task_view.task_creates_event}">
+                       <i class="fas fa-circle regular-fa"></i>
+                     </span>
+                     <span ng-if="!mainTaskCtrl.task_view.task_creates_event">
+                       {{ 'TASKS.TASK_MODAL.ADD_TO_CALENDAR' | translate }}
+                     </span>
+                     <span ng-if="mainTaskCtrl.task_view.task_creates_event">
+                      {{ 'TASKS.TASK_MODAL.ADDED_TO_CALENDAR' | translate }}
+                     </span>
+                   </div>
+                </span>
+              </div> -->
+              <div class="form-group col-sm-12" ng-if="mainTaskCtrl.task_view.Latitude && mainTaskCtrl.task_view.Longitude">
+                <div class="line line-no-margins"></div>
+              </div>
+              <div class="form-group col-sm-12" ng-if="mainTaskCtrl.task_view.Latitude && mainTaskCtrl.task_view.Longitude">
+                <a href class="button button-white full-width" ng-click="mainTaskCtrl.openMapSideSlide()">
+                  <span class="text-action"><i class="fal fa-map button-icon"></i></span>
+                  {{ 'TASKS.TASK_MODAL.VISUALIZE_ON_MAP' | translate }}
+                </a>
+              </div>
+            </form>
+          </section>
+        </div>
+      </aside>
+      <aside class="overflow-hidden width-400 white-content b-l-1">
+        <ul class="nav nav-tabs b-b-1 border-tabs arrange-mid">
+          <li ng-repeat="tab in mainTaskCtrl.tabs | filter: { Available: true }" ng-class="{ 'active': mainTaskCtrl.current_tab.Key === tab.Key }">
+            <a class="text-muted" ng-click="mainTaskCtrl.changeTab(tab)">
+              {{ tab.Name }}
+            </a>
+          </li>
+        </ul>
+        <div class="vbox task-vbox regular-background">
+          <section class="scrollable">
+            <div class="tab-content">
+              <div class="tab-pane active" ng-if="mainTaskCtrl.current_tab.Key === 'comments'">
+                <div>
+                  <comments-directive update-comments-callback="mainTaskCtrl.updateCommentsCallback" object-id="mainTaskCtrl.task_view.Id" api-url="'Tasks(' + mainTaskCtrl.task_view.Id + ')/NewComment'" comments="mainTaskCtrl.task_view.task_comments" origin-name="'task-modal'"></comments-directive>
+                  <div class="side-wrapper task-inter-comments-info">
+                    <div class="activity-history hist-separator"></div>
+                    <div class="hbox">
+                      <aside class="activity-history">
+                        <div>
+                          <div style="background-color: #a9bcc1; color: #fff">
+                            <i class="fal fa-calendar-plus activity-icon"></i>
+                          </div>
+                        </div>
+                      </aside>
+                      <aside class="v-middle">
+                        <div class="timeline-bubble">
+                          <div class="history-arrow arrow-style"></div>
+                          <div class="bubble-wrapper no-comments-bubble">
+                            <div class="hbox">
+                              <aside class="width-40">
+                                <img ng-src="{{mainTaskCtrl.task_view.task_creator[0].AvatarUrl}}" class="avatar-timeline">
+                              </aside>
+                              <aside>
+                                <a ui-sref="{{'user({userid: mainTaskCtrl.task_view.task_creator[0].Id})'}}" class="font-bold inline-link-regular">
+                                  {{mainTaskCtrl.task_view.task_creator[0].Name}}
+                                </a>
+                                <br>
+                                <span class="timeline-clock">
+                                  <i class="fal fa-clock"></i>
+                                  {{mainTaskCtrl.task_view.formatted_task_create_date}}
+                                </span>
+                                <div class="mtop3">{{ 'TASKS.TASK_MODAL.TASK_CREATED' | translate }}</div>
+                              </aside>
+                            </div>
+                          </div>
+                        </div>
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane active" ng-if="mainTaskCtrl.current_tab.Key === 'data'">
+                <div class="wrapper">
+                  <div class="panel light-background" ng-if="mainTaskCtrl.task_view.task_contact[0].StreetAddress || mainTaskCtrl.task_view.task_contact[0].Email || (mainTaskCtrl.task_view.task_contact[0].Phones.length > 0 && mainTaskCtrl.task_view.task_contact[0].Phones[0].PhoneNumber.length > 0)">
+                    <div class="wrapper break-content">
+                      <span ng-if="mainTaskCtrl.task_view.task_contact[0].StreetAddress">
+                        <div class="font-bold">
+                          {{ 'TASKS.TASK_MODAL.ADDRESS' | translate }}
+                        </div>
+                        {{mainTaskCtrl.task_view.task_contact[0].StreetAddress}}
+                        {{mainTaskCtrl.task_view.task_contact[0].StreetAddressLine2 ? ", " + mainTaskCtrl.task_view.task_contact.StreetAddressLine2 : ""}}
+                        {{mainTaskCtrl.task_view.task_contact[0].City ? ", " + mainTaskCtrl.task_view.task_contact[0].City.Name : ""}}
+                        {{mainTaskCtrl.task_view.task_contact[0].City.State ? ", " + mainTaskCtrl.task_view.task_contact[0].City.State.Short : ""}}
+                        <div class="gap-10"></div>
+                      </span>
+                      <div class="font-bold" ng-show="mainTaskCtrl.task_view.task_contact[0].Email">
+                        E-mail
+                      </div>
+                      {{mainTaskCtrl.task_view.task_contact[0].Email}}
+                      <span ng-repeat="phone in mainTaskCtrl.task_view.task_contact[0].Phones" ng-show="phone.PhoneNumber.length > 0">
+                        <div class="gap-10"></div>
+                        <div class="font-bold">
+                          {{ 'TASKS.TASK_MODAL.PHONE' | translate }}
+                        </div>
+                        {{phone.PhoneNumber}} ({{phone.Type.Name}})
+                      </span>
+                    </div>
+                  </div>
+                  <div ng-if="mainTaskCtrl.task_view.task_contact[0].TypeId === 1 && mainTaskCtrl.task_view.task_contact[0].company_contacts.length > 0">
+                    <br>
+                    <div class="font-thin font-very-big">
+                    {{ 'TASKS.TASK_MODAL.COMPANY_PEOPLE' | translate }}
+                    </div>
+                    <div class="gap-10"></div>
+                    <div class="panel light-background overflow-hidden">
+                      <div class="regular-background">
+                        <table class="table table-static table-hover funnels-table display-flex">
+                          <tbody class="width-max">
+                            <tr class="display-flex" ng-repeat="contact in mainTaskCtrl.task_view.task_contact[0].company_contacts track by $index" ui-sref="{{'contact({contactid: contact.Id})'}}">
+                              <a></a>
+                              <td class="task-modal-row">
+                                <strong
+                                  class="d-inline-block w-fit-content text-ellipsis"
+                                  uib-tooltip="{{contact.Name}}"
+                                  tooltip-enable="mainTaskCtrl.isTooltipEnabled('task-modal-contact-name-{{contact.Name}}')"
+                                  tooltip-append-to-body="true"
+                                  id="task-modal-contact-name-{{contact.Name}}"
+                                >
+                                  {{contact.Name}}
+                                </strong>
+                                <span>{{contact.Phones[0].PhoneNumber}} {{contact.Phones[0] ? "("+contact.Phones[0].Type.Name+")" : ""}}</span>
+                                <span>{{contact.Email}}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane active" ng-if="mainTaskCtrl.current_tab.Key === 'timeline'">
+                <div class="side-wrapper">
+                  <div>
+                    <main-timeline ng-if="mainTaskCtrl.task_view.task_contact" entity-type="'Contact'" entity-id="mainTaskCtrl.task_view.task_contact[0].Id || mainTaskCtrl.task_view.task_contact[0].ContactId" minimize-icon="true" hide-contact-name="true" is-task-timeline="true"></main-timeline>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+    <div class="hbox stretch" ng-if="mainTaskCtrl.not_found">
+      <page-not-found></page-not-found>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="hbox stretch" ng-if="!mainTaskCtrl.not_found">
+      <aside class="v-middle text-left">
+        <a
+          href
+          class="button button-white"
+          ng-show="mainTaskCtrl.task_view.Editable"
+          ng-class="{'disabled': mainTaskCtrl.invalidFinisherOwner}" 
+          ng-disabled="mainTaskCtrl.invalidFinisherOwner" 
+          ng-click="mainTaskCtrl.deleteTask()"
+          ng-click-confirm="{{ 'TASKS.TASK_MODAL.TASK_DELETE_CONFIRM' | translate }}"
+          reversible="false"
+          uib-tooltip="{{ 'TASKS.NEW_TASK_MODAL.TOOLTIP_FINISHER_RESTRICTION_MINI' | translate }}"
+          tooltip-enable="mainTaskCtrl.invalidFinisherOwner"
+          >
+          <span class="font-big text-muted"><i class="fal fa-trash"></i></span>
+        </a>
+      </aside>
+      <aside class="v-middle">
+        <button 
+          type="button" 
+          class="button pull-right button-white" 
+          ng-class="{'disabled': mainTaskCtrl.invalidFinisherOwner}" 
+          ng-disabled="mainTaskCtrl.loading || mainTaskCtrl.invalidFinisherOwner" 
+          ng-show="mainTaskCtrl.task_view.task_editable" 
+          ng-click="mainTaskCtrl.toggleFinishTask()"
+          uib-tooltip="{{ mainTaskCtrl.tooltipFinishMessage() }}"
+          tooltip-enable="mainTaskCtrl.invalidFinisherOwner"
+        >
+          <span ng-if="!mainTaskCtrl.task_view.task_finished" class="font-regular-weight">
+            <span class="text-action">
+              <i class="fal fa-check-circle text-action font-big button-icon"></i>
+            </span>
+            {{ 'TASKS.TASK_MODAL.FINISH_TASK' | translate }}
+          </span>
+          <span ng-if="mainTaskCtrl.task_view.task_finished">
+            <span class="text-action">
+              <i class="fal fa-folder text-action font-big button-icon"></i>
+            </span>
+            {{ 'TASKS.TASK_MODAL.OPEN_TASK' | translate }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="button pull-right"
+          ng-class="{'button-white': !mainTaskCtrl.task_view.task_finished, 'disabled': mainTaskCtrl.invalidFinisherOwner}"
+          ng-disabled="mainTaskCtrl.loading || mainTaskCtrl.invalidFinisherOwner" 
+          ng-show="mainTaskCtrl.task_view.task_editable && !mainTaskCtrl.task_view.task_finished && mainTaskCtrl.task_view.task_contact[0]"
+          ng-click="mainTaskCtrl.popover_is_open = true"
+          uib-popover-template="mainTaskCtrl.popoverTemplate"
+          popover-title="{{ 'TASKS.TASK_MODAL.FINISH_TASK_WITH_INTERACTION_RECORD' | translate }}"
+          popover-append-to-body="true"
+          popover-placement="auto top"
+          popover-is-open="!mainTaskCtrl.is_modal_hidden && !mainTaskCtrl.task_view.task_finished && mainTaskCtrl.popover_is_open"
+          uib-tooltip="{{ 'TASKS.NEW_TASK_MODAL.TOOLTIP_FINISHER_RESTRICTION_MINI' | translate }}"
+          tooltip-enable="mainTaskCtrl.invalidFinisherOwner"
+          >
+          {{ 'TASKS.TASK_MODAL.FINISH_TASK_WITH_INTERACTION_RECORD' | translate }}
+        </button>
+        <loading-tooltip loading="mainTaskCtrl.loading"></loading-tooltip>
+      </aside>
+    </div>
+  </modal-footer>
+  <modal-side-slide slide-id="map_slide" modal-side-slide-title="Localização" side-slide-wider="true">
+    <google-maps ng-if="mainTaskCtrl.map_markers" markers="mainTaskCtrl.map_markers" skip-animate="true" map-id="task_modal_map"></google-maps>
+  </modal-side-slide>
+</dynamic-modal>
+
+<script type="text/ng-template" id="finish_task">
+  <div ng-form name="finish_task_form">
+    <forms model="mainTaskCtrl.finish_task_model" fields="mainTaskCtrl.finish_task_fields" form="finish_task_form"></forms>
+    <button class="button button-white mleft15" ng-disabled="mainTaskCtrl.loading" ng-click="mainTaskCtrl.submitFinishTaskForm(finish_task_form); $event.stopPropagation()" title="Submit" aria-label="Submit">
+      <span class="font-regular-weight">
+        <span class="text-action">
+          <i class="fal fa-check-circle text-action font-big button-icon"></i>
+        </span>
+        {{ 'TASKS.TASK_MODAL.FINISH_TASK' | translate }}
+      </span>
+    </button>
+    <button class="button button-white" ng-disabled="mainTaskCtrl.loading" ng-click="mainTaskCtrl.cancel(); $event.stopPropagation()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate}}</button>
+    <loading-tooltip loading="mainTaskCtrl.loading" form="finish_task_form"></loading-tooltip>
+  </div>
+</script>

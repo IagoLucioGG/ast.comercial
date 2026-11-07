@@ -1,0 +1,9 @@
+<div>
+  <!-- Before the steps we check if there is already a calendar integration. If there is, we start in step 1 - else we go straight to step 3 -->
+  <!-- First step we authorize the integration, then build the refresh token and integrate the user's google agenda -->
+  <gc-integration-step-01 ng-if="googleCalendarCtrl.toggle_modal_1" modal-id="google_config_1"></gc-integration-step-01>
+  <!-- Second step the user select a calendar from the google agenda and then we set that as the integrated calendar -->
+  <gc-integration-step-02 ng-if="googleCalendarCtrl.toggle_modal_2" modal-id="google_config_2"></gc-integration-step-02>
+  <!-- Step three shows the current integrated calendar and the option to de-integrate the calendar -->
+  <gc-integration-step-03 ng-if="googleCalendarCtrl.toggle_modal_3" modal-id="google_config_3"></gc-integration-step-03>
+</div>

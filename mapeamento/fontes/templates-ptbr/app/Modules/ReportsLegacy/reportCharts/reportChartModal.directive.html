@@ -1,0 +1,175 @@
+<dynamic-modal
+  helper-key="'REPORTS_LEGACY_NEW_CHART'"
+  modal-id="report-chart"
+  wider="true"
+  footer="true"
+  dark="true"
+  modal-title="Widget"
+  toggle-modal="reportChartModalCtrl.toggle_modal"
+  ng-form="chart_modal_form"
+  feature-key="widget_modal"
+  cypress-prefix="reports-modal"
+  is-fetching-modal-content="reportChartModalCtrl.isFetchingModalContent"
+>
+    <modal-content>
+      <div class="hbox stretch">
+        <aside class="b-l-1 overflow-hidden width-300 light-background">
+          <div class="sub-header b-b-1 arrange-mid white-content">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <span class="font-thin font-title">
+                  Informações
+                </span>
+              </aside>
+            </div>
+          </div>
+          <div class="vbox big-header-or-footer scroll-shadow neutral-shadow">
+            <section class="scrollable scroll-shadow-container">
+              <div class="wrapper">
+                <form class="clearfix">
+                  <div class="form-group col-sm-12">
+                    <label>
+                      Nome do widget
+                    </label>
+                    <span>
+                      <span ng-class="{'text-neutral': reportChartModalCtrl.widget_name.length, 'text-danger': !reportChartModalCtrl.widget_name.length}"
+                        type="button" tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip="Campo obrigatório">
+                        <i class="fas fa-exclamation-circle dropdown-sign"></i></span>
+                    </span>
+                    <div ng-class="{'invalid-input': !reportChartModalCtrl.widget_name.length && chart_modal_form.$submitted && !chart_modal_form.$valid}">
+                      <input type="text" name="" class="form-control input-sm" ng-model="reportChartModalCtrl.widget_name" ng-required="true">
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-12">
+                    <label>
+                      Tamanho do widget
+                    </label>
+                    <span>
+                      <span ng-class="{'text-neutral': reportChartModalCtrl.widget_size, 'text-danger': !reportChartModalCtrl.widget_size}"
+                        type="button" tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip="Campo obrigatório">
+                        <i class="fas fa-exclamation-circle dropdown-sign"></i></span>
+                    </span>
+                    <div ng-class="{'invalid-input': !reportChartModalCtrl.widget_size && chart_modal_form.$submitted && !chart_modal_form.$valid}">
+                      <select
+                        ng-options="size_class.Name for size_class in reportChartModalCtrl.size_classes"
+                        class="form-control input-sm"
+                        ng-model="reportChartModalCtrl.widget_size"
+                        ng-disabled="reportChartModalCtrl.current_type.Id === 9"
+                        ng-required="true">
+                        <option value=""></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group col-sm-12" ng-if="reportChartModalCtrl.current_type.Id === 6">
+                    <label>
+                      Escala do mapa
+                    </label>
+                    <select ng-options="map_scale.Name for map_scale in reportChartModalCtrl.map_scales" class="form-control input-sm" ng-model="reportChartModalCtrl.map_scale" ng-required="true">
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-12" ng-if="reportChartModalCtrl.current_type.Id === 3">
+                    <label>
+                      Orientação do gráfico de barras
+                    </label>
+                    <select ng-options="bar_chart.Name for bar_chart in reportChartModalCtrl.bar_charts" class="form-control input-sm" ng-model="reportChartModalCtrl.bar_chart" ng-required="true">
+                    </select>
+                  </div>
+                  <div class="form-group col-sm-12" ng-if="reportChartModalCtrl.current_type.Id === 8 || reportChartModalCtrl.current_type.Id === 9">
+                    <label>
+                      Selecione (um:pipeline:aa:s) (name:pipeline:aa:s)
+                    </label>
+                    <new-field field="reportChartModalCtrl.pipeline_field" model="reportChartModalCtrl.selected_pipeline" property="reportChartModalCtrl.pipeline_field.key" required="reportChartModalCtrl.pipeline_field.required" disabled="reportChartModalCtrl.pipeline_field.disabled" wide="reportChartModalCtrl.pipeline_field.wide"></new-field>
+                    </select>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+        </aside>
+        <aside class="b-l-1 overflow-hidden width-250 light-background">
+          <div class="sub-header b-b-1 arrange-mid white-content">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <span class="font-thin font-title">
+                  Tipo do widget
+                </span>
+              </aside>
+            </div>
+          </div>
+          <div class="vbox deals-vbox">
+            <section class="scrollable light-background">
+              <div class="wrapper">
+                <span ng-repeat="chart_type in reportChartModalCtrl.chart_types">
+                  <a class="button button-full-width button-very-big text-left" ng-click="reportChartModalCtrl.changeChartType(chart_type)" ng-class="{'button-dry-background': chart_type.Id === reportChartModalCtrl.current_type.Id, 'button-light-background': chart_type.Id !== reportChartModalCtrl.current_type.Id}" href>
+                    <div class="hbox font-regular-weight font-regular-size text-regular" ng-class="{'text-regular': chart_type.Id !== reportChartModalCtrl.current_type.Id}">
+                      <aside class="v-middle width-35 font-very-big">
+                        <i class="fal regular-fa" ng-class="chart_type.Icon"></i>
+                      </aside>
+                      <aside class="v-middle">{{chart_type.Name}}</aside>
+                    </div>
+                  </a>
+                  <div class="gap-5"></div>
+                </span>
+              </div>
+            </section>
+          </div>
+        </aside>
+        <aside class="b-l-1 overflow-hidden white-content">
+          <div class="sub-header b-b-1 white-content arrange-mid">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <span class="font-thin font-title">
+                  Métricas
+                </span>
+              </aside>
+            </div>
+          </div>
+          <div class="vbox big-header-or-footer scroll-shadow neutral-shadow">
+            <section class="scrollable scroll-shadow-container">
+              <div class="text-center text-neutral-light font-very-big-title" ng-if="reportChartModalCtrl.metrics.length === 0 && reportChartModalCtrl.can_load && reportChartModalCtrl.current_type.Id !== 9">
+                <div class="gap-90"></div>
+                <i class="font-monster-size fal fa-analytics"></i>
+                <div class="gap-30"></div>
+                Nenhuma métrica encontrada
+              </div>
+              <div class="text-center text-neutral-light font-very-big-title" ng-if="reportChartModalCtrl.current_type.Id === 9 && reportChartModalCtrl.can_load">
+                <div class="gap-90"></div>
+                <i class="font-monster-size fal fa-exclamation-triangle"></i>
+                <div class="gap-30"></div>
+                <div class="big-wrapper">Esse tipo de widget possui métricas fixas</div>
+              </div>
+              <ul class="fake-ul" ng-if="reportChartModalCtrl.metrics.length > 0 && reportChartModalCtrl.can_load && reportChartModalCtrl.current_type.Id !== 9" ui-sortable="reportChartModalCtrl.options" ng-model="reportChartModalCtrl.metrics">
+                  <li class="button button-full-width button-white-no-border-semi-light-hover text-left drag-button button-square no-border button-very-big open-size-slide" ng-repeat="metric in reportChartModalCtrl.metrics">
+                    <div class="hbox font-regular-weight min-height-50">
+                      <aside class="v-middle width-20">
+                        <div class="token-drag-indicator muted-token"></div>
+                      </aside>
+                      <aside class="v-middle width-20">
+                        <div class="right-wrapper">
+                          <div class="activity-icon fas fa-tint" ng-style="{'color': metric.Color}"></div>
+                        </div>
+                      </aside>
+                      <aside class="v-middle" ng-click="reportChartModalCtrl.openMetricSlide(metric)">
+                        <span class="font-regular-weight font-regular-size">{{metric.Name}}</span>
+                      </aside>
+                    </div>
+                  </li>
+                </ul>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </modal-content>
+    <modal-side-slide slide-id="metric_slide" modal-side-slide-title="Métrica" side-slide-wider="true">
+      <report-chart-slide-content model="reportChartModalCtrl.model" editing="reportChartModalCtrl.editing_metric" restrict-dimension="reportChartModalCtrl.restrict_dimension" selected-chart="reportChartModalCtrl.current_type" metrics="reportChartModalCtrl.metrics"></report-chart-slide-content>
+    </modal-side-slide>
+    <modal-footer>
+      <aside class="v-middle text-left" ng-if="reportChartModalCtrl.editing">
+        <a href class="button button-white" ng-click="reportChartModalCtrl.deleteChart()" ng-click-confirm="excluir esse widget?" reversible="false">
+          <span class="font-big">
+            <i class="fal fa-trash fixing-fixed-size-button"></i>
+          </span>
+        </a>
+      </aside>
+    </modal-footer>
+</dynamic-modal>

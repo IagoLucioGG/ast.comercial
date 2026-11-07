@@ -1,0 +1,18 @@
+<div class="stretch light-background wrapper">
+  <standard-loader loading="!quoteSideSlideReviewsCtrl.can_load"></standard-loader>
+  <div ng-if="quoteSideSlideReviewsCtrl.can_load">
+    <div ng-repeat="review in quoteSideSlideReviewsCtrl.quote_reviews track by $index">
+      <a class="wrapper button full-width b-b-1 mbottom10" ng-click="quoteSideSlideReviewsCtrl.goToReview(review.Id)" ng-class="{'button-light-background': review.Id !== quote.Id, 'button-dry-background': review.Id === quote.Id}">
+        <div class="text-left">
+          <div class="font-bold font-big">#{{review.QuoteNumber}} - {{review.ReviewNumber}}</div>
+          <div class="gap-3"></div>
+          <span class="font-regular-weight">{{review.Currency.Symbol + " " + review.Amount.toLocaleString('LANGUAGE' | translate, { minimumFractionDigits: 2})}}</span>
+          <div class="gap-3"></div>
+          <span class="font-small font-regular-weight">
+            <i class="fal fa-clock"></i> {{ 'QUOTES.QUOTE_PAGE.SIDE_SLIDE.REVIEWS.REVIEW_DATE_AND_REVIEWER' | translate_with_replace: { review_date: review.formatted_date, review_creator_name: review.Creator.Name} }}
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

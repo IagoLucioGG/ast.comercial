@@ -1,0 +1,18 @@
+<infinite-scroll-page
+  children="{props: {
+    class: 'hbox stretch',
+    id: 'card-container'
+  }}"
+  on-scroll-end="dynamicFunnelCtrl.loadMoreCards"
+  loading="!canLoad || reachedEnd">
+  <dynamic-funnel-col
+    ng-repeat="column in columnList track by $index"
+    column="column"
+    entity="entity"
+    pipeline="pipeline"
+    sort="sort"
+    column-index="$index"
+    column-update-fn="dynamicFunnelCtrl.columnUpdateFn(column)"
+    deal-edit-form="dynamicFunnelCtrl.deal_edit_form"
+    drop-fn="dynamicFunnelCtrl.dropFn(deal, next_stage_id)"></dynamic-funnel-col>
+</infinite-scroll-page>

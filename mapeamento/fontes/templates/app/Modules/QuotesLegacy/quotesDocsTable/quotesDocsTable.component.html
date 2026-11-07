@@ -1,0 +1,12 @@
+<dynamic-tabs
+  ng-if="quotesTableCtrl.initial_load"
+  entity="quotesTableCtrl.mainEntity"
+  filter="quotesTableCtrl.table_filter"
+  tabs="quotesTableCtrl.tabs"
+  current-tab="quotesTableCtrl.currentTab"
+  change-tab-callback="quotesTableCtrl.changeTabCallback(current_tab)"
+  toggle-sidebar="quotesTableCtrl.tableSidebar"
+  toggle-sidebar-callback="quotesTableCtrl.toggleSidebarCallback(toggle)"
+  applied-filter="quotesTableCtrl.appliedFilter"
+  cypress-prefix="quotes-table"
+></dynamic-tabs>

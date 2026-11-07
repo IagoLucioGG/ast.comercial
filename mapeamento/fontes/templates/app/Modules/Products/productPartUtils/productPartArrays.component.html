@@ -1,0 +1,108 @@
+<div class="form-group col-sm-12" style="font-size: 14px;" ng-if="$ctrl.can_load && $ctrl.parent_product_has_parts">
+  <div class="text-darkest-neutral text-uppercase font-big">
+    {{ 'PRODUCTS.PART_UTILS.WHEN_SELECTING_LINK' | translate }}
+  </div>
+  <div class="b-t-1 dark-background">
+    <div class="gap-5"></div>
+    <div class="input-group full-width window-search has-feedback">
+      <input
+        class="form-control input-sm"
+        type="text"
+        placeholder="{{ 'PRODUCTS.PART_UTILS.SEARCH_PLACEHOLDER' | translate }}"
+        ng-model="$ctrl.filter_query"
+        ng-change="$ctrl.filterProductParts()"
+        ng-model-options="{debounce: 500}">
+      <span class="fas fa-search text-muted form-control-feedback"></span>
+    </div>
+    <table class="table options-table table-smaller-header full-editable-table spaced-options-table" ng-style="$ctrl.loading && {'opacity':'0.4'}">
+      <thead>
+        <tr class="options-header">
+          <th class="text-center">
+            {{ 'PRODUCTS.PART_UTILS.PARENT_PRODUCT_PARTS' | translate }}
+          </th>
+          <th class="text-center" uib-tooltip="{{ 'PRODUCTS.PART_UTILS.DEFAULT_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+            {{ 'PRODUCTS.PART_UTILS.DEFAULT' | translate }}
+          </th>
+          <th class="text-center" uib-tooltip="{{ 'PRODUCTS.PART_UTILS.SUGGEST_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+            {{ 'PRODUCTS.PART_UTILS.SUGGEST' | translate }}
+          </th>
+          <th class="text-center" uib-tooltip="{{ 'PRODUCTS.PART_UTILS.REQUIRE_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+            {{ 'PRODUCTS.PART_UTILS.REQUIRE' | translate }}
+          </th>
+          <th class="text-center" uib-tooltip="{{ 'PRODUCTS.PART_UTILS.BLOCK_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+            {{ 'PRODUCTS.PART_UTILS.BLOCK' | translate }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="drag-button drag-line input-square input-filled options-table-item"
+          ng-repeat="part in $ctrl.filterProductParts() | startFrom:(($ctrl.current_page - 1) * $ctrl.top) | limitTo:$ctrl.top">
+          <td>
+            <span class="span-product-part">
+              {{part.FormattedName}}
+            </span>
+            <span class="text-neutral"> -
+              {{ (part.ProductPart ? 'PRODUCTS.PART_UTILS.PRODUCT' : (part.GroupPart ? 'PRODUCTS.PART_UTILS.GROUP' : 'PRODUCTS.PART_UTILS.LIST')) | translate }}
+            </span>
+          </td>
+          <td class="please-nowrap">
+            <div class="hbox regular-background b-1 height-30">
+              <aside class="v-middle text-center mini-side-wrapper dark-background">
+                <div class="checkbox options-checkbox">
+                  <label>
+                    <input ng-disabled="!part.Editable" type="radio" ng-model="part.selected" ng-value="undefined" ng-change="$ctrl.modelChangeCallback()">
+                  </label>
+                </div>
+              </aside>
+            </div>
+          </td>
+          <td class="please-nowrap">
+            <div class="hbox regular-background b-1 height-30">
+              <aside class="v-middle text-center mini-side-wrapper dark-background">
+                <div class="checkbox options-checkbox">
+                  <label>
+                    <input ng-disabled="!part.Editable" type="radio" ng-model="part.selected" value="suggest" ng-change="$ctrl.modelChangeCallback()">
+                  </label>
+                </div>
+              </aside>
+            </div>
+          </td>
+          <td class="please-nowrap">
+            <div class="hbox regular-background b-1 height-30">
+              <aside class="v-middle text-center mini-side-wrapper dark-background">
+                <div class="checkbox options-checkbox">
+                  <label>
+                    <input ng-disabled="!part.Editable" type="radio" ng-model="part.selected" value="require" ng-change="$ctrl.modelChangeCallback()">
+                  </label>
+                </div>
+              </aside>
+            </div>
+          </td>
+          <td class="please-nowrap">
+            <div class="hbox regular-background b-1 height-30">
+              <aside class="v-middle text-center mini-side-wrapper dark-background">
+                <div class="checkbox options-checkbox">
+                  <label>
+                    <input ng-disabled="!part.Editable" type="radio" ng-model="part.selected" value="block" ng-change="$ctrl.modelChangeCallback()">
+                  </label>
+                </div>
+              </aside>
+            </div>
+          </td>
+        </tr>
+        <tr ng-if="$ctrl.can_load && $ctrl.parent_product_parts.length === 0" class="neutral-line empty-table-config">
+          <td colspan="5" class="text-center empty-results">
+            <span class="text-neutral">{{ 'PRODUCTS.PART_UTILS.NO_ITEM_FOUND' | translate }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <dynamic-table-pagination
+      items-per-page="$ctrl.top"
+      current-page="$ctrl.current_page"
+      total-items="$ctrl.total_items"
+      change-page-callback-fn="$ctrl.changePageCallback(page)">
+    </dynamic-table-pagination>
+  </div>
+</div>

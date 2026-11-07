@@ -1,0 +1,20 @@
+<div class="gap-10" ng-if="$ctrl.messageInsideLinks.length > 0"></div>
+<div class="hbox">
+  <a
+    class="simple-inline-inline main-badge-darker-border b-1"
+    ng-repeat="link in $ctrl.messageInsideLinks track by $index"
+    href
+    ng-click="$ctrl.goToLink(link.EntityId, link.ItemId)"
+    context-menu="$ctrl.insideLinkMenu(link)">
+    <aside class="width-20 v-middle text-center font-big text-very-darkest-neutral">
+      <i class="regular-fa" ng-if="!link.AvatarUrl" ng-class="link.ItemIcon"></i>
+      <img class="medium-avatar" ng-if="link.AvatarUrl" ng-src="{{link.AvatarUrl}}">
+    </aside>
+    <aside class="v-middle mini-wrapper">
+      <div class="font-bold text-very-darkest-neutral">
+        <strong>{{link.ItemLabel}}</strong>
+        <!-- <span class="text-darkest-neutral font-small">· 17.682.570/0001-01</span> -->
+      </div>
+    </aside>
+  </a>
+</div>

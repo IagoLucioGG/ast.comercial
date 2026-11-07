@@ -1,0 +1,17 @@
+<div class="white-content overflow-hidden">
+  <ul class="nav nav-tabs b-b-1 border-tabs customer-tabs-density">
+    <li ng-repeat="tab in $ctrl.tabs | filter: { Available: true }" ng-class="{ 'active': $ctrl.current_tab.Key === tab.Key }">
+      <a href
+        role="button"
+        ng-click="$ctrl.changeTab(tab)" 
+        aria-label="{{tab.AriaLabel}}"
+        data-cy="tab-{{tab.Key}}"
+      >
+        {{tab.Name}}
+        <div ng-if="tab.Counter > 0" class="regular-background b-1 text-neutral pull-right font-bold tabs-counter">
+          {{tab.Counter}}
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

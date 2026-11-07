@@ -1,0 +1,6 @@
+<div class="button button-short-narrow button-dark-background" ng-repeat="message_action in $ctrl.enabled_actions"
+  ng-click="message_action.Action()">
+  <span class="text-neutral font-big">
+    <i class="top-fix-icon far" ng-class="message_action.Icon"></i>
+  </span>
+</div>

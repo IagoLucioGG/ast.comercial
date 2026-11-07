@@ -1,0 +1,20 @@
+<div class="dropdown pull-right">
+  <div class="button-fixed-size button-fixed-size-small data-edit-button dropdown-toggle special-cog-button" uib-tooltip="{{ 'GOALS.GOALS_PANEL.PANEL_ACTIONS' | translate }}" tooltip-append-to-body="true" data-toggle="dropdown">
+    <i class="fal fa-cog font-semi-big fixing-fixed-size-button"></i>
+  </div>
+    <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top">
+      <div class="dropdown-subtitle">{{ 'GOALS.GOALS_PANEL.PANEL_ACTIONS' | translate }}</div>
+      <li ng-repeat="option in $ctrl.options">
+        <a class="white-dropdown-link font-regular-weight" href ng-click="option.ClickFunction()">
+          <div class="hbox">
+            <aside class="v-middle width-25 text-center">
+              <i class="list-simple-line" ng-class="option.Icon"></i>
+            </aside>
+            <aside class="v-middle">
+              {{option.Name}}
+            </aside>
+          </div>
+        </a>
+      </li>
+    </ul>
+</div>

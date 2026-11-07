@@ -1,0 +1,73 @@
+<dynamic-modal
+  modal-id="account_modal"
+  footer="true"
+  dark="true"
+  modal-title="Dados da empresa"
+  toggle-modal="accountAdmCtrl.toggle_modal"
+  ng-form="account_form"
+  cypress-prefix="administration-account-info"
+  is-fetching-modal-content="accountAdmCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div>
+          <div class="gap-15"></div>
+          <div class="hbox">
+            <aside class="width-160 text-center v-middle">
+              <div class="avatar-container">
+                <img
+                  ng-init="accountAdmCtrl.handleEventsToImages()"
+                  class="avatar-select"
+                  data-logo-key="account-logo-url"
+                  ng-src="{{accountAdmCtrl.model.account_logo_url || 'assets/images/avatar_default.jpg'}}"
+                >
+                <button
+                  class="button button-white button-small avatar-remove-button avatar-remove-button-account-logo-url"
+                  ng-click="accountAdmCtrl.removeLogo({Key: 'logo-attachment-resetter'})"
+                >
+                  <i class="fal fa-trash text-danger"></i>
+                </button>
+                <label class="button button-action button-short avatar-select-button" href id="logo-attachment-resetter-wrapper" data-cy="administration-account-info-choose-logo-button">
+                  Escolher logo
+                  <input id="logo-attachment-resetter" type="file" accept="image/*" style="display: none;" />
+                </label>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <forms model="accountAdmCtrl.model" fields="accountAdmCtrl.top_form" form="account_form"></forms>
+            </aside>
+          </div>
+        </div>
+        <div class="gap-15"></div>
+        <div ng-repeat="section in accountAdmCtrl.sections">
+          <div ng-if="section.Id === 'null'">
+            <forms model="accountAdmCtrl.model" fields="accountAdmCtrl.forms[$index]" form="account_form" formula-trigger-hide-or-disable="true"></forms>
+            <div class="gap-20"></div>
+          </div>
+          <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+            <modal-section section-form="account_form" name="section.name" section-id="section.Id">
+              <forms model="accountAdmCtrl.model" fields="accountAdmCtrl.forms[$index]" form="account_form" name="'section_form_' + section.Id" formula-trigger-hide-or-disable="true"></forms>
+            </modal-section>
+            <div class="gap-20"></div>
+          </div>
+        </div>
+        <div class="gap-15"></div>
+        <div class="gap-15"></div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button class="button button-action pull-right" ng-click="accountAdmCtrl.submitControl(accountAdmCtrl.model, account_form)">
+            <i class="button-icon fas fa-save"></i>
+            Salvar
+          </button>
+          <loading-tooltip loading="accountAdmCtrl.loading" form="account_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

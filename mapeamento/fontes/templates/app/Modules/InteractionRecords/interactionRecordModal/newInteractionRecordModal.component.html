@@ -1,0 +1,57 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="false"
+  footer="true"
+  dark="false"
+  modal-title="{{ ($ctrl.editing ? 'INTERACTION_RECORDS.EDIT_INTERACTION_RECORD' : 'INTERACTION_RECORDS.NEW_INTERACTION_RECORD') | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  ng-form
+  name="interaction_record_form"
+  cypress-prefix="interaction-records-modal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow" ng-if="!$ctrl.not_found">
+      <div class="activities arrange-mid">
+        <a ng-repeat="task_type in $ctrl.all_types" ng-class="{ 'chosen': task_type.Id === $ctrl.selected_type.Id }" href ng-style="{ 'background-color': task_type.Id === $ctrl.selected_type.Id ? task_type.Color : '' }" ng-click="$ctrl.changeType(task_type)" uib-tooltip="{{task_type.Name}}" tooltip-append-to-body="true">
+          <div ng-class="{ 'font-big': task_type.Id === $ctrl.selected_type.Id, 'font-big': task_type.Id !== $ctrl.selected_type.Id }">
+            <i ng-style="{ 'color': task_type.Id === $ctrl.selected_type.Id ? '#fff' : '' }" class="fal {{task_type.Icon}}"></i>
+          </div>
+        </a>
+      </div>
+      <div class="line line-border arrange-top"></div>
+      <div class="vbox deals-vbox scroll-shadow darkest-background-shadow" scroll-shadow>
+        <section class="scrollable scroll-shadow-container">
+          <div class="gap-15"></div>
+          <div ng-repeat="section in $ctrl.sections">
+            <div ng-if="section.Id === 'null'">
+              <forms model="$ctrl.interaction_record_model" fields="$ctrl.forms[$index]" form="interaction_record_form"></forms>
+              <div class="gap-20"></div>
+            </div>
+            <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+              <modal-section section-form="interaction_record_form" name="section.name" section-id="section.Id">
+                <forms model="$ctrl.interaction_record_model" fields="$ctrl.forms[$index]" form="interaction_record_form" name="'section_form_' + section.Id"></forms>
+              </modal-section>
+              <div class="gap-20"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="hbox stretch" ng-if="$ctrl.not_found">
+      <page-not-found></page-not-found>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button class="button button-action pull-right" ng-disabled="$ctrl.loading" ng-click="$ctrl.submitControl($ctrl.interaction_record_model, interaction_record_form)">
+            {{ 'GENERICS.SAVE' | translate }}
+          </button>
+          <loading-tooltip loading="$ctrl.loading" form="interaction_record_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

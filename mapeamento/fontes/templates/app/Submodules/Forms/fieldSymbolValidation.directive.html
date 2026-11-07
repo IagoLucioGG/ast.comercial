@@ -1,0 +1,100 @@
+<span style="white-space: nowrap;" class="field-symbol-validation-wrapper" >
+  <span
+    id="validation-wrapper"
+    ng-class="{
+      'hidden-validation' : hideValidation && fieldSymbolValidationCtrl.hasValidationElements,
+      '--invalid': fieldSymbolValidationCtrl.required_violation || fieldSymbolValidationCtrl.masked_violation || fieldSymbolValidationCtrl.val_checked_violation || fieldSymbolValidationCtrl.unique_violation || fieldSymbolValidationCtrl.length_violation }">
+    <!-- field integration icon -->
+    <span
+      class="text-neutral"
+      ng-if="fieldSymbolValidationCtrl.canShowIntegrationIcon"
+      ng-repeat="integrationField in fieldSymbolValidationCtrl.fieldIntegrationsLib.filterByFieldKey(field.key)"
+      uib-tooltip="{{ 'GENERICS.INTEGRATED_FIELD' | translate_with_replace: { integration_name: integrationField.IntegrationName } }}"
+      tooltip-append-to-body="true"
+    >
+      <img ng-src="{{integrationField.IntegrationIconUrl}}" alt="{{integrationField.IntegrationName}}" height="10" class="v-unset">
+    </span>
+
+    <!-- visual info required -->
+    <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true" ng-class="{'text-neutral': !(form.$error.required[0][field.key].$error.required || fieldSymbolValidationCtrl.required_violation || fieldSymbolValidationCtrl.foreign_zipcode_validation_error), 'text-danger': form.$error.required[0][field.key].$error.required || fieldSymbolValidationCtrl.required_violation || fieldSymbolValidationCtrl.foreign_zipcode_validation_error}" ng-if="(field.required && field.applyRequiredFieldRules) || fieldSymbolValidationCtrl.foreign_zipcode_validation_error"><i class="fas fa-exclamation-circle dropdown-sign"></i></span>
+
+    <!-- visual info -->
+    <span uib-tooltip="{{field.tooltipMessage}}" tooltip-append-to-body="true" class="text-neutral" ng-if="field.tooltipMessage"><i class="fas fa-question-circle dropdown-sign"></i></span>
+
+    <!-- visual info unique -->
+    <span uib-tooltip="{{ 'FORMS.UNIQUE' | translate }}" tooltip-append-to-body="true" ng-class="{'text-neutral': !fieldSymbolValidationCtrl.unique_violation, 'text-danger': fieldSymbolValidationCtrl.unique_violation}" ng-if="field.unique && !field.multiple"><i class="fas fa-key dropdown-sign"></i></span>
+
+    <!-- visual info unique for multiple fields -->
+    <span uib-tooltip="{{ 'FORMS.UNIQUE' | translate }}" tooltip-append-to-body="true" ng-class="{'text-neutral': !fieldSymbolValidationCtrl.unique_violation, 'text-danger': fieldSymbolValidationCtrl.unique_violation}" ng-if="field.unique && field.multiple"><i class="fas fa-key dropdown-sign"></i></span>
+
+    <!-- visual info field used in a MDM matching rule -->
+    <span uib-tooltip="{{ fieldSymbolValidationCtrl.grabDedupRuleTooltip(field.key) }}" tooltip-append-to-body="true" class="text-neutral" ng-if="field.isDedupRuleField && !hideDedupRuleIcon"><i class="fas fa-merge dropdown-sign"></i></span>
+
+    <!-- visual info mask -->
+    <span
+      uib-tooltip="{{
+        (fieldSymbolValidationCtrl.masked_violation || fieldSymbolValidationCtrl.val_checked_violation)
+        ?
+          (field.typeId === 12 ? ('FORMS.INVALID_CNPJ' | translate) : (field.typeId === 11 ? ('FORMS.INVALID_CPF' | translate) : ('FORMS.MASKED' | translate) ))
+        :
+          ('FORMS.MASKED' | translate)
+      }}"
+      tooltip-append-to-body="true"
+      tooltip-is-open="fieldSymbolValidationCtrl.isMaskTooltipOpen()"
+      ng-class="{'text-neutral': !(fieldSymbolValidationCtrl.masked_violation || fieldSymbolValidationCtrl.val_checked_violation), 'text-danger': fieldSymbolValidationCtrl.masked_violation || fieldSymbolValidationCtrl.val_checked_violation}"
+      ng-if="field.masked && field.key !== 'account_cnpj' && field.key !== 'account_cpf'">
+      <i class="fas fa-keyboard dropdown-sign"></i>
+    </span>
+
+    <!-- integration RF -->
+    <rf-integration
+      ng-if="!field.dynamic && field.typeId === 12 && (field.entityId === 1 || field.entityId === 3) && field.key !== 'account_cnpj' && fieldSymbolValidationCtrl.can_integrate_with_rf"
+      field="field"
+      form="form"
+      model="model">
+    </rf-integration>
+
+    <!-- visual info value -->
+    <!-- <span uib-tooltip="Campo com valor" tooltip-append-to-body="true" ng-class="{'text-neutral': !(fieldSymbolValidationCtrl.val_checked_violation), 'text-danger': fieldSymbolValidationCtrl.val_checked_violation}" ng-if="field.valChecked"><i class="fas fa-money dropdown-sign"></i></span> -->
+
+    <!-- internal formula icon -->
+    <span uib-tooltip="{{ 'FORMS.INTERNAL_FORMULA' | translate }}" tooltip-append-to-body="true" class="text-neutral" ng-if="hasFormula && field.internalFormula || field.fieldDisableFormula || field.fieldHideFormula || (field.requiredFieldFormula  && field.applyRequiredFieldRules)" ng-click="fieldSymbolValidationCtrl.printFormula(field)"><i class="fas fa-calculator dropdown-sign"></i></span>
+
+    <!-- aggregator field -->
+    <span uib-tooltip="{{ 'FORMS.AGGREGATOR' | translate }}" tooltip-append-to-body="true" class="text-neutral" ng-if="field.typeId === 23"><i class="fas fa-calculator dropdown-sign"></i></span>
+
+    <!-- external formula icon -->
+    <span uib-tooltip="{{ 'FORMS.EXTERNAL_FORMULA' | translate }}" tooltip-append-to-body="true" class="text-neutral" ng-if="field.externalFormulaUrl" ng-click="fieldSymbolValidationCtrl.printFormula(field)">
+      <i class="fas dropdown-sign" ng-class="{'fa-cloud-download': !field.externalFormulaProcessing}"></i>
+      <div class="loader timeline-loader external-formula-loader" ng-if="field.externalFormulaProcessing"></div>
+    </span>
+
+    <!-- attachment icon -->
+    <span uib-tooltip="{{ 'FORMS.ATTACHMENT' | translate }}" tooltip-append-to-body="true" class="text-neutral" ng-if="field.typeId === 19">
+      <i class="fas dropdown-sign fa-paperclip"></i>
+      <!-- <i class="fa dropdown-sign" ng-class="{'fa-paperclip': !field.attachmentUploadProcessing}"></i>
+      <div class="loader timeline-loader external-formula-loader" ng-if="field.attachmentUploadProcessing"></div> -->
+    </span>
+
+    <span
+      uib-tooltip="{{ 'FORMS.FIELD_VALUE_TOO_LONG' | translate }}"
+      tooltip-append-to-body="true"
+      tooltip-is-open="fieldSymbolValidationCtrl.length_violation"
+      tooltip-enable="fieldSymbolValidationCtrl.length_violation"
+      class="align-limited-characters field-symbol-validation-max-characters"
+      ng-if="fieldSymbolValidationCtrl.fieldMaxLength"
+      ng-class="{ 'field-maxlength__right-spacing': fieldSymbolValidationCtrl.lengthIndicatorHasRightSpacing(), 'mr-25': fieldSymbolValidationCtrl.doesFieldDisplayMicrophone() }">
+      <span ng-if="fieldSymbolValidationCtrl.fieldMaxLength" class="text-muted font-small" ng-class="{ 'text-danger font-bold': (model[field.key].length || 0) > fieldSymbolValidationCtrl.fieldMaxLength }">
+        {{(model[field.key].length || '0') + '/' + fieldSymbolValidationCtrl.fieldMaxLength }}</span>
+    </span>
+
+    <!-- linked field icon -->
+    <!-- <span uib-tooltip="Campo vinculado" tooltip-append-to-body="true" class="text-neutral" ng-if="field.originFieldKey"
+      ng-click="fieldSymbolValidationCtrl.printLink(field)"><i class="fas fa-lock dropdown-sign"></i></span> -->
+
+    <!-- maxlength icon -->
+    <!-- <span uib-tooltip="Campo de número inteiro limitado a 9 dígitos" tooltip-append-to-body="true" class="text-danger" ng-if="field.typeId === 4 && form && form.$error && form.$error.maxlength">
+      <i class="fas fa-sort-numeric-up dropdown-sign "></i>
+    </span> -->
+  </span>
+</span>

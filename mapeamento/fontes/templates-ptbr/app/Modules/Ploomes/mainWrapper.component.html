@@ -1,0 +1,13 @@
+<react-styles></react-styles>
+<loading-screen ng-show="$ctrl.loading_screen" hide-logo="$ctrl.hide_logo" brand-color="$ctrl.brand_color" ng-cloak></loading-screen>
+
+<app-wrapper ng-hide="$ctrl.loading_screen" ng-if="$ctrl.valid_login && $ctrl.state.current.name !== 'login'" init-callback-fn="$ctrl.appWrapperInitCallback()" ng-cloak></app-wrapper>
+
+<login-page
+  ng-if="!$ctrl.loading_screen && !$ctrl.boot_error && ($ctrl.valid_login == false || $ctrl.state.current.name === 'login')"
+  login-callback-fn="$ctrl.loginCallback">
+</login-page>
+
+<div class="vbox all-in-center-flex h-100" ng-if="$ctrl.boot_error" ng-cloak>
+  <system-error-fallback></system-error-fallback>
+</div>

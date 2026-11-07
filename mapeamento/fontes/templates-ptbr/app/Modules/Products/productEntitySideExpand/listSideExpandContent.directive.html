@@ -1,0 +1,62 @@
+<div class="vbox deals-vbox scroll-shadow neutral-shadow">
+  <section class="scrollable scroll-shadow-container dark-background">
+    <div class="gap-15"></div>
+    <standard-loader margin-top="30" loading="!listContentCtrl.initial_load"></standard-loader>
+    <div ng-if="listContentCtrl.initial_load">
+      <modal-section name="'PRODUCTS.SIDE_EXPAND.LIST.MODAL_SECTION_NAME' | translate" section-id="10" product-table-select="true" ng-if="(editing && listContentCtrl.self.Profile.ProductsEditPermission) || !editing">
+        <product-table-select main-model="model" main-entity="entity" entity="listContentCtrl.product_entity" selected-items="products"></product-table-select>
+      </modal-section>
+      <div class="gap-15"></div>
+      <div class="side-wrapper">
+        <input class="form-control input-sm light-background" placeholder="Buscar produtos com esse marcador" ng-if="editing" ng-model="listContentCtrl.current_query" ng-model-options="{ debounce: 300 }" ng-change="listContentCtrl.filterProductEntity()">
+      </div>
+      <div class="gap-40"></div>
+      <div class="mini-side-wrapper" infinite-scroll='listContentCtrl.loadProducts()' infinite-scroll-disabled="listContentCtrl.reached_end">
+        <div class="contact-page-person-list">
+          <div ng-repeat="product in products">
+            <div class="short-side-bottom-wrapper">
+              <div class="font-big text-break-word display-flex justify-between">
+                <a class="inline-link-regular" href>{{product.Name}}</a>
+                <div class="display-flex align-self-start">
+                  <a class="button button-light-background-border button-plus pull-right" href ng-if="!editing" ng-click="listContentCtrl.removeProductEntity($index)">
+                    <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                  </a>
+                  <a class="button button-light-background-border button-plus pull-right" href ng-if="editing && listContentCtrl.self.Profile.ProductsDeletePermission" ng-click-confirm="remover o marcador desse produto?" reversible="true" ng-click="listContentCtrl.removeProductEntity($index, product)">
+                    <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                  </a>
+                  <a class="button button-light-background-border button-plus pull-right" href ng-click="product.open_collapse = !product.open_collapse">
+                    <i class="fa font-super-super-small text-neutral" ng-class="{'fa-arrow-up-right-and-arrow-down-left-from-center': !product.open_collapse, 'fa-arrow-down-left-and-arrow-up-right-to-center': product.open_collapse}"></i>
+                  </a>         
+                </div>
+                <a class="button button-light-background-border button-plus pull-right" href ng-if="!editing" ng-click="listContentCtrl.removeProductEntity($index)">
+                  <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                </a>
+                <a class="button button-light-background-border button-plus pull-right" href ng-if="editing && listContentCtrl.self.Profile.ProductsDeletePermission" ng-click-confirm="remover o marcador desse produto?" reversible="true" ng-click="listContentCtrl.removeProductEntity($index, product)">
+                  <i class="fad font-super-super-small text-darkest-neutral fa-trash"></i>
+                </a>
+                <a class="button button-light-background-border button-plus pull-right" href ng-click="product.open_collapse = !product.open_collapse">
+                  <i class="fa font-super-super-small text-neutral" ng-class="{'fa-arrow-up-right-and-arrow-down-left-from-center': !product.open_collapse, 'fa-arrow-down-left-and-arrow-up-right-to-center': product.open_collapse}"></i>
+                </a>
+              </div>
+              <div class="gap-15"></div>
+              <infos-widget ng-if="product.open_collapse" form-key="product_quick_form" entity-type="Product" patch-fn="listContentCtrl.patchFn(model)" model="product"></infos-widget>
+            </div>
+          </div>
+          <standard-loader ng-if="!listContentCtrl.can_load" optionalclass="'timeline-loader'" loading="!listContentCtrl.can_load"></standard-loader>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="text/ng-template" id="new-product-for-group-template">
+  <div ng-form name="quick_new_product_form">
+    <forms model="listContentCtrl.new_product_model" is-popover="true" fields="listContentCtrl.new_product_form" form="quick_new_product_form"></forms>
+
+    <button type="button" class="button button-action mleft15" ng-disabled="!listContentCtrl.can_create_load" ng-click="listContentCtrl.submitControl(listContentCtrl.new_product_model, quick_new_product_form)" title="Submit" aria-label="Submit">Salvar</button>
+
+    <button type="button" class="button button-white" ng-disabled="!listContentCtrl.can_create_load" ng-click="listContentCtrl.closePopover()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <span class="text-danger font-very-big" ng-if="quick_new_product_form.$submitted && quick_new_product_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="Existem campos obrigatórios não preenchidos"><i class="fad fa-exclamation-triangle"></i></span>
+    <div class="loader" ng-if="!listContentCtrl.can_create_load"></div>
+  </div>
+</script>

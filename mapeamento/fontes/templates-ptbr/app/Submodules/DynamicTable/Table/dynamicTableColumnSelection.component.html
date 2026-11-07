@@ -1,0 +1,62 @@
+<div class="panel b-1 white-content medium-shadow mb-120">
+  <table class="table table-striped modal-table">
+    <thead>
+      <tr>
+        <th class="width-20"></th>
+        <th class="width-170">Entidade</th>
+        <th class="width-190">Coluna</th>
+        <th class="width-190" ng-if="dynamicTableColumnSelectionCtrl.useFeatured">Destacar</th>
+        <th class="text-center"></th>
+      </tr>
+    </thead>
+    <tbody ui-sortable="dynamicTableColumnSelectionCtrl.options" ng-model="dynamicTableColumnSelectionCtrl.columnList">
+      <tr ng-repeat="column in dynamicTableColumnSelectionCtrl.columnList" ng-hide="column.field.hidden" data-cy="{{'dynamic-table-config-set-column-field-' + column.field.key +'-'+ $index}}">
+        <td class="v-middle width-20">
+          <div class="token-drag-indicator muted-token mini-dragger" style="cursor: grab" data-cy="{{'dynamic-table-config-grab-icon-' + column.field.key}}"></div>
+        </td>
+        <td>
+          {{column.field.entity.Name}}
+        </td>
+        <td>
+          {{column.field.label}}
+        </td>
+        <td ng-if="dynamicTableColumnSelectionCtrl.useFeatured">
+          {{ (column.featured ? 'GENERICS.YES' : 'GENERICS.NO') | translate }}
+        </td>
+        <td class="text-center">
+          <a ng-hide="column.unremovable" id="dynamictable-columnselection__remove" class="button-inherit button-fixed-size button-fixed-size-small" ng-click="dynamicTableColumnSelectionCtrl.removeColumn(column, $index)" data-cy="{{'remove-column-' + $index}}">
+            <i class="fal fa-trash fixing-fixed-size-button"></i>
+          </a>
+        </td>
+      </tr>
+      <tr ng-if="!dynamicTableColumnSelectionCtrl.maxNumOfColumns || (dynamicTableColumnSelectionCtrl.maxNumOfColumns && dynamicTableColumnSelectionCtrl.columnList.length < dynamicTableColumnSelectionCtrl.maxNumOfColumns)">
+        <td></td>
+        <td class="v-top">
+          <span ng-repeat="entity in dynamicTableColumnSelectionCtrl.field_list">
+            <a ng-class="entity === dynamicTableColumnSelectionCtrl.selected_entity ? 'neutral-badge' : ''" ng-click="dynamicTableColumnSelectionCtrl.selectFieldEntity(entity, $index)" class="main-badge b-1">
+              {{entity.label || entity.name}}
+            </a>
+          </span>
+        </td>
+        <td class="v-top" ng-style="{ 'padding-top': dynamicTableColumnSelectionCtrl.selected_index > 0 ? ((dynamicTableColumnSelectionCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+          <select-field
+            model="dynamicTableColumnSelectionCtrl.selected_field"
+            item-list="dynamicTableColumnSelectionCtrl.field_exibhition"
+            required="false"
+            placeholder="">
+          </select-field>
+        </td>
+        <td class="v-top" ng-if="dynamicTableColumnSelectionCtrl.useFeatured" ng-style="{ 'padding-top': dynamicTableColumnSelectionCtrl.selected_index > 0 ? ((dynamicTableColumnSelectionCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+          <div class="switch">
+            <input id="cmn-toggle-5" ng-click="dynamicTableColumnSelectionCtrl.setFeatured()" ng-checked="dynamicTableColumnSelectionCtrl.featured" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" data-cy="dynamic-table-config-set-featured-btn">
+            <label for="cmn-toggle-5"></label>
+          </div>
+        </td>
+        <td class="text-center v-top" ng-style="{ 'padding-top': dynamicTableColumnSelectionCtrl.selected_index > 0 ? ((dynamicTableColumnSelectionCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+          <span class="button-fixed-size button-neutral button-fixed-size-big" ng-if="!dynamicTableColumnSelectionCtrl.selected_field"><i class="fas fa-check"></i></span>
+          <span id="dynamictable-columnselection__insert" class="button-fixed-size button-action button-fixed-size-big" ng-if="dynamicTableColumnSelectionCtrl.selected_field" ng-click="dynamicTableColumnSelectionCtrl.addColumn()" data-cy="dynamic-table-config-add-column"><i class="fas fa-check"></i></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

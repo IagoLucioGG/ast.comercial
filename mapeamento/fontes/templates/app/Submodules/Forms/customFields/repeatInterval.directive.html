@@ -1,0 +1,13 @@
+<div class="input-group-btn">
+    <button class="btn button button-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="more_options">
+        {{model.Name}}
+        <i class="fal fa-angle-down dropdown-sign"></i>
+    </button>
+    <ul class="dropdown-menu pull-right white-dropdown-menu" aria-labelledby="more_options">
+        <li ng-repeat="unit in repeatIntervalCtrl.unit_names">
+            <a href class="white-dropdown-link" ng-click="repeatIntervalCtrl.changeUnit(unit)">
+                {{unit.Name}}
+            </a>
+        </li>
+    </ul>
+</div>

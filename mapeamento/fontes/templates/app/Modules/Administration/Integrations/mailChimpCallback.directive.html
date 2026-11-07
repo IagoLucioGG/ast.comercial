@@ -1,0 +1,21 @@
+<dynamic-modal
+  modal-id="integrations"
+  footer="false"
+  dark="true"
+  modal-title="{{ 'INTEGRATIONS.MAILCHIMP.TITLE' | translate }}"
+  toggle-modal="mailChimpCallbackCtrl.toggle_modal"
+  is-fetching-modal-content="mailChimpCallbackCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="text-center text-neutral-light font-very-big-title big-wrapper" ng-if="mailChimpCallbackCtrl.initial_load">
+          <i class="font-monster-size fa" ng-class="{'fa-check': mailChimpCallbackCtrl.integration_successful, 'fa-warning': !mailChimpCallbackCtrl.integration_successful}"></i>
+          <div class="gap-30"></div>
+          {{ (mailChimpCallbackCtrl.integration_successful ? 'INTEGRATIONS.MAILCHIMP.SUCCESS_INTEGRATED' : 'INTEGRATIONS.MAILCHIMP.ERROR_INTEGRATE') | translate }}
+        </div>
+        <standard-loader margin-top="'30'" loading="!mailChimpCallbackCtrl.initial_load"></standard-loader>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

@@ -1,4 +1,4 @@
-namespace AST.Comercial.Domain.Entidades;
+﻿namespace AST.Comercial.Domain.Entidades;
 
 /// <summary>
 /// Proposta/Cotação (equivalente ao Quote da Ploomes).
@@ -55,6 +55,14 @@ public class Proposta : EntidadeBase
     public bool NotificacoesExternas { get; set; }
     public DateTime? UltimaAberturaExterna { get; set; }
 
+    // Resposta pública (aceite/recusa pelo link compartilhado)
+    public StatusRespostaProposta StatusResposta { get; set; } = StatusRespostaProposta.Aguardando;
+    public DateTime? RespondidaEm { get; set; }
+    public string? RespondidaIp { get; set; }
+    public string? RespondidaPorNome { get; set; }
+    public string? RespondidaPorEmail { get; set; }
+    public string? MotivoRecusa { get; set; }
+
     // Relacionamentos
     public long? ClienteId { get; set; }
     public Cliente? Cliente { get; set; }
@@ -71,6 +79,13 @@ public class Proposta : EntidadeBase
     public ICollection<SecaoProposta> Secoes { get; set; } = [];
     public ICollection<ParcelaProposta> Parcelas { get; set; } = [];
     public ICollection<ValorCampo> OutrasPropriedades { get; set; } = [];
+}
+
+public enum StatusRespostaProposta
+{
+    Aguardando = 0,
+    Aceita = 1,
+    Recusada = 2
 }
 
 public enum StatusAprovacaoProposta

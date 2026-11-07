@@ -1,0 +1,59 @@
+<aside class="width-105 white-content position-relative">
+  <aside class="regular-menu proposa-side-menu b-l-1">
+    <ul class="nav text-center">
+    <li class="b-b-1 white-content">
+      <a class="regular-menu-link open-side-slide" ng-click="orderSideSlideOptionsCtrl.openSideSlide(4)">
+        <span class="font-small">
+          <span class="text-action"><i class="fal fa-info-square font-big-title"></i></span>
+          <div class="gap-5"></div>Informações
+        </span>
+      </a>
+    </li>
+    <li class="b-b-1 white-content">
+      <a class="regular-menu-link open-side-slide" ng-click="orderSideSlideOptionsCtrl.openSideSlide(1)">
+        <span class="font-small">
+          <span class="text-action"><i class="fal fa-newspaper font-big-title"></i></span>
+          <div class="gap-5"></div>Atualizações
+        </span>
+      </a>
+    </li>
+    <!-- <li class="b-b-1 white-content">
+      <a class="regular-menu-link open-side-slide" ng-click="orderSideSlideOptionsCtrl.openSideSlide(6)">
+        <span class="text-muted font-bold font-small">
+          <i class="far fa-circle font-big-title text-success" ng-if="order.Shared"></i>
+          <i class="fas fa-circle font-big-title" ng-if="!order.Shared"></i>
+          <div class="gap-5"></div>Venda online
+        </span>
+      </a>
+    </li> -->
+      <li class="b-b-1 white-content">
+        <a class="regular-menu-link open-side-slide" ng-click="orderSideSlideOptionsCtrl.openSideSlide(2)">
+          <span class="font-small">
+            <span class="text-action"><i class="fal fa-comment-alt-lines font-big-title"></i></span>
+            <div class="gap-5"></div>Comentários
+          </span>
+          <div class="notification darkest-background b-1 text-darkest-neutral side-menu" ng-if="orderSideSlideOptionsCtrl.num_of_comments">{{orderSideSlideOptionsCtrl.num_of_comments}}</div>
+        </a>
+      </li>
+      <li class="b-b-1 white-content" ng-if="order.ApprovalStatusId !== 1 && order.ApprovalStatusId !== 3 && showExternalComments && !orderSideSlideOptionsCtrl.self.Account.DisableOrdersExternalComments">
+        <a class="regular-menu-link open-side-slide" ng-click="orderSideSlideOptionsCtrl.openSideSlide(3)">
+          <span class="font-small">
+            <span class="text-action"><i class="fal fa-comment-alt-lines font-big-title"></i></span>
+            <div class="gap-5"></div>Chat com cliente
+          </span>
+          <div class="notification darkest-background b-1 text-darkest-neutral side-menu" ng-if="orderSideSlideOptionsCtrl.num_of_external_comments">{{orderSideSlideOptionsCtrl.num_of_external_comments}}</div>
+        </a>
+      </li>
+      <li class="b-b-1 white-content" ng-if="order.ApprovalStatusId">
+        <a class="regular-menu-link open-side-slide" ng-click="orderSideSlideOptionsCtrl.openSideSlide(5)">
+          <span class="font-small">
+            <span class="text-action"><i class="fal fa-badge-check font-big-title"></i></span>
+            <div class="gap-5"></div>Aprovações
+          </span>
+          <div class="notification darkest-background b-1 text-darkest-neutral side-menu" ng-if="orderSideSlideOptionsCtrl.num_of_approvals">{{orderSideSlideOptionsCtrl.num_of_approvals}}</div>
+        </a>
+      </li>
+    </ul>
+    <!-- <document-dynamic-options model="order" entity-id="4"></document-dynamic-options> -->
+  </aside>
+</aside>

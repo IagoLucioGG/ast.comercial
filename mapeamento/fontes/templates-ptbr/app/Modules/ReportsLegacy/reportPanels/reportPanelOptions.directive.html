@@ -1,0 +1,22 @@
+<div class="dropdown pull-right">
+  <div class="button-fixed-size button-fixed-size-small data-edit-button dropdown-toggle special-cog-button" uib-tooltip="Ações do painel" tooltip-append-to-body="true" data-toggle="dropdown" data-cy="reports-panel-options-button-{{ panel.Id }}">
+    <i class="fal fa-cog font-semi-big fixing-fixed-size-button"></i>
+  </div>
+    <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top">
+      <div class="dropdown-subtitle">
+        Ações do painel
+      </div>
+      <li ng-repeat="option in reportPanelOptionsCtrl.options">
+        <a class="white-dropdown-link font-regular-weight" href ng-click="option.ClickFunction()" data-cy="{{ option.DataCy }}">
+          <div class="hbox">
+            <aside class="v-middle width-25 text-center">
+              <i class="list-simple-line" ng-class="option.Icon"></i>
+            </aside>
+            <aside class="v-middle">
+             {{option.Name}}
+            </aside>
+          </div>
+        </a>
+      </li>
+    </ul>
+</div>

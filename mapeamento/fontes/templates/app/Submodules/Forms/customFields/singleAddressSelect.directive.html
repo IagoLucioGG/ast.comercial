@@ -1,0 +1,22 @@
+<input vs-google-autocomplete
+  ng-model="model[field.key]"
+  field="field"
+  vs-place="singleAddressSelectCtrl.place"
+  vs-latitude="model.Latitude"
+  vs-longitude="model.Longitude"
+  vs-post-code="model.ZipCode"
+  vs-foreign-post-code="model.ForeignZipCode"
+  type="text"
+  name="address"
+  id="address"
+  class="form-control input-sm"
+  placeholder="{{ 'FORMS.ADDRESS_PLACEHOLDER' | translate}}"
+  ng-disabled="disabled"
+  ng-required="required"
+  ng-focus="singleAddressSelectCtrl.show_icon = true"
+  ng-blur="singleAddressSelectCtrl.show_icon = false"
+  aria-label="{{ 'ARIA_LABELS.FIELD.ADDRESS' | translate_with_replace: { fieldLabel: field.label } }}"
+>
+<span ng-show="singleAddressSelectCtrl.show_icon" class="text-muted font-very-big address-found" type="button" tooltip-placement="top" tooltip-append-to-body="true" uib-tooltip="{{ 'FORMS.ADDRESS_TOOLTIP' | translate}}">
+  <i class="fad fa-question-circle"></i>
+</span>

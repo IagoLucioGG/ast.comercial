@@ -1,0 +1,172 @@
+<new-product-part-skeleton ng-if="!partCtrl.can_show"></new-product-part-skeleton>
+
+<div class="top-right-wrapper white-content" ng-show="partCtrl.can_show" ng-if="partCtrl.can_load && partCtrl.initialized_parts.length > 0">
+  <div class="b-1 white-content panel">
+    <table class="table options-table table-smaller-header full-editable-table">
+      <thead>
+        <tr class="options-header">
+          <th></th>
+          <th
+            class="mini-cell"
+            ng-repeat="pp_field in partCtrl.copy_parts_form"
+            ng-hide="pp_field.hidden || pp_field.defaultFormHidden || partCtrl.copy_parts_form_hide_map[pp_field.key]">
+            {{ $index === 0 && (pp_field.key.endsWith('product_part_product') || partsField.productPartName) ? partsField.productPartName : pp_field.label }}
+            <span class="field-label-alerts">
+              <i
+                class="fad fa-lock dropdown-sign text-muted"
+                ng-if="$index === 0 && pp_field.key.endsWith('product_part_product') && partsField.productPartOnlyOnePart"
+                uib-tooltip="{{'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.ONLY_ONE_PART' | translate_with_replace : { name: partsField.productPartName.toLowerCase() } }}"
+                tooltip-append-to-body="true">
+              </i>
+              <field-symbol-validation field="pp_field" model="parentProduct" always-valid="true">
+              </field-symbol-validation>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="drag-button drag-line input-square input-filled options-table-item single-column-optional-tr"
+          ng-repeat="part in partCtrl.initializedPartsCheck()">
+          <td class="please-nowrap width-50">
+            <div class="hbox height-30 fake-input-background">
+              <aside class="v-middle text-center mini-side-wrapper" uib-tooltip="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.PART_REQUIRED' | translate_with_replace : { name: partsField.productPartName } }}" tooltip-append-to-body="true" tooltip-enable="part.product_part_required">
+                <div class="checkbox options-checkbox top1">
+                  <label>
+                    <input type="checkbox" ng-disabled="part.product_part_required || part.disabled" ng-model="part.checked" ng-change="partCtrl.togglePart(part, false, productScope)">
+                  </label>
+                </div>
+              </aside>
+            </div>
+          </td>
+          <td
+            ng-repeat="pp_field in partCtrl.copy_parts_form_map[part.unique_id]"
+            ng-hide="pp_field.hidden || pp_field.defaultFormHidden || partCtrl.copy_parts_form_hide_map[pp_field.key]"
+            ng-class="{ 'product-text-area': pp_field.typeId === 2 || pp_field.typeId === 22, 'product-select-td': pp_field.key === modelPrefix + '_product_part_product' }">
+            <div
+              class="height-20 field-alerts"
+              ng-if="pp_field.required || pp_field.unique || pp_field.internalFormula || pp_field.externalFormulaUrl">
+              <field-symbol-validation field="pp_field" model="part"></field-symbol-validation>
+            </div>
+            <div class="input-group full-width">
+              <div
+                class="white-content b-1 height-30"
+                ng-if="(pp_field.key === modelPrefix + '_product_part_product') && part.product_part_product && part.product_part_product[0]">
+                <div class="hbox stretch fake-input-background disabled-option single-column-optional">
+                  <aside class="v-middle side-wrapper-smaller">
+                    <div
+                      class="ellipsis width-260"
+                      uib-tooltip="{{ ::(part.product_part_product[0].Name) }}"
+                      tooltip-append-to-body="true"
+                      tooltip-enable="::(part.product_part_product[0].Name.length > 30)">
+                      {{part.product_part_product[0].Name}}
+                    </div>
+                  </aside>
+                </div>
+              </div>
+              <!-- <div ng-if="pp_field.key === modelPrefix + '_product_part_product' && !(part.product_part_product && part.product_part_product[0])">
+                {{part.product_part_group[0].Name}}
+              </div> -->
+              <div class="invisible-input input-sm form-control" disabled="disabled" ng-show="pp_field.formHidden">
+                <i class="fal fa-eye-slash text-muted"></i>
+              </div>
+              <new-field
+                ng-if="(pp_field.key === modelPrefix + '_product_part_product' && !(part.product_part_product && part.product_part_product[0]) && !(part.product_part_group && part.product_part_group[0]))"
+                field="part.product_list_field"
+                model="part"
+                property="pp_field.key"
+                required="pp_field.required && part.checked"
+                disabled="partCtrl.disableField(part, pp_field)"
+                wide="pp_field.wide"
+                placeholder="{{part.product_part_list[0].Name}}"
+                formula-scope="$parent.$parent"
+                formula-get-allowed-scopes-fn="partCtrl.getAllowedScopes"
+                formula-trigger-hide-or-disable="true"
+                formula-check-path-fn="partCtrl.checkProductPartFormulaPath"
+                formula-hide-callback-fn="partCtrl.updateFieldsHideMap"
+                model-change-callback="partCtrl.partGroupSelectCallback(new_val, old_val, productScope, pp_field, part)"
+                formula-ignore-variable-changes="true"
+                formula-skip-watcher="true">
+              </new-field>
+              <new-field
+                ng-if="(pp_field.key === modelPrefix + '_product_part_product' && !(part.product_part_product && part.product_part_product[0]) && !(part.product_part_list && part.product_part_list[0]))"
+                field="part.product_group_field"
+                model="part"
+                property="pp_field.key"
+                required="pp_field.required && part.checked"
+                disabled="partCtrl.disableField(part, pp_field)"
+                wide="pp_field.wide"
+                placeholder="{{part.product_part_group[0].Name}}"
+                formula-scope="$parent.$parent"
+                formula-get-allowed-scopes-fn="partCtrl.getAllowedScopes"
+                formula-trigger-hide-or-disable="true"
+                formula-check-path-fn="partCtrl.checkProductPartFormulaPath"
+                formula-hide-callback-fn="partCtrl.updateFieldsHideMap"
+                model-change-callback="partCtrl.partGroupSelectCallback(new_val, old_val, productScope, pp_field, part)"
+                formula-ignore-variable-changes="true"
+                formula-skip-watcher="true">
+              </new-field>
+              <new-field
+                ng-if="(pp_field.key !== modelPrefix + '_product_part_product')"
+                ng-hide="pp_field.typeId === 2 || pp_field.typeId === 22 || pp_field.formHidden"
+                ng-class="{'is-button': pp_field.isButton}"
+                field="pp_field"
+                model="part"
+                property="pp_field.key" required="pp_field.required && part.checked"
+                disabled="partCtrl.disableField(part, pp_field)"
+                wide="pp_field.wide"
+                hide-label="true"
+                ignore-text-area-directives="true"
+                formula-scope="$parent.$parent"
+                formula-trigger-hide-or-disable="true"
+                formula-get-allowed-scopes-fn="partCtrl.getAllowedScopes"
+                formula-hide-callback-fn="partCtrl.updateFieldsHideMap"
+                formula-check-path-fn="partCtrl.checkProductPartFormulaPath"
+                model-change-callback="partCtrl.modelChangeCallback(new_val, old_val, first_trigger, productScope, !part.checked, pp_field, part)">
+              </new-field>
+              <a
+                href
+                ng-if="pp_field.typeId === 2 || pp_field.typeId === 22"
+                ng-hide="pp_field.formHidden"
+                mini-modal
+                mini-modal-title="{{pp_field.label}}"
+                mini-modal-fields="[pp_field]"
+                mini-modal-model="part"
+                block-model-watcher="true"
+                mini-modal-fields-filtering-fn="partCtrl.miniModalFieldsFiltering(fields)"
+                mini-modal-width="width-1000"
+                mini-modal-not-trigger-formula="true"
+                use-default-modal-structure="true">
+                <span ng-if="partCtrl.new_sanitize_front && part[pp_field.key] && pp_field.typeId === 2" ng-bind-html="partCtrl.sanitizeHTML(part[pp_field.key]) | to_trusted_text_area"></span>
+                <span ng-if="!partCtrl.new_sanitize_front && part[pp_field.key] && pp_field.typeId === 2" ng-bind-html="part[pp_field.key] | to_trusted_text_area"></span>
+                <span class="text-muted" ng-if="part[pp_field.key] && pp_field.typeId === 22">
+                  Visualizar...
+                </span>
+                <span class="text-muted" ng-if="!part[pp_field.key]">Adicionar...</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr class="drag-button drag-line input-square input-filled" ng-if="partsField.productPartUseSelector && (partCtrl.initialized_parts | filter: { checked: false }).length > 0 && !partCtrl.hide_unchecked_parts">
+          <td class="please-nowrap"></td>
+          <td class="product-select-td">
+            <select-fk
+            model="partCtrl.part_selector_model"
+            option-change-callback="partCtrl.partSelect(model)"
+            api-url="Custom"
+            field="partCtrl.part_selector_field"
+            display-property="Name"
+            list="true"
+            required="false"
+            disabled="false"
+            placeholder="('GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.SELECT_PART' | translate_with_replace : { name: partsField.productPartName })"
+            custom-data-source="partCtrl.getUncheckedParts"
+            not-suggest-new-item="true">
+            </select-fk>
+          </td>
+          <td colspan="{{partCtrl.form_length - 1}}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

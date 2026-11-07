@@ -1,0 +1,8 @@
+<div class="text-uppercase light-background b-b-1 rectangular-wrapper px-0">
+  {{ $ctrl.checklist.Name }}
+</div>
+<div ng-repeat="x in $ctrl.fieldsLength track by $index" class="d-flex gap-flex-10 checklist-skeleton-repeat mt-10">
+  <div class="skeleton-box h-3" style="width: 30px;"></div>
+  <div class="skeleton-box h-3" style="width: 100px;"></div>
+  <div class="skeleton-box h-3 flex-1"></div>
+</div>

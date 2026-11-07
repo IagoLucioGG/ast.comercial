@@ -1,0 +1,356 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-form name="automation_form">
+  <section class="scrollable scroll-shadow-container">
+    <standard-loader margin-top="15" loading="!automationContentCtrl.can_load"></standard-loader>
+    <div class="side-wrapper" ng-if="automationContentCtrl.can_load">
+      <!-- Descrição da automação -->
+      <div>
+        <div class="activity-history hist-separator"></div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  1
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': automation_form.$submitted && !automationContentCtrl.model_name }">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        {{ 'AUTOMATIONS.DESCRIPTION_LABEL' | translate }}
+                        <span
+                          uib-tooltip="{{ 'FORMS.REQUIRED' | translate}}"
+                          tooltip-append-to-body="true"
+                          ng-class="{'text-neutral': automationContentCtrl.model_name, 'text-danger': !automationContentCtrl.model_name}"
+                          class="small"
+                        >
+                          <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                      </div>
+                      <div class="gap-5"></div>
+                      <input class="form-control input-sm" ng-model="automationContentCtrl.model_name" ng-required="true">
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <!-- Quando a automação deve ser disparada-->
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+      <div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  2
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox">
+                    <aside class="v-middle width-160 nowrap">
+                      <div class="gap-10"></div>
+                      <div class="font-bold font-semi-big">
+                        {{ 'AUTOMATIONS.TRIGGER_LABEL' | translate }}
+                        <span
+                          uib-tooltip="{{ 'FORMS.REQUIRED' | translate}}"
+                          tooltip-append-to-body="true"
+                          ng-class="{'text-neutral': automationContentCtrl.selected_trigger, 'text-danger': !automationContentCtrl.selected_trigger}"
+                          class="small"
+                        >
+                          <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                        <div class="font-regular-weight font-semi-small text-muted">
+                          {{ 'AUTOMATIONS.TRIGGER_HELPER' | translate }}
+                        </div>
+                      </div>
+                      <div class="gap-5"></div>
+                      <select ng-options="trigger as trigger.Name for trigger in automationContentCtrl.triggers track by trigger.Id" ng-model="automationContentCtrl.selected_trigger" class="form-control input-sm" ng-change="automationContentCtrl.selectTrigger()" ng-required="true"></select>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="hbox" ng-if="!automationContentCtrl.show_trigger_fields && automationContentCtrl.show_toggle_prevent_trigger_automation">
+          <aside class="activity-history">
+            <div class="activity-history hist-separator"></div>
+          </aside>
+          <aside class="v-middle">
+            <div class="block-automation-trigger-wrapper">
+              <div class="display-inline-block full-width">
+                <div class="font-semi-big font-bold">
+                  {{ 'AUTOMATIONS.PREVENT_TRIGGER_BY_AUTOMATION' | translate }}
+                </div>
+                <div class="gap-5"></div>
+                <div class="switch">
+                  <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-297" type="checkbox" ng-model="automationContentCtrl.block_automation_trigger">
+                  <label class="pull-left" for="cmn-toggle-297"></label>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="hbox" ng-if="automationContentCtrl.show_trigger_fields">
+          <aside class="activity-history">
+            <div class="activity-history hist-separator"></div>
+          </aside>
+          <aside class="v-middle">
+            <div class="block-automation-trigger-wrapper">
+              <!--  When FF is removed, only that one will have to stay with ng-if -->
+              <div ng-if="automationContentCtrl.show_trigger_fields">
+                <trigger-field-config
+                  entity-id="entity.Id"
+                  entity-name="entity.name"
+                  default-trigger-fields="automationContentCtrl.triggerFieldsState.apiData"
+                  get-fields-on-actions="automationContentCtrl.triggerFieldsState.getFieldsOnActions"
+                  on-change="automationContentCtrl.triggerFieldsState.onChange"
+                  on-destroy="automationContentCtrl.triggerFieldsState.destroy"
+                ></trigger-field-config>
+              </div>
+              <!--  -->
+              <div class="display-inline-block full-width" ng-if="automationContentCtrl.show_toggle_prevent_trigger_automation">
+                <div class="font-semi-big font-bold">
+                  {{ 'AUTOMATIONS.PREVENT_TRIGGER_BY_AUTOMATION' | translate }}
+                </div>
+                <div class="gap-5"></div>
+                <div class="switch">
+                  <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-297" type="checkbox" ng-model="automationContentCtrl.block_automation_trigger">
+                  <label class="pull-left" for="cmn-toggle-297"></label>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <!--  -->
+      </div>
+      <!-- Automação temporal -->
+      <div class="activity-history hist-separator"></div>
+      <div ng-if="automationContentCtrl.selected_trigger.Temporal">
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="add-condition button-avoid">
+                <i class="fal fa-clock activity-icon text-muted" style="top: 2px !important;"></i>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside class="v-middle nowrap">
+                  <div class="gap-10"></div>
+                  <div class="font-bold font-semi-big">
+                    {{ 'AUTOMATIONS.TEMPORAL_INTERVAL' | translate }}
+                  </div>
+                  <div class="gap-5"></div>
+                  <forms model="automationContentCtrl.interval_model" fields="automationContentCtrl.interval_fields"
+                    form="interval_form" ignore-col-size="true"></forms>
+                </aside>
+                <aside>
+                  <div class="gap-10"></div>
+                  <div class="font-bold font-semi-big">
+                    {{ 'AUTOMATIONS.TEMPORAL_START_AT' | translate }}
+                  </div>
+                  <div class="gap-5"></div>
+                  <input ng-model="automationContentCtrl.interval_model.date" date datepicker="true" type="text"
+                    class="form-control input-sm" />
+                </aside>
+                <aside>
+                  <div class="gap-10"></div>
+                  <div class="font-bold font-semi-big">
+                    {{ 'DATETIME_FORMATS.DATE_TIME_APPEND' | translate }}
+                  </div>
+                  <div class="gap-5"></div>
+                  <input ng-model="automationContentCtrl.interval_model.time" type="time" class="form-control input-sm" />
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <!-- Adicionar condição-->
+      <div>
+        <div class="activity-history hist-separator"></div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div ng-if="!automationContentCtrl.show_filter" class="no-box-shadow">
+                <div class="add-condition text-action" ng-click="automationContentCtrl.toggleShowFilter(true)">
+                  <i class="fal fa-plus activity-icon"></i>
+                </div>
+              </div>
+              <div ng-if="automationContentCtrl.show_filter" class="no-box-shadow">
+                <div class="add-condition text-action" ng-click="automationContentCtrl.toggleShowFilter(false)">
+                  <i class="fal fa-minus activity-icon"></i>
+                </div>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox filter-generator-table">
+                <aside class="v-middle">
+                  <div class="gap-15"></div>
+                  <div class="goal-filter-header">
+                    <div class="font-semi-big font-bold" style="max-width: 600px">
+                      {{ 'AUTOMATIONS.FILTER_LABEL' | translate }}
+                      <div class="font-regular-weight font-semi-small text-muted" ng-bind-html="('AUTOMATIONS.FILTER_HELPER' | translate) | to_trusted">
+                      </div>
+                    </div>
+                    <filter-clipboard-bar filter-fields="automationContentCtrl.filterFields" ng-if="automationContentCtrl.show_filter"></filter-clipboard-bar>
+                  </div>
+                  <div class="font-semi-big font-bold text-center wrapper" ng-if="automationContentCtrl.selected_trigger.Temporal">
+                    <div ng-if="!automationContentCtrl.items_counter_loading">
+                      <!-- Error -->
+                      <alert-message
+                        ng-if="automationContentCtrl.items_counter_has_error"
+                        status="'danger'"
+                        message="'AUTOMATIONS.TEMPORAL_GENERIC_ERROR_MESSAGE' | translate"
+                      ></alert-message>
+                      <!--  -->
+                      <div ng-if="!automationContentCtrl.items_counter_has_error">
+                        {{ 'AUTOMATIONS.TEMPORAL_AUTOMATION_ITEMS_AFFECTED' | translate_with_replace : { items: automationContentCtrl.items_counter } }}
+                        <div ng-if="automationContentCtrl.items_counter_alert" class="font-regular-weight" ng-class="automationContentCtrl.items_counter_alert_class">
+                          {{automationContentCtrl.items_counter_alert}}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Loading -->
+                    <alert-message
+                      ng-if="automationContentCtrl.items_counter_loading"
+                      status="'loading'"
+                      message="'AUTOMATIONS.TEMPORAL_LOADING_MESSAGE' | translate"
+                    ></alert-message>
+                    <!--  -->
+                  </div>
+                  <div ng-if="automationContentCtrl.show_filter">
+                    <div class="gap-10"></div>
+                    <filter-container 
+                      filter-fields="automationContentCtrl.filterFields"
+                      update-filter-fields="automationContentCtrl.updateFilterFields(filterFields)"
+                      entity="entity" 
+                      query-object="automationContentCtrl.query_object" 
+                      skip-wrapper="true"
+                      compare-fields="true"
+                    ></filter-container>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="activity-history hist-separator"></div>
+        <div class="activity-history hist-separator"></div>
+      </div>
+      <!-- Ações -->
+      <div ng-repeat="action in automationContentCtrl.model_actions">
+        <automation-action
+          action="action"
+          action-index="$index"
+          is-last-action="$last"
+          entity="entity"
+          stage="stage"
+          selected-actions="automationContentCtrl.model_actions"
+          move-action-callback-fn="automationContentCtrl.moveActionCallback(direction, $index)"
+          selected-action-callback-fn="automationContentCtrl.selectedActionCallback()"
+          remove-action-callback-fn="automationContentCtrl.removeActionCallback($index)"
+          is-submitted="automation_form.$submitted"
+          selected-trigger="automationContentCtrl.selected_trigger"
+          allowed-actions="automationContentCtrl.allowed_actions"
+          meetime-cadences="automationContentCtrl.meetimeCadences"
+          meetime-allowed-pipelines="automationContentCtrl.meetimeAllowedPipelines"
+          trigger-fields-model="automationContentCtrl.triggerFieldsState.model"
+          on-select-field="automationContentCtrl.onSelectFieldAction({ newField, oldField, action })"
+          >
+        </automation-action>
+      </div>
+      <div class="text-center mb-15">
+        <div class="button button-action" ng-click="automationContentCtrl.addAction()">
+          <i class="fas fa-magic button-icon"></i>
+          {{ 'AUTOMATIONS.ADD_NEW_ACTION' | translate }}
+        </div>
+      </div>
+      <div
+        class="automation-content-creator-updater p-10 ml-40 mb-15"
+        ng-if="automationContentCtrl.users.creator || automationContentCtrl.users.updater">
+        <div class="box-user">
+          <span>{{ 'AUTOMATIONS.CREATED_BY' | translate }}:</span> 
+          <div class="box-avatar">
+            <span class="single-user-badge"
+                  show-tooltip-on-ellipsis
+                  callback-tooltip="automationContentCtrl.setTooltipCreatorStatus">
+              <a class="light-badge neutral-content badge-border nowrap d-flex ellipsis-container"
+                 uib-tooltip="{{automationContentCtrl.users.creator.Name}}"
+                 tooltip-append-to-body="true"
+                 tooltip-placement="auto top"
+                 tooltip-enable="automationContentCtrl.tooltipCreatorStatus">
+                <img ng-src="{{automationContentCtrl.users.creator.AvatarUrl}}" class="avatar-timeline">
+                <div class="ellipsis">
+                  <span class="align-middle">{{automationContentCtrl.users.creator.Name}}</span>
+                </div>
+              </a>
+            </span>
+            <span class="automation-display-date">{{automationContentCtrl.users.creator.display_date}}</span>
+          </div>
+        </div>
+        <div class="box-user">
+          <span>{{ 'AUTOMATIONS.UPDATED_BY' | translate }}: </span>
+          <div class="box-avatar">
+            <span class="single-user-badge"
+                  show-tooltip-on-ellipsis
+                  callback-tooltip="automationContentCtrl.setTooltipUpdaterStatus">
+              <a class="light-badge neutral-content badge-border nowrap d-flex ellipsis-container"
+                 uib-tooltip="{{automationContentCtrl.users.updater.Name}}"
+                 tooltip-append-to-body="true"
+                 tooltip-placement="auto top"
+                 tooltip-enable="automationContentCtrl.tooltipUpdaterStatus">
+                <img ng-src="{{automationContentCtrl.users.updater.AvatarUrl}}" class="avatar-timeline">
+                <div class="ellipsis">
+                  <span class="align-middle">{{automationContentCtrl.users.updater.Name}}</span>
+                </div>
+              </a>
+            </span>
+            <span class="automation-display-date">{{automationContentCtrl.users.updater.display_date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle" ng-if="automationContentCtrl.can_load">
+      <a href class="button button-white-no-border" ng-click="automationContentCtrl.backToAutomationsList()">
+        <span class="text-action"><i class="fal fa-arrow-left button-icon"></i></span>
+        {{ 'GENERICS.BACK' | translate }}
+      </a>
+    </aside>
+    <aside class="footer-save" ng-if="automationContentCtrl.can_load">
+      <loading-tooltip loading="automationContentCtrl.loading" form="automation_form"></loading-tooltip>
+      <button class="button button-action" href ng-click="automationContentCtrl.submitControl(automation_form)">
+        <i class="fas fa-save button-icon"></i>
+        {{ 'GENERICS.SAVE' | translate }}
+      </button>
+      <button class="button button-white" ng-if="automationContentCtrl.selected_trigger.Temporal && automation.Enabled" href ng-click="automationContentCtrl.submitExecuteAutomationNow(automation_form, true)">
+        <span class="text-action"><i class="fal fa-play button-icon"></i></span>
+        {{ 'AUTOMATIONS.SAVE_AND_EXECUTE_NOW' | translate }}
+      </button>
+    </aside>
+  </div>
+</div>

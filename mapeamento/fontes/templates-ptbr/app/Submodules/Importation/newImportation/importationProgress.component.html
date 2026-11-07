@@ -1,0 +1,61 @@
+<div class="hbox stretch">
+  <standard-loader margin-top="30" loading="!progressCtrl.can_load"></standard-loader>
+  <aside class="v-middle" ng-if="progressCtrl.can_load">
+    <div class="margin-auto width-400">
+      <div class="font-title font-bold">
+        <span ng-if="progressCtrl.importation_failed">Importação falhou.</span>
+        <span ng-if="!progressCtrl.importation_failed && progressCtrl.importation_finished">Importação concluída.</span>
+        <span ng-if="!progressCtrl.importation_failed && !progressCtrl.importation_finished && progressCtrl.importation_progress < 100 && (progressCtrl.error_rows + progressCtrl.success_rows) === 0">
+          <span aria-hidden="true" style="display: inline-block; width: 17px; height: 17px; border: 2px solid #d3d1c7; border-top-color: #7625E4; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: -3px; margin-right: 8px;"></span>Atualizando informações iniciais
+        </span>
+        <span ng-if="!progressCtrl.importation_failed && !progressCtrl.importation_finished && progressCtrl.importation_progress < 100 && (progressCtrl.error_rows + progressCtrl.success_rows) > 0">Importação em andamento.</span>
+        <span ng-if="!progressCtrl.importation_failed && !progressCtrl.importation_finished && progressCtrl.importation_progress >= 100">Só mais alguns instantes</span>
+      </div>
+      <div class="gap-10"></div>
+      <div class="font-big"
+        ng-if="progressCtrl.importation_progress < 100 && !progressCtrl.importation_failed && !progressCtrl.importation_finished">
+        Esse processo pode demorar alguns minutos. Você pode minimizar essa janela e retornar depois.
+      </div>
+      <div class="gap-10"></div>
+      <div class="progress"
+        ng-class="{
+          'ongoing-importation': !progressCtrl.importation_failed && !progressCtrl.importation_finished,
+          'success-importation': progressCtrl.importation_finished && !progressCtrl.importation_failed,
+          'failed-importation': progressCtrl.importation_failed
+        }">
+        <div class="progress-bar" aria-valuenow="{{progressCtrl.importation_progress}}" aria-valuemin="0"
+          aria-valuemax="100" ng-style="{'width': progressCtrl.importation_progress + '%'}"></div>
+      </div>
+      <div class="gap-10"></div>
+      <div>
+        Linhas processadas: {{ progressCtrl.error_rows + progressCtrl.success_rows
+        }}/{{ progressCtrl.total_rows }}
+        <br>
+      </div>
+      <div class="gap-10"></div>
+      <div ng-if="progressCtrl.importation_finished || progressCtrl.importation_failed">
+        <div ng-if="progressCtrl.error_rows > 0">
+          {{ 'IMPORTATION.PROGRESS.ERRORS_OCCURRED' | translate_with_replace: { num_errors: progressCtrl.error_rows,
+          total_rows: progressCtrl.total_rows } }}
+          <br>
+        </div>
+        <a ng-href="{{progressCtrl.spreadsheet_with_logs_url}}" target="_blank">
+          <span class="text-underline">Clique aqui para baixar a planilha com os detalhes.</span>
+        </a>
+        <div class="gap-10"></div>
+      </div>
+      <div
+        ng-bind-html="('IMPORTATION.PROGRESS.SUCCESSFULLY_PROCESSED_ROWS' | translate_with_replace : { entities: progressCtrl.success_rows }) | to_trusted">
+      </div>
+      <div
+        ng-bind-html="('IMPORTATION.PROGRESS.PROCESSED_ROWS_WITH_ERROR' | translate_with_replace : { entities: progressCtrl.error_rows }) | to_trusted">
+      </div>
+      <div
+        ng-bind-html="('IMPORTATION.PROGRESS.ENTITIES_INSERTED' | translate_with_replace : { entities: progressCtrl.created_entities }) | to_trusted">
+      </div>
+      <div
+        ng-bind-html="('IMPORTATION.PROGRESS.ENTITIES_UPDATED' | translate_with_replace : { entities: progressCtrl.updated_entities }) | to_trusted">
+      </div>
+    </div>
+  </aside>
+</div>

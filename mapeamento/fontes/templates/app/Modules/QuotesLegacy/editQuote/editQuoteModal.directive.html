@@ -1,0 +1,84 @@
+<dynamic-modal
+  modal-id="'edit-quote'"
+  toggle-full-screen-fn="editQuoteCtrl.toggleFullScreenFn"
+  footer="true"
+  dark="true"
+  modal-title="{{::('QUOTES.EDIT_QUOTE_MODAL.TITLE' | translate)}}"
+  toggle-modal="editQuoteCtrl.toggle_modal"
+  ng-form
+  name="edit_quote_form"
+  is-editing-quote="true"
+  block-back-state="editQuoteCtrl.block_back_state"
+  is-fetching-modal-content="editQuoteCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="regular-header b-b-1 scroll-shadow arrange-mid" ng-if="!editQuoteCtrl.show_document_template_list && !editQuoteCtrl.display_no_templates">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="modal-title">
+            <small class="font-regular-weight text-muted">{{ 'QUOTES.EDIT_QUOTE_MODAL.QUOTE_MODEL' | translate_with_replace: { name: editQuoteCtrl.selected_template.Name } }}</small>
+          </div>
+          <div class="dropdown mtop-3">
+            <a class="button button-white-no-border button-super-small new-item-folder dropdown-toggle" data-toggle="dropdown">
+              <span class="font-big font-regular-weight">{{editQuoteCtrl.selected_template.Name}}<i class="fal fa-angle-down dropdown-sign"></i></span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu field-pick">
+              <li ng-repeat="model in editQuoteCtrl.quote_templates track by model.Id" ng-click="editQuoteCtrl.changeTemplate(model)" ng-show="model.Id !== editQuoteCtrl.selected_template.Id && editQuoteCtrl.quote_templates.length > 1">
+                <a class="white-dropdown-link" href>{{model.Name}}</a>
+              </li>
+              <li ng-show="editQuoteCtrl.quote_templates.length === 1">
+                <a class="white-dropdown-link" href>{{ 'QUOTES.EDIT_QUOTE_MODAL.ONE_QUOTE_MODEL' | translate }}</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="deals-vbox vbox scroll-shadow neutral-shadow" ng-if="!editQuoteCtrl.show_document_template_list && !editQuoteCtrl.display_no_templates">
+      <section class="scrollable scroll-shadow-container">
+        <div class="gap-15"></div>
+        <forms
+          model="editQuoteCtrl.edit_quote"
+          fields="editQuoteCtrl.selected_form"
+          form="edit_quote_form"
+          ng-if="editQuoteCtrl.template_load"
+          document-template-format="editQuoteCtrl.selected_template.NewFormat"
+          editing-model="true"
+          is-modal-full-screen="editQuoteCtrl.modal_is_full_screen"
+          ignore-default-values="!editQuoteCtrl.isDuplicatingQuote && editQuoteCtrl.ignoreDefaultValues"></forms>
+        <div class="text-center text-neutral-light font-very-big-title big-wrapper" ng-if="(!editQuoteCtrl.selected_form || !editQuoteCtrl.has_fields_to_show) && editQuoteCtrl.template_load">
+          <i class="font-monster-size fad fa-exclamation-triangle"></i>
+          <div class="gap-30"></div>
+          {{ 'QUOTES.EDIT_QUOTE_MODAL.NO_FIELDS' | translate }}
+        </div>
+        <standard-loader margin-top="30" loading="!editQuoteCtrl.template_load"></standard-loader>
+      </section>
+    </div>
+
+    <no-templates ng-if="editQuoteCtrl.display_no_templates" entity-id="7" modal="true"></no-templates>
+
+    <div class="stretch proposal-transition" ng-if="editQuoteCtrl.show_document_template_list">
+      <div class="vbox">
+        <section class="scrollable">
+          <document-template-select
+            entity-id="7"
+            document-templates="editQuoteCtrl.quote_templates"
+            select-document-template-callback-fn="editQuoteCtrl.changeTemplate(template, true)">
+          </document-template-select>
+        </section>
+      </div>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch">
+      <div class="document-footer-container stretch">
+        <loading-tooltip loading="!editQuoteCtrl.can_load" form="edit_quote_form"></loading-tooltip>
+        <button class="button button-action pull-right" ng-class="{ 'disabled': !editQuoteCtrl.can_load }" ng-click="editQuoteCtrl.applyQuote(editQuoteCtrl.edit_quote, edit_quote_form)" ng-disabled="!editQuoteCtrl.can_load" ng-if="!editQuoteCtrl.display_no_templates">
+          {{ 'GENERICS.SAVE' | translate }}
+        </button>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>
+
+

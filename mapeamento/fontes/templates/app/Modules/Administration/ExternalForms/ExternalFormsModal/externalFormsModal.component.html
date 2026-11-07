@@ -1,0 +1,139 @@
+<dynamic-modal
+  modal-id="users"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="{{ 'ADMINISTRATION.EXTERNAL_FORMS.TITLE' | translate }}"
+  toggle-modal="true"
+  cypress-prefix="external-forms-modal"
+  has-general-slide="external_form_slide"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <header class="regular-header new-header b-b-1">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <ul class="nav nav-tabs b-b-1 gray-border-tabs arrange-mid">
+                <li
+                  ng-repeat="tab in $ctrl.tabs | filter : { Available: true }"
+                  ng-class="{ 'active': $ctrl.selectedTab.Key === tab.Key }"
+                  ng-click="$ctrl.selectTab(tab)">
+                  <a class="text-muted" href>
+                    {{tab.Name}}
+                  </a>
+                </li>
+              </ul>
+            </aside>
+            <aside class="v-middle">
+              <a class="button button-action pull-right" ng-click="$ctrl.newExternalForm()" data-cy="external-forms-modal-btn-new-form">
+                <i class="button-icon fas fa-plus-square"></i>
+                {{ 'ADMINISTRATION.EXTERNAL_FORMS.NEW_FORM' | translate }}
+              </a>
+            </aside>
+          </div>
+        </header>
+        <section class="scrollable">
+          <ul class="fake-ul" ui-sortable="$ctrl.options" ng-model="$ctrl.externalForms" ng-if="!$ctrl.loading">
+            <li
+              class="button button-full-width button-white-no-border-semi-light-hover text-left drag-button button-square no-border button-very-big"
+              ng-repeat="externalForm in $ctrl.externalForms"
+              data-cy="external-form-{{externalForm.Id}}"
+            >
+                <div class="hbox font-regular-weight">
+                  <aside class="v-middle width-20">
+                    <div class="token-drag-indicator muted-token"></div>
+                  </aside>
+                  <aside class="v-middle" ng-click="$ctrl.editExternalForm(externalForm)">
+                    <span class="font-bold font-regular-size">
+                      {{externalForm.Name}}
+                    </span>
+                    <div ng-if="$ctrl.selectedTab && $ctrl.selectedTab.Key !== 'contacts'" class="text-muted">
+                      <i class="big-simple-line big-simple-line-fix fal {{externalForm.DealPipeline.Icon.Class}}"></i> {{externalForm.DealPipeline.Name}}
+                    </div>
+                  </aside>
+                  <aside class="width-40 position-relative">
+                    <a class="options-column-button" id="more_options" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <div class="hbox stretch">
+                        <aside class="v-middle">
+                          <i class="fal fa-cog table-options-simple-line"></i>
+                        </aside>
+                      </div>
+                    </a>
+                    <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+                      <li>
+                        <a class="white-dropdown-link" href ng-click="$ctrl.duplicateExternalForm(externalForm)">
+                          <div>
+                            <aside>
+                              <i class="simple-line-big fal fa-clone"></i>
+                            </aside>
+                            <aside class="v-middle">{{ 'GENERICS.DUPLICATE' | translate }}</aside>
+                          </div>
+                        </a>
+                        <a
+                          ng-if="$ctrl.selectedTab.Key === 'deals'"
+                          class="white-dropdown-link"
+                          href
+                          mini-modal
+                          mini-modal-title="{{ 'ADMINISTRATION.EXTERNAL_FORMS.DUPLICATE_FORM_TO_OTHER_PIPELINE' | translate_sentence }}"
+                          mini-modal-fields="$ctrl.pipelineFields"
+                          mini-modal-callback="$ctrl.duplicateExternalFormInPipeline(model, externalForm)"
+                          >
+                          <div>
+                            <aside>
+                              <i class="simple-line-big fal fa-clone"></i>
+                            </aside>
+                            <aside class="v-middle">{{ 'ADMINISTRATION.EXTERNAL_FORMS.DUPLICATE_FORM_TO_OTHER_PIPELINE' | translate_sentence }}</aside>
+                          </div>
+                        </a>
+                        <a
+                          class="white-dropdown-link"
+                          href
+                          ng-click-confirm="{{ 'ADMINISTRATION.EXTERNAL_FORMS.DELETE_CONFIRM' | translate }}"
+                          reversible="false"
+                          ng-click="$ctrl.deleteExternalForm(externalForm)">
+                          <div>
+                            <aside>
+                              <i class="simple-line-big fal fa-trash"></i>
+                            </aside>
+                            <aside class="v-middle">{{ 'GENERICS.DELETE' | translate }}</aside>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </aside>
+                </div>
+            </li>
+            <li ng-if="$ctrl.externalForms.length === 0">
+              <div class="gap-50"></div>
+              <span class=" text-muted"></span>
+              <div class="text-muted text-center page-not-found font-big-title">
+                <div class="gap-50"></div>
+                <i class="fal fa-badge-check font-giant-title"></i>
+                <div class="gap-30"></div>
+                {{ 'ADMINISTRATION.EXTERNAL_FORMS.NO_FORMS_FOUND' | translate }}
+              </div>
+            </li>
+          </ul>
+          <standard-loader margin-top="15" ng-if="$ctrl.loading" loading="true"></standard-loader>
+        </section>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide
+    slide-id="external_form_slide"
+    side-slide-wider="true"
+    modal-side-slide-title="{{ ($ctrl.selectedExternalFormId ? 'ADMINISTRATION.EXTERNAL_FORMS.SIDE_SLIDE.EDIT' : 'ADMINISTRATION.EXTERNAL_FORMS.SIDE_SLIDE.NEW') | translate }}"
+    cypress-prefix="external-form-new-form"
+    >
+    <external-forms-side-slide
+      external-form-id="$ctrl.selectedExternalFormId"
+      selected-tab="$ctrl.selectedTab"
+      update-external-forms-list-fn="$ctrl.getTabExternalForms"
+      total-external-forms="$ctrl.externalForms.length - 1"
+      current-pipeline="$ctrl.currentPipeline"
+      >
+    </external-forms-side-slide>
+  </modal-side-slide>
+</dynamic-modal>

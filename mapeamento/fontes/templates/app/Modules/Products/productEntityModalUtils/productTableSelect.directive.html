@@ -1,0 +1,57 @@
+<div>
+  <div class="input-group full-width window-search has-feedback">
+    <input class="form-control input-sm" type="text" placeholder="{{ productTableSelectCtrl.placeholder }}" ng-model="productTableSelectCtrl.new_product_entity_model.product_name" ng-change="productTableSelectCtrl.filterProductEntities(productTableSelectCtrl.new_product_entity_model.product_name)" ng-model-options="{debounce: 500}">
+    <span class="fas fa-search text-muted form-control-feedback"></span>
+  </div>
+  <div class="window-200 full-width">
+    <div class="vbox scroll-shadow small-neutral-shadow">
+      <section class="scrollable scroll-shadow-container border-bottom-fix white-content b-l-1 b-r-1 b-b-1">
+        <table class="table table-last-line table-static table-hover table-draggable products-table table-smaller-header" infinite-scroll='productTableSelectCtrl.loadProductEntities()' infinite-scroll-disabled="productTableSelectCtrl.reached_end">
+          <tbody>
+            <tr ng-repeat="product_entity in productTableSelectCtrl.product_entities" ng-click="productTableSelectCtrl.addProductEntity(product_entity)">
+              <td>{{product_entity.Name}}<br>
+                <div class="text-muted simple-inline" ng-if="entity.Id === 10">
+                  {{product_entity.Group ? product_entity.Group.Name : ''}}
+                </div>
+                <div class="text-muted simple-inline" ng-if="entity.Id === 10">
+                  {{product_entity.Code}}
+                </div>
+                <div class="text-muted simple-inline" ng-if="entity.Id === 11 && product_entity.Family">
+                  {{product_entity.Family ? product_entity.Family.Name : ''}}
+                </div>
+              </td>
+            </tr>
+            <tr ng-show="productTableSelectCtrl.new_product_entity_model.product_name.length > 0 && productTableSelectCtrl.can_load"
+                ng-if="productTableSelectCtrl.self.Profile.ProductsCreatePermission"
+                uib-popover-template="productTableSelectCtrl.popoverTemplate"
+                popover-append-to-body="true"
+                popover-placement="auto right"
+                popover-title="{{'GENERICS.CREATE' | translate}}">
+              <td>
+                <span class="font-bold">{{'PRODUCTS.ENTITY_MODAL_UTILS.CREATE_ENTITY_NAME' | translate_with_replace: { entityName: entity.name } }}</span> {{productTableSelectCtrl.new_product_entity_model.product_name}}<br>
+              </td>
+            </tr>
+            <tr ng-if="productTableSelectCtrl.products.length === 0 && productTableSelectCtrl.new_product_entity_model.product_name.length === 0 && productTableSelectCtrl.can_load" class="neutral-line empty-table-config">
+              <td class="text-center empty-results">
+                <span class="text-neutral">{{'DYNAMIC_TABLE.NO_ITEM_FOUND' | translate}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <standard-loader margin-top="15" loading="!productTableSelectCtrl.can_load" optionalclass="'timeline-loader'"></standard-loader>
+      </section>
+    </div>
+  </div>
+
+  <script type="text/ng-template" id="new-product-template">
+    <div ng-form name="quick_new_product_entity_form">
+      <forms model="productTableSelectCtrl.new_product_entity_model" is-popover="true" fields="productTableSelectCtrl.new_product_entity_form" form="quick_new_product_entity_form"></forms>
+
+      <button type="button" class="button button-action mleft15" ng-disabled="!productTableSelectCtrl.can_create_load" ng-click="productTableSelectCtrl.submitControl(productTableSelectCtrl.new_product_entity_model, quick_new_product_entity_form)" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+
+      <button type="button" class="button button-white" ng-disabled="!productTableSelectCtrl.can_create_load" ng-click="productTableSelectCtrl.closePopover()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+      <span class="text-danger font-very-big" ng-if="quick_new_product_entity_form.$submitted && quick_new_product_entity_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="{{ 'FORMS.REQUIRED_FIELDS_NOT_FILLED' | translate }}"><i class="fad fa-exclamation-triangle"></i></span>
+      <div class="loader" ng-if="!productTableSelectCtrl.can_create_load"></div>
+    </div>
+  </script>
+</div>

@@ -1,0 +1,66 @@
+<div>
+  <div class="side-scroll">
+    <div class="regular-header new-header white-content b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="input-group pull-left width-250 mright10">
+            <input class="form-control input-sm light-background" placeholder="{{ 'GENERICS.SEARCH' | translate }}"
+              ng-model="$ctrl.quickFilterModel"
+              ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quickFilterModel) : $ctrl.onTypeQuickFilter($ctrl.quickFilterModel)">
+            <div class="input-group-btn width-10">
+              <a ng-click="$ctrl.quickFilter($ctrl.quickFilterModel)"
+                class="btn button button-neutral-gray special-search-button">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content">
+      <div class="tab-pane active">
+        <div class="wrapper-big-side">
+          <table class="table table-reorder first-child-border white-table-with-header"
+            ng-if="$ctrl.initialLoad">
+            <tr ng-repeat="externalForm in $ctrl.externalFormsList">
+              <td>
+                <div class="font-regular-weight font-regular-size overflow-hidden ellipsis">
+                  <span class="font-bold">{{ externalForm.Name }}</span>
+                  <div class='external-form__external-form-page-link-container' ng-if="externalForm.Url && externalForm.Enabled">
+                    <div 
+                      uib-tooltip="{{ 'ADMINISTRATION.EXTERNAL_FORMS.SIDE_SLIDE.COPY_TO_CLIPBOARD' | translate }}"
+                      tooltip-append-to-body="true"                    
+                      class="add-condition button-avoid text-action external-form__external-form-page-copy-btn"
+                      ng-click="$ctrl.copyUrlToClipboard(externalForm.Url)"
+                    >
+                      <i class="fal fa-copy activity-icon"></i>
+                    </div>
+                    <a class='inline-link-muted' href='{{ externalForm.Url }}' target='_blank' rel='noopener norefferer'>{{ externalForm.Url }}</a>
+                  </div>
+                  <div ng-if="!externalForm.Url">{{ 'ADMINISTRATION.EXTERNAL_FORMS.LINK_NOT_GENERATED' | translate }}</div>
+                </div>
+              </td>
+              <td class="width-40 v-middle">
+                <div class="simple-inline pull-right" ng-if="externalForm.Editable">
+                  <a class="button-fixed-size button-white-no-border button-fixed-size-big button-fixed-side-round" ng-click="$ctrl.toggleEnabled(externalForm)">
+                    <span class="text-danger" ng-if="!externalForm.Enabled">
+                      <i class="fal fa-toggle-off"></i>
+                    </span>
+                    <span class="text-success" ng-if="externalForm.Enabled">
+                      <i class="fal fa-toggle-on"></i>
+                    </span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tr ng-if="$ctrl.externalFormsList.length === 0 && $ctrl.initialLoad" class="empty-table-config">
+              <td colspan="2" class="text-center empty-results">
+                <span class="text-muted">{{ 'DYNAMIC_TABLE.NO_ITEM_FOUND' | translate }}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

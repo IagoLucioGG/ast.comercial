@@ -1,0 +1,32 @@
+<dynamic-modal modal-id="{{::modalId}}" footer="true" dark="true" modal-title="{{ (newEmailCtrl.current_document ? newEmailCtrl.current_document_modal_title : 'EMAILS.NEW.TITLE') | translate }}" toggle-modal="newEmailCtrl.toggle_modal" ng-form name="new_email_form" editable-form>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable">
+        <new-email-content submit-callback-fn="newEmailCtrl.submitCallback(send)"></new-email-content>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button
+            class="button button-action pull-right"
+            ng-click="newEmailCtrl.sendEmail()"
+            ng-disabled="!newEmailCtrl.can_load">
+            <i class="fas fa-paper-plane button-icon"></i>
+            {{ 'EMAILS.NEW.SEND' | translate }}
+          </button>
+          <button
+            class="button button-white pull-right"
+            ng-click="newEmailCtrl.saveDraft()"
+            ng-disabled="!newEmailCtrl.can_load">
+            <i class="fas fa-pencil button-icon"></i>
+            {{ 'EMAILS.NEW.SAVE_DRAFT' | translate }}
+          </button>
+          <loading-tooltip loading="!newEmailCtrl.can_load" form="new_email_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

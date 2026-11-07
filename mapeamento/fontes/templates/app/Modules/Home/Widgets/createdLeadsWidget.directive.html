@@ -1,0 +1,57 @@
+<div class="wrapper display-inline-block font-regular-size v-top" ng-class="sizeClass">
+  <div class="panel white-content new-standard-shadow widget-hover position-relative small-widget">
+    <div class="white-content b-b-1 mini-wrapper border-top-fix">
+      <div class="dropdown display-inline-block">
+        <a class="button button-white button-super-small dropdown-toggle" data-toggle="dropdown">
+          <span class="font-regular-weight">
+            {{createdLeadsWidgetCtrl.current_population_option.Name}}<i class="fal fa-angle-down dropdown-sign"></i>
+          </span>
+        </a>
+        <ul class="dropdown-menu white-dropdown-menu no-padding-top">
+            <div class="dropdown-subtitle">
+              {{ 'HOME.WIDGETS.USER_FILTER' | translate }}
+            </div>
+          <div ng-repeat="population_option in createdLeadsWidgetCtrl.population_options">
+            <li>
+              <a class="white-dropdown-link" href ng-click="createdLeadsWidgetCtrl.current_population_option = population_option; createdLeadsWidgetCtrl.changeFilter()">
+                <i class="fal list-simple-line" ng-class="{'fa-user': population_option.Type && population_option.Type === 1, 'fa-industry': population_option.Type && population_option.Type === 2, 'fa-users': !population_option.Type}"></i>
+                {{population_option.Name}}
+              </a>
+            </li>
+            <li class="divider" ng-if="$index < 2"></li>
+          </div>
+        </ul>
+      </div>
+      <div class="dropdown display-inline-block">
+        <a class="button button-white button-super-small dropdown-toggle" data-toggle="dropdown">
+          <span class="font-regular-weight">
+            {{createdLeadsWidgetCtrl.current_relative_date.Name}}<i class="fal fa-angle-down dropdown-sign"></i>
+          </span>
+        </a>
+        <ul class="dropdown-menu white-dropdown-menu no-padding-top">
+            <div class="dropdown-subtitle">
+              {{ 'HOME.WIDGETS.DATE_FILTER' | translate }}
+            </div>
+          <li ng-repeat="relative_date in createdLeadsWidgetCtrl.relative_dates">
+            <a class="white-dropdown-link" href ng-click="createdLeadsWidgetCtrl.current_relative_date = relative_date; createdLeadsWidgetCtrl.changeFilter()">{{relative_date.Name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="button-wrapper">
+      <standard-loader margin-top="0" loading="!createdLeadsWidgetCtrl.can_load" optionalclass="'timeline-loader'"></standard-loader>
+      <div ng-show="createdLeadsWidgetCtrl.can_load">
+        <div>Leads</div>
+        <div class="font-big-title font-thin display-inline-block w-100 break-word">
+          {{createdLeadsWidgetCtrl.total}} {{createdLeadsWidgetCtrl.current_view.Name}}
+        </div>
+        <div class="display-inline-block display-inline-block button-fixed-size button-white button-fixed-size-medium b-1 button-circle v-top change-data" ng-click="createdLeadsWidgetCtrl.switchView()">
+          <div class="text-action font-small">
+            <div class="gap-1"></div>
+            <i class="fas fa-exchange"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

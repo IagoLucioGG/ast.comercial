@@ -1,0 +1,20 @@
+<div class="table-makeup">
+  <dynamic-table
+    class="dynamic-table-makeup"
+    ng-if="$ctrl.can_load"
+    entity="$ctrl.item_entity"
+    opt-filter="$ctrl.current_filter"
+    current-tab="$ctrl.front_tab"
+    allow-row-select="true"
+    is-on-library="true"
+
+    single-row-select-callback-fn="$ctrl.selectRowCallbackFn"
+    single-row-unselect-callback-fn="$ctrl.unselectRowCallbackFn"
+    multiple-rows-select-callback="$ctrl.multipleRowsSelectCallbackFn"
+    multiple-rows-unselect-callback="$ctrl.multipleRowsUnselectCallbackFn"
+
+    current-selected-rows="$ctrl.currentSelectedLinks"
+    row-click-redirect="$ctrl.rowClickRedirect"
+    row-right-click-callback="$ctrl.rowRightClickCallback">
+  </dynamic-table>
+</div>

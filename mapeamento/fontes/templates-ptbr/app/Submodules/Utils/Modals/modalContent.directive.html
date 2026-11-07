@@ -1,0 +1,4 @@
+<div class="modal-content {{::($parent.dark ? 'white-content' : 'white-content')}} {{::($parent.wide ? 'cancel-scroll' : '')}}" ng-style="$parent.customHeight ? {'height': $parent.customHeight + 'px'} : $parent.skipHeight ? {'height': '390px'} : {}">
+  <standard-loader ng-if="!$parent.modalCtrl.loadedModal || $parent.modalCtrl.isFetchingModalContent" margin-top="$parent.modalCtrl.full_screen ? '20' : '30'" loading="true"></standard-loader>
+  <ng-transclude ng-if="$parent.modalCtrl.loadedModal && !$parent.modalCtrl.isFetchingModalContent"></ng-transclude>
+</div>

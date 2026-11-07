@@ -1,0 +1,93 @@
+<collapse ng-if="productSectionCtrl.can_load" show-default="field.sectionAlwaysOpen || !collapseAll" arrows="['fa-angle-up', 'fa-angle-down']">
+  <div class="col-sm-12 clearfix product-section" context-menu="productSectionCtrl.sectionMenuOptions(section)">
+    <a class="button-fixed-size button-fixed-size-small button-white-light-border new-standard-shadow b-1 inline-edit-icon add-section button-fixed-side-round" href ng-if="multipliable && sectionIndex === sectionArray.length - 1" ng-click="productSectionCtrl.addSection()">
+      <span class="text-action"><i class="fas fa-plus"></i></span>
+    </a>
+    <a class="button-fixed-size button-fixed-size-small button-white-light-border new-standard-shadow b-1 inline-edit-icon remove-section button-fixed-side-round" href ng-if="multipliable && sectionArray.length > 1" ng-click="productSectionCtrl.removeSection()">
+      <span class="text-action"><i class="fas fa-minus fixing-fixed-size-button"></i></span>
+    </a>
+    <a
+      class="button-neutral-gray button font-regular-size text-left button-full-width"
+      role="button"
+      ng-if="!section['products_cannot_be_viewed']"
+      collapse-controller="{{'#proposalProducts_' + field.key + '_' + sectionIndex}}"
+    >
+      {{productSectionCtrl.section_name}} {{ section[modelPrefix + '_section_products'].length > 0 ? ' - ' + ('GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.SECTION_NUMBER_OF_ITEMS' | translate_with_replace : { number:
+      section[modelPrefix + '_section_products'].length }) : '' }}
+      <i collapse-arrow-controller class="fal dropdown-sign"></i>
+    </a>
+    <a class="button-neutral-gray button font-regular-size text-left button-full-width" ng-if="section['products_cannot_be_viewed']">
+      <i class="fas fa-lock"></i>
+      {{ productSectionCtrl.section_name + ' - ' + ('GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.NOT_PERMISSION_TO_VIEW_PRODUCTS' | translate_with_replace : { count: section['products_cannot_be_viewed'] }) }}
+    </a>
+    <div ng-if="!section['products_cannot_be_viewed']" id="{{'proposalProducts_' + field.key + '_' + sectionIndex}}">
+      <div class="white-content clearfix b-1 border-bottom-fix neutral-background-rgba">
+        <div class="wrapper" ng-if="productSectionCtrl.section_product_form">
+          <a class="button-small button button-white open-size-slide full-width" target="size-slide-5" ng-click="productSectionCtrl.productSlide()">
+            <span class="text-action"><i class="button-icon fal fa-plus-circle"></i></span>
+            <span class="text-semi-small">
+              {{ 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.ADD_PRODUCT_OR_SERVICE' | translate }}
+            </span>
+          </a>
+          <div class="gap-10"></div>
+          <div class="side-scroll white-content b-1 rounded-regular" ng-if="productSectionCtrl.table_load" ng-show="section[modelPrefix + '_section_products'].length > 0">
+            <div class="side-scroll-container nowrap">
+              <table class="table first-child-border products-table table-hover table-smaller-header">
+                <thead>
+                  <tr>
+                    <th class="small-cell" ng-repeat="field in ::productSectionCtrl.section_product_form" ng-hide="field.formHidden || field.key.includes('currency') || field.key.includes('part') || field.typeId === 2 || field.typeId === 22">{{::field.label}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    class="open-size-slide"
+                    ng-if="!product.editing"
+                    ng-repeat="product in section[modelPrefix + '_section_products'] track by product.row_id"
+                    context-menu="productSectionCtrl.productMenuOptions(product)">
+                    <td
+                      ng-repeat="p_field in ::productSectionCtrl.section_product_form"
+                      ng-hide="p_field.formHidden || p_field.key.includes('currency') || p_field.key.includes('part') || p_field.typeId === 2 || p_field.typeId === 22"
+                      ng-click="product.ContactProductId ? productSectionCtrl.contactProductSlide(product) : productSectionCtrl.productSlide(product)">
+                      <span
+                        formula
+                        formula-field="p_field"
+                        formula-model="product"
+                        formula-block-watcher="true"
+                        formula-block-watcher-force-recalculation="true"
+                        formula-scope="productSectionCtrl.parent_scope"
+                        formula-result-listener-fn="productSectionCtrl.formulaResultListener(model, field)"
+                        formula-unique-id="product.row_id">
+                        {{product[p_field.key + '_display']}}
+                      </span>
+                    </td>
+                    <td style="display:none">
+                      <div ng-repeat="parts_form_obj in ::productSectionCtrl.section_product_parts_forms_objects">
+                        <div ng-repeat="part_field in ::parts_form_obj.form">
+                          <span
+                            ng-repeat="part in product[modelPrefix + '_product_parts_' + parts_form_obj.field.quickFormProductPartCode]"
+                            formula
+                            formula-field="part_field"
+                            formula-model="part"
+                            formula-block-watcher="true"
+                            formula-skip-watcher="true"
+                            formula-unique-id="part.row_id"
+                            formula-parent-unique-id="product.row_id">
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="gap-10" ng-if="!productSectionCtrl.section_product_form"></div>
+        <div ng-form name="section_form" class="doc-section-form">
+          <forms model="section" fields="productSectionCtrl.section_form" form="section_form" formula-scoped="productSectionCtrl.parent_scope" is-modal-full-screen="isModalFullScreen" editing-model="editingModel"></forms>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gap-15 col-sm-12"></div>
+</collapse>

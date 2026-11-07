@@ -1,0 +1,118 @@
+<dynamic-modal modal-id="'business-rules-modal'" 
+  footer="true" 
+  dark="true"
+  modal-title="{{ $ctrl.modal_title }}"
+  toggle-modal="$ctrl.toggle_modal"
+  block-back-state="true"
+  disable-close-modal="!$ctrl.hideActionButtons"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="wrapper">
+          <div ng-repeat="business_rule in $ctrl.business_rules">
+            <div class="gap-10" ng-if="!$first"></div>
+            <div class="b-1 rounded-regular"
+              ng-class="{'high-alert': business_rule.actionId === 1, 'medium-alert': business_rule.actionId === 2, 'light-alert': business_rule.actionId === 3}">
+              <div class="wrapper overflow-wrap">
+                <div class="hbox">
+                  <aside class="width-40 v-middle"><i class="fal font-big-title"
+                      ng-class="{'fa-exclamation-triangle': business_rule.actionId !== 1, 'fa-ban': business_rule.actionId === 1}"></i>
+                  </aside>
+                  <aside class="v-middle">
+                    <div class="font-big" style="white-space: pre-wrap">{{ ($ctrl.approval_message_feature && business_rule.editorCustomMessageValue) || business_rule.rule }}</div>
+                  </aside>
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch" ng-if="!$ctrl.hideActionButtons">
+      <div class="hbox stretch">
+
+        <aside class="v-middle" ng-if="!$ctrl.editing">
+          <a
+            class="button button-action pull-right"
+            href
+            ng-click="$ctrl.postDocument()"
+            ng-if="!$ctrl.avaliable_actions.block && !$ctrl.hideAction"
+            ng-disabled="!$ctrl.can_load"
+          >
+            <span ng-if="!$ctrl.avaliable_actions.approval && !$ctrl.avaliable_actions.block">{{
+              'QUOTES.QUOTE_BUSINESS_RULE.GENERATE' | translate_with_replace: {entity_name:
+              $ctrl.current_entity.Name.toLowerCase()} }}</span>
+            <span ng-if="$ctrl.avaliable_actions.approval && !$ctrl.avaliable_actions.block">
+              <i class="fas fa-badge-check button-icon"></i>
+              Enviar para aprovação
+            </span>
+          </a>
+
+          <a
+            class="button button-white pull-right"
+            href
+            ng-click="$ctrl.editDocument()"
+            ng-if="!$ctrl.hideGoBack"
+          >
+            {{'QUOTES.QUOTE_BUSINESS_RULE.EDIT' | translate_with_replace: { entity_name: $ctrl.current_entity.Name.toLowerCase() } }}
+          </a>
+
+          <a
+            class="button button-white pull-right"
+            href
+            ng-click="$ctrl.discardDocument()"
+            ng-if="!$ctrl.hideCancel"
+            ng-click-confirm="descartar {{$ctrl.current_entity.Name.toLowerCase()}}"
+            reversible="false"
+          >
+            {{'QUOTES.QUOTE_BUSINESS_RULE.DISCARD' | translate_with_replace: {entity_name: $ctrl.current_entity.Name.toLowerCase()} }}
+          </a>
+
+          <loading-tooltip loading="!$ctrl.can_load"></loading-tooltip>
+        </aside>
+
+        <aside class="v-middle" ng-if="$ctrl.editing">
+          <a
+            class="button button-action pull-right"
+            href
+            ng-click="$ctrl.patchDocument()"
+            ng-if="!$ctrl.avaliable_actions.block && !$ctrl.hideAction"
+            ng-disabled="!$ctrl.can_load"
+          >
+            <span ng-if="!$ctrl.avaliable_actions.approval && !$ctrl.avaliable_actions.block">{{
+              'QUOTES.QUOTE_BUSINESS_RULE.UPDATE' | translate_with_replace: {entity_name:
+              $ctrl.current_entity.Name.toLowerCase()} }}</span>
+            <span ng-if="$ctrl.avaliable_actions.approval && !$ctrl.avaliable_actions.block">
+              <i class="fas fa-badge-check button-icon"></i>
+              Enviar para aprovação
+            </span>
+          </a>
+          
+          <a
+            class="button button-white pull-right"
+            href
+            ng-click="$ctrl.editDocument()"
+            ng-if="!$ctrl.hideGoBack"
+          >
+            {{'QUOTES.QUOTE_BUSINESS_RULE.EDIT' | translate_with_replace: {entity_name:$ctrl.current_entity.Name.toLowerCase()} }}
+          </a>
+          
+          <a
+            class="button button-white pull-right"
+            href
+            ng-click="$ctrl.discardDocument()"
+            ng-if="!$ctrl.hideCancel"
+          >
+            Cancelar edição
+          </a>
+
+          <loading-tooltip loading="!$ctrl.can_load"></loading-tooltip>
+        </aside>
+
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

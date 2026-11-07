@@ -1,0 +1,73 @@
+<div>
+  <div class="form-group col-sm-12">
+    <label>
+      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.SHEET' | translate }}
+    </label>
+    <div class="input-group">
+      <input type="text" ng-model="excelSheetFormulaConfigCtrl.sheet_url" ng-change="excelSheetFormulaConfigCtrl.updateFormulaManually()" class="form-control input-sm"/>
+      <div class="input-group-btn">
+        <label class="button button-white">
+          <span class="text-action"><i class="fal fa-file-excel button-icon"></i></span>
+          <span>{{ (excelSheetFormulaConfigCtrl.uploading ? 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.UPLOADING_SHEET' : 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.UPLOAD_SHEET') | translate }}</span>
+          <input id="sheet" type="file" style="display: none;"/>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group col-sm-6">
+    <label>
+      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.SHEET_TAB_NUMBER' | translate }}
+    </label>
+    <span uib-tooltip="1 equivale a primeira aba, 2 a segunda etc" tooltip-append-to-body="true" class="text-neutral"><i class="fal fa-question-circle"></i></span>
+    <input type="number" ng-model="excelSheetFormulaConfigCtrl.sheet_number" ng-change="excelSheetFormulaConfigCtrl.updateFormulaManually()" class="form-control input-sm"/>
+  </div>
+  <div class="form-group col-sm-6">
+    <label>
+      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.RESULT_CELL' | translate }}
+    </label>
+    <input type="text" ng-model="excelSheetFormulaConfigCtrl.result_cell" ng-change="excelSheetFormulaConfigCtrl.updateFormulaManually()" class="form-control input-sm"/>
+  </div>
+  <div class="form-group col-sm-12">
+    <label>
+      {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.SHEET_FORMULA_FIELDS' | translate }}
+    </label>
+    <div class="gap-5"></div>
+      <div class="regular-background b-1">
+      <table class="table modal-table table-smaller-header double-header">
+        <thead>
+          <tr>
+            <th>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELD' | translate }}</th>
+            <th>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.CELL' | translate }}</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>
+              <div class="dropdown">
+                <field-path-selection enforce-field-path-reachability="true" field-selection-fn="excelSheetFormulaConfigCtrl.selectField(field, field_path_id)" start-entity-id="excelSheetFormulaConfigCtrl.field.entityId" dynamic-label="excelSheetFormulaConfigCtrl.selected_field.FieldLabel || ('FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELDS' | translate)" skip-pull-right="true" start-tree-edit-fn="excelSheetFormulaConfigCtrl.editTreeFn(tree)" custom-filter-fn="excelSheetFormulaConfigCtrl.customFilterFn(field, excelSheetFormulaConfigCtrl.field.entityId)"></field-path-selection>
+              </div>
+            </td>
+            <td>
+              <input class="form-control input-sm" placeholder="" ng-model="excelSheetFormulaConfigCtrl.current_cell">
+            </td>
+            <td class="text-center">
+              <a class="button-fixed-size button-action button-fixed-size-big" href ng-click="excelSheetFormulaConfigCtrl.addField()">
+                <i class="fas fa-check"></i>
+              </a>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="cell in excelSheetFormulaConfigCtrl.cell_fields track by $index">
+            <td>{{cell.Value}}</td>
+            <td>{{cell.Cell}}</td>
+            <td class="text-center">
+              <a class="button-inherit button-fixed-size button-fixed-size-small" href ng-click="excelSheetFormulaConfigCtrl.removeField($index)">
+                <i class="fal fa-trash fixing-fixed-size-button"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

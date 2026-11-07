@@ -1,0 +1,72 @@
+<div class="dropdown pull-right {{filterCtrl.customClass}}" ng-class="{'filter-button-border': filterCtrl.appliedFilter || filterCtrl.no_save_filter}">
+  <a href class="dropdown-toggle button button-white-no-border" type="button" id="filter-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" aria-label="{{ 'ARIA_LABELS.FILTER.FILTER_ACTIONS' | translate }}" data-cy="filters-dropdown">
+    <span class="text-action" ng-if="!(filterCtrl.appliedFilter.Name || filterCtrl.no_save_filter)">
+      <i class="fal fa-filter button-icon"></i>
+    </span>
+     <span class="text-action" ng-if="filterCtrl.appliedFilter.Name || filterCtrl.no_save_filter">
+      <i class="fas fa-filter" uib-tooltip="{{ 'FILTERS.ACTIVE_FILTER_ALERT' | translate }}" tooltip-append-to-body="true"></i>
+    </span>
+    <span class="tooltip-filters-menu-title" uib-tooltip="{{filterCtrl.appliedFilter.Name}}" tooltip-append-to-body="true" tooltip-enable="filterCtrl.enableTooltip(filterCtrl.appliedFilter.Name, '.filters-menu-title')">
+      <span ng-if="filterCtrl.appliedFilter" class="font-bold filters-menu-title">
+        {{ 'FILTERS.FILTER' | translate }}: {{ filterCtrl.short_filter_name || (filterCtrl.no_save_filter ? ('FILTERS.CUSTOM_FILTER' | translate) : '') }}
+      </span>
+      <span ng-if="!filterCtrl.appliedFilter">
+        {{ 'FILTERS.FILTERS' | translate }}
+      </span>
+      <i class="fal fa-angle-down dropdown-sign"></i>
+    </span>
+  </a>
+
+  <ul class="dropdown-menu filter-menu-list pull-right no-padding-top" aria-labelledby="filter-list">
+    <div class="dropdown-subtitle" data-cy="filters-dropdown-title">
+      {{ (!filterCtrl.blockNewFilter ? 'FILTERS.FILTER_ACTIONS' : 'FILTERS.SAVED_FILTERS') | translate }}
+    </div>
+    <li ng-if="!blockNewFilter">
+      <a href ng-click="filterCtrl.goToLink('.newfilter')" class="white-dropdown-link" aria-label="{{ 'ARIA_LABELS.FILTER.NEW_FILTER' | translate }}" data-cy="filters-new-filter-button">
+        <span class="width-25 min-width-25 max-width-25 text-center text-darkest-neutral">
+          <i class="fal fa-plus-circle simple-line list-simple-line"></i>
+        </span>
+        <span>
+          <strong>{{ 'FILTERS.NEW_FILTER' | translate }}</strong>
+        </span>
+      </a>
+    </li>
+    <li ng-if="filterCtrl.appliedFilter || filterCtrl.no_save_filter">
+      <a href class="white-dropdown-link" ng-click="filterCtrl.clearFilter()" aria-label="{{ 'ARIA_LABELS.FILTER.CLEAR_FILTER' | translate }}" data-cy="filters-clear-filter-button">
+        <span class="width-25 min-width-25 max-width-25 text-center text-darkest-neutral">
+          <i class="fal fa-eraser simple-line list-simple-line"></i>
+        </span>
+        <span>
+            <strong>{{ 'FILTERS.CLEAR_FILTER' | translate }}</strong>
+        </span>
+      </a>
+    </li>
+    <li ng-if="filterCtrl.appliedFilter && !filterCtrl.blockNewFilter">
+      <a href uib-tooltip="{{filterCtrl.appliedFilter.Name}}" tooltip-append-to-body="true" tooltip-enable="filterCtrl.enableTooltip(filterCtrl.appliedFilter.Name, 'filters-menu-applied-filter')" id="filters-menu-applied-filter" ng-click="filterCtrl.goToLink('.editfilter', { id: filterCtrl.appliedFilter.Id })" class="white-dropdown-link" aria-label="{{ 'ARIA_LABELS.FILTER.EDIT_FILTER' | translate_sentence_with_replace: { filterId: filterCtrl.appliedFilter.Id } }}" data-cy="filters-edit-filter-button">
+        <span class="width-25 min-width-25 max-width-25 text-center text-darkest-neutral">
+          <i class="fal fa-pen simple-line list-simple-line"></i>
+        </span>
+        <span>
+            <strong>{{ 'FILTERS.EDIT_FILTER' | translate }} &quot;{{filterCtrl.appliedFilter.Name}}&quot;</strong>
+        </span>
+      </a>
+    </li>
+    <div class="dropdown-subtitle" ng-if="(filterCtrl.filters.length > 1 || (filterCtrl.filters.length === 1 && !filterCtrl.appliedFilter)) && !filterCtrl.blockNewFilter">
+      {{ 'FILTERS.SAVED_FILTERS' | translate }}
+    </div>
+
+    <li ng-if="filterCtrl.filters.length > 10">
+      <input type="text" ng-model="filterCtrl.pipeline_filter" placeholder="{{ 'GENERICS.SEARCH' | translate }}..." class="form-control display-block mtop-bottom5" />
+    </li>
+    <li ng-repeat="filter in filterCtrl.filters | filter: { Name: filterCtrl.pipeline_filter } | orderBy: 'Name' track by filter.Id">
+      <a id="filters-menu-filter-{{$index}}" uib-tooltip="{{filter.Name}}" tooltip-append-to-body="true" tooltip-enable="filterCtrl.enableTooltip(filterCtrl.appliedFilter.Name, 'filters-menu-filter-{{$index}}')" ng-if="!filterCtrl.appliedFilter.Id || filter.Id !== filterCtrl.appliedFilter.Id" href ng-click="filterCtrl.changeAppliedFilter(filter)" class="white-dropdown-link" aria-label="{{ 'ARIA_LABELS.FILTER.FILTER_SELECT' | translate_sentence_with_replace: { filterId: filter.Id } }}" data-cy="{{'filter-select-' + filter.Name}}">
+        <span class="width-25 text-center min-width-25 max-width-25 text-darkest-neutral">
+          <i class="simple-line list-simple-line" ng-class="filterCtrl.setFilterView(filter)"></i>
+        </span>
+        <span>
+          {{filter.Name}}
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>

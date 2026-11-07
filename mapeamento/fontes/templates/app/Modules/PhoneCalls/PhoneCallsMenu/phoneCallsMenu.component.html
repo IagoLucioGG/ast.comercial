@@ -1,0 +1,22 @@
+<aside class="v-middle brand-header-dropdown">
+  <div uib-dropdown is-open="$ctrl.panel_open" auto-close="disabled">
+    <a href ng-click="$ctrl.togglePanel()" class="touchable-icon-button" ng-class="{'active': $ctrl.panel_open, 'deactive': !$ctrl.panel_open}">
+      <div class="touchable-icon-wrapper">
+        <i class="fal fa-phone touchable-icon"></i>
+      </div>
+    </a>
+    <phone-calls-panel
+      ng-show="$ctrl.panel_open"
+      is-online="$ctrl.is_online"
+      connecting="$ctrl.connecting"
+      connected="$ctrl.connected"
+      webphone-started="$ctrl.webphone_started"
+      contact-id="$ctrl.contact_id"
+      contact="$ctrl.contact"
+      deal-id="$ctrl.deal_id"
+      phone-number="$ctrl.phone_number"
+      phone-status-id="$ctrl.current_phone_status"
+      >
+    </phone-calls-panel>
+  </div>
+</aside>

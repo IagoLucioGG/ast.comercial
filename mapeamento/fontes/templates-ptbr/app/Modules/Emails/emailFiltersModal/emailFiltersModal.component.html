@@ -1,0 +1,70 @@
+<dynamic-modal
+  modal-id="{{ emailFilterModalCtrl.modalId }}"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{::(emailFilterModalCtrl.filterId ? 'FILTERS.EDIT_FILTER' : 'FILTERS.NEW_FILTER' | translate)}}"
+  ng-form="new_filter_form"
+  toggle-modal="emailFilterModalCtrl.toggle_modal"
+  is-fetching-modal-content="emailFilterModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+      <ul class="nav nav-tabs b-b-1 border-tabs arrange-mid">
+        <li ng-class="{'active': emailFilterModalCtrl.simple_filter}" ng-if="!emailFilterModalCtrl.filterId && !emailFilterModalCtrl.removeSimpleFilter">
+          <a class="text-muted" href data-target="#simple_filters" data-toggle="tab" aria-expanded="true" ng-click="emailFilterModalCtrl.advancedOptions(false)" data-cy="email-filters-select-simple-filter">
+            Filtro simples
+          </a>
+        </li>
+        <li ng-class="{'active': !emailFilterModalCtrl.simple_filter}">
+          <a class="text-muted" href data-target="#advanced_filters" data-toggle="tab" aria-expanded="false" ng-click="emailFilterModalCtrl.advancedOptions(true)" data-cy="email-filters-select-advanced-filter">
+            Filtro avançado
+          </a>
+        </li>
+      </ul>
+      <div class="vbox scroll-shadow neutral-shadow tab-header">
+        <section class="scrollable scroll-shadow-container">
+            <div class="tab-content">
+              <div class="tab-pane" id="simple_filters" ng-class="{'active': emailFilterModalCtrl.simple_filter}" ng-if="!emailFilterModalCtrl.filterId && !emailFilterModalCtrl.removeSimpleFilter">
+                <simple-email-filter-content entity="emailFilterModalCtrl.entity" update-filter-string-fn="emailFilterModalCtrl.updateFilterString(filter_string)"></simple-email-filter-content>
+              </div>
+              <div class="tab-pane" id="advanced_filters" ng-class="{'active': !emailFilterModalCtrl.simple_filter}">
+                <div class="modal-body-no-padding" ng-if="emailFilterModalCtrl.filterObject">
+                  <div class="gap-15"></div>
+                  <form class="clearfix">
+                    <div class="form-group col-sm-12">
+                      <label>
+                        Nome do filtro
+                      </label>
+                      <div ng-class="{ 'invalid-input': new_filter_form.$submitted && new_filter_form.$error.required[0].$error.required[0] }">
+                        <input class="form-control input-sm" placeholder="" ng-model="emailFilterModalCtrl.filterObject.filter_name" ng-required="true">
+                      </div>
+                    </div>
+                  </form>
+                  <email-filter-container entity="emailFilterModalCtrl.entity" query-object="emailFilterModalCtrl.filterObject" email-preferences="emailFilterModalCtrl.userPreferences"></email-filter-container>
+                </div>
+              </div>
+            </div>
+        </section>
+      </div>
+  </modal-content>
+  <modal-footer>
+    <aside class="v-middle text-left" ng-if="emailFilterModalCtrl.filterId">
+      <a href class="button button-white" ng-click="emailFilterModalCtrl.deleteFilter()" ng-click-confirm="{{::('FILTERS.CONFIRM_FILTER_DELETE' | translate)}} &quot;{{emailFilterModalCtrl.filterObject.filter_name}}&quot;" reversible="false">
+        <span class="font-big">
+          <i class="fal fa-trash"></i>
+        </span>
+      </a>
+    </aside>
+    <aside class="v-middle">
+      <button ng-if="!emailFilterModalCtrl.simple_filter" ng-click="emailFilterModalCtrl.submitControl(emailFilterModalCtrl.filterObject, new_filter_form)" href class="btn button button-action btn-sm pull-right">
+        <i class="fas fa-save button-icon"></i>
+        Salvar
+      </button>
+      <a class="button button-white pull-right" ng-if="!emailFilterModalCtrl.filterId" ng-click="emailFilterModalCtrl.applyWithoutSaving()">
+        <i class="fal fa-filter button-icon"></i>
+        Aplicar
+      </a>
+      <loading-tooltip loading="emailFilterModalCtrl.loading" form="new_filter_form" danger="(emailFilterModalCtrl.invalid_length) || (!emailFilterModalCtrl.valid_views) || (new_filter_form.$submitted && emailFilterModalCtrl.invalid_length)"></loading-tooltip>
+    </aside>
+  </modal-footer>
+</dynamic-modal>

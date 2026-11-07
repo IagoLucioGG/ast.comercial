@@ -1,0 +1,118 @@
+<dynamic-modal modal-id="{{'emailtemplates'}}" wide="true" dark="false" modal-title="{{ 'EMAILS.TEMPLATE.TITLE' | translate }}" toggle-modal="emailTemplatesCtrl.toggle_modal">
+  <modal-content>
+    <div class="hbox stretch">
+      <aside class="overflow-hidden width-250 light-background">
+        <div class="vbox deals-vbox">
+          <section class="scrollable">
+            <div class="wrapper">
+              <div class="input-group">
+                <input 
+                  class="form-control input-sm" 
+                  placeholder="{{ 'EMAILS.TEMPLATE.QUICK_FILTER_PLACEHOLDER' | translate }}" 
+                  ng-model="emailTemplatesCtrl.template_search" 
+                  ng-model-options="{ debounce: 500 }" 
+                  ng-change="emailTemplatesCtrl.searchTemplates()">
+                <div class="input-group-addon light-background text-neutral width-10">
+                  <i class="fas fa-search"></i>
+                </div>
+              </div>
+              <div class="gap-15"></div>
+              <a class="button button-white full-width" ng-click="emailTemplatesCtrl.addNewTemplate()">
+                <span class="text-action"><i class="fal fa-envelope-open-text button-icon"></i></span>
+                {{ 'EMAILS.TEMPLATE.NEW_MODEL' | translate }}
+              </a>
+              <div class="gap-15"></div>
+              <div ng-repeat="template in emailTemplatesCtrl.templates">
+                <a 
+                  class="button button-full-width button-very-big text-left"
+                  ng-class="{'button-dry-background': template.Id === emailTemplatesCtrl.current_template.Id, 'button-light-background': template.Id !== emailTemplatesCtrl.current_template.Id}"
+                  ng-click="emailTemplatesCtrl.changeTemplate(template)"
+                >
+                  <span
+                    class="font-regular-weight font-regular-size d-block text-ellipsis width-max"
+                    ng-class="{'text-regular': template.Id !== emailTemplatesCtrl.current_template.Id}"
+                    uib-tooltip="{{ template.Name }}"
+                    tooltip-enable="emailTemplatesCtrl.isTooltipEnabled('template-item-{{ template.Id }}')"
+                    tooltip-append-to-body="true"
+                    id="template-item-{{ template.Id }}"
+                  >
+                    {{template.Name}}
+                  </span>
+                </a>
+                <div class="gap-5"></div>
+              </div>
+              <div infinite-scroll="emailTemplatesCtrl.getTemplates()"></div>
+              <div class="full-width all-in-center-flex">
+                <standard-loader margin-top="0" loading="emailTemplatesCtrl.loading_models_list" optionalclass="'modal-loader'"></standard-loader>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+      <aside class="b-l-1 overflow-hidden white-content" ng-if="emailTemplatesCtrl.current_template" style="max-width: 550px;">
+        <div class="height-fc sub-head b-b-1 scroll-shadow arrange-mid white-content">
+          <div class="hbox stretch d-block">
+            <aside class="v-middle" style="display: block;">
+              <span
+                class="font-thin font-title d-block text-ellipsis"
+                uib-tooltip="{{ emailTemplatesCtrl.template_name }}"
+                tooltip-enable="emailTemplatesCtrl.isTooltipEnabled('template-model-{{ template.Id }}')"
+                tooltip-append-to-body="true"
+                id="template-model-{{ template.Id }}"
+              >
+                {{ emailTemplatesCtrl.template_name }}
+              </span>
+            </aside>
+          </div>
+        </div>
+        <div class="vbox header-and-footer scroll-shadow neutral-shadow">
+          <section class="scrollable scroll-shadow-container white-content">
+            <div class="gap-15"></div>
+            <email-template-content
+              errors-field="emailTemplatesCtrl.errorsField"
+              start-entity="2"
+              model="emailTemplatesCtrl.editing_template"
+              update-model-fn="emailTemplatesCtrl.updateModel(model_name, model_subject, model_subject_variables, model_content)"
+              update-attachments-fn="emailTemplatesCtrl.updateAttachments(files)"
+              update-allowed-users-fn="emailTemplatesCtrl.updateAllowedUsers(api_allowed_teams, api_allowed_users)">
+            </email-template-content>
+          </section>
+        </div>
+        <div class="vbox-footer white-content b-t-1 height-50" ng-if="emailTemplatesCtrl.editing_template.Editable">
+          <div class="hbox stretch">
+            <aside class="v-middle text-left">
+              <div class="side-wrapper">
+                <a class="button button-white" ng-click-confirm="{{ 'EMAILS.TEMPLATE.DELETE_MODEL_CONFIRM' | translate }}" reversible="false" ng-click="emailTemplatesCtrl.deleteTemplate()">
+                  <div class="font-big">
+                    <i class="fal fa-trash"></i>
+                  </div>
+                </a>
+              </div>
+            </aside>
+            <aside class="v-middle text-right">
+              <div class="side-wrapper">
+                <a class="button button-action pull-right" ng-click="emailTemplatesCtrl.saveTemplateChanges()">
+                  <i class="button-icon fas fa-save"></i>
+                  {{ 'GENERICS.SAVE' | translate }}
+                </a>
+                <div class="loader modal-loader pull-right" ng-if="emailTemplatesCtrl.loading"></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </aside>
+      <aside class="b-l-1 overflow-hidden white-content" ng-if="!emailTemplatesCtrl.current_template">
+        <div class="vbox scroll-shadow neutral-shadow">
+          <section class="scrollable scroll-shadow-container white-content">
+            <div class="gap-50"></div>
+            <div class="text-neutral text-center page-not-found font-big-title">
+              <i class="fad fa-envelope-open-text font-giant-title"></i>
+              <div class="gap-15"></div>
+              {{ 'EMAILS.TEMPLATE.SELECT_EMAIL_MODEL_OR_CREATE_NEW' | translate }}
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </modal-content>
+</dynamic-modal>

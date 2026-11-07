@@ -1,0 +1,58 @@
+<div ng-show="isPopoverOpen" ng-form name="field_translation_form">
+  <form>
+    <div class="form-group col-sm-12" ng-repeat="field_translation in ctrl.model track by $index">
+      <label>
+        {{ field_translation.Label }}
+      </label>
+
+      <span
+        class="align-limited-characters"
+        uib-tooltip="{{ 'FORMS.FIELD_VALUE_TOO_LONG' | translate }}"
+        tooltip-append-to-body="true"
+        tooltip-is-open="(field_translation.Name && field_translation.Name.length || 0) > maxNameLength"
+        tooltip-enable="(field_translation.Name && field_translation.Name.length || 0) > maxNameLength"
+      >
+        <span
+          class="field-remaining-text"
+          ng-class="{'text-danger font-bold': (field_translation.Name && field_translation.Name.length || 0) > maxNameLength }"
+        >
+          {{ (field_translation.Name && field_translation.Name.length || 0) + '/' + (maxNameLength || 200) }}
+        </span>
+      </span>
+
+      <div class="display-flex">
+        <input 
+          class="form-control input-sm"
+          placeholder=""
+          ng-model="field_translation.Name"
+          ng-required="true"
+          ng-change="ctrl.handleChange(field_translation)"
+        >
+      </div>
+
+      <small class="text-warning" ng-if="repeatedName[field_translation.LanguageId]">
+        {{ 'FIELD_CONFIG_MODAL.ALREADY_FIELD_WITH_NAME' | translate }}
+      </small>
+      <small class="text-warning" ng-if="selectedTypeId === -6">
+        {{ 'FIELD_CONFIG_MODAL.SIGNATURE_FIELD_WARNING' | translate }}
+      </small>
+    </div>
+    
+  </form>
+  <button 
+    class="button button-action mleft15"
+    ng-disabled="ctrl.loading || parentLoading"
+    ng-click="ctrl.submitForm()"
+    title="Submit"
+    aria-label="Submit"
+  >{{ 'GENERICS.SAVE' | translate }}</button>
+  <button 
+    class="button button-white"
+    ng-disabled="ctrl.loading || parentLoading"
+    ng-click="ctrl.closePopover(); $event.stopPropagation()"
+    title="Cancel"
+    aria-label="Cancel"
+  >{{ 'GENERICS.CANCEL' | translate }}</button>
+
+  <loading-tooltip loading="ctrl.loading || parentLoading" form="field_translation_form"></loading-tooltip>
+</div>

@@ -1,0 +1,20 @@
+<div ng-show="!docGeneratorBlocksCtrl.loading">
+  <div id="blockList" ng-repeat="type in docGeneratorBlocksCtrl.block_types">
+    <div class="font-title font-thin text-darkest-neutral regular-background b-b-1">
+      {{ type.Name }}
+    </div>
+    <div class="gap-10"></div>
+    <div class="margins clearfix">
+      <div class="col-sm-6 auto-padding" ng-repeat="block in docGeneratorBlocksCtrl.blocks | filter: { TypeId: type.Id }" draggable="true" id="{{block.Id}}" uib-tooltip="{{ block.Description }}" tooltip-append-to-body="true">
+        <div class="panel button button-white-no-border-light-hover full-width height-80" ng-click="docGeneratorBlocksCtrl.addBlockOnClick(block)">
+          <div class="wrapper text-center">
+            <div class="text-muted font-regular-size font-bold">{{block.Name}}</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gap-10"></div>
+  </div>
+  <standard-loader ng-show="docGeneratorBlocksCtrl.loading" loading="docGeneratorBlocksCtrl.loading"></standard-loader>
+</div>

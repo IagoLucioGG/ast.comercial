@@ -1,0 +1,47 @@
+<div>
+  <div class="white-content side-wrapper b-b-1" ng-if="sideSlideCommentsCtrl.can_load">
+    <div class="gap-25"></div>
+    <new-field field="sideSlideCommentsCtrl.field" model="sideSlideCommentsCtrl.new_comment"
+      property="'comment'" required="false" disabled="false" wide="false" hide-label="true"></new-field>
+    <div class="gap-10"></div>
+    <div class="text-right">
+      <button class="button button-action button-short" href ng-disabled="sideSlideCommentsCtrl.disableSubmit" ng-click="sideSlideCommentsCtrl.postComment()">
+        <i class="fas fa-comment-alt-lines button-icon"></i>
+        Salvar
+      </button>
+    </div>
+    <!-- <a class="button button-background button-short pull-right" href>
+      <span class="font-regular-weight font-regular-size text-neutral">
+        <i class="far fa-paperclip font-very-big button-icon activity-icon"></i>
+      </span>
+    </a> -->
+    <div class="gap-15"></div>
+  </div>
+  <standard-loader loading="!sideSlideCommentsCtrl.can_load"></standard-loader>
+  <div class="wrapper white-content b-b-1" ng-repeat="comment in sideSlideCommentsCtrl.comments">
+    <div class="hbox comment-wrapper">
+      <aside class="width-40">
+        <img class="avatar-timeline" ng-src="{{comment.Creator.AvatarUrl || 'https://s3-sa-east-1.amazonaws.com/ploomescrm/avatar_default.jpg'}}">
+      </aside>
+      <aside>
+        <a class="font-bold inline-link-regular" href>{{comment.RelatedPerson ? (comment.RelatedPerson.Contact ? comment.RelatedPerson.Contact.Name : comment.RelatedPerson.Email) : (comment.Creator ? comment.Creator.Name : sideSlideCommentsCtrl.model_contact_name)}}</a>
+        <br>
+        <span class="timeline-clock">
+          <i class="fal fa-clock"></i> {{comment.formatted_date}}
+        </span>
+        <div class="mtop3">
+          <span ng-if="sideSlideCommentsCtrl.new_sanitize_front" class="preserve-duplicate-spaces" ng-bind-html="sideSlideCommentsCtrl.sanitizeHTML(comment.Content) | to_trusted"></span>
+          <span ng-if="!sideSlideCommentsCtrl.new_sanitize_front" class="preserve-duplicate-spaces" ng-bind-html="comment.Content"></span>
+        </div>
+      </aside>
+      <aside>
+        <a class="button-inherit button-fixed-size button-fixed-size-small"
+          ng-click-confirm="excluir este comentário?"
+          reversible="false"
+          ng-click="sideSlideCommentsCtrl.deleteComment(comment.Id)">
+          <i class="fal fa-trash fixing-fixed-size-button"></i>
+        </a>
+      </aside>
+    </div>
+  </div>
+</div>

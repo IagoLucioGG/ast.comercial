@@ -1,0 +1,41 @@
+<div class="form-group col-sm-12">
+  <div class="hbox" ng-if="$ctrl.isSelf">
+    <aside class="v-middle">
+      <label>
+        <span class="font-semi-big">
+          Utilizar Google Authenticator
+        </span>
+        <br>
+        <small class="text-muted">
+          Ative essa opção para utilizar o aplicativo Google Authenticator para acessar sua conta.
+        </small>
+      </label>
+    </aside>
+    <aside class="v-middle">
+      <div class="left-wrapper">
+        <div class="button button-action" ng-if="!$ctrl.hasMfaConfigured" ng-click="$ctrl.activateMFA()">
+          Ativar
+        </div>
+        <div class="button button-neutral" ng-if="$ctrl.hasMfaConfigured" ng-click="$ctrl.deactivateMFA()">
+          Desativar
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="hbox" ng-if="!$ctrl.isSelf && $ctrl.hasMfaConfigured">
+    <aside class="v-middle">
+      <label>
+        <span class="font-semi-big">Resetar Google Authenticator</span>
+        <br>
+        <small class="text-muted">Resete o Google Authenticator para esse usuário em caso de roubo ou perda.</small>
+      </label>
+    </aside>
+    <aside class="v-middle">
+      <div class="left-wrapper">
+        <div class="button button-action" ng-click-confirm="resetar o Google Authenticator para esse usuário" ng-click="$ctrl.resetUserMFA()" reversible="false">
+          Resetar
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

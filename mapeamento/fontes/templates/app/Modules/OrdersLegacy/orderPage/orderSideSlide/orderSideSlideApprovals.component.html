@@ -1,0 +1,32 @@
+<div class="side-wrapper">
+  <standard-loader loading="!$ctrl.can_load"></standard-loader>
+  <div class="activity-history hist-separator" ng-if="$ctrl.can_load"></div>
+  <div ng-repeat="approval in $ctrl.formatted_approval_levels track by $index" ng-if="$ctrl.can_load">
+    <div class="hbox">
+    <aside class="activity-history">
+      <div>
+        <div class="no-color-timeline">
+          <i class="fa activity-icon" ng-class="{'fa-check': approval.approved === true, 'fa-times': approval.approved === false, 'fa-ellipsis-h': approval.approved === 'waiting'}"></i>
+        </div>
+      </div>
+    </aside>
+    <aside class="v-middle">
+      <div class="hbox">
+        <aside>
+          <div class="font-bold">{{$index + 1}}{{ 'ORDERS.SIDE_SLIDE.APPROVAL' | translate }}</div>
+          <div class="gap-5"></div>
+          <div class="line-itens-left">
+            <div class="line-item light-badge neutral-content badge-border" ng-repeat="user in approval.Users">
+              <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+                <img class="mini-avatar" ng-src="{{user.User.AvatarUrl}}">
+                <span class="align-middle">{{user.User.Name}}</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </aside>
+  </div>
+    <div class="activity-history hist-separator"></div>
+  </div>
+</div>

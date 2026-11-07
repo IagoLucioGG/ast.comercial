@@ -1,0 +1,40 @@
+<div class="hbox">
+  <aside class="v-middle width-100"><span class="font-title font-thin text-darkest-neutral">HISTÓRICO</span></aside>
+  <aside class="v-middle">
+    <div class="line line-no-margins-double"></div>
+  </aside>
+</div>
+<div ng-repeat="history in leadHistoryCtrl.histories track by history.Id" class="lead-timeline-item">
+  <div class="hbox">
+    <aside class="activity-history">
+      <div>
+        <div style="color: #fff;" ng-style="{'background-color': history.Status.Color || '#92aab0'}">
+          <i class="activity-icon fal" ng-class="history.Status.Icon || 'fa-comment-lines'"></i>
+        </div>
+      </div>
+    </aside>
+    <aside class="v-middle">
+      <div class="timeline-bubble">
+        <div class="history-arrow arrow-style"></div>
+        <div class="bubble-wrapper">
+          <div class="hbox">
+            <aside class="width-40">
+              <img class="avatar-header" ng-src="{{history.Creator.AvatarUrl}}">
+            </aside>
+            <aside>
+              <a class="font-bold inline-link-regular" href>{{history.Creator.Name}}</a>
+              <br>
+              <span class="timeline-clock">
+                <i class="fal fa-clock"></i> {{history.formatted_date}}
+              </span>
+              <div class="mtop3">{{history.Status.Name}} {{history.NextContact ? ' - ' + history.formatted_next_contact : ''}}</div>
+              <div ng-if="leadHistoryCtrl.new_sanitize_front" class="mtop3 timeline-item-content item-linebreak" ng-bind-html="leadHistoryCtrl.sanitizeHTML(history.Comments) | to_trusted"></div>
+              <div ng-if="!leadHistoryCtrl.new_sanitize_front" class="mtop3 timeline-item-content item-linebreak" ng-bind-html="history.Comments | to_trusted"></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="activity-history hist-separator"></div>
+</div>

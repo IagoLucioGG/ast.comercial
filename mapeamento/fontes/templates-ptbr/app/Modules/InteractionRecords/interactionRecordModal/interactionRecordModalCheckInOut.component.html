@@ -1,0 +1,36 @@
+<div>
+  <collapse show-default="true">
+    <div class="flex-section-header text-uppercase light-background b-b-1 rectangular-wrapper pointer " collapse-controller="#collapsible-element" ng-click="interactionCheckInOutCtrl.toggleShowIcon($index, $event)">
+      <span class="text-break-word">Check-in e Check-out</span>
+      <span class="pull-right d-flex gap-flex-10">
+        <span class="arrow-icon-collapse arrow-up" ng-class="{'arrow-down': interactionCheckInOutCtrl.isCollapsed[$index] }">
+          <i class="fas fa-caret-up"></i>
+        </span>
+      </span>
+    </div>
+    <div id="collapsible-element">
+      <div class="rectangular-wrapper light-background" ng-class="white-content">
+        <div class="gap-5"></div>
+        <table class="b-t-1 table table-view borderless info-table font-semi-small info-display-with-divider light-info-table infos-widget-table">
+          <tbody ng-repeat="checkin in interactionCheckInOutCtrl.checkInOutInfo">
+            <tr ng-if="checkin.value">
+              <td class="text-darkest-neutral ptop8">
+                <aside class="fields-integration-icon-wrapper">
+                  <span
+                    class="d-block text-ellipsis"
+                  >
+                    {{checkin.label}}
+                  </span>
+                </aside>
+              </td>
+              <td class="info-display-divider">
+                {{checkin.value}}
+              </td>
+            </tr>
+          </tbody>
+        
+        </table>
+      </div>
+    </div>
+  </collapse>
+</div>

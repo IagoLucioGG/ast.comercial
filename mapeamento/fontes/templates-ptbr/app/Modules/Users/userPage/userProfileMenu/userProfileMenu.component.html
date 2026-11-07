@@ -1,0 +1,66 @@
+<div class="gap-15"></div>
+<div>
+  <div>
+    <div class="hbox">
+      <aside class="v-middle">
+        <div class="side-wrapper">
+          <div class="width-160 text-center v-middle" style="margin: auto">
+            <img class="avatar-select" ng-src="{{userProfileMenuCtrl.model.AvatarUrl || 'images/avatar_default.jpg'}}">
+            <label class="button button-white-light-border button-short avatar-select-button" href id="att-wrapper" ng-if="(userProfileMenuCtrl.auth_obj.profile_owner || userProfileMenuCtrl.auth_obj.administrator) && !userProfileMenuCtrl.sandboxEnvironment">
+              <span class="text-action"><i class="fal fa-image button-icon"></i></span>
+              Escolher foto
+              <input id="att" type="file" style="display: none;" />
+            </label>
+          </div>
+          <div class="d-flex align-items-center justify-content-center">
+            <sankhya-entity-status-modal
+              ng-if="userProfileMenuCtrl.sankhyaIntegrationModule && userProfileMenuCtrl.sankhyaIntegration.Active"
+              entity-id="24"
+              item-id="userProfileMenuCtrl.model.Id"
+              item-value="userProfileMenuCtrl.model"
+              modal-width="350">
+            </sankhya-entity-status-modal>
+          </div>
+          <div class="gap-10"></div>
+          <infos-widget form-key="user_form" entity-type="User"
+            patch-fn="userProfileMenuCtrl.patchFn(model, userProfileMenuCtrl.auth_obj)"
+            model="userProfileMenuCtrl.model" custom-background-class="'light-table-bg'"
+            replace-form="userProfileMenuCtrl.forms" replace-section="userProfileMenuCtrl.sections">
+          </infos-widget>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<div class="mini-wrapper">
+  <div class="hbox stretch">
+    <div class="side-wrapper" ng-if="!userProfileMenuCtrl.integrationUser && !userProfileMenuCtrl.microsoftSSOActived && (userProfileMenuCtrl.auth_obj.administrator || userProfileMenuCtrl.auth_obj.profile_owner) && !userProfileMenuCtrl.model.NoLogin">
+      <a class="button button-white-light-border full-width" ng-if="!userProfileMenuCtrl.changing_password"
+        ng-click="userProfileMenuCtrl.changing_password = true">
+        <span class="text-action"><i class="button-icon fal fa-user-unlock"></i></span>
+        <span>Alterar senha</span>
+      </a>
+      <div class="wrapper-right text-center" ng-if="userProfileMenuCtrl.changing_password">
+        <password-input
+            model="userProfileMenuCtrl.password"
+            is-password-valid="userProfileMenuCtrl.is_password_valid">
+          </password-input>
+        <div class="gap-10"></div>
+        <div class="hbox">
+          <aside>
+            <a class="button button-white pull-right" ng-if="userProfileMenuCtrl.changing_password" href
+              ng-click="userProfileMenuCtrl.changing_password = false">
+              Cancelar
+            </a>
+          </aside>
+          <aside class="width-50">
+            <a class="button button-action pull-right" ng-if="userProfileMenuCtrl.changing_password" href
+              ng-click="userProfileMenuCtrl.patchPw()">
+              Salvar
+            </a>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

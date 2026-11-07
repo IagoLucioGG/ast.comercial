@@ -1,0 +1,43 @@
+<aside class="width-250 light-background b-l-1">
+  <div class="vbox small-header">
+    <header class="regular-header b-b-1 new-header light-background b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <span class="font-thin font-title" data-cy="legacy-reports-panels-title">
+            Painéis
+          </span>
+        </aside>
+        <aside class="text-right v-middle">
+          <div class="button button-light-background-border" ng-if="reportsPageSidebarCtrl.activeAnalyticsModule" ui-sref="{{'reportslegacy.panel.newpanel'}}" data-cy="reports-new-panel-button">
+            Novo
+          </div>
+        </aside>
+      </div>
+    </header>
+    <section class="scrollable">
+      <div id="panels-list" data-cy="panels-list" class="wrapper" ui-sortable="reportsPageSidebarCtrl.options" ng-model="reportsPageSidebarCtrl.panels">
+        <div ng-repeat="panel in reportsPageSidebarCtrl.panels">
+          <a class="nowrap data-visualization button button-full-width button-very-big text-left" href ng-class="{'button-dry-background': reportsPageSidebarCtrl.current_panel.Id === panel.Id, 'button-light-background': reportsPageSidebarCtrl.current_panel.Id !== panel.Id}" ng-click="reportsPageSidebarCtrl.changePanel(panel)">
+            <div class="hbox position-relative">
+              <aside class="v-middle">
+                <span
+                  class="font-regular-weight font-regular-size"
+                  ng-class="{'text-regular': panel.Id !== reportsPageSidebarCtrl.current_panel.Id}"
+                  uib-tooltip="{{panel.Name}}"
+                  tooltip-append-to-body="true"
+                  tooltip-placement="auto top"
+                  tooltip-enable="panel.Name.length >= 20">
+                  {{panel.Name}}
+                </span>
+              </aside>
+              <aside class="v-middle width-50 text-right edit-tab">
+                <report-panel-options panel="panel" ng-if="reportsPageSidebarCtrl.activeAnalyticsModule && panel.Editable"></report-panel-options>
+              </aside>
+            </div>
+          </a>
+          <div class="gap-5"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</aside>

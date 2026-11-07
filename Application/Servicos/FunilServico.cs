@@ -1,4 +1,3 @@
-using AST.Comercial.Application.Dtos;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Domain.Entidades;
 using AST.Comercial.Infrastructure.Data;
@@ -9,37 +8,18 @@ namespace AST.Comercial.Application.Servicos;
 
 public class FunilServico(AppDbContext db, IFilaAutomacaoPublicador publicador) : IFunilServico
 {
-    public IQueryable<FunilDto> ObterTodos()
-    {
-        return db.Funis.AsNoTracking().Select(f => new FunilDto
-        {
-            Id = f.Id,
-            Nome = f.Nome,
-            Descricao = f.Descricao,
-            Ordem = f.Ordem,
-            CriadoEm = f.CriadoEm,
-        });
-    }
+    // Retorna a entidade (e não DTO) para casar com o EDM "Funis" e permitir $expand/$select/$count.
+    public IQueryable<Funil> ObterTodos()
+        => db.Funis.AsNoTracking();
 
-    public async Task<FunilDto?> ObterPorIdAsync(long id, CancellationToken ct = default)
-    {
-        return await db.Funis.AsNoTracking()
-            .Where(f => f.Id == id)
-            .Select(f => new FunilDto
-            {
-                Id = f.Id,
-                Nome = f.Nome,
-                Descricao = f.Descricao,
-                Ordem = f.Ordem,
-                CriadoEm = f.CriadoEm,
-            })
-            .FirstOrDefaultAsync(ct);
-    }
+    public async Task<Funil?> ObterPorIdAsync(long id, CancellationToken ct = default)
+        => await db.Funis.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id, ct);
 
-    public async Task<FunilDto> CriarAsync(Delta<Funil> delta, CancellationToken ct = default)
+    public async Task<Funil> CriarAsync(Delta<Funil> delta, CancellationToken ct = default)
     {
         var funil = new Funil { EmpresaId = db.EmpresaIdAtual };
         delta.Patch(funil);
+        funil.EmpresaId = db.EmpresaIdAtual;
 
         db.Funis.Add(funil);
         await db.SaveChangesAsync(ct);
@@ -53,17 +33,10 @@ public class FunilServico(AppDbContext db, IFilaAutomacaoPublicador publicador) 
             DisparadoPor = db.UsuarioAtual
         }, ct);
 
-        return new FunilDto
-        {
-            Id = funil.Id,
-            Nome = funil.Nome,
-            Descricao = funil.Descricao,
-            Ordem = funil.Ordem,
-            CriadoEm = funil.CriadoEm,
-        };
+        return funil;
     }
 
-    public async Task<FunilDto?> AtualizarAsync(long id, Delta<Funil> delta, CancellationToken ct = default)
+    public async Task<Funil?> AtualizarAsync(long id, Delta<Funil> delta, CancellationToken ct = default)
     {
         var funil = await db.Funis.FirstOrDefaultAsync(f => f.Id == id, ct);
         if (funil is null) return null;
@@ -80,14 +53,7 @@ public class FunilServico(AppDbContext db, IFilaAutomacaoPublicador publicador) 
             DisparadoPor = db.UsuarioAtual
         }, ct);
 
-        return new FunilDto
-        {
-            Id = funil.Id,
-            Nome = funil.Nome,
-            Descricao = funil.Descricao,
-            Ordem = funil.Ordem,
-            CriadoEm = funil.CriadoEm,
-        };
+        return funil;
     }
 
     public async Task<bool> RemoverAsync(long id, CancellationToken ct = default)
@@ -110,37 +76,22 @@ public class FunilServico(AppDbContext db, IFilaAutomacaoPublicador publicador) 
         return true;
     }
 
-    public IQueryable<EtapaFunilDto> ObterEtapas(long funilId)
-    {
-        return db.EtapasFunil.AsNoTracking()
-            .Where(e => e.FunilId == funilId)
-            .Select(e => new EtapaFunilDto
-            {
-                Id = e.Id,
-                Nome = e.Nome,
-                Ordem = e.Ordem,
-                DiasParaExpirar = e.DiasParaExpirar,
-                FunilId = e.FunilId,
-                CriadoEm = e.CriadoEm,
-            });
-    }
+    public IQueryable<EtapaFunil> ObterEtapas(long funilId)
+        => db.EtapasFunil.AsNoTracking().Where(e => e.FunilId == funilId);
 
-    public async Task<EtapaFunilDto> CriarEtapaAsync(Delta<EtapaFunil> delta, CancellationToken ct = default)
+    public async Task<EtapaFunil> CriarEtapaAsync(long funilId, Delta<EtapaFunil> delta, CancellationToken ct = default)
     {
-        var etapa = new EtapaFunil { EmpresaId = db.EmpresaIdAtual };
+        var funilExiste = await db.Funis.AnyAsync(f => f.Id == funilId, ct);
+        if (!funilExiste) throw new KeyNotFoundException($"Funil {funilId} não encontrado.");
+
+        var etapa = new EtapaFunil();
         delta.Patch(etapa);
+        etapa.FunilId = funilId;
+        etapa.EmpresaId = db.EmpresaIdAtual;
 
         db.EtapasFunil.Add(etapa);
         await db.SaveChangesAsync(ct);
 
-        return new EtapaFunilDto
-        {
-            Id = etapa.Id,
-            Nome = etapa.Nome,
-            Ordem = etapa.Ordem,
-            DiasParaExpirar = etapa.DiasParaExpirar,
-            FunilId = etapa.FunilId,
-            CriadoEm = etapa.CriadoEm,
-        };
+        return etapa;
     }
 }

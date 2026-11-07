@@ -1,0 +1,35 @@
+<span ng-repeat="condition in filterContainerCtrl.condition_list" ng-if="!filterContainerCtrl.filter_compare_fields">
+	<filter-generator entity="entity" query-object="condition" skip-wrapper="skipWrapper" constrain-widths="constrainWidths" invalid-filter-length="invalidFilterLength" filter-fields-fn="filterFieldsFn"></filter-generator>
+	<div class="text-center" ng-if="condition.query_object.length > 0" ng-if="!filterContainerCtrl.filter_compare_fields">
+		<h2 class="text-muted font-thin">OU</h2>
+	</div>
+</span>
+<span ng-if="filterContainerCtrl.filter_compare_fields">
+	 <div class="w-100">
+		 <filter-group 
+			 entity-id="entity.Id" 
+			 filter-fields="filterFields" 
+			 on-filter-field-change="filterContainerCtrl.onFilterFieldChanges"
+			 register-generate-url="filterContainerCtrl.reactRegister"
+			 compare-fields="compareFields"
+			 filter-fields-can-traverse-field-path="filterContainerCtrl.filterFieldsCanTraverseFieldPath"
+			 allow-relative-date="allowRelativeDate"
+			 remove-fields-from-selector="removeFieldsFromSelector(field)"
+			 block-or-operation="blockOrOperation"
+			 compare-fields="compareFields"
+       not-allowed-field-keys="filterContainerCtrl.not_allowed_field_keys"
+       filter-disable-fields="filterContainerCtrl.filterDisableFields"
+			 filter-relative-date="filterContainerCtrl.filterRelativeDate"
+			 on-set-items-on-external-cache="filterContainerCtrl.onSetItemsOnExternalCache"
+			 query-object="queryObject"
+		 ></filter-group>
+	 </div>
+</span>
+<div class="text-center wrapper" ng-if="filterContainerCtrl.condition_list[filterContainerCtrl.condition_list.length - 1].query_object.length > 0 && !filterContainerCtrl.filter_compare_fields">
+	<a class="button button-white" ng-click="filterContainerCtrl.condition_list.push({})" data-cy="filters-expand-list-button">
+		<span class="text-action">
+			<i class="fal fa-arrow-up-right-and-arrow-down-left-from-center-arrows button-icon"></i>
+		</span>
+		Expandir resultados
+	</a>
+</div>

@@ -1,0 +1,83 @@
+<dynamic-modal
+  modal-id="document_modal"
+  toggle-full-screen-fn="documentModalCtrl.toggleFullScreenFn"
+  footer="true"
+  dark="true"
+  modal-title="{{ (documentModalCtrl.model ? 'DOCUMENTS.EDIT_DOCUMENT' : 'DOCUMENTS.NEW_DOCUMENT_UPPER') | translate }}"
+  toggle-modal="documentModalCtrl.toggle_modal"
+  ng-form
+  name="document_model_form"
+  has-document="true"
+  block-back-state="documentModalCtrl.block_back_state"
+  is-fetching-modal-content="documentModalCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="regular-header b-b-1 scroll-shadow arrange-mid" ng-if="documentModalCtrl.document_templates.length > 0 && !documentModalCtrl.show_document_template_list && !documentModalCtrl.display_no_templates">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="modal-title">
+            <small class="font-regular-weight text-muted">Modelo</small>
+          </div>
+          <div class="dropdown mtop-3">
+            <a class="button button-white-no-border button-super-small new-item-folder dropdown-toggle" data-toggle="dropdown">
+              <span class="font-big font-regular-weight">{{documentModalCtrl.selected_template.Name}}<i class="fal fa-angle-down dropdown-sign"></i></span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu field-pick">
+              <li ng-repeat="model in documentModalCtrl.document_templates track by model.Id" ng-click="documentModalCtrl.changeTemplate(model)" ng-show="model.Id !== documentModalCtrl.selected_template.Id && documentModalCtrl.document_templates.length > 1">
+                <a class="white-dropdown-link" href>{{model.Name}}</a>
+              </li>
+              <li ng-show="documentModalCtrl.document_templates.length === 1">
+                <a class="white-dropdown-link" href>Você tem apenas um modelo de documento</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="deals-vbox vbox scroll-shadow neutral-shadow" ng-if="documentModalCtrl.document_templates.length > 0 && !documentModalCtrl.show_document_template_list && !documentModalCtrl.display_no_templates">
+      <standard-loader margin-top="30" loading="!documentModalCtrl.can_load || !documentModalCtrl.initial_load"></standard-loader>
+      <section class="scrollable scroll-shadow-container" ng-if="documentModalCtrl.can_load && documentModalCtrl.initial_load">
+        <div class="gap-15"></div>
+        <forms model="documentModalCtrl.document_model" fields="documentModalCtrl.selected_form" form="document_model_form" document-template-format="documentModalCtrl.selected_template.NewFormat" editing-model="documentModalCtrl.editing" is-modal-full-screen="documentModalCtrl.modal_is_full_screen"></forms>
+        <div class="text-center text-neutral-light font-very-big-title big-wrapper" ng-if="(!documentModalCtrl.selected_form || !documentModalCtrl.has_fields_to_show) && documentModalCtrl.can_load && documentModalCtrl.initial_load">
+          <i class="font-monster-size fad fa-exclamation-triangle"></i>
+          <div class="gap-30"></div>
+          Sem campos para preenchimento
+        </div>
+      </section>
+    </div>
+
+    <no-templates ng-if="documentModalCtrl.display_no_templates" entity-id="66" modal="true"></no-templates>
+
+    <div class="deals-vbox vbox scroll-shadow neutral-shadow" ng-if="documentModalCtrl.document_templates.length === 0 && !documentModalCtrl.show_document_template_list && !documentModalCtrl.display_no_templates">
+      <standard-loader margin-top="30" loading="!documentModalCtrl.can_load || !documentModalCtrl.initial_load"></standard-loader>
+      <section class="scrollable scroll-shadow-container" ng-if="documentModalCtrl.can_load && documentModalCtrl.initial_load">
+        <div class="gap-15"></div>
+        <div class="text-neutral text-center page-not-found">
+          <i class="fad fa-exclamation-triangle font-giant-title"></i>
+          <div class="gap-30"></div>
+          Você não possui modelos de documento!
+        </div>
+      </section>
+    </div>
+
+    <div class="vbox scroll-shadow neutral-shadow" ng-if="documentModalCtrl.show_document_template_list">
+      <section class="scrollable">
+        <document-template-select
+          entity-id="66"
+          document-templates="documentModalCtrl.document_templates"
+          select-document-template-callback-fn="documentModalCtrl.selectDocumentTemplateCallback(template)">
+        </document-template-select>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch" ng-if="!documentModalCtrl.show_document_template_list && !documentModalCtrl.display_no_templates">
+      <div class="document-footer-container stretch" ng-if="documentModalCtrl.document_templates.length > 0">
+        <loading-tooltip loading="documentModalCtrl.loading" form="document_model_form"></loading-tooltip>
+        <button class="button button-action pull-right" ng-class="{ 'disabled': documentModalCtrl.loading }" ng-disabled="documentModalCtrl.loading" ng-click="documentModalCtrl.applyDocument(documentModalCtrl.document_model, document_model_form)">Salvar</button>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

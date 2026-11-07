@@ -1,0 +1,1043 @@
+<dynamic-modal
+  modal-id="{{'fieldconfig'}}"
+  wide="true"
+  footer="true"
+  dark="false"
+  modal-title="{{ (fieldConfigCtrl.editing ? 'FIELD_CONFIG_MODAL.EDIT_FIELD' : 'FIELD_CONFIG_MODAL.NEW_FIELD') | translate}}"
+  toggle-modal="fieldConfigCtrl.toggle_modal"
+  ng-form
+  name="new_field_form"
+  has-formula-config="true"
+  is-fetching-modal-content="fieldConfigCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="hbox stretch" ng-if="fieldConfigCtrl.generalLoading">
+      <loader class="centered-loader" loading="fieldConfigCtrl.generalLoading"></loader>
+    </div>
+    <div class="hbox stretch" ng-if="!fieldConfigCtrl.generalLoading">
+      <aside class="overflow-hidden width-300 dark-background">
+        <div class="sub-header b-b-1 scroll-shadow arrange-mid">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <span class="font-thin font-very-big">
+                {{ 'FIELD_CONFIG_MODAL.FIELD_TYPE' | translate }}
+              </span>
+            </aside>
+          </div>
+        </div>
+        <div class="vbox deals-vbox scroll-shadow neutral-shadow">
+          <section class="scrollable scroll-shadow-container light-background">
+            <div class="mini-wrapper">
+              <div ng-repeat="field_type in fieldConfigCtrl.field_types | filter: fieldConfigCtrl.filterAnchorFields">
+                <a role="button"
+                  aria-label="{{ 'ARIA_LABELS.FIELD_CONFIG.FIELD_TYPE' | translate_with_replace: { fieldType: field_type.Name } }}"
+                  ng-if="fieldConfigCtrl.selected_type.Id === field_type.Id"
+                  class="button button-full-width button-dry-background button-very-big text-left" href>
+                  <div class="hbox">
+                    <aside class="v-middle width-30 text-center">
+                      <span class="font-regular-weight font-big">
+                        <i class="{{field_type.Icon}} fal regular-fa"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      <span class="font-regular-weight font-regular-size">
+                        {{field_type.Name}}
+                      </span>
+                    </aside>
+                  </div>
+                </a>
+                <a role="button"
+                  aria-label="{{ 'ARIA_LABELS.FIELD_CONFIG.FIELD_TYPE' | translate_with_replace: { fieldType: field_type.Name } }}"
+                  ng-if="fieldConfigCtrl.selected_type.Id !== field_type.Id && !fieldConfigCtrl.editing && !fieldConfigCtrl.isDuplicatedField"
+                  class="button button-full-width button-light-background button-very-big text-left" href
+                  ng-click="fieldConfigCtrl.changeFieldType(field_type)">
+                  <div class="hbox">
+                    <aside class="v-middle width-30 text-center">
+                      <span class="font-regular-weight font-big">
+                        <i class="{{field_type.Icon}} fal regular-fa"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      <span class="font-regular-weight font-regular-size">
+                        {{field_type.Name}}
+                      </span>
+                    </aside>
+                  </div>
+                </a>
+                <div class="gap-5" ng-show="!fieldConfigCtrl.editing && !fieldConfigCtrl.isDuplicatedField"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+      <aside class="b-l-1 overflow-hidden dark-background">
+        <div class="sub-header b-b-1 scroll-shadow arrange-mid">
+            <div class="flex-align-center justify-between h-100">
+              <span class="font-thin font-very-big" ng-if="fieldConfigCtrl.selected_type">
+                {{ 'FIELD_CONFIG_MODAL.FIELD_CONFIG' | translate }} 
+              </span>
+              <span
+                ng-if="fieldConfigCtrl.selected_type.Id === fieldConfigCtrl.FIELD_TYPE_AGGREGATOR"
+                tooltip-enable="{{!fieldConfigCtrl.can_save_field}}"
+                tooltip-append-to-body="true"
+                uib-tooltip="{{ 'FIELD_CONFIG_MODAL.AGGREGATOR_FIELD.LIMIT_REACHED' | translate }}"
+                ng-class="{'text-danger': !fieldConfigCtrl.can_save_field, 'text-muted': fieldConfigCtrl.can_save_field}"
+                >
+                {{fieldConfigCtrl.count_created_aggregator_fields}}/{{fieldConfigCtrl.LIMIT_CREATE_AGGREGATOR_FIELD}}
+              </span>
+            </div>
+        </div>
+        <div class="vbox deals-vbox">
+          <section 
+            class="scrollable regular-content" 
+            ng-class="{ 'field-config__can-add-new-field': (!fieldConfigCtrl.can_save_field && !fieldConfigCtrl.editing && fieldConfigCtrl.selected_type) }" 
+            ng-style="!fieldConfigCtrl.selected_type ? {'display': 'flex', 'align-items': 'center', 'justify-content': 'center', 'height': '70%'} : {}"
+          >        
+            <form class="clearfix">
+              <span class="form-group" ng-if="!fieldConfigCtrl.selected_type">
+                <div class="text-center text-neutral-light font-very-big-title">
+                  <div class="gap-90"></div>
+                  <i class="font-monster-size fad fa-pen-square"></i>
+                  <div class="gap-30"></div>
+                  {{ 'FIELD_CONFIG_MODAL.EMPTY_FIELD_TYPE' | translate }}
+                </div>
+              </span>
+              <span ng-if="fieldConfigCtrl.selected_type">
+                <div class="form-group col-sm-12">
+                  <div class="white-content b-1 panel clearfix">
+                    <div class="overflow-hidden">
+                      <ul class="nav nav-tabs border-tabs border-top-fix">
+                        <li class="active full-width children-border-fix">
+                          <a class="text-neutral" href="">
+                            <div class="text-left font-big">
+                              {{ 'FIELD_CONFIG_MODAL.BASIC_CONFIG' | translate }}
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="gap-15"></div>
+                    <div class="form-group col-sm-12">
+                      <label ng-if="fieldConfigCtrl.selected_type.Id !== 21 && fieldConfigCtrl.selected_type.Id !== 24">
+                        {{ 'FIELD_CONFIG_MODAL.FIELD_NAME_LABEL' | translate }}
+                      </label>
+                      <label ng-if="fieldConfigCtrl.selected_type.Id === 21 || fieldConfigCtrl.selected_type.Id === 24">
+                        {{ 'FIELD_CONFIG_MODAL.FIELD_NAME_LABEL_DOCUSIGN' | translate }}
+                      </label>
+                      <span
+                        class="align-limited-characters"
+                        uib-tooltip="{{ 'FORMS.FIELD_VALUE_TOO_LONG' | translate }}"
+                        tooltip-append-to-body="true"
+                        tooltip-is-open="(fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name.length || 0) > fieldConfigCtrl.maxLabelLength"
+                        tooltip-enable="(fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name.length || 0) > fieldConfigCtrl.maxLabelLength">
+                        <span
+                          class="field-remaining-text"
+                          ng-class="{'text-danger font-bold': (fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name.length || 0) > fieldConfigCtrl.maxLabelLength }">
+                            {{ (fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name.length || 0) + '/' + fieldConfigCtrl.maxLabelLength }}
+                          </span>
+                      </span>
+                      <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true">
+                        <i ng-if="fieldConfigCtrl.invalidLabelInput"  class="fad fa-exclamation-circle text-danger"></i>
+                      </span>
+                      <div class="display-flex" ng-class="{'invalid-input': fieldConfigCtrl.invalidLabelInput || fieldConfigCtrl.label_length > 50 }">
+                          <input class="form-control input-sm" placeholder="" ng-model="fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name" ng-required="true" ng-disabled="!fieldConfigCtrl.field_model.dynamic" ng-change="fieldConfigCtrl.onChangeFieldName()">
+                          <a
+                            ng-class="{'disabled':!fieldConfigCtrl.field_model.dynamic}"
+                            href
+                            type="button"
+                            id="insert-form-section"
+                            popover-enable="fieldConfigCtrl.field_model.dynamic && fieldConfigCtrl.isPopoverEnable"
+                            class="button-fixed-size button-fixed-size-big button-white-light-border border-action-hover b-1 pull-right text-action"
+                            uib-popover-template="fieldConfigCtrl.popoverTemplate"
+                            ng-click="fieldConfigCtrl.toggleTranslationPopover()"
+                            popover-is-open="fieldConfigCtrl.isPopoverOpen"
+                            popover-append-to-body="true"
+                            popover-placement="auto bottom"
+                            popover-title="{{ 'FIELD_CONFIG_MODAL.FIELD_TRANSLATION.TITLE' | translate }}"
+                            uib-tooltip="{{ 'FIELD_CONFIG_MODAL.FIELD_TRANSLATION.POPOVER_TOOLTIP' | translate }}"
+                            tooltip-append-to-body="true"
+                          >
+                            <i class="fal fa-globe"></i>
+                          </a>
+                      </div>
+                      <small class="text-warning" ng-if="fieldConfigCtrl.repeated_name[fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].LanguageId]">
+                        {{ 'FIELD_CONFIG_MODAL.ALREADY_FIELD_WITH_NAME' | translate }}
+                      </small>
+                      <small class="text-warning" ng-if="fieldConfigCtrl.selected_type.Id === -6">
+                        {{ 'FIELD_CONFIG_MODAL.SIGNATURE_FIELD_WARNING' | translate }}
+                      </small>
+                    </div>
+                    <!-- #region FieldDescription -->
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.selected_type.Id !== 21 && fieldConfigCtrl.selected_type.Id !== 24 && fieldConfigCtrl.field_model.dynamic">
+                      <label>{{ 'FIELD_CONFIG_MODAL.FIELD_HELPER_TEXT' | translate }}</label>
+                      <i 
+                        style="font-size: 10px; color: rgba(27, 16, 44, 0.5);" 
+                        class="far fa-info-circle"
+                        uib-tooltip="{{ 'FIELD_CONFIG_MODAL.FIELD_HELPER_TEXT_WARNING' | translate }}"
+                        ></i>
+                      <span
+                        class="align-limited-characters"
+                        uib-tooltip="{{ 'FORMS.FIELD_VALUE_TOO_LONG' | translate }}"
+                        tooltip-append-to-body="true"
+                        tooltip-is-open="(fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription.length || 0) > fieldConfigCtrl.maxDescriptionLength"
+                        tooltip-enable="(fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription.length || 0) > fieldConfigCtrl.maxDescriptionLength">
+                        <span
+                          class="field-remaining-text"
+                          ng-class="{'text-danger font-bold': (fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription.length || 0) > fieldConfigCtrl.maxDescriptionLength }">
+                            {{ (fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription && fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription.length || 0) + '/' + fieldConfigCtrl.maxDescriptionLength }}
+                        </span>
+                      </span>
+                      <div class="display-flex" ng-class="{'invalid-input': fieldConfigCtrl.invalidDescriptionInput || fieldConfigCtrl.description_length > fieldConfigCtrl.maxDescriptionLength }">
+                        <textarea 
+                          style="height: 6rem;"
+                          class="field-description-field-height form-control"
+                          ng-model="fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription"
+                          ng-click="fieldConfigCtrl.invalidDescriptionInput = false"
+                          placeholder="{{ 'FIELD_CONFIG_MODAL.FIELD_HELPER_TEXT_PLACEHOLDER' | translate }}"
+                        ></textarea>
+                        <a
+                          href
+                          type="button"
+                          id="popoverDescriptionButton"
+                          class="button-fixed-size button-fixed-size-big button-white-light-border border-action-hover b-1 pull-right text-action"
+                          uib-tooltip="{{ 'FIELD_CONFIG_MODAL.FIELD_TRANSLATION.POPOVER_TOOLTIP' | translate }}"
+                          tooltip-append-to-body="true"
+                          uib-popover-template="fieldConfigCtrl.descriptionPopoverTemplate"
+                          ng-click="fieldConfigCtrl.toggleDescriptionPopover()"
+                          popover-is-open="fieldConfigCtrl.isDescriptionPopoverOpen"
+                          popover-append-to-body="true"
+                          popover-placement="auto left"
+                          popover-class="preview-description-popover-size"
+                          popover-title="{{ 'FIELD_CONFIG_MODAL.OTHER_LANGUAGES_HELPER_TEXT' | translate }}"
+                        >
+                          <i class="fal fa-globe"></i>
+                        </a>
+                      </div>
+                      <div class="text-link mt-5" ng-if="fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription">
+                        <span
+                          id="popoverPreviewDescription"
+                          class="pl-10" 
+                          uib-popover-template="fieldConfigCtrl.previewPopoverTemplate"
+                          ng-click="fieldConfigCtrl.togglePreviewPopover()"
+                          popover-is-open="fieldConfigCtrl.isPreviewPopoverOpen"
+                          popover-append-to-body="true"
+                          popover-placement="auto right"
+                          popover-class="preview-description-tooltip-popover-size"
+                        >
+                          {{ fieldConfigCtrl.previewDescriptionText }}
+                        </span>
+                      </div>
+                    </div>
+                    <!--- #endregion --->
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.selected_type.Id === 22">
+                      <div class="hbox">
+                        <aside class="v-middle">
+                          <label>
+                            <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.CONFIG_DEV_FIELD_LABEL' | translate }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.CONFIG_DEV_FIELD_HELPER' | translate }}</small>
+                          </label>
+                        </aside>
+                        <aside class="v-middle text-right">
+                          <div class="left-wrapper">
+                            <a class="button button-white nowrap" ng-click="fieldConfigCtrl.openDevFieldConfig()">
+                              <span class="text-action"><i class="fal fa-code button-icon"></i></span>
+                              <span>
+                                {{ 'FIELD_CONFIG_MODAL.CONFIG' | translate }}
+                              </span>
+                            </a>
+                          </div>
+                        </aside>
+                      </div>
+                      <div class="hbox">
+                        <aside class="v-middle">
+                          <label>
+                            <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.CONFIG_DEV_FIELD_EXPAND_LABEL' | translate }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.CONFIG_DEV_FIELD_EXPAND_HELPER' | translate }}</small>
+                          </label>
+                        </aside>
+                        <aside class="v-middle">
+                          <div class="left-wrapper">
+                            <div class="switch">
+                              <input class="cmn-toggle cmn-toggle-round-flat ng-pristine ng-untouched ng-valid ng-empty" id="cmn-toggle-field-config-1234" type="checkbox" ng-model="fieldConfigCtrl.field_model.removeFieldHeightLimit">
+                              <label class="pull-right" for="cmn-toggle-field-config-1234"></label>
+                            </div>
+                          </div>
+                        </aside>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.selected_type.Id === 23">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.AGGREGATOR_FIELD.CONFIG_AGGREGATE' | translate }}</span>
+                              <br>
+                              <small class="text-muted">
+                                {{ 'FIELD_CONFIG_MODAL.AGGREGATOR_FIELD.DESCRIPTION' | translate }}
+                              </small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle text-right">
+                            <div class="left-wrapper">
+                              <a role="button" aria-label="{{ 'ARIA_LABELS.FIELD_CONFIG.AGGREGATOR.CONFIGURE' | translate }}" class="button button-white nowrap" ng-click="fieldConfigCtrl.openAggregatorConfig()" ng-attr-id="{{ fieldConfigCtrl.AGGREGATOR_TRACKING_IDS.CONFIGURE }}">
+                                <span class="text-action"><i class="fal fa-calculator button-icon"></i></span>
+                                <span>
+                                  {{ 'FIELD_CONFIG_MODAL.CONFIG' | translate }}
+                                </span>
+                              </a>
+                            </div>
+                          </aside>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.selected_type.Id === 23 && fieldConfigCtrl.field_model.Id">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">{{ fieldConfigCtrl.forceUpdateTitle }}</span>
+                              <br>
+                              <small class="text-muted">{{ fieldConfigCtrl.forceUpdateDescription }}</small>
+                              <br>
+                              <small class="text-muted" ng-if="fieldConfigCtrl.lastSyncDate">
+                                {{ 'FIELD_CONFIG_MODAL.AGGREGATOR_FIELD.FORCE_UPDATE.DESCRIPTION_LAST_SYNC_DATE' | translate }}{{fieldConfigCtrl.lastSyncDate}}
+                              </small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle text-right">
+                            <div class="left-wrapper">
+                              <button
+                                class="button button-white nowrap"
+                                ng-click="fieldConfigCtrl.forceFirstSync()"
+                                ng-class="{ 'disabled': fieldConfigCtrl.disableForceSyncButton }"
+                                ng-disabled="fieldConfigCtrl.disableForceSyncButton"
+                              >
+                                <span>{{ fieldConfigCtrl.forceUpdateButton }}</span>
+                              </button>
+                            </div>
+                          </aside>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.has_default_value">
+                      <default-value field="fieldConfigCtrl.field_model" type="fieldConfigCtrl.selected_type" block-link="!fieldConfigCtrl.show_linking_options"></default-value>
+                    </div>
+                    <div class="col-sm-12 clearfix product-section" ng-if="fieldConfigCtrl.selected_type.Id === 7 && fieldConfigCtrl.field_model.dynamic && !fieldConfigCtrl.field_model.secondaryEntityId">
+                      <field-options field="fieldConfigCtrl.field_model" editing="fieldConfigCtrl.editing"></field-options>
+                    </div>
+                    <div class="col-sm-12 clearfix product-section" ng-if="fieldConfigCtrl.selected_type.Id === 7 && !fieldConfigCtrl.field_model.dynamic && !fieldConfigCtrl.field_model.multiple && fieldConfigCtrl.is_allowed_fixed_fk_options">
+                      <fixed-field-options field="fieldConfigCtrl.field_model"></fixed-field-options>
+                    </div>
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.isFieldMultipliable()">
+                      <div class="hbox">
+                        <aside class="v-middle">
+                          <label>
+                            <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.FIELD_MULTIPLE_LABEL' | translate }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.FIELD_MULTIPLE_HELPER' | translate }}</small>
+                          </label>
+                        </aside>
+                        <aside class="v-middle">
+                          <div class="left-wrapper">
+                            <div class="switch">
+                              <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-2222" type="checkbox" ng-model="fieldConfigCtrl.field_model.multiple" ng-change="fieldConfigCtrl.checkUniqueMultipleConflict(false)" ng-click-confirm="{{ 'FIELD_CONFIG_MODAL.MULTIPLE_FIELD_CONFIRMATION.QUESTION' | translate }}" informative-message="{{ 'FIELD_CONFIG_MODAL.MULTIPLE_FIELD_CONFIRMATION.INFORMATION' | translate }}" disable-confirm-fn="fieldConfigCtrl.disableMultipleFieldConfirmation()" skip-reversible-message="true">
+                              <label class="pull-right" for="cmn-toggle-field-config-2222"></label>
+                            </div>
+                          </div>
+                        </aside>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.isFieldUniqueable()">
+                      <div class="hbox">
+                        <aside class="v-middle">
+                          <label>
+                            <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.FIELD_UNIQUE_LABEL' | translate }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.FIELD_UNIQUE_LABEL' | translate }}</small>
+                          </label>
+                        </aside>
+                        <aside class="v-middle">
+                          <div class="left-wrapper">
+                            <div class="switch">
+                              <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-3" type="checkbox" ng-model="fieldConfigCtrl.field_model.unique" ng-change="fieldConfigCtrl.checkUniqueMultipleConflict(true)" ng-disabled="fieldConfigCtrl.isMdmActive">
+                              <label class="pull-right" for="cmn-toggle-field-config-3" uib-tooltip="{{ fieldConfigCtrl.isMdmActive ? ('FIELD_CONFIG_MODAL.FIELD_UNIQUE_MDM_DISABLED_TOOLTIP' | translate) : '' }}" tooltip-append-to-body="true"></label>
+                            </div>
+                          </div>
+                        </aside>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.canShowSetColumnNumber">
+                      <div class="hbox">
+                        <aside class="v-middle">
+                          <label>
+                            <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.FIELD_TWO_COLUMNS_LABEL' | translate }}</span>
+                            <br>
+                            <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.FIELD_TWO_COLUMNS_HELPER' | translate }}</small>
+                          </label>
+                        </aside>
+                        <aside class="v-middle">
+                          <div class="left-wrapper">
+                            <div class="switch">
+                              <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-4" type="checkbox" ng-model="fieldConfigCtrl.field_model.wide">
+                              <label class="pull-right" for="cmn-toggle-field-config-4"></label>
+                            </div>
+                          </div>
+                        </aside>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-12" ng-if="!fieldConfigCtrl.canShowSetColumnNumber">
+                      <div class="hbox">
+                        <aside class="v-middle">
+                          <label>
+                            <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.FIELD_MULTIPLE_COLUMNS_LABEL' | translate }}</span>
+                            <br>
+                            <small class="text-muted">
+                              {{ 'FIELD_CONFIG_MODAL.FIELD_MULTIPLE_COLUMNS_HELPER' | translate }}
+                            </small>
+                          </label>
+                        </aside>
+                      </div>
+                      <div class="hbox">
+                        <select class="form-control input-sm" ng-options="item for item in [1, 2, 3, 4]" ng-model="fieldConfigCtrl.field_model.columnSize"></select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12" ng-show="fieldConfigCtrl.selected_type.Id !== 21 && fieldConfigCtrl.selected_type.Id !== 22 && fieldConfigCtrl.selected_type.Id !== 23 && fieldConfigCtrl.selected_type.Id !== 24">
+                  <div class="white-content b-1 panel clearfix">
+                    <div class="overflow-hidden">
+                      <ul class="nav nav-tabs border-tabs border-top-fix">
+                        <li class="active full-width children-border-fix">
+                          <a class="text-neutral clickable-active-tab" href ng-click="fieldConfigCtrl.show_advanced_config = !fieldConfigCtrl.show_advanced_config">
+                            <div class="text-left">
+                              <div class="hbox">
+                                <aside class="v-middle font-big">
+                                  {{ 'FIELD_CONFIG_MODAL.ADVANCED_CONFIG' | translate }}
+                                </aside>
+                                <aside class="v-middle text-right">
+                                  <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !fieldConfigCtrl.show_advanced_config, 'fa-angle-up': fieldConfigCtrl.show_advanced_config}"></i>
+                                </aside>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div ng-if="fieldConfigCtrl.show_advanced_config">
+                      <div class="gap-15"></div>
+                      <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.isFormulaEnabled()">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.FORMULA_LABEL' | translate }}</span>
+                              <br>
+                              <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.FORMULA_HELPER' | translate }}</small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle text-right">
+                            <div class="left-wrapper">
+                              <a class="button button-white nowrap" ng-click="fieldConfigCtrl.openFormulaConfig()">
+                                <span class="text-action"><i class="fal fa-calculator button-icon"></i></span>
+                                <span>
+                                  {{ 'FIELD_CONFIG_MODAL.CONFIG' | translate }}
+                                </span>
+                              </a>
+                            </div>
+                          </aside>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.isFilterEnabled()">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.FILTER_FORMULA_LABEL' | translate }}</span>
+                              <br>
+                              <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.FILTER_FORMULA_HELPER' | translate }}</small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle text-right">
+                            <div class="dropdown pull-right">
+                              <a class="dropdown-toggle button button-white pull-right" id="filter-list" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ 'FIELD_CONFIG_MODAL.CONFIG' | translate }}
+                                <i class="fal fa-angle-down dropdown-sign"></i>
+                              </a>
+                              <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="filter-list">
+                                <li ng-if="fieldConfigCtrl.isBasicFilterEnabled()">
+                                  <a class="white-dropdown-link" href ng-click="fieldConfigCtrl.openFilterConfig(true)">
+                                    {{ 'FIELD_CONFIG_MODAL.BASIC_FILTER_FORMULA' | translate }}
+                                  </a>
+                                </li>
+                                <li ng-if="!fieldConfigCtrl.new_system_module_feature_flag && fieldConfigCtrl.isAdvancedFilterFormula()">
+                                  <a class="white-dropdown-link" href ng-click="fieldConfigCtrl.openFilterConfig(false)">
+                                    {{ 'FIELD_CONFIG_MODAL.ADVANCED_FILTER_FORMULA' | translate }}
+                                  </a>
+                                </li>
+                                <li ng-if="fieldConfigCtrl.new_system_module_feature_flag && fieldConfigCtrl.isAdvancedFilterFormula()">
+                                  <a class="white-dropdown-link" href ng-click="fieldConfigCtrl.openFilterConfig(false)">
+                                    {{ 'FIELD_CONFIG_MODAL.ADVANCED_FILTER_FORMULA' | translate }}
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </aside>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">
+                                {{ 'FIELD_CONFIG_MODAL.MARK_AS_SENSITIVE_LABEL' | translate }}
+                              </span>
+                              <br>
+                              <small class="text-muted">
+                                {{ 'FIELD_CONFIG_MODAL.MARK_AS_SENSITIVE_HELPER' | translate }}
+                              </small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle">
+                            <div class="left-wrapper">
+                              <div class="switch">
+                                <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-12300" type="checkbox"
+                                  ng-model="fieldConfigCtrl.field_model.isSensitiveData">
+                                <label class="pull-right" for="cmn-toggle-field-config-12300"></label>
+                              </div>
+                            </div>
+                          </aside>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.field_model.entityId === 10">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.LINK_FIELD_TO_GROUP_LABEL' | translate }}</span>
+                              <br>
+                              <small class="text-muted">{{ 'FIELD_CONFIG_MODAL.LINK_FIELD_TO_GROUP_HELPER' | translate }}</small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle">
+                            <div class="left-wrapper">
+                              <div class="switch">
+                                <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-0" type="checkbox" ng-model="fieldConfigCtrl.has_product_group">
+                                <label class="pull-right" for="cmn-toggle-field-config-0"></label>
+                              </div>
+                            </div>
+                          </aside>
+                        </div>
+                        <div class="hbox" ng-if="fieldConfigCtrl.has_product_group">
+                          {{ 'FIELD_CONFIG_MODAL.GROUP' | translate }}
+                          <new-field field="fieldConfigCtrl.product_group_field" model="fieldConfigCtrl.field_model.product_group_model"
+                            property="fieldConfigCtrl.product_group_field.key" required="false" disabled="false" wide="true"></new-field>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.field_model.entityId === 10 || fieldConfigCtrl.field_model.entityId === 75">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">
+                                {{ 'FIELD_CONFIG_MODAL.ENABLE_AS_FILTER_LABEL' | translate }}
+                              </span>
+                              <br>
+                              <small class="text-muted">
+                                {{ 'FIELD_CONFIG_MODAL.ENABLE_AS_FILTER_HELPER' | translate }}
+                              </small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle">
+                            <div class="left-wrapper">
+                              <div class="switch">
+                                <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-00" type="checkbox" ng-model="fieldConfigCtrl.field_model.formFilterable">
+                                <label class="pull-right" for="cmn-toggle-field-config-00"></label>
+                              </div>
+                            </div>
+                          </aside>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.selected_type.Id === 10">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <span class="font-semi-big">
+                                {{ 'FIELD_CONFIG_MODAL.ENABLE_SWITCH_LABEL' | translate }}
+                              </span>
+                              <br>
+                              <small class="text-muted">
+                                {{ 'FIELD_CONFIG_MODAL.ENABLE_SWITCH_HELPER' | translate }}
+                              </small>
+                            </label>
+                          </aside>
+                          <aside class="v-middle">
+                            <div class="left-wrapper">
+                              <div class="switch">
+                                <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-0002" type="checkbox" ng-model="fieldConfigCtrl.field_model.useCheckboxBox">
+                                <label class="pull-right" for="cmn-toggle-field-config-0002"></label>
+                              </div>
+                            </div>
+                          </aside>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12" ng-show="!fieldConfigCtrl.field_model.permanent && fieldConfigCtrl.selected_type.Id !== 21 && fieldConfigCtrl.selected_type.Id !== 22 && fieldConfigCtrl.selected_type.Id !== 23 && fieldConfigCtrl.selected_type.Id !== 24">
+                  <div class="white-content b-1 panel clearfix">
+                    <div class="overflow-hidden">
+                      <ul class="nav nav-tabs border-tabs border-top-fix">
+                        <li class="active full-width">
+                          <a class="text-neutral clickable-active-tab" href ng-click="fieldConfigCtrl.show_advanced_required_config = !fieldConfigCtrl.show_advanced_required_config">
+                            <div class="text-left">
+                              <div class="hbox">
+                                <aside class="v-middle font-big">
+                                  {{ 'FIELD_CONFIG_MODAL.REQUIRED_RULES_CONFIG' | translate }}
+                                </aside>
+                                <aside class="v-middle text-right">
+                                  <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !fieldConfigCtrl.show_advanced_required_config, 'fa-angle-up': fieldConfigCtrl.show_advanced_required_config}"></i>
+                                </aside>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div ng-if="fieldConfigCtrl.show_advanced_required_config">
+                      <div class="gap-15"></div>
+                      <div class="form-group col-sm-12">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <small class="text-muted">
+                                <aside class="v-middle">
+                                  <span class="mr-5">{{ 'FIELD_CONFIG_MODAL.APPLY_REQUIRED_RULES_BY_USER_HELPER' | translate }}</span>
+                                  <span uib-tooltip="{{ 'FIELD_CONFIG_MODAL.APPLY_REQUIRED_RULES_BY_USER_HELPER_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+                                    <i class="fal fa-info-circle regular-icon"></i>
+                                  </span>
+                                </aside>
+                              </small>
+                            </label>
+                          </aside>
+                        </div>
+                        <div class="hbox allowed-users-doc-gen">
+                          <allowed-users model="fieldConfigCtrl.apply_required_rules_views_model" remove-side-wrapper="true"></allowed-users>
+                        </div>
+                      </div>
+                      <div class="field-config-rules__wrapper" ng-if="!fieldConfigCtrl.field_model.permanent && fieldConfigCtrl.selected_type.Id !== 22 && fieldConfigCtrl.selected_type.Id !== 23">
+                        <div>
+                          <div class="hbox">
+                            <aside class="v-middle">
+                              <label>
+                                <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.APPLY_REQUIRED_RULES_BY_DEFAULT_LABEL' | translate }}</span>
+                                <br>
+                                <small class="text-muted">
+                                  <span ng-bind-html="('FIELD_CONFIG_MODAL.APPLY_REQUIRED_RULES_BY_DEFAULT_HELPER' | translate) | to_trusted"></span>
+                                </small>
+                              </label>
+                            </aside>
+                            <aside class="v-middle">
+                              <div class="left-wrapper">
+                                <div class="switch">
+                                  <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-1" type="checkbox" ng-model="fieldConfigCtrl.field_model.required">
+                                  <label class="pull-right" for="cmn-toggle-field-config-1"></label>
+                                </div>
+                              </div>
+                            </aside>
+                          </div>
+                        </div>
+                        <div ng-if="fieldConfigCtrl.isEveryFormulaEnabled()">
+                          <div class="hbox">
+                            <aside class="v-middle">
+                              <label>
+                                <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.APPLY_REQUIRED_RULES_BY_FORMULA_LABEL' | translate }}</span>
+                                <br>
+                                <small class="text-muted">
+                                  <span ng-bind-html="('FIELD_CONFIG_MODAL.APPLY_REQUIRED_RULES_BY_FORMULA_HELPER' | translate) | to_trusted"></span>
+                                </small>
+                              </label>
+                            </aside>
+                            <aside class="v-middle text-right">
+                              <div class="left-wrapper">
+                                <a class="button button-white nowrap" ng-click="fieldConfigCtrl.openFormulaConfig('required')">
+                                  <span class="text-action"><i class="fal fa-calculator button-icon"></i></span>
+                                  <span>
+                                    {{ 'FIELD_CONFIG_MODAL.CONFIG' | translate }}
+                                  </span>
+                                </a>
+                              </div>
+                            </aside>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12" ng-show="fieldConfigCtrl.selected_type.Id !== 21 && fieldConfigCtrl.selected_type.Id !== 22 && fieldConfigCtrl.selected_type.Id !== 23 && fieldConfigCtrl.selected_type.Id !== 24">
+                  <div class="white-content b-1 panel clearfix">
+                    <div class="overflow-hidden">
+                      <ul class="nav nav-tabs border-tabs border-top-fix">
+                        <li class="active full-width children-border-fix">
+                          <a class="text-neutral clickable-active-tab" href ng-click="fieldConfigCtrl.show_advanced_edit_config = !fieldConfigCtrl.show_advanced_edit_config">
+                            <div class="text-left">
+                              <div class="hbox">
+                                <aside class="v-middle font-big">
+                                  {{ 'FIELD_CONFIG_MODAL.BLOCK_CONFIG' | translate }}
+                                </aside>
+                                <aside class="v-middle text-right">
+                                  <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !fieldConfigCtrl.show_advanced_edit_config, 'fa-angle-up': fieldConfigCtrl.show_advanced_edit_config}"></i>
+                                </aside>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div ng-if="fieldConfigCtrl.show_advanced_edit_config">
+                      <div class="gap-15"></div>
+                      <div class="form-group col-sm-12">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <small class="text-muted">
+                                <aside class="v-middle">
+                                  <span class="mr-5">{{ 'FIELD_CONFIG_MODAL.NEW_BLOCK_BY_USER_HELPER' | translate }}</span>
+                                  <span uib-tooltip="{{ 'FIELD_CONFIG_MODAL.BLOCK_BY_USER_HELPER_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+                                    <i class="fal fa-info-circle regular-icon"></i>
+                                  </span>
+                                </aside>
+                              </small>
+                            </label>
+                          </aside>
+                        </div>
+                        <div class="hbox allowed-users-doc-gen">
+                          <allowed-users model="fieldConfigCtrl.allowed_views_model" remove-side-wrapper="true"></allowed-users>
+                        </div>
+                      </div>
+                      <div class="field-config-rules__wrapper">
+                        <div>
+                          <div class="hbox">
+                            <aside class="v-middle">
+                              <label>
+                                <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.NEW_BLOCK_BY_DEFAULT_LABEL' | translate }}</span>
+                                <br>
+                                <small class="text-muted">
+                                  <span ng-bind-html="('FIELD_CONFIG_MODAL.NEW_BLOCK_BY_DEFAULT_HELPER' | translate) | to_trusted"></span>
+                                </small>
+                              </label>
+                            </aside>
+                            <aside class="v-middle">
+                              <div class="left-wrapper">
+                                <div class="switch">
+                                  <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-47852" type="checkbox" ng-model="fieldConfigCtrl.field_model.disabled">
+                                  <label class="pull-right" for="cmn-toggle-field-config-47852"></label>
+                                </div>
+                              </div>
+                            </aside>
+                          </div>
+                        </div>
+                        <div ng-if="fieldConfigCtrl.isEveryFormulaEnabled()">
+                          <div class="hbox">
+                            <aside class="v-middle">
+                              <label>
+                                <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.NEW_BLOCK_BY_FORMULA_LABEL' | translate }}</span>
+                                <br>
+                                <small class="text-muted">
+                                  <span ng-bind-html="('FIELD_CONFIG_MODAL.NEW_BLOCK_BY_FORMULA_HELPER' | translate) | to_trusted"></span>
+                                </small>
+                              </label>
+                            </aside>
+                            <aside class="v-middle text-right">
+                              <div class="left-wrapper">
+                                <a class="button button-white nowrap" ng-click="fieldConfigCtrl.openFormulaConfig('disable')">
+                                  <span class="text-action"><i class="fal fa-calculator button-icon"></i></span>
+                                  <span>
+                                    {{ 'FIELD_CONFIG_MODAL.CONFIG' | translate }}
+                                  </span>
+                                </a>
+                              </div>
+                            </aside>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12" ng-show="fieldConfigCtrl.selected_type.Id !== 21 && fieldConfigCtrl.selected_type.Id !== 24">
+                  <div class="white-content b-1 panel clearfix">
+                    <div class="overflow-hidden">
+                      <ul class="nav nav-tabs border-tabs border-top-fix">
+                        <li class="active full-width children-border-fix">
+                          <a class="text-neutral clickable-active-tab" href ng-click="fieldConfigCtrl.show_advanced_hide_config = !fieldConfigCtrl.show_advanced_hide_config">
+                            <div class="text-left">
+                              <div class="hbox">
+                                <aside class="v-middle font-big">
+                                  {{ 'FIELD_CONFIG_MODAL.HIDE_CONFIG' | translate }}
+                                </aside>
+                                <aside class="v-middle text-right">
+                                  <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !fieldConfigCtrl.show_advanced_hide_config, 'fa-angle-up': fieldConfigCtrl.show_advanced_hide_config}"></i>
+                                </aside>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div ng-if="fieldConfigCtrl.show_advanced_hide_config">
+                      <div class="gap-15"></div>
+                      <div class="form-group col-sm-12">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <small class="text-muted">
+                                <aside class="v-middle">
+                                  <span class="mr-5">{{ 'FIELD_CONFIG_MODAL.NEW_HIDE_BY_USER_HELPER' | translate }}</span>
+                                  <span uib-tooltip="{{ 'FIELD_CONFIG_MODAL.HIDE_BY_USER_HELPER_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+                                    <i class="fal fa-info-circle regular-icon"></i>
+                                  </span>
+                                </aside>
+                              </small>
+                            </label>
+                          </aside>
+                        </div>
+                        <div class="hbox allowed-users-doc-gen">
+                          <allowed-users model="fieldConfigCtrl.exhibition_allowed_views_model" remove-side-wrapper="true"></allowed-users>
+                        </div>
+                      </div>
+                      <div class="field-config-rules__wrapper">
+                        <div>
+                          <div class="hbox">
+                            <aside class="v-middle">
+                              <label>
+                                <span class="font-semi-big">
+                                  {{ 'FIELD_CONFIG_MODAL.NEW_HIDE_BY_DEFAULT_LABEL' | translate }}
+                                </span>
+                                <br>
+                                <small class="text-muted">
+                                  <span ng-bind-html="('FIELD_CONFIG_MODAL.NEW_HIDE_BY_DEFAULT_HELPER' | translate) | to_trusted"></span>
+                                </small>
+                              </label>
+                            </aside>
+                            <aside class="v-middle">
+                              <div class="left-wrapper">
+                                <div class="switch">
+                                  <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-field-config-123" type="checkbox" ng-model="fieldConfigCtrl.field_model.formHidden">
+                                  <label class="pull-right" for="cmn-toggle-field-config-123"></label>
+                                </div>
+                              </div>
+                            </aside>
+                          </div>
+                        </div>
+                        <div ng-if="fieldConfigCtrl.isEveryFormulaEnabled()">
+                          <div class="hbox">
+                            <aside class="v-middle">
+                              <label>
+                                <span class="font-semi-big">{{ 'FIELD_CONFIG_MODAL.NEW_HIDE_BY_FORMULA_LABEL' | translate }}</span>
+                                <br>
+                                <small class="text-muted">
+                                  <span ng-bind-html="('FIELD_CONFIG_MODAL.NEW_HIDE_BY_FORMULA_HELPER' | translate) | to_trusted"></span>
+                                </small>
+                              </label>
+                            </aside>
+                            <aside class="v-middle text-right">
+                              <div class="left-wrapper">
+                                <a class="button button-white nowrap" ng-click="fieldConfigCtrl.openFormulaConfig('hide')">
+                                  <span class="text-action"><i class="fal fa-calculator button-icon"></i></span>
+                                  <span>
+                                    {{ 'FIELD_CONFIG_MODAL.CONFIG' | translate }}
+                                  </span>
+                                </a>
+                              </div>
+                            </aside>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12" ng-show="fieldConfigCtrl.selected_type.Id !== 23">
+                  <div class="white-content b-1 panel clearfix">
+                    <div class="overflow-hidden">
+                      <ul class="nav nav-tabs border-tabs border-top-fix">
+                        <li class="active full-width children-border-fix">
+                          <a class="text-neutral clickable-active-tab" href ng-click="fieldConfigCtrl.show_external_key_config = !fieldConfigCtrl.show_external_key_config">
+                            <div class="text-left">
+                              <div class="hbox">
+                                <aside class="v-middle font-big">
+                                  {{ 'FIELD_CONFIG_MODAL.EXTERNAL_KEY_CONFIG' | translate }}
+                                </aside>
+                                <aside class="v-middle text-right">
+                                  <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !fieldConfigCtrl.show_external_key_config, 'fa-angle-up': fieldConfigCtrl.show_external_key_config}"></i>
+                                </aside>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div ng-if="fieldConfigCtrl.show_external_key_config">
+                      <div class="gap-15"></div>
+                      <div class="form-group col-sm-12">
+                        <label>
+                          {{ 'FIELD_CONFIG_MODAL.SEND_EXTERNAL_KEY_LABEL' | translate }}
+                        </label>
+                        <div>
+                            <input class="form-control input-sm" placeholder="" ng-model="fieldConfigCtrl.field_model.send_external_key">
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-12">
+                        <label>
+                          {{ 'FIELD_CONFIG_MODAL.RECEIVE_EXTERNAL_KEY_LABEL' | translate }}
+                        </label>
+                        <div>
+                            <input class="form-control input-sm" placeholder="" ng-model="fieldConfigCtrl.field_model.receive_external_key">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-sm-12" ng-if="fieldConfigCtrl.selected_type.Id === 7 
+                        && !fieldConfigCtrl.field_model.secondaryEntityId !== 1 
+                        && !fieldConfigCtrl.field_model.secondaryEntityId !== 10
+                        && !fieldConfigCtrl.field_model.secondaryEntityId !== 29
+                      " ng-show="fieldConfigCtrl.show_create_options">
+                  <div class="white-content b-1 panel clearfix">
+                    <div class="overflow-hidden">
+                      <ul class="nav nav-tabs border-tabs border-top-fix">
+                        <li class="active full-width children-border-fix">
+                          <a class="text-neutral clickable-active-tab" href ng-click="fieldConfigCtrl.show_options_config = !fieldConfigCtrl.show_options_config">
+                            <div class="text-left">
+                              <div class="hbox">
+                                <aside class="v-middle font-big">
+                                  {{ 'FIELD_CONFIG_MODAL.CONFIG_OPTION_PERMISSION' | translate }}
+                                </aside>
+                                <aside class="v-middle text-right">
+                                  <i class="fal dropdown-sign" ng-class="{'fa-angle-down': !fieldConfigCtrl.show_options_config, 'fa-angle-up': fieldConfigCtrl.show_options_config}"></i>
+                                </aside>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div ng-if="fieldConfigCtrl.show_options_config">
+                      <div class="gap-15"></div>
+                      <div class="form-group col-sm-12">
+                        <div class="hbox">
+                          <aside class="v-middle">
+                            <label>
+                              <small class="text-muted">
+                                <aside class="v-middle">
+                                  <span class="mr-5">{{ 'FIELD_CONFIG_MODAL.CONFIG_OPTION_PERMISSION_LABEL' | translate }}</span>
+                                </aside>
+                              </small>
+                            </label>
+                          </aside>
+                        </div>
+                        <div class="hbox allowed-users-doc-gen">
+                          <allowed-users model="fieldConfigCtrl.create_options_allowed_model" remove-side-wrapper="true"></allowed-users>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </form>
+          </section>
+        </div>
+      </div>
+      </aside>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="aggregator_config_slide" hide-header="true" side-slide-wider="true">
+    <aggregator-field-config
+      ng-if="fieldConfigCtrl.open_aggregator_config"
+      entity-id="fieldConfigCtrl.form_entity_id"
+      is-editing="fieldConfigCtrl.editing"
+      field-id="fieldConfigCtrl.field_model.Id"
+      default-aggregator-config="fieldConfigCtrl.field_model.aggregatorConfig"
+      initialized-aggregator="fieldConfigCtrl.initializedAggregator"
+      contact-type-id="fieldConfigCtrl.form_contact_type_id"
+    ></aggregator-field-config>
+  </modal-side-slide>
+  <modal-side-slide slide-id="filter_config_slide" modal-side-slide-title="{{ 'FIELD_CONFIG_MODAL.APPLY_FILTER_TO_FIELD_RESULTS' | translate }}" side-slide-wider="true">
+    <filter-config-slide ng-if="fieldConfigCtrl.opened_filter_config" field="fieldConfigCtrl.field_model" filter-submit-fn="fieldConfigCtrl.filterSubmit(filter_id, filter_url, deleted)"></filter-config-slide>
+  </modal-side-slide>
+  <modal-side-slide slide-id="dev_field_config_slide" modal-side-slide-title="{{ 'FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.TITLE' | translate }}" side-slide-wider="true">
+    <dev-field-config-slide ng-if="fieldConfigCtrl.opened_dev_field_config" has-trigger-config="true" field="fieldConfigCtrl.field_model" submit-fn="fieldConfigCtrl.devFieldSubmit(default_value, trigger_string, trigger_variables, is_trigger_valid, trigger_type)"></dev-field-config-slide>
+  </modal-side-slide>
+  <modal-footer>
+    <div class="side-wrapper stretch" ng-if="!fieldConfigCtrl.generalLoading">
+      <div class="hbox stretch">
+        <aside class="v-middle text-left">
+            <span
+              uib-tooltip="{{ fieldConfigCtrl.deleteButtonTooltipMessage }}" 
+              tooltip-append-to-body="true"
+            >
+              <a href 
+              class="button button-white" 
+              ng-if="fieldConfigCtrl.self.Profile.FieldsDeletePermission" 
+              ng-class="{'disabled': fieldConfigCtrl.disableDeleteButton}"
+              ng-show="fieldConfigCtrl.editing" 
+              ng-click="fieldConfigCtrl.deleteField()" 
+              ng-click-confirm="{{ 'FIELD_CONFIG_MODAL.DELETE_FIELD_CONFIRM' | translate }}" 
+              reversible="false">
+              <span class="font-big"><i class="fal fa-trash"></i></span>
+            </a>
+          </span>
+          <span style="display:inline-block; width:5px; height:5px;"></span>
+          <span 
+            uib-tooltip="{{ fieldConfigCtrl.duplicateButtonTooltipMessage }}"
+            tooltip-append-to-body="true"
+            >
+            <a href 
+              class="button button-white" 
+              ng-show="fieldConfigCtrl.editing && fieldConfigCtrl.can_duplicate_fields" 
+              ng-class="{'disabled': fieldConfigCtrl.disableDuplicateButton}" 
+              ng-click="fieldConfigCtrl.copyField()" 
+              ng-click-confirm="{{ 'FIELD_CONFIG_MODAL.DUPLICATE_FIELD_CONFIRM_MESSAGE' | translate }} '{{ fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name }}' ?" 
+              disable-confirm="fieldConfigCtrl.disableDuplicateButton"
+              skip-reversible-message="true"
+              >
+              <span class="font-big"><i class="fal fa-copy"></i></span>
+            </a>
+          </span>
+        </aside>
+        <aside class="v-middle">
+          <button aria-label="{{ 'ARIA_LABELS.SAVE_BUTTON' | translate }}" class="button button-action pull-right" ng-class="{'disabled': fieldConfigCtrl.loading || !fieldConfigCtrl.can_save_field && fieldConfigCtrl.selected_type }" ng-disabled="fieldConfigCtrl.loading || !fieldConfigCtrl.can_save_field && fieldConfigCtrl.selected_type" ng-click="fieldConfigCtrl.submitControl(fieldConfigCtrl.field_model, new_field_form)" ng-attr-id="{{ fieldConfigCtrl.getAggregatorSaveId() }}">
+            {{ (fieldConfigCtrl.loading ? 'GENERICS.WAIT' : 'GENERICS.SAVE') | translate }}
+          </button>
+          <loading-tooltip loading="fieldConfigCtrl.loading" form="new_field_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>
+
+<script type="text/ng-template" id="field-translation-popover">
+  <div 
+    field-translation-popover
+    is-popover-open="fieldConfigCtrl.isPopoverOpen"
+    languages="fieldConfigCtrl.field_model.languages"
+    selected-language-key="fieldConfigCtrl.selectedLanguageKey"
+    submit-form-fn="fieldConfigCtrl.translationPopoverSubmitForm(model)"
+    selected-type-id="fieldConfigCtrl.selected_type.Id"
+    max-name-length="fieldConfigCtrl.maxLabelLength"
+    on-field-change-fn="fieldConfigCtrl.checkFieldName(name, languageId)"
+    repeated-name="fieldConfigCtrl.repeated_name"
+  ></div>
+</script>
+
+<script type="text/ng-template" id="field-description-popover">
+  <div 
+    field-description-popover
+    languages="fieldConfigCtrl.field_model.languages"
+    submit-form-fn="fieldConfigCtrl.translationPopoverSubmitForm(model)"
+    is-popover-open="fieldConfigCtrl.isDescriptionPopoverOpen"
+    selected-language-key="fieldConfigCtrl.selectedLanguageKey"
+    max-description-length="fieldConfigCtrl.maxDescriptionLength"
+  ></div>
+</script>
+
+<script type="text/ng-template" id="preview-description-popover">
+  <preview-description-popover 
+    label="fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].Name"
+    description="fieldConfigCtrl.field_model.languages[fieldConfigCtrl.selectedLanguageIndex].FieldDescription"
+    max-label-length="fieldConfigCtrl.maxLabelLength"
+    max-description-length="fieldConfigCtrl.maxDescriptionLength"
+  ></preview-description-popover>
+</script>

@@ -1,0 +1,97 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-form="user_form">
+  <section class="scrollable scroll-shadow-container" ng-if="usersAdmSlideContentCtrl.initial_load">
+    <div class="gap-15"></div>
+    <div>
+      <div class="hbox">
+        <aside class="width-160 text-center v-middle" ng-if="editing">
+          <img class="avatar-select" ng-src="{{usersAdmSlideContentCtrl.model.user_avatar_url || 'images/avatar_default.jpg'}}">
+          <label class="button button-white button-short avatar-select-button" href id="att-wrapper">
+            <span class="text-action"><i class="fal fa-image button-icon"></i></span>
+            {{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.CHOOSE_PHOTO' | translate }}
+            <input id="att" type="file" style="display: none;"/>
+          </label>
+        </aside>
+        <aside class="v-middle">
+          <forms model="usersAdmSlideContentCtrl.model" fields="usersAdmSlideContentCtrl.top_form" form="user_form"></forms>
+        </aside>
+      </div>
+    </div>
+
+    <div ng-repeat="section in usersAdmSlideContentCtrl.sections">
+      <div ng-if="section.Id === 'null'">
+        <forms model="usersAdmSlideContentCtrl.model" fields="usersAdmSlideContentCtrl.forms[$index]" form="user_form"></forms>
+        <div class="gap-20"></div>
+      </div>
+      <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+        <modal-section section-form="user_form" name="section.name" section-id="section.Id">
+          <forms model="usersAdmSlideContentCtrl.model" fields="usersAdmSlideContentCtrl.forms[$index]" form="user_form"></forms>
+        </modal-section>
+        <div class="gap-20"></div>
+      </div>
+    </div>
+    <integration-user-deduplication-config
+      ng-if="integrationUser && usersAdmSlideContentCtrl.showDedupConfig"
+      integration-user-id="usersAdmSlideContentCtrl.model.Id"
+      register-save="usersAdmSlideContentCtrl.registerDedupConfigSave"
+    ></integration-user-deduplication-config>
+    <div class="side-wrapper">
+      <div ng-if="!integrationUser">
+        <a class="button button-action" ng-if="editing && !usersAdmSlideContentCtrl.changing_password" ng-click="usersAdmSlideContentCtrl.changing_password = true">
+          <span>{{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.CHANGE_PASSWORD' | translate }}</span>
+        </a>
+        <div class="wrapper-right col-sm-6" ng-if="editing && usersAdmSlideContentCtrl.changing_password">
+          <password-input
+            model="usersAdmSlideContentCtrl.password"
+            is-password-valid="usersAdmSlideContentCtrl.is_password_valid">
+          </password-input>
+        </div>
+      </div>
+      <div ng-if="integrationUser && model.UserKey">
+        <div class="font-big">
+          <strong>
+            {{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.API_KEY' | translate }}
+          </strong>
+        </div>
+        <div class="gap-10"></div>
+        <div class="nowrap side-scroll">
+          <div class="side-scroll-container wrapper white-content b-1 rounded-regular">
+            {{model.UserKey}}
+          </div>
+        </div>
+        <div class="gap-10"></div>
+        <div class="field-edit f-1 ai-center user-adm-slide-reset-button">
+          <a href="" class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button" ng-click="usersAdmSlideContentCtrl.clickConfirm()">
+            <i class="far fa-sync fixing-fixed-size-button"></i>
+          </a>
+          <span class="ml-5"> {{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.RESET_KEY' | translate }}</span>
+        </div>
+      </div>
+      <div class="gap-20"></div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle" ng-if="!model.AccountOwner">
+      <a class="button button-white" ng-if="editing && !model.Suspended" ng-click-confirm="{{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.INACTIVE_CONFIRM' | translate }}" ng-click="usersAdmSlideContentCtrl.suspendUser()" reversible="true">
+        <span class="text-danger"><i class="fal fa-toggle-off regular-icon"></i></span>
+        <span>{{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.INACTIVE' | translate }}</span>
+      </a>
+      <a class="button button-white" ng-if="editing && model.Suspended" ng-click-confirm="{{usersAdmSlideContentCtrl.activateUserMessage()}}" ng-click="usersAdmSlideContentCtrl.activateUser()" skip-reversible-message="true">
+        <span class="text-success"><i class="fal fa-toggle-on regular-icon"></i></span>
+        <span>{{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.ACTIVATE' | translate }}</span>
+      </a>
+    </aside>
+    <aside class="v-middle text-right">
+      <a class="button button-action pull-right" ng-if="editing" href ng-click="usersAdmSlideContentCtrl.submitControl(user_form)">
+        <i class="button-icon fas fa-save"></i>
+        {{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.SAVE_EDIT' | translate }}
+      </a>
+      <a class="button button-action pull-right" ng-if="!editing" href ng-click="usersAdmSlideContentCtrl.submitConfirm(user_form)">
+        <i class="button-icon fas fa-save"></i>
+        {{ 'ADMINISTRATION.USERS.USERS_SIDE_SLIDE.CREATE_USER' | translate }}
+      </a>
+      <loading-tooltip loading="usersAdmSlideContentCtrl.loading" form="user_form"></loading-tooltip>
+    </aside>
+  </div>
+</div>

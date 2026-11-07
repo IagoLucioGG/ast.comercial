@@ -1,0 +1,857 @@
+<div class="vbox">
+  <section class="scro">
+    <div class="position-relative stretch">
+      <div class="vbox">
+        <section class="scrollable">
+          <div class="administration-page-wrapper" ng-if="administrationCtrl.new_administration_layout">
+            <ai-builder-banner ng-if="administrationCtrl.ploomes_ai_builder_module"></ai-builder-banner>
+            <div class="hbox administration-page">
+              <aside class="width-20-percent">
+                <div class="wrapper administration-box">
+                  <div class="font-thin font-title">
+                    Geral
+                  </div>
+                  <div class="administration-box-modules">
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="system-modules" data-cy="administration-system-modules-button" uib-tooltip="Módulos do sistema" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-system-modules-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-cubes simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-system-modules-button">
+                          Módulos do sistema
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="formconfig"  data-cy="administration-forms-config-button" uib-tooltip="Campos e formulários" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-forms-config-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-edit simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-forms-config-button">
+                          Campos e formulários
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <a class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToFieldsParameters()"  data-cy="administration-field-parameters-button" uib-tooltip="Opções pré-cadastradas" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-field-parameters-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-list-ul simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-field-parameters-button">
+                          Opções pré-cadastradas
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToAccount()" data-cy="administration-account-info-button" uib-tooltip="Dados da empresa" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-account-info-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-buildings simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-account-info-button">
+                          Dados da empresa
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToSystemSettings()" data-cy="administration-system-config-button" uib-tooltip="Configurações do sistema" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-system-config-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-gears simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-system-config-button">
+                          Configurações do sistema
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="administration.datamanagement" ng-if="administrationCtrl.showDataManagement" data-cy="administration-data-management-button" uib-tooltip="{{ administrationCtrl.dataManagementLabelPath | translate }}" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-data-management-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal simple-line-space" ng-class="administrationCtrl.dataManagementIconClass"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-data-management-button">
+                          {{ administrationCtrl.dataManagementLabelPath | translate }}
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="administration.automations" ng-if="administrationCtrl.activeWorkflowModule" data-cy="administration-automations-button" uib-tooltip="Automações" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-automations-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-robot simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-automations-button">
+                          Automações
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <a class="button button-white button-full-width text-left button-height"
+                    ng-if="administrationCtrl.self.Account.PlooStoreModule"
+                    data-cy="administration-ploostore-button"
+                    ng-click="administrationCtrl.goToPloostore()"
+                    uib-tooltip="Ploo Store"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="administrationCtrl.isTooltipEnabled('administration-ploostore-button')"
+                  >
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-store simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-ploostore-button">
+                          Ploo Store
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <a class="button button-white button-full-width text-left button-height"
+                    ui-sref="administration.processingqueue"
+                    data-cy="administration-processing-queue-button"
+                    uib-tooltip="Fila de Processamento"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="administrationCtrl.isTooltipEnabled('administration-processing-queue-button')"
+                  >
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-bars-progress simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-processing-queue-button">
+                          Fila de Processamento
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="button button-white button-full-width text-left button-height"
+                    ng-click="administrationCtrl.goToSandbox()"
+                    data-cy="administration-sandbox-button"
+                    ng-if="!administrationCtrl.self.Account.IsSandboxAccount && administrationCtrl.activeSandboxEnvironmentModule"
+                    uib-tooltip="Ambiente Sandbox"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="administrationCtrl.isTooltipEnabled('administration-sandbox-button')"
+                  >
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-flask-gear simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-sandbox-button">Ambiente Sandbox</span>
+                      </aside>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </aside>
+              <aside class="width-20-percent">
+                <div class="wrapper administration-box">
+                  <div class="font-thin font-title">
+                    Usuários
+                  </div>
+                  <div class="administration-box-modules">
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="users.table" data-cy="administration-user-table-button" uib-tooltip="Tabela de usuários" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-user-table-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-user simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-user-table-button">
+                          Tabela de usuários
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToTeams()" data-cy="administration-user-teams-button" uib-tooltip="Equipes de usuários" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-user-teams-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-users simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-user-teams-button">
+                          Equipes de usuários
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToProfiles()" data-cy="administration-user-profiles-button" uib-tooltip="Perfis de usuário" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-user-profiles-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-user-lock simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-user-profiles-button">
+                          Perfis de usuário
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.self.Account.SupportAccessPolicyId === 2" ng-click="administrationCtrl.goToSupportUsers()" uib-tooltip="Permissão ao Suporte Ploomes" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-support-access-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-hands-heart  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-support-access-button">
+                          Permissão ao Suporte Ploomes
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="logs.changes" data-cy="administration-logs-button" uib-tooltip="Registros" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-logs-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-clock-rotate-left simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-logs-button">
+                          Registros
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  </div>
+                </div>
+              </aside>
+              <aside class="width-20-percent" ng-if="administrationCtrl.has_doc_templates || (administrationCtrl.self.Account.Plan.BusinessRules && administrationCtrl.activeAutomationDocumentModules)">
+                <div class="wrapper administration-box">
+                  <div class="font-thin font-title">
+                    Propostas e vendas
+                  </div>
+                  <div class="administration-box-modules">
+                  <a class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.has_doc_templates" ui-sref="templates" data-cy="administration-document-templates-button" uib-tooltip="Modelos de documento" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-document-templates-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-file-lines simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-document-templates-button">
+                          Modelos de documento
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <a
+                    class="button button-white button-full-width text-left button-height"
+                    ng-if="administrationCtrl.activeAutomationDocumentModules && administrationCtrl.self.Account.Plan.BusinessRules"
+                    ng-click="administrationCtrl.goToBusinessRules()"
+                    data-cy="administration-business-rules-button"
+                    uib-tooltip="Fluxos de aprovação"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="administrationCtrl.isTooltipEnabled('administration-business-rules-button')"
+                  >
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-diagram-project simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-business-rules-button">
+                          Fluxos de aprovação
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  </div>
+                </div>
+              </aside>
+              <aside class="width-20-percent">
+                <div class="wrapper administration-box">
+                  <div class="font-thin font-title">
+                    Integrações
+                  </div>
+                  <div class="administration-box-modules">
+                  <div
+                    class="button button-white button-full-width text-left button-height"
+                    ng-click="administrationCtrl.goToIntegrations()"
+                    ng-click-confirm="Você está utilizando o ambiente Sandbox. Não utilize credenciais de produção para configurar as integrações."
+                    confirm-button-text="Continuar"
+                    skip-reversible-message="true"
+                    skip-are-you-sure="true"
+                    disable-confirm-fn="administrationCtrl.isIntegrationsConfirmDisabled()"
+                    data-cy="administration-integrations-plug-and-play-button"
+                    uib-tooltip="Integrações plug-and-play"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="administrationCtrl.isTooltipEnabled('administration-integrations-plug-and-play-button')"
+                  >
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-plug simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-integrations-plug-and-play-button">
+                          Integrações plug-and-play
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="button button-white button-full-width text-left button-height" ng-if="!administrationCtrl.self.Account.IsSandboxAccount" ng-click="administrationCtrl.goToIntegrationUsers()" data-cy="administration-integration-users-button" uib-tooltip="Usuários de integração" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-integration-users-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-laptop-code simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-integration-users-button">
+                          Usuários de integração
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.activePublicFormModule" ng-click="administrationCtrl.goToExternalForms()" data-cy="administration-external-forms-button" uib-tooltip="Formulários externos" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-external-forms-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-square-poll-horizontal simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-external-forms-button">
+                          Formulários externos
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <a class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.sankhyaIntegrationModule && administrationCtrl.sankhyaIntegration.Active" ui-sref="sankhya-logs-admin" uib-tooltip="Registros do Sankhya" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-sankhya-logs-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action d-flex mr-10">
+                          <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.19002 12.551L5.96843 9.77259C6.22848 9.51255 6.37903 9.15669 6.37903 8.78715V6.61095C6.37903 5.59813 6.78963 4.62638 7.50135 3.90098L8.60997 2.79235C8.70578 2.69654 8.62366 2.5323 8.48679 2.55968C8.14462 2.61442 7.81614 2.69654 7.47397 2.79235C2.88891 4.02416 -0.149549 7.58271 0.699029 10.7444C0.876957 11.4287 1.23281 12.0309 1.71185 12.551C2.09508 12.9616 2.77942 12.9616 3.19002 12.551Z" stroke="currentColor"/>
+                            <path d="M14.8101 4.44858L12.6202 6.63846C12.3602 6.89851 12.2096 7.25436 12.2096 7.6239V9.8001C12.2096 10.8129 11.799 11.7847 11.0873 12.5101L9.39014 14.2072C9.29434 14.303 9.37646 14.4673 9.51333 14.4399C9.85549 14.3852 10.184 14.303 10.5261 14.2072C15.1112 12.9754 18.1497 9.41687 17.3011 6.25523C17.1232 5.57089 16.7673 4.96867 16.2883 4.44858C15.8914 4.03797 15.2207 4.03797 14.8101 4.44858Z" stroke="currentColor"/>
+                            <path d="M12.4422 1.41013L8.71941 5.11924C8.3225 5.51616 8.10351 6.03626 8.10351 6.59741V9.64956C8.10351 9.92329 7.99401 10.197 7.8024 10.3886L2.91623 15.2748C2.84779 15.3432 2.87517 15.4664 2.95729 15.5075C3.34052 15.6717 3.73743 15.8223 4.16172 15.9455C4.65445 16.0823 5.18823 15.9592 5.55777 15.6033L9.8691 11.292C10.266 10.8951 10.485 10.375 10.485 9.8138V6.76165C10.485 6.48792 10.5945 6.21418 10.7861 6.02257L15.0838 1.72493C15.1522 1.6565 15.1248 1.53332 15.0427 1.49225C14.6595 1.32801 14.2625 1.17746 13.8383 1.05428C13.3455 0.917411 12.8117 1.04059 12.4422 1.41013Z" stroke="currentColor"/>
+                          </svg>
+                        </span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-sankhya-logs-button">
+                          Registros do Sankhya
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <a
+                    ng-if="administrationCtrl.self.IsSupportUser"
+                    class="button button-white button-full-width text-left button-height"
+                    ng-click="administrationCtrl.goToEmailTemplates()"
+                    uib-tooltip="Modelos de e-mail"
+                    tooltip-append-to-body="true"
+                    tooltip-enable="administrationCtrl.isTooltipEnabled('administration-email-templates-button')"
+                    >
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action">
+                          <i class="fal fa-envelope-square simple-line-space"></i>
+                        </span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-email-templates-button">
+                          Modelos de e-mail
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  </div>
+                </div>
+              </aside>
+              <aside class="width-20-percent" ng-if="administrationCtrl.show_payments_options && !administrationCtrl.self.Account.IsSandboxAccount">
+                <div class="wrapper administration-box">
+                  <div class="font-thin font-title">
+                    Pagamentos
+                  </div>
+                  <div class="administration-box-modules">
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToPaymentAdm()" data-cy="administration-payment-info-button" uib-tooltip="Dados de pagamento" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-payment-info-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-credit-card simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-payment-info-button">
+                          Dados de pagamento
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToPaymentHistory()" data-cy="administration-payment-history-button" uib-tooltip="Histórico de fatura" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-payment-history-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-receipt simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-payment-history-button">
+                          Histórico de fatura
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="administration.aiconsumption" ng-if="administrationCtrl.show_ai_consumption" data-cy="administration-ai-credits-button" uib-tooltip="Créditos de IA" tooltip-append-to-body="true" tooltip-enable="administrationCtrl.isTooltipEnabled('administration-ai-credits-button')">
+                    <i class="fal fa-chevron-right administration-item-arrow"></i>
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-chart-pie-simple simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular" id="administration-ai-credits-button">
+                          Créditos de IA
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+          <div class="wrapper" ng-if="!administrationCtrl.new_administration_layout">
+            <div class="hbox">
+              <aside class="width-20-percent">
+                <div class="wrapper">
+                  <div class="font-thin font-title">
+                    Geral
+                  </div>
+                  <div class="gap-20"></div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="system-modules" data-cy="administration-system-modules-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-window  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Módulos do sistema
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10"></div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="formconfig"  data-cy="administration-forms-config-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-pen-square  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Campos e formulários
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10"></div>
+                  <a class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToFieldsParameters()"  data-cy="administration-field-parameters-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-list-alt  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Opções pré-cadastradas
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToAccount()" data-cy="administration-account-info-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-passport  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Dados da empresa
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToSystemSettings()" data-cy="administration-system-config-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-sliders-v-square  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Configurações do sistema
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="administration.datamanagement" ng-if="administrationCtrl.showDataManagement" data-cy="administration-data-management-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal simple-line-space" ng-class="administrationCtrl.dataManagementIconClass"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          {{ administrationCtrl.dataManagementLabelPath | translate }}
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10" ng-if="administrationCtrl.showDataManagement"></div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="administration.automations" ng-if="administrationCtrl.activeWorkflowModule" data-cy="administration-automations-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-robot simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Automações
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10" ng-if="administrationCtrl.self.Account.PlooStoreModule"></div>
+                  <a class="button button-white button-full-width text-left button-height"
+                    ng-if="administrationCtrl.self.Account.PlooStoreModule"
+                    data-cy="administration-ploostore-button"
+                    ng-click="administrationCtrl.goToPloostore()"
+                  >
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-store simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Ploo Store
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10"></div>
+                  <a class="button button-white button-full-width text-left button-height"
+                    ui-sref="administration.processingqueue"
+                    data-cy="administration-processing-queue-button"
+                  >
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-list-check simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Fila de Processamento
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10" ng-if="!administrationCtrl.self.Account.IsSandboxAccount && administrationCtrl.activeSandboxEnvironmentModule"></div>
+                  <div class="button button-white button-full-width text-left button-height"
+                    ng-click="administrationCtrl.goToSandbox()"
+                    data-cy="administration-sandbox-button"
+                    ng-if="!administrationCtrl.self.Account.IsSandboxAccount && administrationCtrl.activeSandboxEnvironmentModule"
+                  >
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-flask-gear simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">Ambiente Sandbox</span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                </div>
+              </aside>
+              <aside class="width-20-percent">
+                <div class="wrapper">
+                  <div class="font-thin font-title">
+                    Usuários
+                  </div>
+                  <div class="gap-20"></div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="users.table" data-cy="administration-user-table-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-user  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Tabela de usuários
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToTeams()" data-cy="administration-user-teams-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-users  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Equipes de usuários
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToProfiles()" data-cy="administration-user-profiles-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-user-crown  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Perfis de usuário
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10" ng-if="administrationCtrl.self.Account.SupportAccessPolicyId === 2"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.self.Account.SupportAccessPolicyId === 2" ng-click="administrationCtrl.goToSupportUsers()">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-hands-heart  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Permissão ao Suporte Ploomes
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="logs.changes" data-cy="administration-logs-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-35 text-center">
+                        <span class="text-action"><i class="fal fa-database  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Registros
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+              </aside>
+              <aside class="width-20-percent" ng-if="administrationCtrl.has_doc_templates || (administrationCtrl.self.Account.Plan.BusinessRules && administrationCtrl.activeAutomationDocumentModules)">
+                <div class="wrapper">
+                  <div class="font-thin font-title">
+                    Propostas e vendas
+                  </div>
+                  <div class="gap-20"></div>
+                  <a class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.has_doc_templates" ui-sref="templates" data-cy="administration-document-templates-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-file-image  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Modelos de documento
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10" ng-if="administrationCtrl.has_doc_templates"></div>
+                  <a
+                    class="button button-white button-full-width text-left button-height"
+                    ng-if="administrationCtrl.activeAutomationDocumentModules && administrationCtrl.self.Account.Plan.BusinessRules"
+                    ng-click="administrationCtrl.goToBusinessRules()"
+                    data-cy="administration-business-rules-button"
+                  >
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-badge-check  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Fluxos de aprovação
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+              </aside>
+              <aside class="width-20-percent">
+                <div class="wrapper">
+                  <div class="font-thin font-title">
+                    Integrações
+                  </div>
+                  <div class="gap-20"></div>
+                  <div
+                    class="button button-white button-full-width text-left button-height"
+                    ng-click="administrationCtrl.goToIntegrations()"
+                    ng-click-confirm="Você está utilizando o ambiente Sandbox. Não utilize credenciais de produção para configurar as integrações."
+                    confirm-button-text="Continuar"
+                    skip-reversible-message="true"
+                    skip-are-you-sure="true"
+                    disable-confirm-fn="administrationCtrl.isIntegrationsConfirmDisabled()"
+                    data-cy="administration-integrations-plug-and-play-button"
+                  >
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-plug  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Integrações plug-and-play
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToIntegrationUsers()" data-cy="administration-integration-users-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-laptop-code  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Usuários de integração
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10" ng-if="administrationCtrl.activePublicFormModule"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.activePublicFormModule" ng-click="administrationCtrl.goToExternalForms()" data-cy="administration-external-forms-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-pen-square simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Formulários externos
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10" ng-if="administrationCtrl.sankhyaIntegrationModule && administrationCtrl.sankhyaIntegration.Active"></div>
+                  <a class="button button-white button-full-width text-left button-height" ng-if="administrationCtrl.sankhyaIntegrationModule && administrationCtrl.sankhyaIntegration.Active" ui-sref="sankhya-logs-admin">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action d-flex mr-10">
+                          <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.19002 12.551L5.96843 9.77259C6.22848 9.51255 6.37903 9.15669 6.37903 8.78715V6.61095C6.37903 5.59813 6.78963 4.62638 7.50135 3.90098L8.60997 2.79235C8.70578 2.69654 8.62366 2.5323 8.48679 2.55968C8.14462 2.61442 7.81614 2.69654 7.47397 2.79235C2.88891 4.02416 -0.149549 7.58271 0.699029 10.7444C0.876957 11.4287 1.23281 12.0309 1.71185 12.551C2.09508 12.9616 2.77942 12.9616 3.19002 12.551Z" stroke="currentColor"/>
+                            <path d="M14.8101 4.44858L12.6202 6.63846C12.3602 6.89851 12.2096 7.25436 12.2096 7.6239V9.8001C12.2096 10.8129 11.799 11.7847 11.0873 12.5101L9.39014 14.2072C9.29434 14.303 9.37646 14.4673 9.51333 14.4399C9.85549 14.3852 10.184 14.303 10.5261 14.2072C15.1112 12.9754 18.1497 9.41687 17.3011 6.25523C17.1232 5.57089 16.7673 4.96867 16.2883 4.44858C15.8914 4.03797 15.2207 4.03797 14.8101 4.44858Z" stroke="currentColor"/>
+                            <path d="M12.4422 1.41013L8.71941 5.11924C8.3225 5.51616 8.10351 6.03626 8.10351 6.59741V9.64956C8.10351 9.92329 7.99401 10.197 7.8024 10.3886L2.91623 15.2748C2.84779 15.3432 2.87517 15.4664 2.95729 15.5075C3.34052 15.6717 3.73743 15.8223 4.16172 15.9455C4.65445 16.0823 5.18823 15.9592 5.55777 15.6033L9.8691 11.292C10.266 10.8951 10.485 10.375 10.485 9.8138V6.76165C10.485 6.48792 10.5945 6.21418 10.7861 6.02257L15.0838 1.72493C15.1522 1.6565 15.1248 1.53332 15.0427 1.49225C14.6595 1.32801 14.2625 1.17746 13.8383 1.05428C13.3455 0.917411 12.8117 1.04059 12.4422 1.41013Z" stroke="currentColor"/>
+                          </svg>
+                        </span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Registros do Sankhya
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                  <div class="gap-10" ng-if="administrationCtrl.self.IsSupportUser"></div>
+                  <a
+                    ng-if="administrationCtrl.self.IsSupportUser"
+                    class="button button-white button-full-width text-left button-height"
+                    ng-click="administrationCtrl.goToEmailTemplates()"
+                    >
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action">
+                          <i class="fal fa-envelope-square simple-line-space"></i>
+                        </span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Modelos de e-mail
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+              </aside>
+              <aside class="width-20-percent" ng-if="administrationCtrl.show_payments_options && !administrationCtrl.self.Account.IsSandboxAccount">
+                <div class="wrapper">
+                  <div class="font-thin font-title">
+                    Pagamentos
+                  </div>
+                  <div class="gap-20"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToPaymentAdm()" data-cy="administration-payment-info-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-money-check-alt  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Dados de pagamento
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="button button-white button-full-width text-left button-height" ng-click="administrationCtrl.goToPaymentHistory()" data-cy="administration-payment-history-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-receipt  simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Histórico de fatura
+                        </span>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="gap-10" ng-if="administrationCtrl.show_ai_consumption"></div>
+                  <a class="button button-white button-full-width text-left button-height" ui-sref="administration.aiconsumption" ng-if="administrationCtrl.show_ai_consumption" data-cy="administration-ai-credits-button">
+                    <div class="hbox">
+                      <aside class="v-middle width-30 text-center">
+                        <span class="text-action"><i class="fal fa-chart-pie-simple simple-line-space"></i></span>
+                      </aside>
+                      <aside class="v-middle">
+                        <span class="text-regular">
+                          Créditos de IA
+                        </span>
+                      </aside>
+                    </div>
+                  </a>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALS -->
+  <users-adm ng-if="administrationCtrl.state.current.name.endsWith('.users')"></users-adm>
+  <support-access-requests ng-if="administrationCtrl.state.current.name.endsWith('.supportusers')"></support-access-requests>
+  <suspended-users-adm ng-if="administrationCtrl.state.current.name.endsWith('suspendedusers')"></suspended-users-adm>
+  <teams-adm ng-if="administrationCtrl.state.current.name.endsWith('teams')"></teams-adm>
+  <business-rules-adm ng-if="administrationCtrl.state.current.name.endsWith('businessrules')"></business-rules-adm>
+  <system-settings ng-if="administrationCtrl.state.current.name.endsWith('systemsettings')"></system-settings>
+  <profiles-adm ng-if="administrationCtrl.state.current.name.endsWith('profiles')"></profiles-adm>
+  <account-adm ng-if="administrationCtrl.state.current.name.endsWith('.account')"></account-adm>
+  <integrations-adm ng-if="administrationCtrl.state.current.name.endsWith('.integrations')"></integrations-adm>
+  <payment-adm ng-if="administrationCtrl.state.current.name.endsWith('.payment')"></payment-adm>
+  <payment-history-adm ng-if="administrationCtrl.state.current.name.endsWith('.paymenthistory')"></payment-history-adm>
+  <mail-chimp-callback ng-if="administrationCtrl.state.current.name.endsWith('.mailchimpcallback')"></mail-chimp-callback>
+  <integration-users-adm ng-if="administrationCtrl.state.current.name.endsWith('.integrationusers')"></integration-users-adm>
+  <fields-parameters-adm ng-if="administrationCtrl.state.current.name.endsWith('.fieldsparameters')"></fields-parameters-adm>
+  <automations-modal ng-if="administrationCtrl.state.current.name.endsWith('.automations')"></automations-modal>
+  <email-templates ng-if="administrationCtrl.state.current.name.endsWith('emailtemplates')"></email-templates>
+  <processing-queue ng-if="administrationCtrl.state.current.name.endsWith('.processingqueue')"></processing-queue>
+</div>

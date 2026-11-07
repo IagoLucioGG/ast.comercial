@@ -1,0 +1,313 @@
+<div class="vbox small-header" ng-if="!emailsCtrl.errorEmails">
+  <header class="regular-header new-header b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div ng-if="!emailsCtrl.loading_skeleton">
+          <div ng-if="!emailsCtrl.selected_email_group_id && !emailsCtrl.opening_email_group_directly"
+            class="input-group width-250 pull-left" tooltip-placement="right"
+            uib-tooltip="Busca por assunto, anexo, destinatário, remetente, cópia ou cópia oculta">
+            <input class="form-control input-sm light-background"
+              placeholder="Busca por assunto, anexo, destinatário, remetente, cópia ou cópia oculta" ng-model="emailsCtrl.quick_filter"
+              ng-keyup="$event.keyCode == 13 ? emailsCtrl.quickSearchFilter(emailsCtrl.quick_filter) : emailsCtrl.onTypeQuickFilter(emailsCtrl.quick_filter)">
+            <div class="input-group-btn width-10">
+              <a class="btn button button-neutral-gray special-search-button"
+                ng-click="emailsCtrl.quickSearchFilter(emailsCtrl.quick_filter)">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+          <new-feature-feedback new-feature-key="new_email_page"></new-feature-feedback>
+        </div>
+        <div ng-if="emailsCtrl.loading_skeleton" class="d-flex">
+          <span class="skeleton-box width-250 h-3"></span>
+        </div>
+      </aside>
+      <aside class="v-middle" ng-if="!emailsCtrl.selected_email_group_id && !emailsCtrl.opening_email_group_directly">
+        <div ng-if="!emailsCtrl.loading_skeleton">
+          <a class="button button-white-no-border pull-right" open-side-menu side-menu-id="email_side_menu" data-cy="emails-menu-button">
+            <span class="text-action"><i class="fal fa-cog"></i></span> Menu
+          </a>
+          <div class="dropdown pull-right">
+            <email-filters-menu applied-filter-id="emailsCtrl.appliedFilterId" applied-filter="emailsCtrl.applied_filter"
+              apply-filter-callback-fn="emailsCtrl.applyFilter"></email-filters-menu>
+          </div>
+        </div>
+        <div ng-if="emailsCtrl.loading_skeleton" class="email-integrations-box-buttons">
+          <span ng-repeat="_ in emailsCtrl.fakeArrayNumbers(3)" class="skeleton-box w-8 h-3"></span>
+        </div>
+      </aside>
+      <aside class="v-middle width-10" ng-if="emailsCtrl.userData.active_smtp && !emailsCtrl.loading_skeleton">
+        <a class="button button-action pull-right nowrap" uib-tooltip="{{ ('EMAILS.NEW_EMAIL' | translate ) + ' (C)' }}" tooltip-append-to-body="true" ui-sref="emails.newemail">
+          <i class="button-icon fas fa-pen-alt"></i>
+          Novo e-mail
+        </a>
+      </aside>
+      <aside class="v-middle width-10" ng-if="!emailsCtrl.userData.active_smtp && !emailsCtrl.loading_skeleton">
+        <a class="button button-action pull-right nowrap" ui-sref="emails.emailintegrations" ng-if="!emailsCtrl.loading_skeleton" data-cy="email-config-button">
+          <i class="button-icon fas fa-cog"></i>
+          Configurar envio de e-mails
+        </a>
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="vbox">
+      <section>
+        <div class="hbox stretch">
+          <aside class="light-background size-slide"
+            ng-class="{ 'width-250': emailsCtrl.toggleFoldersSidebar, 'width-120': !emailsCtrl.toggleFoldersSidebar }">
+            <email-folders-sidebar
+              style="display: flex; width: auto; height: 100%;"
+              ng-if="!emailsCtrl.loading_skeleton"
+              folder-select-callback-fn="emailsCtrl.changeFolder(folder, first_change, is_sent_folder, is_opening_email_from_url)"
+              selected-folder="emailsCtrl.selected_folder" set-default-folder-callback-fn="emailsCtrl.setDefaultFolder"
+              toggle-size-slide-callback-fn="emailsCtrl.toggleFoldersSlide">
+            </email-folders-sidebar>
+            <div ng-if="emailsCtrl.loading_skeleton" class="p-10">
+              <span ng-repeat="_ in emailsCtrl.fakeArrayNumbers(4)" class="skeleton-box w-100 h-3"></span>
+            </div>
+          </aside>
+          <aside id="fake-list-emails-skeleton-content" class="white-content b-l-1 p-10" ng-if="emailsCtrl.loading_skeleton">
+            <div ng-repeat="_ in emailsCtrl.fakeArrayNumbers(20)" class="skeleton-box w-100 h-3"></div>
+          </aside>
+          <aside class="white-content b-l-1"
+            ng-show="!emailsCtrl.selected_email_group_id && !emailsCtrl.opening_email_group_directly" ng-if="!emailsCtrl.loading_skeleton">
+            <div class="vbox side-scroll" ng-class="{ 'gmail-limit-warning__scroll' : emailsCtrl.reachedGmailDownloadLimit }">
+              <div ng-if="emailsCtrl.reachedGmailDownloadLimit" class="gmail-limit-warning__wrapper jc-center p-10">
+                <div class="gmail-limit-warning">
+                  <div>
+                    <span class="text-warning gmail-limit-warning__icon"><i class="fa fa-exclamation-triangle"></i></span>
+                  </div>
+                  <div>
+                    <p class="font-bold gmail-limit-warning__title">Integração com Gmail pausada.</p>
+                    <p ng-bind-html="('EMAILS.GMAIL_LIMIT_WARNING_MESSAGE' | translate) | to_trusted"></p>
+                    <p><a style="text-decoration: underline; color: #337ab7;" href="https://support.google.com/a/answer/1071518" rel="noopener noreferrer" target="_blank">Saiba mais a respeito dos limites de download do Gmail</a></p>
+                  </div>
+                </div>
+              </div>
+              <section class="scrollable email-list">
+                <div class="wrapper-big-side">
+                  <standard-loader ng-if="!emailsCtrl.initial_load" loading="!emailsCtrl.initial_load">
+                  </standard-loader>
+                  <div class="hbox stretch email-action-header__wrapper">
+                    <div class="f-1 ai-center jc-between"
+                      ng-if="!emailsCtrl.selected_email_group_id && !emailsCtrl.opening_email_group_directly">
+                      <div class="f-1 ai-center">
+                        <div uib-dropdown class="email-action-header__selection-button">
+                          <a class="button button-white-no-border nowrap f-1 ai-center" ng-class="{'disabled' : emailsCtrl.threads.length === 0}" uib-dropdown-toggle>
+                            <span class="text-action">
+                              <label ng-if="!emailsCtrl.moveLoading" class="email-list__checkbox-wrapper email-checkbox width-25">
+                                <input type="checkbox" ng-model="emailsCtrl.generalSelection"
+                                  ng-click="$event.stopPropagation();"
+                                  ng-change="emailsCtrl.toggleGeneralSelection();">
+                                <div class="email-list__checkbox-indicator" ng-click="$event.stopPropagation();"></div>
+                              </label>
+                              <i ng-if="emailsCtrl.moveLoading" class="fal fa-spinner fa-spin width-25"></i>
+                            </span>
+                            {{ (emailsCtrl.current_selected_email_groups && emailsCtrl.current_selected_email_groups > 0
+                            ?
+                            'EMAILS.COUNT_SELECTED_CONVERSATIONS' : 'EMAILS.SELECT_CONVERSATIONS') |
+                            translate_with_replace : { count:
+                            emailsCtrl.current_selected_email_groups, location: emailsCtrl.selectLocation.toLowerCase()
+                            }
+                            }}
+                            <i class="fal fa-angle-down dropdown-sign email-action-header__selection--fix"></i>
+                          </a>
+                          <ul class="dropdown-max-height dropdown-menu white-dropdown-menu dropdown-colored-icons"
+                            style="width: auto" uib-dropdown-menu>
+                            <li ng-repeat="select_type in emailsCtrl.select_types"
+                              ng-if="!(select_type.id === 5 && (emailsCtrl.appliedQuickFilter || emailsCtrl.applied_filter))"
+                              ng-click="emailsCtrl.toggleSelectType(select_type)">
+                              <a class="white-dropdown-link" href>
+                                {{select_type.name}}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div ng-if="emailsCtrl.has_selected_emails">
+                          <email-table-toolbar user-data="emailsCtrl.userData"
+                            current-folder="emailsCtrl.selected_folder" total-items="emailsCtrl.total_items"
+                            current-filter-string="emailsCtrl.quick_filter"
+                            mass-edit-filter-string="emailsCtrl.current_filter_string_for_email"
+                            current-selected-emails-type="emailsCtrl.selected_emails_type"
+                            current-selected-emails="emailsCtrl.current_selected_emails"
+                            update-actions-fn="emailsCtrl.updateActions"
+                            applied-filter="emailsCtrl.applied_filter"
+                          >
+                          </email-table-toolbar>
+                        </div>
+                      </div>
+                      <a class="button button-white-no-border pull-right"
+                        ng-click="emailsCtrl.updateUserEmailData(true)"
+                        ng-class="{ 'disabled': emailsCtrl.full_synching }">
+                        <span class="text-action">
+                          <i class="fa-sync button-icon"
+                            ng-class="{ 'email-syncing fas': emailsCtrl.full_synching, 'fal': !emailsCtrl.full_synching }"></i>
+                        </span>
+                        Atualizar
+                      </a>
+                    </div>
+                  </div>
+                  <table ng-if="emailsCtrl.initial_load" ng-show="emailsCtrl.threads.length > 0"
+                    ng-style="!emailsCtrl.can_load && {'opacity':'0.4'}"
+                    class="table table-static table-draggable table-hover white-table layout-fixed email-list__table">
+                    <tr class="open-email" ng-repeat="thread in emailsCtrl.threads"
+                      ng-click="emailsCtrl.goToEmailGroup(thread)">
+                      <td class="width-250 new-mail-alert-container">
+                        <div class="new-mail-alert">
+                          <i class="fas fa-circle text-action" ng-if="thread.unread > 0"></i>
+                        </div>
+                        <div class="ellipsis nowrap v-overflow-hidden full-width email-list__title"
+                          ng-class="{ 'font-bold': thread.unread > 0}">
+                          <label class="email-list__checkbox-wrapper email-checkbox width-25">
+                            <input type="checkbox" ng-model="thread.selected"
+                              ng-change="emailsCtrl.checkSelectedEmails(thread.selected)" ng-click="$event.stopPropagation()">
+                            <div class="email-list__checkbox-indicator" ng-click="$event.stopPropagation()"></div>
+                          </label>
+                          <div class="ellipsis"
+                            uib-tooltip="{{ (emailsCtrl.is_sent_folder ? 'EMAILS.SEND_TO' : thread.formatted_sender) |
+                          translate_with_replace: { emailTo: thread.formatted_recipient } }}"
+                            tooltip-append-to-body="true"
+                            tooltip-enable="emailsCtrl.is_sent_folder ? (thread.formatted_recipient.length > 28) : (thread.formatted_sender.length > 28)"
+                            ng-class="{ 'opacity-08': thread.unread === 0 }"
+                            style="max-width: calc(100% - 25px);">
+                            {{ (emailsCtrl.is_sent_folder ? 'EMAILS.SEND_TO' : thread.formatted_sender) |
+                            translate_with_replace: { emailTo: thread.formatted_recipient } }}
+                          </div>
+                          <div class="email-to-counter text-muted font-small"
+                            ng-class="{ 'opacity-08': thread.unread === 0 }" ng-if="thread.total > 1"
+                            uib-tooltip-html="thread.totalMessagesInfo" tooltip-append-to-body="true"
+                            tooltip-placement="auto top">{{thread.total}}
+                          </div>
+                        </div>
+                      </td>
+                      <td class="big-cell email-list__snippet-area">
+                        <div class="ellipsis nowrap text-muted">
+                          <span class="text-regular"
+                            ng-class="{ 'font-bold': thread.unread > 0, 'opacity-08': thread.unread === 0 }">{{thread.subject
+                            || ('EMAILS.NO_SUBJECT' | translate)}}</span>
+                          <span class="text-muted font-small"
+                            ng-class="{ 'opacity-08': thread.unread === 0 }">{{thread.snippet}}</span>
+                        </div>
+                        <div class="ellipsis nowrap v-overflow-hidden full-width text-left email-list__linked-entity"
+                          ng-class="{ 'opacity-08': thread.unread === 0 }" ng-if="thread.Deal"
+                          uib-tooltip="{{ thread.Deal.Title }}" tooltip-append-to-body="true"
+                          tooltip-placement="auto top" tooltip-enable="thread.Deal.Title.length > 15">
+                          <div class="simple-inline text-neutral">
+                            <i class="fal" ng-class="emailsCtrl.customizables.deals_module.icon_class"></i>
+                          </div>
+                          <span>{{ thread.Deal.Title }}</span>
+                        </div>
+                        <div class="ellipsis nowrap v-overflow-hidden full-width text-left email-list__linked-entity"
+                          ng-class="{ 'opacity-08': thread.unread === 0 }" ng-if="!thread.Deal && thread.Contact"
+                          uib-tooltip="{{ thread.Contact.Name }}" tooltip-append-to-body="true"
+                          tooltip-placement="auto top" tooltip-enable="thread.Contact.Name.length > 15">
+                          <div class="simple-inline text-neutral">
+                            <i class="fal"
+                              ng-class="{ 'fa-industry': thread.Contact.TypeId !== 2, 'fa-user': thread.Contact.TypeId === 2 }"></i>
+                          </div>
+                          <span>{{ thread.Contact.Name }}</span>
+                        </div>
+                      </td>
+                      <td class="text-right nowrap"
+                        ng-class="{ 'font-bold': thread.unread > 0, 'width-200': thread.readsdates, 'width-180': !thread.readsdates, }">
+                        <div ng-if="thread.send_error"
+                          class="simple-inline text-danger"
+                          uib-tooltip="{{ thread.send_error_messages + ( ( thread.send_error_messages === 1 ? 'EMAILS.SEND_ERROR' : 'EMAILS.SEND_ERROR_PLURAL' ) | translate ) }}"
+                          tooltip-append-to-body="true"
+                          tooltip-placement="left">
+                          <i class="fa fa-exclamation"></i>
+                        </div>
+                        <div ng-if="thread.readsdates" class="simple-inline"
+                          ng-class="{ 'text-muted': thread.readsdates.length === 0 , 'text-action': thread.readsdates.length > 0 }"
+                          uib-tooltip-html="thread.ReadsDatesList" tooltip-append-to-body="true"
+                          tooltip-placement="auto top">
+                          <i class="fal fa-eye"></i>
+                        </div>
+                        <div class="simple-inline text-muted" ng-if="thread.with_attachment > 0"
+                          uib-tooltip="{{ 'EMAILS.THREAD_HAS_ATTACHMENTS' | translate_with_replace: { number: thread.with_attachment } }}"
+                          tooltip-append-to-body="true" tooltip-placement="auto top">
+                          <i class="fal fa-paperclip"></i>
+                        </div>
+                        <div class="simple-inline">
+                          <i class="fas" ng-if="thread.processing_irs === 0"
+                            ng-class="{'fa-lock-alt text-neutral': thread.publicmessages === 0, 'fa-unlock-alt text-success': thread.publicmessages > 0 }"
+                            uib-tooltip="{{ thread.publicmessages > 0 ? 'EMAILS.THREAD_HAS_PUBLIC' : 'EMAILS.THREAD_HAS_NOT_PUBLIC' | translate }}"
+                            tooltip-append-to-body="true" tooltip-placement="auto top"></i>
+                          <i class="fas fa-link" ng-if="thread.processing_irs > 0"
+                            uib-tooltip="{{ 'EMAILS.CREATING_LINKS' | translate_with_replace: {messages: thread.processing_irs} }}"
+                            tooltip-append-to-body="true" tooltip-placement="auto top"></i>
+                        </div>
+                        {{thread.formatted_date}}
+                      </td>
+                    </tr>
+                  </table>
+                  <div ng-if="emailsCtrl.initial_load && emailsCtrl.can_load && emailsCtrl.threads.length === 0"
+                    data-cy="no-emails-found"
+                    class="text-muted text-center page-not-found font-big-title">
+                    <div class="gap-50"></div>
+                    <div class="gap-50"></div>
+                    <i class="font-monster-size fal fa-envelope"></i>
+                    <div class="gap-30"></div>
+                    Nenhum e-mail encontrado!
+                  </div>
+                </div>
+                <dynamic-table-pagination
+                  ng-if="emailsCtrl.initial_load && emailsCtrl.threads.length > 0" disable="!emailsCtrl.can_load"
+                  items-per-page="emailsCtrl.top" current-page="emailsCtrl.current_page"
+                  total-items="emailsCtrl.total_items" change-page-callback-fn="emailsCtrl.changePageCallback(page)">
+                </dynamic-table-pagination>
+              </section>
+            </div>
+          </aside>
+          <aside class="dark-background b-l-1" ng-if="emailsCtrl.selected_email_group_id && !emailsCtrl.loading_skeleton">
+            <email-group selected-folder="emailsCtrl.selected_folder"
+              email-group-id="emailsCtrl.selected_email_group_id"
+              unread-messages="emailsCtrl.selectedThreadUnreadMessages" update-actions-fn="emailsCtrl.updateActions"
+              user-data="emailsCtrl.userData"
+              is-opening-from-url="emailsCtrl.opening_email_group_directly">
+            </email-group>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!--MODALS-->
+  <email-templates ng-if="emailsCtrl.state.current.name.includes('.emailtemplates')"></email-templates>
+  <email-integrations ng-if="emailsCtrl.state.current.name.includes('.emailintegrations')"
+    create-interaction-records="emailsCtrl.userPreferences.createinteractionrecords"
+    message-signature="emailsCtrl.userPreferences.messagesignature" update-actions-fn="emailsCtrl.updateActions" initial-load="emailsCtrl.initial_load">
+  </email-integrations>
+  <email-folders-modal ng-if="emailsCtrl.state.current.name.includes('.emailfolders')"></email-folders-modal>
+  <email-filters-modal ng-if="emailsCtrl.state.current.name.endsWith('filter')" modal-id="filter_modal"
+    entity="emailsCtrl.main_entity" remove-simple-filter="true" filter-actions-fn="emailsCtrl.filterActions"
+    filters="emailsCtrl.filters" , update-filters-callback-fn="emailsCtrl.updateFiltersCallback">
+  </email-filters-modal>
+
+  <!--SIDE-MENU-->
+  <side-menu side-menu-id="email_side_menu">
+    <email-side-menu></email-side-menu>
+  </side-menu>
+  <!--END OF SIDE-MENU-->
+</div>
+<div class="vbox d-flex align-items-center justify-content-center" ng-if="emailsCtrl.errorEmails">
+  <div class="text-center text-muted">
+    <span class="font-monster-size d-block">
+      <i class="fas fa-bomb"></i>
+    </span>
+    <h3 class="mt-10">
+      Erro ao carregar o módulo
+    </h3>
+    <button class="button button-white" ng-click="emailsCtrl.refreshEmails()">
+      <span class="text-action"><i class="fal fa-sync button-icon"></i></span>
+      <span>
+        Recarregar
+      </span>
+    </button>
+    <h5>
+      Caso o erro persista, acesse nosso canal de suporte.
+    </h5>
+  </div>
+  
+</div>

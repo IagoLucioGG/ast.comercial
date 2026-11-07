@@ -1,0 +1,54 @@
+<header>
+  <div class="light-background b-b-1 side-wrapper height-50">
+    <div class="hbox stretch">
+      <aside class="width-45 v-middle">
+        <div class="height-30 text-center width-30 light-background b-t-2 b-b-2 b-r-2 b-l-2">
+          <div class="hbox stretch">
+            <aside class="v-middle font-title">
+              <div class="gap-3"></div>
+              <i ng-if="mainContactCtrl.contact_view.TypeId === 1" class="fal fa-industry text-neutral-light"></i>
+              <i ng-if="mainContactCtrl.contact_view.TypeId === 2" class="fal fa-user text-neutral-light"></i>
+            </aside>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="font-thin font-title big-simple-inline max-width-400 ellipsis align-middle nowrap">{{mainContactCtrl.contact_view.Name}}</div>
+      </aside>
+      <aside class="v-middle width-25 text-right">
+        <div class="mini-side-wrapper">
+          <div class="dropdown pull-right"><a class="button button-white-light-border dropdown-toggle nowrap" href data-toggle="dropdown" aria-expanded="false"><span class="text-darkest-neutral">Opções<i class="fal fa-angle-down dropdown-sign"></i></span></a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right">
+              <li ng-if="mainContactCtrl.contact_view.Editable">
+                <a class="white-dropdown-link" ng-click="mainContactCtrl.editContact()">
+                  <i class="fad fa-pen simple-line list-simple-line" ></i>Editar Cliente
+                </a>
+              </li>
+              <li ng-if="mainContactCtrl.contact_view.Editable && mainContactCtrl.isMergeContactAvailable"
+                ng-class="{'disabled': !mainContactCtrl.isMergeContactEnabled}"
+                ng-click="!mainContactCtrl.isMergeContactEnabled && $event.stopPropagation()"
+                uib-tooltip-html="mainContactCtrl.htmlMergeContactTooltip"
+                tooltip-enable="!mainContactCtrl.isMergeContactEnabled"
+                tooltip-placement="top"
+                tooltip-append-to-body="true">
+                <a class="white-dropdown-link" ng-click="mainContactCtrl.openMergeContactModal()">
+                  <i class="fal fa-merge simple-line list-simple-line" ></i>Mesclar cliente
+                </a>
+              </li>
+              <li ng-if="mainContactCtrl.contact_view.Deletable">
+                <a class="white-dropdown-link" ng-click="mainContactCtrl.deleteContact()" ng-click-confirm="{{::('CONFIRMATIONS.CONTACT_DELETE' | translate)}} &quot;{{mainContactCtrl.contact_view.Name}}&quot;" reversible="false">
+                  <i class="fal fa-trash simple-line list-simple-line" ></i>Excluir Cliente
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click="toggleVersion()">
+                  <i class="fad fa-desktop-alt simple-line list-simple-line"></i>Usar versão nova
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</header>

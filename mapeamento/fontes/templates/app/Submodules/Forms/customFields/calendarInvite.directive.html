@@ -1,0 +1,20 @@
+﻿<div ng-if="!disabled" class="form-group">
+  <div class="hbox">
+    <aside class="v-middle" ng-hide="hideLabel">
+      <span class="font-semi-big">
+        {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ENTITY_PAGE_FORMS.NOTIFY_RELATED_PEOPLE' | translate }}
+      </span>
+      <br>
+      <span class="text-muted font-small">
+        {{ 'GENERIC_DIRECTIVES.ENTITY_PAGE.ENTITY_PAGE_FORMS.NOTIFY_RELATED_PEOPLE_TOOLTIP' | translate }}
+      </span>
+    </aside>
+    <aside class="v-middle">
+      <div class="switch">
+        <input id="cmn-toggle-5" ng-click="calendarInviteCtrl.setInvite()" ng-checked="model === true"
+          class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+        <label class="pull-right" for="cmn-toggle-5"></label>
+      </div>
+    </aside>
+  </div>
+</div>

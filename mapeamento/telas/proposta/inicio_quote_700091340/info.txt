@@ -1,0 +1,7 @@
+passo: scenario_start
+url: https://app10.ploomes.com/quote/700091340
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: captured

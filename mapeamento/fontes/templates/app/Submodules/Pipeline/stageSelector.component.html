@@ -1,0 +1,23 @@
+<div class="dropdown clearfix margin-auto" ng-if="$ctrl.stages">
+  <a href class="dropdown-toggle button button-white-light-border break-word-container" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-class="{ 'border-invalid-field': !$ctrl.selectedStage }">
+    <span ng-if="$ctrl.selectedStage">{{ 'PIPELINES.STAGE' | translate }}: {{ $ctrl.selectedStage.Name }}</span>
+    <span ng-if="!$ctrl.selectedStage">{{ 'PIPELINES.STAGE' | translate }}: </span>
+    <span ng-if="$ctrl.stages.length > 1">
+      <i class="fal fa-angle-down dropdown-sign"></i>
+    </span>
+  </a>
+  <ul class="dropdown-menu white-dropdown-menu no-padding-top full-width" aria-labelledby="more_options" ng-if="$ctrl.stages.length > 1">
+    <div class="dropdown-subtitle">
+      {{ 'PIPELINES.SELECT_STAGE' | translate_sentence }}
+    </div>
+    <li ng-repeat="stage in $ctrl.stages" ng-if="stage.Id !== $ctrl.selectedStage.Id" ng-click="$ctrl.changeStage(stage)">
+      <a href class="white-dropdown-link">
+        <div class="hbox">
+          <aside class="v-middle break-word-container">
+            {{stage.Name}}
+          </aside>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

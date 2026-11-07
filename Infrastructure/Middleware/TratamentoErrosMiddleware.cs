@@ -14,6 +14,11 @@ public class TratamentoErrosMiddleware(RequestDelegate next, ILogger<TratamentoE
         {
             await next(context);
         }
+        catch (AST.Comercial.Application.RegraNegocioException ex)
+        {
+            logger.LogInformation("Regra de negócio violada: {Path} - {Mensagem}", context.Request.Path, ex.Message);
+            await EscreverResposta(context, 422, ex.Message);
+        }
         catch (KeyNotFoundException ex)
         {
             logger.LogWarning(ex, "Recurso não encontrado: {Path}", context.Request.Path);
@@ -23,6 +28,23 @@ public class TratamentoErrosMiddleware(RequestDelegate next, ILogger<TratamentoE
         {
             logger.LogWarning(ex, "Acesso não autorizado: {Path}", context.Request.Path);
             await EscreverResposta(context, 403, "Acesso negado.");
+        }
+        catch (Microsoft.EntityFrameworkCore.DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException { SqlState: "23503" or "23502" or "23505" })
+        {
+            var pg = (Npgsql.PostgresException)ex.InnerException!;
+            logger.LogWarning(ex, "Violação de integridade ({Estado}): {Path}", pg.SqlState, context.Request.Path);
+            switch (pg.SqlState)
+            {
+                case "23505":
+                    await EscreverResposta(context, 409, "Já existe um registro com estes dados.");
+                    break;
+                case "23502":
+                    await EscreverResposta(context, 422, "Há campo obrigatório não informado.");
+                    break;
+                default:
+                    await EscreverResposta(context, 422, "Há referência a um registro que não existe (verifique os campos de vínculo, como cliente, funil ou etapa).");
+                    break;
+            }
         }
         catch (InvalidOperationException ex)
         {

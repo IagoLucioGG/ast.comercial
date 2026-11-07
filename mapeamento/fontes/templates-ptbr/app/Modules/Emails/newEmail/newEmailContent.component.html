@@ -1,0 +1,313 @@
+<div class="gap-15" ng-if="!$ctrl.useCompactView"></div>
+<form class="clearfix">
+  <div ng-if="!$ctrl.useCompactView">
+    <div class="form-group col-sm-12">
+      <div class="hbox">
+        <aside class="v-middle width-60 text-right">
+          <div class="right-wrapper">Para:</div>
+        </aside>
+        <aside class="v-middle">
+          <tags-input ng-model="$ctrl.To" on-tag-added="$ctrl.contactChangedCallback()"
+            on-tag-removed="$ctrl.contactChangedCallback()" replace-spaces-with-dashes="false" template="item-template"
+            placeholder="Adicionar..." class="email-tags-input-hack">
+            <auto-complete grouped-template source="$ctrl.getEmails($query)" select-first-match="false" min-length="{{$ctrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" debounce-delay="300" load-on-empty="true" max-results-to-show="30">
+            </auto-complete>
+          </tags-input>
+        </aside>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="hbox">
+        <aside class="v-middle width-60 text-right">
+          <div class="right-wrapper">Cc:</div>
+        </aside>
+        <aside class="v-middle">
+          <tags-input ng-model="$ctrl.Cc" replace-spaces-with-dashes="false" template="item-template"
+            placeholder="Adicionar..." class="email-tags-input-hack">
+            <auto-complete grouped-template source="$ctrl.getEmails($query)" select-first-match="false" min-length="{{$ctrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" debounce-delay="300" load-on-empty="true"  max-results-to-show="30">
+            </auto-complete>
+          </tags-input>
+        </aside>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="hbox">
+        <aside class="v-middle width-60 text-right">
+          <div class="right-wrapper">Cco:</div>
+        </aside>
+        <aside class="v-middle">
+          <tags-input ng-model="$ctrl.Bcc" replace-spaces-with-dashes="false" template="item-template"
+            placeholder="Adicionar..." class="email-tags-input-hack">
+            <auto-complete grouped-template source="$ctrl.getEmails($query)" select-first-match="false" min-length="{{$ctrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" debounce-delay="300" load-on-empty="true"  max-results-to-show="30">
+            </auto-complete>
+          </tags-input>
+        </aside>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="hbox">
+        <aside class="v-middle width-60 text-right">
+          <div class="right-wrapper">Assunto:</div>
+        </aside>
+        <aside class="v-middle">
+          <input 
+            ng-change="$ctrl.changeSubjectInput()" 
+            class="form-control input-sm" 
+            ng-class="{'is-invalid-input': $ctrl.errorSubject}" 
+            placeholder="" 
+            ng-model="$ctrl.Subject"
+          />
+        </aside>
+      </div>
+    </div>
+    <div class="form-group col-sm-12 f-1 jc-start">
+      <div class="hbox">
+        <aside class="v-middle width-60 text-right">
+          <div class="right-wrapper">Modelo: </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="flex-align-center">
+            <div style="width: 300px;">
+              <email-template-selector
+                template-id="$ctrl.current_template_id"
+                on-template-change="$ctrl.changeTemplate"
+              ></email-template-selector>
+            </div>
+            <div ng-if="$ctrl.current_document && $ctrl.current_template" class="flex-align-center">
+              <div class="right-wrapper pl-20">Link: </div>
+              <div>
+                <a class="button button-white-light-border nowrap" ng-click="$ctrl.addViewDocumentLink()" href>
+                  <span>
+                    <span class="text-action"><i class="button-icon fal fa-link"></i></span>
+                    Adicionar link de visualização
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="$ctrl.shouldCreateIr">
+      <div class="hbox">
+        <aside class="v-middle width-60 text-right">
+          <div class="right-wrapper">Ocultar:</div>
+        </aside>
+        <aside class="v-middle">
+          <div class="switch">
+            <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-disable-ir" type="checkbox"
+              ng-model="$ctrl.disableinteractionrecord">
+            <label class="pull-left" for="cmn-disable-ir" uib-tooltip="Ao ocultar essa mensagem, não serão criados Registros de Interação para ela, ficando visível apenas para você dentro do sistema." tooltip-append-to-body="true"></label>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="$ctrl.useCompactView">
+    <div class="hbox">
+      <aside class="v-middle side-wrapper">
+        <div>
+          <div class="hbox fixed-size" ng-if="$ctrl.editingDraft">
+            <aside class="v-middle nowrap width-60">
+              <div class="right-wrapper ellipsis">Assunto:</div>
+            </aside>
+            <aside class="v-middle">
+              <input 
+                ng-change="$ctrl.changeSubjectInput()" 
+                class="form-control input-sm" 
+                ng-class="{'is-invalid-input': $ctrl.errorSubject}" 
+                placeholder="" 
+                ng-model="$ctrl.Subject"
+              />
+            </aside>
+          </div>
+          <div class="gap-5" ng-if="$ctrl.editingDraft"></div>
+          <div class="hbox fixed-size">
+            <aside class="v-middle nowrap width-60">
+              <div class="right-wrapper ellipsis">Para:</div>
+            </aside>
+            <aside class="v-middle">
+              <tags-input ng-model="$ctrl.To" on-tag-added="$ctrl.contactChangedCallback()"
+                on-tag-removed="$ctrl.contactChangedCallback()" replace-spaces-with-dashes="false"
+                template="item-template" placeholder="Adicionar..." class="email-tags-input-hack">
+                <auto-complete grouped-template source="$ctrl.getEmails($query)" min-length="{{$ctrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" load-on-empty="true"
+                  debounce-delay="300" select-first-match="false" max-results-to-show="30">
+                </auto-complete>
+              </tags-input>
+            </aside>
+            <aside class="v-middle width-70 left-wrapper">
+              <a class="inline-link-darkest-neutral" href ng-click="$ctrl.toggleShowCcAndBcc()">
+                Cc / Cco
+              </a>
+            </aside>
+          </div>
+          <div class="gap-10"></div>
+        </div>
+        <div ng-show="$ctrl.show_cc_and_bcc">
+          <div class="hbox fixed-size">
+            <aside class="v-middle nowrap width-60">
+              <div class="right-wrapper">Cc:</div>
+            </aside>
+            <aside class="v-middle">
+              <tags-input ng-model="$ctrl.Cc" replace-spaces-with-dashes="false" template="item-template"
+                placeholder="Adicionar..." class="email-tags-input-hack">
+                <auto-complete grouped-template source="$ctrl.getEmails($query)" min-length="{{$ctrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" load-on-empty="true"
+                  debounce-delay="300" select-first-match="false" max-results-to-show="30">
+                </auto-complete>
+              </tags-input>
+            </aside>
+          </div>
+          <div class="gap-10"></div>
+        </div>
+        <div ng-show="$ctrl.show_cc_and_bcc">
+          <div class="hbox fixed-size">
+            <aside class="v-middle nowrap width-60">
+              <div class="right-wrapper">Cco:</div>
+            </aside>
+            <aside class="v-middle">
+              <tags-input ng-model="$ctrl.Bcc" replace-spaces-with-dashes="false" template="item-template"
+                placeholder="Adicionar..." class="email-tags-input-hack">
+                <auto-complete grouped-template source="$ctrl.getEmails($query)" min-length="{{$ctrl.MIN_LENGTH_AUTO_COMPLETE}}" load-on-focus="true" load-on-empty="true"
+                  debounce-delay="300" select-first-match="false" max-results-to-show="30">
+                </auto-complete>
+              </tags-input>
+            </aside>
+          </div>
+          <div class="gap-10"></div>
+        </div>
+        <div class="hbox fixed-size mb-10">
+          <aside class="v-middle nowrap width-60">
+            <div class="right-wrapper ellipsis">
+              Modelo: </div>
+          </aside>
+          <aside class="v-middle">
+            <div style="width: 300px;">
+              <email-template-selector
+                template-id="$ctrl.current_template_id"
+                on-template-change="$ctrl.changeTemplate"
+              ></email-template-selector>
+            </div>
+          </aside>
+        </div>
+        <div class="hbox fixed-size">
+          <aside class="v-middle nowrap width-60">
+            <div class="right-wrapper ellipsis">Ocultar:</div>
+          </aside>
+          <aside class="v-middle">
+            <div class="switch">
+              <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-disable-ir" type="checkbox"
+                ng-model="$ctrl.disableinteractionrecord">
+              <label class="pull-left" for="cmn-disable-ir" uib-tooltip="Ao ocultar essa mensagem, não serão criados Registros de Interação para ela, ficando visível apenas para você dentro do sistema." tooltip-append-to-body="true"></label>
+            </div>
+          </aside>
+        </div>
+        <div class="gap-10"></div>
+      </aside>
+    </div>
+  </div>
+  <!-- <standard-loader margin-top="15" loading="!$ctrl.initial_load"></standard-loader> -->
+  <div class="form-group col-sm-12">
+    <div ng-if="!$ctrl.rich_text_editor_feature && $ctrl.initial_load" pl-ckeditor="$ctrl.options" ckeditor-loaded="$ctrl.ckeditor_loaded"
+      ng-model="$ctrl.Content">
+    </div>
+    <rich-text-editor
+      ng-if="$ctrl.rich_text_editor_feature && $ctrl.initial_load"
+      value="$ctrl.Content"
+      mode="'email'"
+      on-change-value="$ctrl.onRichTextEditorChangeValue"
+      language="$ctrl.language"
+      min-height="260"
+      height="260"
+    ></rich-text-editor>
+  </div>
+  <div class="form-group col-sm-12">
+    <div class="hbox">
+      <div class="d-flex space-gap-5 align-items-center">
+        <attachment-upload file-upload-callback="$ctrl.fileUploadCallback" position="'left'"
+        save-selected-items-callback="$ctrl.saveSelectedItemsCallback" items="$ctrl.items">
+        </attachment-upload>
+        <!--  -->
+        <div class="grid-attachment-files --reduced">
+          <div class="line-item light-badge neutral-timeline-item-content badge-border ng-scope"
+            ng-if="$ctrl.current_document && $ctrl.current_document_attachment_name">
+            <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+              <span class="align-middle ng-binding text-ellipsis">{{$ctrl.current_document_attachment_name}}
+                <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" href
+                ng-click="$ctrl.disableDocumentsAttachmentsFn()">
+                <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2" href></i>
+              </div>
+              </span>
+            </div>
+          </div>
+          <div class="line-item light-badge neutral-content badge-border badge-deletable" href
+            ng-repeat="file in $ctrl.files">
+            <div class="text-darkest-neutral font-small font-bold table-cell-align-top d-flex badge-attachment-email">
+              <show-tooltip-on-text-overflow
+                class="align-middle"
+                append-to-body="true"
+                tooltip-text="{{file.name}}"
+              ></show-tooltip-on-text-overflow>
+              <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" href
+                ng-click="$ctrl.removeAttachmentFile($index)">
+                <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2" href></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="line-item light-badge neutral-content badge-border badge-deletable" href
+            ng-repeat="item in $ctrl.items">
+            <div class="text-darkest-neutral font-small font-bold table-cell-align-top d-flex badge-attachment-email">
+              <show-tooltip-on-text-overflow
+                class="align-middle"
+                append-to-body="true"
+                tooltip-text="{{item.Name + (item.IsCollection ? '.zip' : '')}}"
+              ></show-tooltip-on-text-overflow>
+              <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" href
+                ng-click="$ctrl.removeAttachmentItem($index)">
+                <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2" href></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="line-item light-badge neutral-content badge-border badge-deletable" href
+            ng-repeat="folder in $ctrl.folders">
+            <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+              <show-tooltip-on-text-overflow
+                class="align-middle"
+                append-to-body="true"
+                tooltip-text="{{folder.Name + '.zip'}}"
+              ></show-tooltip-on-text-overflow>
+              <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" href
+                ng-click="$ctrl.folders.splice($index, 1)">
+                <i class="fas fa-times text-darkest-neutral" href></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+      </div>
+      <aside class="v-middle text-right" ng-if="$ctrl.enableSubmitButton">
+        <div class="button button-action pull-right" ng-click="$ctrl.sendEmail()">
+          Enviar
+        </div>
+        <div class="button button-white pull-right" ng-click="$ctrl.saveDraft()">
+          Salvar rascunho
+        </div>
+        <loading-tooltip loading="$ctrl.sending"></loading-tooltip>
+      </aside>
+    </div>
+  </div>
+
+</form>
+
+<script type="text/ng-template" id="item-template">
+  <a class="light-badge neutral-content badge-border pull-left">
+    <div class="text-darkest-neutral font-bold table-cell-align-top email-tag-flex-hack">
+      <span class="align-middle">{{data.text}}</span>
+      <i class="fas fa-times remove-mail" ng-click="$removeTag()"></i>
+    </div>
+  </a>
+</script>
+
+<script type="text/ng-template" id="popover-attachment-file"></script>

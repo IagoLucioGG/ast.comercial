@@ -1,0 +1,189 @@
+<div class="vbox small-header">
+  <div ng-class="{'mt-15-percent': !orderPageCtrl.can_load || orderPageCtrl.loadingHtmlGeneration}">
+    <loader
+      loading="!orderPageCtrl.can_load || orderPageCtrl.loadingHtmlGeneration"
+      title="orderPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.TITLE' | translate) : undefined"
+      message="orderPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.MESSAGE' | translate) : undefined">
+    </loader>
+  </div>
+  <header class="regular-header b-b-1 new-header" ng-if="orderPageCtrl.can_load && !orderPageCtrl.loadingHtmlGeneration && !orderPageCtrl.not_found">
+    <div class="hbox stretch" ng-show="orderPageCtrl.can_load && !orderPageCtrl.loadingHtmlGeneration">
+      <aside class="v-middle">
+        <a class="btn-invisible" ng-click="orderPageCtrl.goToDeal()" ng-if="orderPageCtrl.order.Deal">
+          <div style="display: flex">
+            <div style="display: flex; flex-direction: row; width: 20px; justify-content: flex-start; font-size: 10px; align-items: center;">
+              <i class="fal fa-arrow-left"></i>
+            </div>
+            <span class="font-title font-thin">
+              {{ ('GENERICS.VISUALIZE' | translate) + ' ' + orderPageCtrl.pipelineSingularUnitName.toLowerCase()}}
+            </span>
+          </div>
+        </a>
+      </aside>
+      <aside class="v-middle">
+        <a
+          class="button button-action pull-right"
+          ui-sref="order.share"
+          ng-if="orderPageCtrl.order.ApprovalStatusId === 2 || orderPageCtrl.order.ApprovalStatusId === null"
+          ng-class="{ 'disabled' : !orderPageCtrl.hasSharePermission }"
+          ng-disabled="!orderPageCtrl.hasSharePermission"
+          uib-tooltip="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.NO_PERMISSION_TO_SHARE' | translate }}"
+          tooltip-append-to-body="true"
+          tooltip-placement="bottom"
+          tooltip-enable="!orderPageCtrl.hasSharePermission">
+          <i class="button-icon fas fa-paper-plane"></i>
+          {{ 'GENERICS.SHARE' | translate }}
+        </a>
+        <div class="dropdown display-inline-block pull-right" ng-if="(!orderPageCtrl.order.Shared && (orderPageCtrl.order.Editable || orderPageCtrl.order.Deletable)) && !(orderPageCtrl.wide_buttons_docusign)">
+          <a class="dropdown-toggle button button-white-no-border pull-right bottom-menu-button" id="edit-list" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="text-action"><i class="button-icon fal fa-pen"></i></span>
+            {{ 'GENERICS.EDIT' | translate }}
+            <i class="fal fa-angle-down dropdown-sign"></i>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+            <li ng-if="orderPageCtrl.order.Editable">
+              <a class="white-dropdown-link" href ng-click-confirm="{{ 'ORDERS.UPDATE_DATA_AND_MODEL_CONFIRM' | translate }}" reversible="false" ng-click="orderPageCtrl.updateOrder()">
+                <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <i class="fal fa-file-image"></i>
+                    </aside>
+                    <aside>{{ 'ORDERS.UPDATE_DATA_AND_MODEL' | translate }}</aside>
+                  </div>
+              </a>
+            </li>
+            <li ng-if="orderPageCtrl.order.Editable">
+              <a class="white-dropdown-link new-proposal-pane-example" ng-click="orderPageCtrl.goToOrderEdit()">
+                <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <i class="fal fa-pen-square"></i>
+                    </aside>
+                    <aside>{{ 'ORDERS.EDIT_POPULATED_VALUES' | translate }}</aside>
+                  </div>
+              </a>
+            </li>
+            <li ng-if="orderPageCtrl.cpq_beta_button_enabled && orderPageCtrl.order.Editable">
+              <a class="white-dropdown-link new-proposal-pane-example" ng-click="orderPageCtrl.goToBetaOrderEdit()">
+                <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <i class="fal fa-pen-square"></i>
+                    </aside>
+                    <aside>{{ 'ORDERS.EDIT_POPULATED_VALUES' | translate }}&nbsp;{{ 'GENERICS.BETA_UPPER' | translate }}</aside>
+                  </div>
+              </a>
+            </li>
+            <li ng-if="!orderPageCtrl.hasBusinessRules && orderPageCtrl.order.Editable && !orderPageCtrl.cantSeeDealOrder">
+              <a class="white-dropdown-link new-proposal-pane-example" ui-sref="{{'docgenerator({ editing_html: true, editing_html_model: orderPageCtrl.order, editing_html_entity: \'order\' })'}}">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <i class="fal fa-file-edit"></i>
+                  </aside>
+                  <aside>{{ 'ORDERS.VISUAL_MODIFICATION' | translate }}</aside>
+                </div>
+              </a>
+            </li>
+            <li ng-if="!orderPageCtrl.hasBusinessRules && orderPageCtrl.order.Editable && orderPageCtrl.cantSeeDealOrder">
+              <a class="white-dropdown-link new-proposal-pane-example" ng-click="orderPageCtrl.triggerCantSeeDealOrderError('modify')">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <i class="fal fa-file-edit"></i>
+                  </aside>
+                  <aside>{{ 'ORDERS.VISUAL_MODIFICATION' | translate }}</aside>
+                </div>
+              </a>
+            </li>
+            <li ng-if="orderPageCtrl.order.Editable">
+              <a class="ck-editor-pane-example white-dropdown-link" ng-click="orderPageCtrl.duplicateOrder()">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <i class="fal fa-copy"></i>
+                  </aside>
+                  <aside>{{ 'ORDERS.DUPLICATE_ORDER' | translate }}</aside>
+                </div>
+              </a>
+            </li>
+            <li ng-if="orderPageCtrl.cpq_beta_button_enabled && orderPageCtrl.order.Editable">
+              <a class="ck-editor-pane-example white-dropdown-link" ng-click="orderPageCtrl.betaDuplicateOrder()">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <i class="fal fa-copy"></i>
+                  </aside>
+                  <aside>{{ 'ORDERS.DUPLICATE_ORDER' | translate }} {{ 'GENERICS.BETA_UPPER' | translate }}</aside>
+                </div>
+              </a>
+            </li>
+            <li ng-if="orderPageCtrl.order.Deletable">
+              <a class="ck-editor-pane-example white-dropdown-link" ng-click="orderPageCtrl.deleteOrder()" ng-click-confirm="{{ 'ORDERS.DELETE_ORDER_CONFIRM' | translate }} &quot;#{{orderPageCtrl.order.OrderNumber}}&quot;?" reversible="false">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <i class="fal fa-trash"></i>
+                  </aside>
+                  <aside>{{ 'ORDERS.DELETE_ORDER' | translate }}</aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <document-approval entity-id="4" document="orderPageCtrl.order" class="pull-right"></document-approval>
+        <document-share-status-bar model="orderPageCtrl.order" api-url="Orders" entity-id="4"></document-share-status-bar>
+        <div class="pull-right">
+          <omie-entity-status
+            entity-id="orderPageCtrl.orderEntityId"
+            item-value="orderPageCtrl.order"
+          ></omie-entity-status>
+        </div>
+        <div
+          class="d-flex ai-center jc-center space-gap-5 pull-right margin-right-5"
+          ng-if="orderPageCtrl.sankhyaIntegrationModule && orderPageCtrl.sankhyaIntegration.Active"
+        >
+          <sankhya-entity-status-modal
+            entity-id="4"
+            item-id="orderPageCtrl.order.Id"
+            item-value="orderPageCtrl.order"
+            modal-width="490"
+            update-cod-sankhya-on-angular="orderPageCtrl.updateSankhyaNunota"
+          >
+          </sankhya-entity-status-modal>
+          <sankhya-confirm-and-invoice-modal
+            nunota="orderPageCtrl.sankhyaNunota"
+            item-id="orderPageCtrl.order.Id"
+            pipeline-id="orderPageCtrl.pipelineId"
+            rule-id="8"
+          >
+          </sankhya-confirm-and-invoice-modal>
+        </div>
+      </aside>
+    </div>
+  </header>
+  <order-side-slide order="orderPageCtrl.order" ng-if="!orderPageCtrl.not_found"></order-side-slide>
+  <section ng-show="orderPageCtrl.can_load && !orderPageCtrl.loadingHtmlGeneration && !orderPageCtrl.not_found">
+    <div class="hbox stretch">
+      <aside class="dark-background">
+        <div class="vbox">
+          <section class="scrollable">
+            <order-page-funnel order="orderPageCtrl.order" stages="orderPageCtrl.stages" ng-if="orderPageCtrl.can_load && !orderPageCtrl.loadingHtmlGeneration && !orderPageCtrl.not_found"></order-page-funnel>
+            <div class="wrapper dark-background">
+              <div ng-class="{'mt-15-percent': !orderPageCtrl.can_load || orderPageCtrl.loadingHtmlGeneration}">
+                <loader
+                  loading="!orderPageCtrl.can_load || orderPageCtrl.loadingHtmlGeneration"
+                  title="orderPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.TITLE' | translate) : undefined"
+                  message="orderPageCtrl.loadingHtmlGeneration ? ('ORDERS.LOADING_HTML_GENERATION.MESSAGE' | translate) : undefined">
+                </loader>
+              </div>
+              <div class="full-width" ng-show="orderPageCtrl.can_load && !orderPageCtrl.loadingHtmlGeneration">
+                <div class="width-800 margin-auto">
+                  <iframe id="preview-ifr" frameborder="0" scrolling="no" style="width: 100%;" height="0"></iframe>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+      <order-side-slide-options ng-if="orderPageCtrl.order" order="orderPageCtrl.order" show-external-comments="orderPageCtrl.shouldDisplayExternalComments"></order-side-slide-options>
+    </div>
+  </section>
+  <section ng-if="orderPageCtrl.not_found">
+    <page-not-found></page-not-found>
+  </section>
+  <!-- MODALS -->
+  <order-modal ng-if="orderPageCtrl.state.current.name.includes('.edit')" model="orderPageCtrl.order"></order-modal>
+</div>

@@ -1,0 +1,176 @@
+<div class="wrapper">
+  <div class="panel b-1 white-content medium-shado mtop10" ng-repeat="if in ifFormulaConfigCtrl.if_list">
+    <table class="table table table-striped modal-table">
+      <thead>
+        <tr>
+          <th colspan="3">
+            <div class="font-big">
+              <span class="text-regular">{{ (if.is_else_block ? 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.ELSE' : ($first ? 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.IF' : 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.OR_IF')) | translate }}</span>
+            </div>
+          </th>
+          <th class="text-center">
+            <div class="hbox">
+              <aside ng-if="!if.is_else_block">
+                <a class="button-white button-fixed-size button-fixed-size-small" ng-click="ifFormulaConfigCtrl.removeIf($index)">
+                  <span class="text-action"><i class="fal fa-trash fixing-fixed-size-button"></i></span>
+                </a>
+              </aside>
+              <aside>
+                <a class="button-white button-fixed-size button-fixed-size-small" ng-if="!if.is_else_block" ng-click="ifFormulaConfigCtrl.duplicateIf(if)">
+                  <span class="text-action"><i class="fal fa-clone fixing-fixed-size-button"></i></span>
+                </a>
+              </aside>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <thead ng-if="!if.is_else_block">
+        <tr>
+          <th class="font-bold text-uppercase">Campo</th>
+          <th class="font-bold text-uppercase">Operação</th>
+          <th class="font-bold text-uppercase">Valor</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody ng-if="!if.is_else_block" class="if-formula-config-condition-table">
+        <tr ng-repeat="condition in if.condition_list">
+          <td>
+            {{ condition.selected_field.entity.Name + '.' + condition.selected_field.label }}
+          </td>
+          <td>
+            <select
+              class="form-control input-sm"
+              ng-options="operation.Operation.Name for operation in condition.selected_field.operations track by operation.Operation.Id"
+              ng-model="condition.selected_operation"
+              ng-disabled="!condition.selected_field">
+            </select>
+          </td>
+          <td>
+            <!-- {{condition.display}} -->
+            <new-field
+              ng-if="condition.selected_operation"
+              field="condition.selected_field"
+              model="condition.model"
+              property="condition.selected_field.key"
+              required="false"
+              disabled="false"
+              wide="false"
+              outside-form="true"
+              hide-label="true"
+              not-suggest-new-item="true"
+              not-trigger-formula="true"
+              ignore-default-values="true"
+              model-change-callback="ifFormulaConfigCtrl.valueChangeCallback(new_val, old_val, first_trigger, condition)">
+            </new-field>
+          </td>
+          <td class="text-center">
+            <a class="button-inherit button-fixed-size button-fixed-size-small" href ng-if="if.condition_list.length > 0" ng-click="ifFormulaConfigCtrl.removeCondition($index, condition, if.condition_list)">
+              <i class="fal fa-trash fixing-fixed-size-button"></i>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="input-group">
+              <div class="input-group-btn dropdown v-top">
+                <field-path-selection
+                  field-selection-fn="ifFormulaConfigCtrl.selectField(field, field_path_id, $index)"
+                  enforce-field-path-reachability="true"
+                  start-entity-id="field.entityId"
+                  uib-tooltip="{{ifFormulaConfigCtrl.var_name[$index]}}"
+                  tooltip-append-to-body="true"
+                  tooltip-enable="ifFormulaConfigCtrl.var_name[$index] && ifFormulaConfigCtrl.var_name[$index].length > 20"
+                  dynamic-label="ifFormulaConfigCtrl.var_name[$index] ? (ifFormulaConfigCtrl.var_name[$index].length > 20 ? (ifFormulaConfigCtrl.var_name[$index]).substring(0, 20) + '...' : ifFormulaConfigCtrl.var_name[$index]) : ('FIELD_CONFIG_MODAL.FORMULA_CONFIG.FIELDS' | translate)"
+                  skip-pull-right="true"
+                  start-tree-edit-fn="parentCtrl.addCustomNodes(tree)"
+                  custom-filter-fn="parentCtrl.customFieldFilter(field, field.entityId)">
+                </field-path-selection>
+              </div>
+            </div>
+          </td>
+          <td>
+            <select ng-options="operation.Operation.Name for operation in ifFormulaConfigCtrl.selected_field[$index].operations track by operation.Operation.Id" class="form-control input-sm" ng-model="ifFormulaConfigCtrl.selected_operation[$index]" ng-disabled="!ifFormulaConfigCtrl.selected_field[$index]">
+            </select>
+          </td>
+          <td>
+            <new-field ng-if="ifFormulaConfigCtrl.selected_operation[$index]" field="ifFormulaConfigCtrl.selected_field[$index]" model="ifFormulaConfigCtrl.condition[$index]" property="ifFormulaConfigCtrl.selected_field[$index].key" required="false" disabled="false" wide="false" outside-form="true" hide-label="true" not-suggest-new-item="true"></new-field>
+            <span ng-if="!ifFormulaConfigCtrl.selected_operation[$index]">
+              <input disabled="true" class="form-control input-sm" />
+            </span>
+          </td>
+          <td class="text-center">
+            <span class="button-fixed-size button-action button-fixed-size-big" ng-class="{'disabled': ifFormulaConfigCtrl.selected_operation[$index] === null || ifFormulaConfigCtrl.selected_operation[$index] === undefined}" ng-click="ifFormulaConfigCtrl.selected_operation[$index] && ifFormulaConfigCtrl.createCondition(if.condition_list, $index)">
+              <i class="fas fa-check"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th colspan="4" class="cancel-text-transform">
+            <div class="font-big" ng-if="!if.is_else_block">
+              <span class="text-regular">ENTÃO...</span>
+            </div>
+            <div class="gap-5"></div>
+            <div class="input-group">
+              <div ng-class="{'invalid-input': if.is_else_block && !if.formula_string && parentCtrl.submitted}" class="input-group">
+                <div class="code-input-width-on-conditional-formula" ng-click="ifFormulaConfigCtrl.setLastIfClicked(if)">
+                  <code-input
+                    initial-text="if.formula_string"
+                    on-change-text="if.onChangeValue"
+                    height="'150px'"
+                    feature-flags="ifFormulaConfigCtrl.featureFlags"
+                    set-reset-text-callback="if.setResetTextCallback"
+                    set-apply-focus-on-prev-position-callback="if.setApplyFocusOnPrevPositionCallback"
+                    set-replace-formula-tokens-callback="if.setReplaceFormulaTokensCallback"
+                    on-cursor-position-change="parentCtrl.setCursorPosition"
+                    on-copy-callback="ifFormulaConfigCtrl.handleCopyFormula"
+                    on-paste-callback="ifFormulaConfigCtrl.handlePasteFormula"
+                    on-did-model-change="ifFormulaConfigCtrl.handleDidCodeInputModelChange"
+                    >
+                  </code-input>
+                  <div ng-if="if.has_error_in_deep_validation" class="if-formula-config-condition-deep-validation">
+                    <span class="text-danger">
+                      <i class="fas fa-times-circle"></i>
+                    </span>
+                    <strong>
+                      Fórmula inválida!
+                    </strong> 
+                    Não é possível usar {} na fórmula condicional
+                  </div>
+                </div>
+                <div ng-if="!if.has_error_in_deep_validation" class="input-group-addon white-content width-10 force-left-border" uib-tooltip="{{ (if.current_formula_valid ? 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.VALID_FORMULA' : 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.INVALID_FORMULA') | translate}}" tooltip-append-to-body="true">
+                  <i class="fas" ng-class="{'fa-check': if.current_formula_valid, 'fa-times': !if.current_formula_valid}"></i>
+                </div>
+              </div>
+              <div class="input-group-btn dropdown v-top">
+                <field-path-selection enforce-field-path-reachability="true" field-selection-fn="ifFormulaConfigCtrl.addThenVariable(field, field_path_id, if)" start-entity-id="field.entityId" label="Campos" start-tree-edit-fn="parentCtrl.addCustomNodes(tree)" custom-filter-fn="parentCtrl.customFieldFilter(field, field.entityId)"></field-path-selection>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="text-center wrapper">
+    <a class="button button-white" ng-click="ifFormulaConfigCtrl.createIf()">
+      <span class="text-action"><i class="fal fa-code-branch button-icon"></i></span>
+      OU SE...
+    </a>
+    <!-- <a class="button button-white" ng-click="ifFormulaConfigCtrl.createIf(true)">
+      <span class="text-action"><i class="fal fa-flag-checkered button-icon"></i></span>
+      SENÃO...
+    </a> -->
+  </div>
+  <div ng-if="ifFormulaConfigCtrl.copy_paste_formulas" id="field-selector" style="position: absolute; display: none;">
+    <field-selector 
+      entity-id="field.entityId" 
+      show="ifFormulaConfigCtrl.showFieldSelector" 
+      on-close="ifFormulaConfigCtrl.handleOnCloseFieldSelector" 
+      on-select-field="ifFormulaConfigCtrl.handleOnSelectFieldOnFieldSelector"
+      filter-fields="ifFormulaConfigCtrl.filterVisibleFieldsOnFieldSelector"
+      filter-fields-can-enter="ifFormulaConfigCtrl.filterAllowedFieldsOnFieldSelector"
+      on-created-field="ifFormulaConfigCtrl.onCreateFieldOnNewFieldSelector"
+      ></field-selector>
+  </div>
+</div>

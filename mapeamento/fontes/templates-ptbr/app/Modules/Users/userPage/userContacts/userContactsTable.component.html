@@ -1,0 +1,8 @@
+<standard-loader margin-top="15" loading="!userContactsTableCtrl.can_load"></standard-loader>
+<dynamic-table
+  ng-if="userContactsTableCtrl.can_load"
+  entity="userContactsTableCtrl.entity"
+  opt-filter="userContactsTableCtrl.table_filter"
+  table-edit-fn="userContactsTableCtrl.editTablePatch"
+  current-tab="userContactsTableCtrl.front_tab">
+</dynamic-table>

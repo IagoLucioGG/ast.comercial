@@ -1,0 +1,46 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  wide="false"
+  footer="false"
+  dark="true"
+  modal-title="Marcadores"
+  toggle-modal="tagCtrl.toggle_modal"
+  cypress-prefix="tags-modal"
+  is-fetching-modal-content="tagCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="modal-body-no-padding">
+          <table class="table table-striped modal-table">
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Cor</th>
+                <th></th>
+              </tr>
+              <tr>
+                <th>
+                  <new-field ng-class="{'is-button': field.isButton}" field="tagCtrl.fields[0]" model="tagCtrl.newTag" property="tagCtrl.fields[0].key" required="tagCtrl.fields[0].required" disabled="false" wide="false" hide-label="false"></new-field>
+                </th>
+                <th>
+                  <new-field ng-class="{'is-button': field.isButton}" field="tagCtrl.fields[1]" model="tagCtrl.newTag" property="tagCtrl.fields[1].key" required="tagCtrl.fields[1].required" disabled="false" wide="false" hide-label="false"></new-field>
+                </th>
+                <th class="text-center"><a class="button-fixed-size button-action button-fixed-size-big" href ng-click="tagCtrl.addTag()"><i class="fas fa-check"></i></a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="tag in tagCtrl.tags track by tag.Id" ng-mouseover="showTrashCan = true" ng-mouseout="showTrashCan = false">
+                <td inline-edit model="tag" properties="['tag_name']" patch-api="Tags" submit-fn="tagCtrl.inlineTagEdit(item)" non-editable="false">{{tag.Name}}</td>
+
+                <td class="text-left font-very-big" inline-edit model="tag" properties="['tag_color']" patch-api="Tags" submit-fn="tagCtrl.inlineTagEdit(item)" non-editable="false"><i class="activity-icon fas fa-tag" ng-style="{'color': tag.Color}"></i></td>
+
+                <td class="text-center"><a class="button-inherit button-fixed-size button-fixed-size-small" href ng-show="showTrashCan" ng-click="tagCtrl.removeTag(tag)" ng-click-confirm="{{ 'TAGS.TAG_DELETE_CONFIRMATION' | translate_with_replace: { name: tag.Name } }}" reversible="false"><i class="fal fa-trash"></i></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

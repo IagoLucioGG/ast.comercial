@@ -1,0 +1,18 @@
+
+<div class="tab-pane" id="pr">
+  <form class="clearfix">
+    <div class="form-group col-sm-12" ng-repeat="config in integrationsModuleOptionsCtrl.configurable_integrations">
+      <div class="font-thin font-title">
+        {{config.AccountIntegration.Integration.Name}}
+      </div>
+      <div class="line"></div>
+      <div class="checkbox" ng-repeat="type in config.Types">
+        <label>
+          <input class="inline-option" type="checkbox" ng-model="config.Model[type.Key]" ng-change="integrationsModuleOptionsCtrl.updateModel()"><strong>{{type.Name}}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+
+  <div class="gap-50"></div>
+</div>

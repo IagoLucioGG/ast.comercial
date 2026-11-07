@@ -1,0 +1,9 @@
+<dynamic-tabs
+  ng-if="$parent.leadsCtrl.initial_load && leadsTableCtrl.initial_load"
+  entity="$parent.leadsCtrl.main_entity"
+  filter="leadsTableCtrl.table_filter"
+  tabs="leadsTableCtrl.tabs"
+  current-tab="leadsTableCtrl.current_tab"
+  toggle-sidebar="$parent.leadsCtrl.table_sidebar"
+  cypress-prefix="leads-table"
+></dynamic-tabs>

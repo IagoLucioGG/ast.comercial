@@ -1,0 +1,31 @@
+<div class="vbox">
+  <section class="scrollable">
+    <div class="wrapper-right width-250">
+      <div ng-repeat="wrap_form in formConfigSlideCtrl.form_structure"  data-cy="{{'administration-forms-config-main-option-entity-' + wrap_form.EntityId }}">
+        <a class="button button-full-width button-light-background button-very-big text-left button-square collapsed" ng-click="wrap_form.Collapsed = !wrap_form.Collapsed">
+          <span class="font-regular-weight font-regular-size">
+            <span class="font-big">{{wrap_form.Name}}</span>
+          </span>
+          <span class="pull-right">
+            <i class="fal fa-angle-down dropdown-sign"></i>
+          </span>
+        </a>
+        <div class="short-wrapper" uib-collapse="wrap_form.Collapsed">
+          <a href ng-repeat="form in wrap_form.Forms track by form.Id" class="nowrap data-visualization button button-full-width button-very-big text-left text-ellipsis" ng-class="{'button-light-background': form.Id !== formConfigSlideCtrl.current_form.Id, 'button-dry-background': form.Id === formConfigSlideCtrl.current_form.Id}" ui-sref="formconfig.form({ formid: form.Id })" data-cy="{{'administration-forms-config-secundary-option-' + form.Key}}">
+            <div
+              class="mw-100 text-ellipsis" 
+              uib-tooltip="{{ formConfigSlideCtrl.getFormName(form) }}" 
+              tooltip-append-to-body="true"
+              tooltip-enable="formConfigSlideCtrl.isTooltipEnabled('sidebar-item-' + form.Id)"
+              id="sidebar-item-{{form.Id}}"
+            >
+              <span class="font-regular-weight font-regular-size" ng-class="{'text-regular': form.Id !== formConfigSlideCtrl.current_form.Id}">
+                {{ formConfigSlideCtrl.getFormName(form) }}
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

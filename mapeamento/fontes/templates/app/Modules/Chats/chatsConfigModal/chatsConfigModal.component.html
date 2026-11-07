@@ -1,0 +1,50 @@
+<dynamic-modal
+  modal-id="chats-config-modal"
+  footer="true"
+  dark="true"
+  skip-height="true"
+  modal-title="Configurações"
+  toggle-modal="$ctrl.toggle_modal"
+  block-back-state="true"
+>
+    <modal-content>
+      <div class="vbox scroll-shadow neutral-shadow">
+        <section class="scrollable scroll-shadow-container">
+          <div class="gap-15"></div>
+          <form class="clearfix">
+            <div class="form-group col-sm-12">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <label>
+                    <span class="font-semi-big">
+                      {{ 'CHATS.CHATS_CONFIG_MODAL.SILENCE_SOUND_NOTIFICATIONS_LABEL' | translate }}
+                    </span>
+                    <br>
+                    <small class="text-muted">
+                      {{ 'CHATS.CHATS_CONFIG_MODAL.SILENCE_SOUND_NOTIFICATIONS_HELPER' | translate }}
+                    </small>
+                  </label>
+                </aside>
+                <aside class="v-middle">
+                  <div class="left-wrapper">
+                    <div class="switch">
+                      <input class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-mute_sound_notifications" type="checkbox"
+                        ng-model="$ctrl.model.mute_sound_notifications">
+                      <label class="pull-right" for="cmn-toggle-mute_sound_notifications"></label>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+  </modal-content>
+  <modal-footer>
+    <aside class="v-middle">
+      <a class="button button-action" href ng-click="$ctrl.submitControl()">
+        {{ 'GENERICS.SAVE' | translate }}
+      </a>
+    </aside>
+  </modal-footer>
+</dynamic-modal>

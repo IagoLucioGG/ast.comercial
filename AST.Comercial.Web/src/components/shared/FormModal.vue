@@ -52,7 +52,7 @@ async function excluir() {
   try { await odataDelete(props.endpoint, props.id); emit('salvo'); emit('fechar') } catch (e: any) { erro.value = e.message ?? 'Erro' }
 }
 
-function opcoesEnum(tipo: string): string[] { return tipo.startsWith('enum:') ? tipo.split(':')[1].split('|') : [] }
+function opcoesEnum(tipo: string): string[] { return tipo.startsWith('enum:') ? (tipo.split(':')[1] ?? '').split('|') : [] }
 onMounted(async () => { await carregarSchema(); await carregarDados() })
 </script>
 
@@ -62,7 +62,7 @@ onMounted(async () => { await carregarSchema(); await carregarDados() })
   <div class="mb"><div v-if="carregando" class="ld">Carregando...</div><div v-else class="fg">
     <div v-for="c in campos" :key="c.nome" class="fc">
       <label>{{ c.nome }}</label>
-      <div v-if="c.tipo==='boolean'" class="bt"><button :class="{a:valores[c.nome]===true}" @click="valores[c.nome]=true">Sim</button><button :class="{a:valores[c.nome]===false}" @click="valores[c.nome]=false">Não</button></div>
+      <div v-if="c.tipo==='boolean'" class="bt"><button :class="{a:valores[c.nome]===true}" @click="valores[c.nome]=true">Sim</button><button :class="{a:valores[c.nome]===false}" @click="valores[c.nome]=false">NÃ£o</button></div>
       <select v-else-if="c.tipo.startsWith('enum')" v-model="valores[c.nome]"><option value="">Selecione...</option><option v-for="o in opcoesEnum(c.tipo)" :key="o" :value="o">{{o}}</option></select>
       <input v-else-if="c.tipo==='datetime'" type="datetime-local" v-model="valores[c.nome]"/>
       <input v-else-if="c.tipo==='number'" type="number" v-model="valores[c.nome]"/>

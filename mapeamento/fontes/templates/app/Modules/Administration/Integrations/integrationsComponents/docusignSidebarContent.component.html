@@ -1,0 +1,484 @@
+<div ng-if="docusignCtrl.can_load">
+  <div class="side-wrapper">
+    <div class="activity-history hist-separator"></div>
+    <span ng-repeat="signer in docusignCtrl.signers track by $index">
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="no-color-timeline">
+              <i class="fas fa-check activity-icon" ng-show="signer.Signed"></i>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="hbox fixed-size">
+            <aside>
+              <div class="gap-10"></div>
+              <div class="gap-3"></div>
+
+              <div class="f-1">
+                <div class="mr-15" ng-if="docusignCtrl.isEmailMethod(signer)">
+                  <i class="fa fa-envelope font-bold"></i>
+                  <span class="font-semi-big ellipsis">
+                    {{ ' ' + signer.Email }}
+                  </span>
+                </div>
+                <div class="mr-15" ng-if="!docusignCtrl.isEmailMethod(signer)">
+                  <i class="fa fa-phone font-bold"></i>
+                  <span class="font-semi-big ellipsis">
+                    {{ ' ' + docusignCtrl.getContactPhone(signer) }}
+                  </span>
+                </div>
+                <div class="mr-15" ng-if="signer.Phone">
+                  <i class="fa fa-phone font-bold"></i>
+                  <span class="font-semi-big ellipsis">
+                    {{ ' ' + signer.Phone }}
+                  </span>
+                </div>
+                <div class="mr-15">
+                  <i class="fa fa-user font-bold"></i>
+                  <span class="font-semi-big ellipsis">
+                    {{ ' ' + signer.Name }}
+                  </span>
+                </div>
+              </div>
+              <div class="gap-3"></div>
+              <div class="f-1">
+                <div class="text-darkest-neutral mr-15">
+                  {{ 'INTEGRATIONS.MAIN_AGENT' | translate }}
+                </div>
+                <div class="text-darkest-neutral mr-15">
+                  {{signer.SignerType}} {{ ('INTEGRATIONS.BY' | translate).toLowerCase() + ' ' +
+                  signer.recipientType.Name }}
+                </div>
+                <div class="mr-15 text-darkest-neutral mr-15"
+                  ng-repeat="property in signer.OtherProperties | filter: docusignCtrl.signerFrontFilter">
+                  {{ 'INTEGRATIONS.SIGN_IN' | translate }}:
+                  {{ ' ' + property.StringValue }}
+                </div>
+              </div>
+
+              <div class="gap-15" ng-if="signer.haveSecondAgent"></div>
+
+              <div class="f-1" ng-if="signer.haveSecondAgent">
+                <div class="mr-15"
+                  ng-repeat="property in signer.OtherProperties | filter: docusignCtrl.filterSecondAgent">
+                  <i class="fa font-bold" ng-class="property.defaultIcon"></i>
+                  <span class="font-semi-big ellipsis">
+                    {{ ' ' + property.StringValue }}
+                  </span>
+                </div>
+              </div>
+              <div class="f-1" ng-if="signer.haveSecondAgent">
+                <div class="text-darkest-neutral mr-15">
+                  {{ 'INTEGRATIONS.SECONDARY_AGENT' | translate }}
+                </div>
+                <div class="text-darkest-neutral mr-15">
+                  {{signer.SignerType}} {{ ('INTEGRATIONS.BY' | translate).toLowerCase() + ' ' +
+                  signer.recipientType.Name }}
+                </div>
+
+                <div class="text-darkest-neutral mr-15"
+                  ng-repeat="property in signer.OtherProperties | filter: docusignCtrl.filterSecondAgentAnchor">
+                  {{ 'INTEGRATIONS.SIGN_IN' | translate }}:
+                  {{property.StringValue}}
+                </div>
+              </div>
+            </aside>
+            <aside class="width-30 v-middle">
+              <a class="button-white button-fixed-size button-fixed-size-small" href
+                ng-click="docusignCtrl.removeDocumentSigner($index)"
+                ng-if="docusignCtrl.signing_open && !(docusignCtrl.remove_loading && docusignCtrl.removing_signer_index === $index) && !signer.Signed">
+                <i class="fal fa-trash fixing-fixed-size-button"></i>
+              </a>
+              <loading-tooltip loading="docusignCtrl.remove_loading && docusignCtrl.removing_signer_index === $index">
+              </loading-tooltip>
+              <div class="gap-3"></div>
+            </aside>
+          </div>
+        </aside>
+      </div>
+      <div class="activity-history hist-separator"></div>
+    </span>
+    <div class="hbox" ng-if="docusignCtrl.signing_open">
+      <aside class="activity-history">
+        <div>
+          <div class="no-color-timeline"></div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="hbox">
+          <aside>
+            <div class="font-bold font-semi-big">{{ 'INTEGRATIONS.NEW_SIGNER' | translate }}</div>
+            <div class="gap-3"></div>
+
+            <aside class="docusign-fields">
+              <div class="f-1">
+                <div class="dropdown margin-right-5" ng-if="docusignCtrl.signer_types.length > 0">
+                  <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href
+                    data-toggle="dropdown" aria-expanded="false">
+                    <span>
+                      <span class="text-action"><i class="button-icon fal fa-pencil"></i></span>
+                      {{docusignCtrl.email_model_signer_type.Name}}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li ng-repeat="signer_type in docusignCtrl.signer_types | filter: docusignCtrl.filterSignerTypes"
+                      ng-click="docusignCtrl.changeSignerType(signer_type)">
+                      <a class="white-dropdown-link" href>
+                        {{signer_type.Name}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="dropdown margin-right-5" ng-if="docusignCtrl.signer_types.length > 0">
+                  <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href
+                    data-toggle="dropdown" aria-expanded="false">
+                    <span>
+                      <span class="text-action"><i class="button-icon fal fa-pencil"></i></span>
+                      Via {{docusignCtrl.selectedMethod.name}}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li ng-repeat="sendMethod in docusignCtrl.sendMethods"
+                      ng-click="docusignCtrl.changeMethod(sendMethod)">
+                      <a class="white-dropdown-link" href>
+                        {{sendMethod.name}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="dropdown margin-right-5" ng-if="docusignCtrl.signer_types.length > 0">
+                  <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href
+                    data-toggle="dropdown" aria-expanded="false">
+                    <span>
+                      <span class="text-action"><i class="button-icon fal fa-comment-alt-lines"></i></span>
+                      {{docusignCtrl.email_model_recipient_type.Name}}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li ng-repeat="recipient_type in docusignCtrl.recipient_types"
+                      ng-click="docusignCtrl.changeRecipientType(recipient_type)">
+                      <a class="white-dropdown-link" href>
+                        {{recipient_type.Name}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="dropdown"
+                  ng-if="docusignCtrl.anchors_filter.length > 0 && docusignCtrl.email_model_signer_type.ToSign && !docusignCtrl.email_model_signer_type.MoreAnchor">
+                  <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href
+                    data-toggle="dropdown" aria-expanded="false">
+                    <span>
+                      <span class="text-action"><i class="button-icon fa-anchor fal regular-fa"></i></span>
+                      {{docusignCtrl.anchors_model.Name}}
+                      <i class="fal fa-angle-down dropdown-sign"></i>
+                    </span>
+                  </a>
+                  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                    <li ng-repeat="anchors in docusignCtrl.anchors_filter"
+                      ng-click="docusignCtrl.changeAnchor(anchors)">
+                      <a class="white-dropdown-link" href>
+                        {{anchors.Name}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Here is when the signer type is notary, so we have two more fields -->
+              <div class="f-1 fd-col">
+                <div class="docusign-container-column">
+                  <!-- Here is the signer fields -->
+                  <div class="f-1 ai-center mb-5" ng-if="docusignCtrl.email_model_signer_type.MoreSigner">
+                    <span class="mr-10"
+                      ng-if="docusignCtrl.email_model_signer_type.MoreSigner || docusignCtrl.email_model_signer_type.MoreAnchor">
+                      {{ 'INTEGRATIONS.MAIN_AGENT' | translate }}</span>
+                    <div class="dropdown"
+                      ng-if="docusignCtrl.anchors_filter.length > 0 && docusignCtrl.email_model_signer_type.ToSign && docusignCtrl.email_model_signer_type.MoreAnchor">
+                      <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href
+                        data-toggle="dropdown" aria-expanded="false">
+                        <span>
+                          <span class="text-action"><i class="button-icon fa-anchor fal regular-fa"></i></span>
+                          {{docusignCtrl.anchors_model.Name}}
+                          <i class="fal fa-angle-down dropdown-sign"></i>
+                        </span>
+                      </a>
+                      <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                        <li ng-repeat="anchors in docusignCtrl.anchors_filter"
+                          ng-click="docusignCtrl.changeAnchor(anchors)">
+                          <a class="white-dropdown-link" href>
+                            {{anchors.Name}}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="f-1 mb-5">
+                    <!-- email field (email) -->
+                    <div class="input-group margin-right-5" ng-if="docusignCtrl.selectedMethod.id === 2" ng-class="{ 'multiple-email-on': docusignCtrl.multipleEmailFeature }">
+                      <input class="form-control input-sm"
+                        ng-class="{ 'sign-fields__invalid-input': docusignCtrl.emailInvalid }"
+                        placeholder="{{ 'INTEGRATIONS.PLACEHOLDER_EMAIL_AGENT' | translate_with_replace: {main_agent: docusignCtrl.email_model_signer_type.PlaceHolder.toLowerCase() } }}"
+                        ng-model="docusignCtrl.emailInputModel" autocomplete="off"
+                        uib-typeahead="email for email in docusignCtrl.getEmails($viewValue)" typeahead-wait-ms="300"
+                        typeahead-popup-template-url="email-search-popup.html"
+                        typeahead-on-select="docusignCtrl.selectSignerEmail($item)" typeahead-min-length="0"
+                        aria-label="{{ 'ARIA_LABELS.EMAILS.SEARCH_INPUT' | translate }}"
+                        typeahead-select-on-blur="true" />
+                      <script type="text/ng-template" id="email-search-popup.html">
+                        <ul class="dropdown-menu deal-title-suggestion email-search-popup" ng-show="isOpen() && !moveInProgress">
+                          <div class="suggestion-group-header"
+                            ng-repeat-start="match in matches track by $index"
+                            ng-show="match.model.groupHeader"
+                            ng-bind="match.model.groupHeader"></div>
+                          <li class="uib-typeahead-match" ng-repeat-end
+                            ng-class="{'quicksearch-keyboard': isActive($index)}"
+                            ng-mouseenter="selectActive($index)"
+                            ng-click="selectMatch($index)" role="option"
+                            aria-label="{{ 'ARIA_LABELS.EMAILS.OPTION' | translate_with_replace: { email: match.model.email || match.model.Email } }}">
+                            {{ match.model.email || match.model.Email }}
+                            <div class="text-muted text-small">
+                              {{ match.model.name || match.model.Name }}<span ng-if="match.model.isMain"> | {{ 'EMAILS.MAIN' | translate }}</span>
+                            </div>
+                          </li>
+                        </ul>
+                      </script>
+                    </div>
+
+                    <!-- name field (email) -->
+                    <div class="input-group margin-right-5" ng-if="docusignCtrl.selectedMethod.id === 2">
+                      <input class="form-control input-sm"
+                        ng-change="docusignCtrl.validateEmptyInputName(docusignCtrl.nameInputModel)"
+                        ng-class="{ 'sign-fields__invalid-input': docusignCtrl.emptyName}"
+                        placeholder="{{ 'INTEGRATIONS.PLACEHOLDER_NAME_AGENT' | translate_with_replace: {main_agent: docusignCtrl.email_model_signer_type.PlaceHolder.toLowerCase() } }}"
+                        ng-model="docusignCtrl.nameInputModel" />
+                    </div>
+
+                    <!-- contact field (wpp/sms) -->
+                    <div class="input-group margin-right-5" ng-if="docusignCtrl.selectedMethod.id === 1 || docusignCtrl.selectedMethod.id === 0">
+                      <input
+                        placeholder="{{ 'INTEGRATIONS.PLACEHOLDER_CONTACT_AGENT' | translate_with_replace: {main_agent: docusignCtrl.email_model_signer_type.PlaceHolder.toLowerCase() } }}"
+                        class="form-control input-sm"
+                        ng-class="{ 'sign-fields__invalid-input': docusignCtrl.contactNameInvalid }"
+                        ng-model="docusignCtrl.contactNameModel"
+                        autocomplete="off"
+                        uib-typeahead="phone for phone in docusignCtrl.getContactPhones($viewValue)"
+                        typeahead-wait-ms="300"
+                        typeahead-popup-template-url="contact-search-popup"
+                        typeahead-on-select="docusignCtrl.selectContact($item)"
+                        typeahead-min-length="0"
+                        typeahead-select-on-blur="true"
+                      />
+                      <script type="text/ng-template" id="contact-search-popup">
+                        <ul
+                          class="dropdown-menu deal-title-suggestion"
+                          ng-show="isOpen() && !moveInProgress"
+                        >
+                          <li
+                            class="uib-typeahead-match"
+                            ng-class="{'quicksearch-keyboard': isActive($index)}"
+                            ng-repeat="match in matches track by $index"
+                            ng-mouseenter="selectActive($index)"
+                            ng-click="selectMatch($index)"
+                            role="option"
+                          >
+                            {{ match.model.Name }}
+                            <div class="text-muted text-small">
+                              {{ match.model.Phones[0].PhoneNumber }}
+                            </div>
+                          </li>
+                        </ul>
+                      </script>
+                    </div>
+
+                    <!-- phone field (wpp/sms) -->
+                    <div class="input-group margin-right-5" ng-if="docusignCtrl.selectedMethod.id === 1 || docusignCtrl.selectedMethod.id === 0">
+                      <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+                        <button class="btn button button-white" uib-dropdown-toggle ng-disabled="disabled">
+                          <img
+                            ng-src="{{docusignCtrl.rootUrl + '/assets/images/paises/' + (docusignCtrl.contactPhoneCountry ? docusignCtrl.contactPhoneCountry.toLowerCase() : 'none') + '.png'}}"
+                            width="15"
+                          />
+                        </button>
+                        <ul class="dropdown-menu white-dropdown-menu" uib-dropdown-menu style="z-index: 10000;">
+                          <li ng-repeat="country in docusignCtrl.phoneCountries">
+                            <a href class="white-dropdown-link" ng-click="docusignCtrl.changeContactPhoneCountry(country)">
+                              <img
+                                ng-src="{{docusignCtrl.rootUrl + '/assets/images/paises/' + (country.Short2 ? country.Short2.toLowerCase() : 'none') + '.png'}}"
+                                width="15" />
+                              <span>{{country.PhoneMask.replace('?','')}}</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href class="white-dropdown-link" ng-click="docusignCtrl.changeContactPhoneCountry(null)">
+                              <img ng-src="{{docusignCtrl.rootUrl + '/assets/images/paises/withoutmask.png'}}"
+                                width="15" />
+                              <span>{{ 'FORMS.NO_MASK' | translate }}</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <input
+                        class="form-control input-sm"
+                        ng-class="{ 'sign-fields__invalid-input': docusignCtrl.contactPhoneInvalid }"
+                        ng-model="docusignCtrl.selectedContactPhone"
+                        autocomplete="off"
+                        ui-mask="{{docusignCtrl.contactPhoneMask}}"
+                      />
+                    </div>
+
+                    <!-- phone input (authentication) -->
+                    <div class="input-group margin-right-5"
+                      ng-if="docusignCtrl.email_model_recipient_type.SupplementaryInformationRequired && docusignCtrl.email_model_recipient_type.ExternalKey === 'phone'">
+                      <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+                        <button class="btn button button-white" uib-dropdown-toggle ng-disabled="disabled">
+                          <img
+                            ng-src="{{docusignCtrl.rootUrl + '/assets/images/paises/' + (docusignCtrl.country_phone ? docusignCtrl.country_phone.toLowerCase() : 'none') + '.png'}}"
+                            width="15"
+                          />
+                        </button>
+                        <ul class="dropdown-menu white-dropdown-menu" uib-dropdown-menu style="z-index: 10000;">
+                          <li ng-repeat="country in docusignCtrl.phoneCountries">
+                            <a href class="white-dropdown-link" ng-click="docusignCtrl.changeCountry(country)">
+                              <img
+                                ng-src="{{docusignCtrl.rootUrl + '/assets/images/paises/' + (country.Short2 ? country.Short2.toLowerCase() : 'none') + '.png'}}"
+                                width="15" />
+                              <span>{{country.PhoneMask.replace('?','')}}</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href class="white-dropdown-link" ng-click="docusignCtrl.changeCountry(null, model)">
+                              <img ng-src="{{docusignCtrl.rootUrl + '/assets/images/paises/withoutmask.png'}}"
+                                width="15" />
+                              <span>{{ 'FORMS.NO_MASK' | translate }}</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <input class="form-control input-sm"
+                        ng-class="{ 'sign-fields__invalid-input': docusignCtrl.phoneInvalid }"
+                        ng-model="docusignCtrl.numberInputModel"
+                        ng-change="docusignCtrl.numberInputChange(docusignCtrl.numberInputModel)"
+                        ng-focus="docusignCtrl.focus=true" ng-blur="docusignCtrl.focus=false" autocomplete="off"
+                        uib-typeahead="phone for phone in docusignCtrl.getPhones($viewValue)"
+                        ui-mask="{{docusignCtrl.applied_phone_mask}}" typeahead-wait-ms="300"
+                        typeahead-popup-template-url="phone-search-popup.html" typeahead-focus-first="false"
+                        typeahead-on-select="docusignCtrl.selectSignerPhone($item)" typeahead-min-length="0" />
+                      <script type="text/ng-template" id="phone-search-popup.html">
+                        <ul class="dropdown-menu deal-title-suggestion" ng-show="isOpen() && !moveInProgress">
+                          <li class="uib-typeahead-match"
+                            ng-class="{'quicksearch-keyboard': isActive($index)}"
+                            ng-repeat="match in matches track by $index"
+                            ng-mouseenter="selectActive($index)"
+                            ng-click="selectMatch($index)" role="option">
+                            {{ match.model.Phone.PhoneNumber }}
+                            <div class="text-muted text-small">
+                              {{ match.model.Name }}
+                            </div>
+                          </li>
+                        </ul>
+                      </script>
+                    </div>
+
+                    <!-- access code (authentication) -->
+                    <div class="input-group margin-right-5"
+                      ng-if="docusignCtrl.email_model_recipient_type.SupplementaryInformationRequired && docusignCtrl.email_model_recipient_type.ExternalKey !== 'phone'">
+                      <input class="form-control input-sm"
+                        ng-class="{ 'sign-fields__invalid-input': docusignCtrl.phoneInvalid }"
+                        placeholder="{{ docusignCtrl.email_model_recipient_type.DescribeSupplementaryInformationField + ' ' + docusignCtrl.email_model_signer_type.PlaceHolder.toLowerCase() }}"
+                        ng-model="docusignCtrl.accessCodeInputModel"
+                        uib-tooltip="{{ docusignCtrl.email_model_recipient_type.DescribeSupplementaryInformationField + ' ' + docusignCtrl.email_model_signer_type.PlaceHolder.toLowerCase() }}"
+                        tooltip-append-to-body="true" tooltip-placement="bottom"
+                        tooltip-enable="docusignCtrl.enable_tooltip" />
+                    </div>
+                  </div>
+
+                  <!-- Here is the second anchor -->
+                  <div class="f-1 ai-center mb-5"
+                    ng-if="docusignCtrl.email_model_signer_type.MoreSigner || docusignCtrl.email_model_signer_type.MoreAnchor">
+                    <span class="mr-10">{{ 'INTEGRATIONS.SECONDARY_AGENT' | translate }}</span>
+                    <div class="dropdown"
+                      ng-if="docusignCtrl.anchors_filter.length > 1 && docusignCtrl.email_model_signer_type.ToSign && docusignCtrl.email_model_signer_type.MoreAnchor">
+                      <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href
+                        data-toggle="dropdown" aria-expanded="false">
+                        <span>
+                          <span class="text-action"><i class="button-icon fa-anchor fal regular-fa"></i></span>
+                          {{docusignCtrl.second_anchor_model.Name}}
+                          <i class="fal fa-angle-down dropdown-sign"></i>
+                        </span>
+                      </a>
+                      <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                        <li ng-repeat="anchors in docusignCtrl.second_anchors_array"
+                          ng-click="docusignCtrl.changeSecondAnchor(anchors)">
+                          <a class="white-dropdown-link" href>
+                            {{anchors.Name}}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Here is the notary fields -->
+                  <div class="f-1" ng-if="docusignCtrl.email_model_signer_type.MoreSigner">
+                    <div class="input-group margin-right-5">
+                      <input class="form-control input-sm"
+                        ng-class="{ 'sign-fields__invalid-input': (docusignCtrl.notaryEmailInvalid || docusignCtrl.repeated_email)}"
+                        placeholder="{{ 'INTEGRATIONS.PLACEHOLDER_NOTARY_EMAIL' | translate_with_replace: {signer_type: docusignCtrl.email_model_signer_type.Name.toLowerCase() } }}"
+                        ng-model="docusignCtrl.notaryEmailInputModel" type="email" />
+                      <span class="text-danger" ng-if="docusignCtrl.repeated_email">
+                        <div ng-if="docusignCtrl.repeated_email"><i class="fad fa-exclamation-circle"></i>
+                          {{'INTEGRATIONS.REPEATED_EMAIL' | translate}} </div>
+                      </span>
+                    </div>
+                    <div class="input-group margin-right-5">
+                      <input class="form-control input-sm"
+                        ng-class="{ 'sign-fields__invalid-input': docusignCtrl.notaryNameInvalid && !docusignCtrl.notaryNameInputModel}"
+                        placeholder="{{ 'INTEGRATIONS.PLACEHOLDER_NOTARY_NAME' | translate_with_replace: {signer_type: docusignCtrl.email_model_signer_type.Name.toLowerCase() } }}"
+                        ng-model="docusignCtrl.notaryNameInputModel" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="f-1 ai-center jc-center mt-10">
+                  <a class="btn button button-white sign-fields__button" href
+                    ng-click="docusignCtrl.addDocumentSigner()">
+                    <span class="text-action"><i class="button-icon fal fa-user-plus"></i></span>
+                    {{ 'GENERICS.ADD' | translate }}
+                  </a>
+                  <div class="loader modal-loader signer-loader signer-loader-sign custom-load-important"
+                    ng-if="docusignCtrl.add_loading"></div>
+                </div>
+              </div>
+        </div>
+      </aside>
+      </aside>
+    </div>
+    </aside>
+  </div>
+</div>
+<div class="sign-action-container f-1 jc-center ai-center mt-20"
+  ng-if="(docusignCtrl.sign_fired && docusignCtrl.signing_open) || (docusignCtrl.sign_fired && !docusignCtrl.signing_open)">
+  <div class="custom-action-container-sign f-1 ai-center">
+    <div class="f-1 ai-center" ng-if="docusignCtrl.sign_fired && docusignCtrl.signing_open">
+      <i class="fa fa-lightbulb-on mr-10 custom-icon-sign"></i>
+      <span>{{ 'INTEGRATIONS.EMAIL_FIRED' | translate }}</span>
+    </div>
+    <div class="button button-delete height-30" ng-if="docusignCtrl.sign_fired && docusignCtrl.signing_open"
+      ng-click="docusignCtrl.fireCancelConfirmationModal('INTEGRATIONS.CANCEL_DOCUSIGN_SUBMISSION' | translate,  docusignCtrl.refireSigning)"
+      ng-class="{ 'disabled': docusignCtrl.fire_signing_loading }">
+      {{ 'INTEGRATIONS.CANCEL_SUBSCRIPTION_SUBMISSION' | translate }}
+    </div>
+    <div ng-if="docusignCtrl.sign_fired && !docusignCtrl.signing_open">
+      <i class="fa fa-check mr-10 custom-icon-sign"></i>
+      <span>{{ 'INTEGRATIONS.FINISHED_DOCUMENT' | translate }}</span>
+    </div>
+  </div>
+</div>
+</div>
+<standard-loader loading="!docusignCtrl.can_load" margin-top="15"></standard-loader>

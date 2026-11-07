@@ -1,0 +1,109 @@
+<div class="wizard-step" wizard-step-content="2">
+  <div class="wrapper">
+    <alert-message
+      ng-if="mappingCtrl.activeMdmModule"
+      status="'alert'"
+      message="'IMPORTATION.MAPPING.MDM_DUPLICATE_DETECTION_ALERT' | translate"
+    ></alert-message>
+    <br ng-if="mappingCtrl.activeMdmModule">
+    <span class="font-thin font-title">{{ 'IMPORTATION.MAPPING.TITLE' | translate }}</span>
+    <br>
+    <span class="text-muted">
+      {{ 'IMPORTATION.MAPPING.SPECIFY_RELATED_COLUMNS' | translate }}
+    </span>
+    <br>
+    <br ng-if="mappingCtrl.warnings.length > 0">
+    <div ng-if="mappingCtrl.activeWorkflowModule && mappingCtrl.entity.Id === 10">
+      <div class="hbox">
+        <aside class="v-middle">
+          <div>
+            <span class="font-semi-big">
+              {{ 'IMPORTATION.MAPPING.PART_IMPORTATION_TITLE' | translate }}
+            </span>
+            <br>
+            <small class="text-muted">
+              {{ 'IMPORTATION.MAPPING.PART_IMPORTATION_HELPER' | translate }}
+              <br>
+              <span class="font-bold">
+                {{ 'IMPORTATION.MAPPING.PART_IMPORTATION_WARN' | translate }}
+              </span>
+            </small>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="left-wrapper">
+            <div class="switch">
+              <input
+                class="cmn-toggle cmn-toggle-round-flat"
+                id="cmn-toggle-import-parts"
+                type="checkbox"
+                ng-model="mappingCtrl.import_product_parts"
+                ng-change="mappingCtrl.updateMapping()">
+              <label class="pull-right" for="cmn-toggle-import-parts"></label>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <ul ng-if="mappingCtrl.warnings.length > 0">
+      <li ng-repeat="(warning_key, warning_obj) in mappingCtrl.warnings">
+        <span ng-bind-html="warning_obj.main_description | to_trusted"></span>
+        <br>
+        <span class="text-darkest-neutral text-small" ng-bind-html="warning_obj.sub_description | to_trusted"></span>
+      </li>
+    </ul>
+    <br>
+    <div class="panel b-1 white-content medium-shadow">
+      <div class="side-scroll">
+        <div class="side-scroll-container nowrap">
+          <table class="table table-striped import-table">
+            <thead>
+              <tr>
+                <th class="medium-cell" ng-repeat="column in mappingCtrl.sheetPreview.Columns track by $index">
+                  <select ng-options="entity.Name for entity in mappingCtrl.entities" class="form-control input-sm" ng-model="mappingCtrl.col_mapping[$index].entity" ng-change="mappingCtrl.setEntity(mappingCtrl.col_mapping[$index].entity, $index)">
+                    <option value=""></option>
+                  </select>
+                  <div class="gap-10"></div>
+                  <div class="hbox">
+                    <div style="display: flex; gap: 3px; align-items: center;">
+                       <select ng-options="(field.label || field.key) for field in mappingCtrl.getAvailableFields(mappingCtrl.col_mapping[$index]) track by field.key" class="form-control input-sm" ng-class="{'importation-field-not-selected': mappingCtrl.col_mapping[$index].field === false}" ng-model="mappingCtrl.col_mapping[$index].field" ng-disabled="!mappingCtrl.col_mapping[$index].entity" ng-change="mappingCtrl.selectedField(mappingCtrl.col_mapping[$index])">
+                        </select>
+                      <i
+                        ng-if="mappingCtrl.isMdmDetectionField(mappingCtrl.col_mapping[$index])"
+                        class="far fa-circle-exclamation font-very-small v-middle"
+                        uib-tooltip="{{ 'IMPORTATION.MAPPING.MDM_DETECTION_FIELD_TOOLTIP' | translate }}"
+                        tooltip-placement="top"
+                        tooltip-append-to-body="true"
+                      ></i>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="checkbox mbottom0 height-20">
+                    <label
+                      ng-show="mappingCtrl.col_mapping[$index].field && !mappingCtrl.col_mapping[$index].field.multiple"
+                      uib-tooltip="{{ 'IMPORTATION.MAPPING.DETECT_DUPLICATE_TOOLTIP' | translate }}"
+                      tooltip-placement="top"
+                      tooltip-append-to-body="true"
+                      tooltip-enable="mappingCtrl.isMdmPreviewActive"
+                    >
+                      <input class="mtop2_5" id="optionsRadios1" type="checkbox" name="optionsRadios" value="option1" checked="" ng-model="mappingCtrl.col_mapping[$index].unique" ng-disabled="mappingCtrl.col_mapping[$index].unique_disabled">
+                      <span class="text-transform-none font-small">{{ 'IMPORTATION.MAPPING.DETECT_DUPLICATE' | translate }}</span>
+                    </label>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-bold" ng-repeat="column in mappingCtrl.sheetPreview.Columns track by $index">{{::column.Name}}</td>
+              </tr>
+              <tr ng-repeat="row in mappingCtrl.sheetPreview.Rows track by $index">
+                <td ng-repeat="cell in row track by $index">{{::cell.Value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

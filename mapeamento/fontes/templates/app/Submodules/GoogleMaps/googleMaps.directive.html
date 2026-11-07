@@ -1,0 +1,109 @@
+<div class="bottom-menu-backdrop fade"></div>
+<div class="bottom-menu" ng-class="{'hide-bottom-menu': !skipAnimate}">
+  <div class="vbox white-content b-t-2 b-r-2 b-l-2 bottom-menu-content">
+    <section class="scrollable">
+      <div class="stretch">
+        <div class="loader map-loader" ng-if="!googleMapsCtrl.can_show"></div>
+        <ng-map zoom="15"
+                id="{{mapId || 'map'}}"
+                ng-if="googleMapsCtrl.can_show"
+                style="display:block; height:100%"
+                pan-control="true"
+                zoom-control="true"
+                scale-control="true"
+                max-zoom="18">
+
+        <custom-marker no-watcher="true" ng-repeat="marker in googleMapsCtrl.filtered_markers track by marker.id" id="custom_marker_{{marker.id}}" position="{{marker.latLong}}">
+          <a ng-click="googleMapsCtrl.showDetail([marker])" class="button-fixed-size button-background button-fixed-size-big button-fixed-side-round" ng-style="{'background-color': marker.icon_color}">
+            <i class="fad fa-{{marker.icon}} text-white font-title rotate-icon"></i>
+          </a>
+        </custom-marker>
+
+        <info-window id="marker-iw" position="{{googleMapsCtrl.marker_array[0].latLong}}">
+          <div ng-non-bindable="">
+            <table class='table table-reorder first-child-border table-header-border-full table-hover white-table'>
+
+              <tbody>
+                <tr ng-repeat="marker in googleMapsCtrl.marker_array track by $index" context-menu="googleMapsCtrl.menuOptions(marker)">
+
+                  <td ng-click='googleMapsCtrl.openModal(marker)' ng-if="marker.object.Task">
+                    <i class='fad fa-{{marker.icon}} text-darkest-neutral'></i> {{marker.title}}
+                    <br>
+                    <div class='big-simple-inline'>
+                      <div class='timeline-clock'>
+                        <i class='fad fa-clock'></i> {{::googleMapsCtrl.formatTime(marker.start)}}
+                      </div>
+                    </div>
+                    <div class='big-simple-inline'>
+                      <div class='timeline-clock'>
+                        <i class='fad fa-industry regular-icon' ng-show="marker.object.Task.Contact.TypeId === 1"></i>
+                        <i class='fad fa-user regular-icon' ng-show="marker.object.Task.Contact.TypeId === 2"></i>
+                        {{marker.object.Task.Contact.Name}}
+                      </div>
+                    </div>
+                  </td>
+
+                  <td ng-click='googleMapsCtrl.openModal(marker)' ng-if="marker.object.InteractionRecord">
+                    <i class='fad fa-{{marker.icon}} text-darkest-neutral'></i> {{marker.title}}
+                    <br>
+                    <div class='big-simple-inline'>
+                      <div class='timeline-clock'>
+                        <i class='fal fa-clock'></i> {{::googleMapsCtrl.formatTime(marker.start)}}
+                      </div>
+                    </div>
+                    <div class='big-simple-inline'>
+                      <div class='timeline-clock'>
+                        <i class='fad fa-industry regular-icon' ng-show="marker.object.InteractionRecord.Contact.TypeId === 1"></i>
+                        <i class='fad fa-user regular-icon' ng-show="marker.object.InteractionRecord.Contact.TypeId === 2"></i>
+                        {{marker.object.InteractionRecord.Contact.Name}}
+                      </div>
+                    </div>
+                    <div class='big-simple-inline'>
+                      <div class='timeline-clock' ng-if="marker.object.InteractionRecord.VerifiedCheckIn">
+                        <i class='fal map-marker-check regular-icon'></i>
+                        Check-in verificado
+                      </div>
+                    </div>
+                  </td>
+
+                  <td ng-click='googleMapsCtrl.openModal(marker)' ng-if="marker.object.Contact">
+                    <i class='fad fa-{{marker.icon}} text-darkest-neutral'></i> {{marker.title}}
+                    <br>
+                    <div class='big-simple-inline'>
+                      <div class='timeline-clock'>
+                        {{marker.object.Contact.StreetAddress}}
+                        {{marker.object.Contact.StreetAddressLine2 ? ", " + marker.object.Contact.StreetAddressLine2 : ""}}
+                      </div>
+                      <div class='timeline-clock'>
+                        <div ng-repeat="phone in marker.object.front_contact.contact_phones_display">
+                          {{phone}}
+                        </div>
+                      </div>
+                      <div ng-if="marker.object.front_contact.contact_tags && marker.object.front_contact.contact_tags.length > 0">
+                        <div class="gap-5"></div>
+                        <div class="marker-tags scroll-shadow-container"
+                          ng-style="{ paddingTop: marker.object.front_contact.contact_tags.length > 5 ? '30px' : '0' }">
+                          <div ng-repeat="tag in marker.object.front_contact.contact_tags"
+                            class="line-item light-badge neutral-timeline-item-content badge-border">
+                            <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+                              <i class="fas fa-tag" ng-style="{ 'color': tag.Color }"></i>
+                              <span class="align-middle"> {{tag.Name || ''}} </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </info-window>
+
+      </ng-map>
+    </div>
+  </section>
+</div>
+</div>

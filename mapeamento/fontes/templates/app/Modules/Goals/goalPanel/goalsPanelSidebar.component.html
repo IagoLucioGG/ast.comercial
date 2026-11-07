@@ -1,0 +1,220 @@
+<div class="side-wrapper">
+  <div class="small-bottom-top-wrapper white-content b-b-1 font-semi-big">
+    {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.BROWSER_INTERVALS' | translate }}
+  </div>
+</div>
+<div class="mini-wrapper">
+  <div class="hbox">
+    <aside class="v-middle">
+      <div class="button button-white-no-border button-full-width button-square"
+        ng-click="$ctrl.moveAllIntervals(false)">
+        <span class="font-regular-weight">
+          <spa class="text-action"><div class="fal fa-arrow-left font-big"></div></span>
+          <br>
+          {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.GO_BACK_ONE_INTERVAL' | translate }}
+        </span>
+      </div>
+    </aside>
+    <aside class="v-middle">
+      <div class="button button-white-no-border button-full-width button-square"
+        ng-click="$ctrl.moveAllIntervals(true)">
+        <span class="font-regular-weight">
+          <span class="text-action"><div class="fal fa-arrow-right font-big"></div></span>
+          <br>
+          {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.GO_FORWARD_ONE_INTERVAL' | translate }}
+        </span>
+      </div>
+    </aside>
+  </div>
+  <div class="gap-20"></div>
+  <div class="button button-white-no-border button-full-width button-square" ng-click="$ctrl.resetAllIntervals()">
+    <span class=" font-regular-weight">
+      <span class="text-action"><div class="fal fa-repeat-alt font-big"></div></span>
+      <br>
+      {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.BACK_TO_CURRENT_INTERVAL' | translate }}
+    </span>
+  </div>
+</div>
+<div class="gap-30"></div>
+<div class="side-wrapper">
+  <div class="small-bottom-top-wrapper white-content b-b-1 font-semi-big">
+    {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.STATUS_VIEW' | translate }}
+  </div>
+</div>
+<div class="mini-wrapper">
+  <div class="button button-white-no-border button-full-width button-square" ng-repeat="status_filter in $ctrl.status_filters" ng-click="$ctrl.toggleStatusFilter(status_filter)">
+    <div class="hbox  font-regular-weight">
+      <aside class="v-middle width-20 text-left">
+        <div ng-if="status_filter.Active" class="fas fa-check"></div>
+      </aside>
+      <aside class="v-middle text-left">{{status_filter.Name}}</aside>
+    </div>
+  </div>
+</div>
+<div class="gap-30"></div>
+<div class="side-wrapper">
+  <div class="small-bottom-top-wrapper  white-content b-b-1 font-semi-big">
+    {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.OWNERSHIP_VIEW' | translate }}
+  </div>
+</div>
+<div class="mini-wrapper">
+  <div ng-repeat="user_filter in $ctrl.user_filters">
+
+    <div class="button button-white-no-border button-full-width button-square" ng-click="$ctrl.toggleUserFilter(user_filter)" >
+      <div class="hbox  font-regular-weight">
+        <aside class="v-middle width-20 text-left">
+          <div ng-if="user_filter.Active" class="fas fa-check"></div>
+        </aside>
+        <aside class="v-middle text-left">{{user_filter.Name}}</aside>
+      </div>
+    </div>
+
+    <div ng-if="user_filter.Id === 2 && user_filter.Active">
+      <div class="hbox  font-regular-weight">
+        <aside class="v-middle width-30 text-left"></aside>
+        <aside class="v-middle text-left">
+          <div class="dropdown">
+            <a class="button button-white-light-border b-1 button-short dropdown-toggle" data-toggle="dropdown" href aria-expanded="false" ng-click="$ctrl.getUsersList()">
+              <div class=" font-small font-bold table-cell-align-top" ng-if="!$ctrl.selected_user">
+                <span class="align-middle">
+                  {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.RESTRICT_TO_USER' | translate }}
+                </span>
+                <i class="fal fa-angle-down dropdown-sign short-button-fix"></i>
+              </div>
+              <div class=" font-small font-bold table-cell-align-top" ng-if="$ctrl.selected_user">
+                <img class="mini-avatar" ng-src="{{$ctrl.selected_user.AvatarUrl}}">
+                <span class="align-middle">{{$ctrl.selected_user.Name}}</span>
+                <i class="fal fa-angle-down dropdown-sign"></i>
+              </div>
+            </a>
+            <ul class="dropdown-max-height dropdown-menu white-dropdown-menu pull-right no-padding-top width-200">
+              <div class="dropdown-subtitle">
+                {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.SEE_ALL_USERS' | translate }}
+              </div>
+              <li>
+                <a class="white-dropdown-link" href ng-click="$ctrl.selectUser()">
+                  <div class="font-bold">
+                    {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.ALL_USERS' | translate }}
+                  </div>
+                </a>
+              </li>
+              <li>
+                <input class="form-control" type="text" placeholder="{{ 'GENERICS.SEARCH' | translate }}..." ng-model="$ctrl.user_filtering">
+              </li>
+
+              <li ng-repeat="user in $ctrl.users | filter:$ctrl.user_filtering">
+                <a class="white-dropdown-link" href ng-click="$ctrl.selectUser(user.Id)">
+                  <div class="hbox">
+                    <aside class="v-middle width-30">
+                      <img class="medium-avatar-list" ng-src="{{user.AvatarUrl}}">
+                    </aside>
+                    <aside class="v-middle font-bold">{{user.Name}}</aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div ng-if="user_filter.Id === 3 && user_filter.Active">
+      <div class="hbox  font-regular-weight">
+        <aside class="v-middle width-30 text-left"></aside>
+        <aside class="v-middle text-left">
+          <div class="dropdown">
+            <a class="button button-white-light-border b-1 button-short dropdown-toggle" data-toggle="dropdown" href aria-expanded="false" ng-click="$ctrl.clearTeamsFilter()">
+              <div class=" font-small font-bold table-cell-align-top" ng-if="!$ctrl.selected_self_team">
+                <span class="align-middle">{{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.RESTRICT_TO_TEAM' | translate }}</span>
+                <i class="fal fa-angle-down dropdown-sign short-button-fix"></i>
+              </div>
+              <div class=" font-small font-bold table-cell-align-top" ng-if="$ctrl.selected_self_team">
+                <span class="align-middle">{{$ctrl.selected_self_team.Name}}</span>
+                <i class="fal fa-angle-down dropdown-sign"></i>
+              </div>
+            </a>
+            <ul class="dropdown-max-height dropdown-menu white-dropdown-menu pull-right no-padding-top width-200">
+              <div class="dropdown-subtitle">{{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.SEE_ALL_TEAMS' | translate }}</div>
+              <li>
+                <a class="white-dropdown-link" href ng-click="$ctrl.selectSelfTeam()">
+                  <div class="font-bold">{{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.ALL_TEAMS' | translate }}</div>
+                </a>
+              </li>
+              <li>
+                <input class="form-control" type="text" placeholder="Pesquisar..." ng-model="$ctrl.team_filtering">
+              </li>
+
+              <li ng-repeat="team in $ctrl.self_teams | filter:$ctrl.team_filtering">
+                <a class="white-dropdown-link" href ng-click="$ctrl.selectSelfTeam(team.Id)">
+                  <div class="hbox">
+                    <aside class="v-middle font-bold">{{team.Name}}</aside>
+                  </div>
+                </a>
+              </li>
+              <standard-loader margin-top="15" loading="$ctrl.teams_list_loading" optionalclass="'timeline-loader'"></standard-loader>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div ng-if="user_filter.Id === 4 && user_filter.Active">
+      <div class="hbox  font-regular-weight">
+        <aside class="v-middle width-30 text-left"></aside>
+        <aside class="v-middle text-left">
+          <div class="dropdown">
+            <a class="button button-white-light-border b-1 button-short dropdown-toggle" data-toggle="dropdown" href aria-expanded="false" ng-click="$ctrl.clearTeamsFilter()">
+              <div class=" font-small font-bold table-cell-align-top" ng-if="!$ctrl.selected_team">
+                <span class="align-middle">{{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.RESTRICT_TO_TEAM' | translate }}</span>
+                <i class="fal fa-angle-down dropdown-sign short-button-fix"></i>
+              </div>
+              <div class=" font-small font-bold table-cell-align-top" ng-if="$ctrl.selected_team">
+                <span class="align-middle">{{$ctrl.selected_team.Name}}</span>
+                <i class="fal fa-angle-down dropdown-sign"></i>
+              </div>
+            </a>
+            <ul class="dropdown-max-height dropdown-menu white-dropdown-menu pull-right no-padding-top width-200">
+              <div class="dropdown-subtitle">{{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.SEE_ALL_TEAMS' | translate }}</div>
+              <li>
+                <a class="white-dropdown-link" href ng-click="$ctrl.selectTeam()">
+                  <div class="font-bold">{{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.ALL_TEAMS' | translate }}</div>
+                </a>
+              </li>
+              <li>
+                <input class="form-control" type="text" placeholder="Pesquisar..." ng-model="$ctrl.team_filtering">
+              </li>
+              <li ng-repeat="team in $ctrl.user_teams | filter:$ctrl.team_filtering">
+                <a class="white-dropdown-link" href ng-click="$ctrl.selectTeam(team.Id)">
+                  <div class="hbox">
+                    <aside class="v-middle font-bold">{{team.Name}}</aside>
+                  </div>
+                </a>
+              </li>
+              <standard-loader margin-top="15" loading="$ctrl.teams_list_loading" optionalclass="'timeline-loader'"></standard-loader>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<div class="gap-30"></div>
+<div class="side-wrapper">
+  <div class="small-bottom-top-wrapper  white-content b-b-1 font-semi-big">
+    {{ 'GOALS.GOALS_PANEL.SIDEBAR.LABELS.INTERVAL_VIEW' | translate }}
+  </div>
+</div>
+<div class="mini-wrapper">
+  <div class="button button-white-no-border button-full-width button-square"
+       ng-repeat="interval_filter in $ctrl.interval_filters"
+       ng-click="$ctrl.toggleIntervalFilter(interval_filter)">
+    <div class="hbox  font-regular-weight">
+      <aside class="v-middle width-20 text-left">
+        <div ng-if="interval_filter.Active" class="fas fa-check"></div>
+      </aside>
+      <aside class="v-middle text-left">{{interval_filter.Name}}</aside>
+    </div>
+  </div>
+</div>

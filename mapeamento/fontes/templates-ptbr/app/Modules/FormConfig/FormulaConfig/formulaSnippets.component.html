@@ -1,0 +1,70 @@
+<div class="dropdown" ng-class="{'open': $ctrl.dropdown_open}">
+  <a class="btn button button-white dropdown-toggle border-left-square" ng-click="$ctrl.toggleDropdown()">
+    <span class="text-action"><i class="fal fa-code button-icon"></i></span>
+    Códigos JS
+    <i class="fal fa-angle-down dropdown-sign"></i>
+  </a>
+  <ul class="dropdown-max-height-bigger dropdown-menu regular-background-dropdown-menu no-padding-top width-300 pull-right">
+    <div class="rectangular-wrapper light-background">
+      <div class="hbox">
+        <aside class="v-middle font-big">
+          Códigos JavaScript
+        </aside>
+        <aside>
+          <div class="gap-3"></div>
+          <a class="button-fixed-size button-fixed-size-medium button-light-background pull-right" ng-click="$ctrl.closeDropdown()">
+            <i class="fas fa-times text-neutral"></i>
+          </a>
+        </aside>
+      </div>
+    </div>
+    <div class="input-group full-width window-search has-feedback">
+      <div class="input-group">
+        <input class="form-control input-sm square-border" type="text" ng-model="$ctrl.quick_search" placeholder="Busque um snippet">
+      </div>
+    </div>
+    <div class="regular-background">
+      <a
+        class="button-short button button-full-width button-background text-left data-visualization"
+        href
+        ng-repeat="snippet in $ctrl.snippets | filter: $ctrl.filterSnippets($ctrl.quick_search)"
+        uib-popover-template="'popover-snippet-template.html'"
+        popover-class="popover-snippet-code"
+        popover-placement="right"
+        popover-is-open="snippet.isOpen"
+        popover-trigger="'none'"
+        popover-append-to-body="true"
+        ng-mouseenter="snippet.isOpen = true"
+        ng-mouseleave="snippet.isOpen = false"
+      >
+        <div class="hbox stretch">
+          <aside class="v-middle" ng-click="$ctrl.selectSnippet(snippet)">
+            <div class="font-regular-weight font-regular-size mini-wrapper">
+              {{snippet.Name}}
+            </div>
+          </aside>
+        </div>
+      </a>
+    </div>
+  </ul>
+</div>
+
+<script type="text/ng-template" id="popover-snippet-template.html">
+  <div
+    class="py-10"
+    ng-mouseenter="snippet.isOpen = true"
+    ng-mouseleave="snippet.isOpen = false"
+  >
+    <span class="font-regular-weight font-regular-size popover-snippet-code-text-regular d-block mb-10">
+      {{ snippet.Name }}
+    </span>
+    <div class="d-block text-left w-100">
+      <code-input
+        initial-text="$ctrl.beautifulSnippet(snippet.Snippet)"
+        hide-expand-button="true"
+        disabled="true"
+        editor-options="$ctrl.preview_snippet_code_options"
+      ></code-input>
+    </div>
+  </div>
+</script>

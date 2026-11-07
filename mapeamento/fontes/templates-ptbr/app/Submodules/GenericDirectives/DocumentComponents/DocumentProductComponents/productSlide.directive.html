@@ -1,0 +1,103 @@
+<div ng-form name="section_product_form">
+  <div class="side-slide overflow-hidden big-border-right-fix white-content" ng-class="{ 'hide-size-slide': !productSlideCtrl.open_slide, 'side-slide-insert-product-bigger': toggleFullScreen, 'side-slide-insert-product-new': !toggleFullScreen }" id="size-slide-5">
+    <div class="stretch" ng-class="{ 'width-100-percent': toggleFullScreen, 'width-550': !toggleFullScreen }">
+      <div class="regular-header b-b-1 scroll-shadow arrange-mid new-header">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <span class="font-thin font-title">
+              {{ (productSlideCtrl.editing ? 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.EDIT_PRODUCT' : 'GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.ADD_PRODUCT') | translate }} - {{ productSlideCtrl.section_name }}
+            </span>
+          </aside>
+          <aside class="v-middle">
+            <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="productSlideCtrl.manualClose(section_product_form)">
+              <i class="fal fa-times"></i>
+            </a>
+          </aside>
+        </div>
+      </div>
+      <div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-if="productSlideCtrl.initial_load && !productSlideCtrl.product_unavaliable && productSlideCtrl.open_slide">
+        <section class="scrollable scroll-shadow-container">
+          <ul class="nav nav-tabs b-b-1 gray-border-tabs arrange-mid">
+            <li ng-repeat="product_source in productSlideCtrl.product_sources" ng-class="{'active': product_source.Id === productSlideCtrl.selected_product_source.Id }" ng-click="productSlideCtrl.selectProductSource(product_source)">
+              <a class="text-muted" href>{{product_source.Name}}</a>
+            </li>
+          </ul>
+          <product-select
+            ng-if="productSlideCtrl.selected_product_source"
+            select-callback-fn="productSlideCtrl.selectProduct"
+            pre-select-callback-fn="productSlideCtrl.preSelectProduct"
+            product-unavaliable-callback-fn="productSlideCtrl.productUnavaliable"
+            selected-product-id="productSlideCtrl.original_entity_product_model.ProductId"
+            toggle-full-screen="toggleFullScreen"
+            allowed-group-ids="productSlideCtrl.section_field.sectionProductGroupIds"
+            allowed-family-ids="productSlideCtrl.section_field.sectionProductFamilyIds"
+            allowed-list-ids="productSlideCtrl.section_field.sectionProductListIds"
+            allowed-contact-ids="productSlideCtrl.model_contact_id"
+            product-field-filter-url="productSlideCtrl.productFieldFilterUrl"
+
+            selected-entity-product-id="productSlideCtrl.original_entity_product_model.ProductEntityId"
+            entity-id="productSlideCtrl.selected_product_source.EntityId"
+            entity-name="productSlideCtrl.selected_product_source.EntityName"
+            entity-endpoint="productSlideCtrl.selected_product_source.EntityEndpoint"
+            entity-custom-expands="productSlideCtrl.selected_product_source.EntityCustomExpands"
+            entity-custom-filter="productSlideCtrl.selected_product_source.EntityCustomFilter"
+            get-showing-table-fields-fn="productSlideCtrl.selected_product_source.ShowingTableFieldsFn"
+            >
+          </product-select>
+
+          <product-part
+            ng-if="productSlideCtrl.show_parts && productSlideCtrl.selected_product_source && productSlideCtrl.current_product_parts[productSlideCtrl.entity_prefix + '_product_parts_' + parts_field.quickFormProductPartCode].length > 0"
+            ng-repeat="parts_field in productSlideCtrl.section_product_parts_fields"
+            product-parts="productSlideCtrl.current_product_parts[productSlideCtrl.entity_prefix + '_product_parts_' + parts_field.quickFormProductPartCode]"
+            selected-parts="productSlideCtrl.entity_product_model[productSlideCtrl.entity_prefix + '_product_parts_' + parts_field.quickFormProductPartCode]"
+            entity-prefix="productSlideCtrl.entity_prefix"
+            field="parts_field"
+            part-index="$index"
+            part-editing="productSlideCtrl.editing && !productSlideCtrl.changed_selected_product"
+            parent-product="productSlideCtrl.entity_product_model">
+          </product-part>
+          <form>
+            <div ng-if="productSlideCtrl.open_slide && productSlideCtrl.selected_product_source">
+              <forms model="productSlideCtrl.entity_product_model" fields="productSlideCtrl.section_product_form" form="section_product_form" is-modal-full-screen="toggleFullScreen" editing-model="productSlideCtrl.editing"></forms>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-if="productSlideCtrl.initial_load && productSlideCtrl.product_unavaliable">
+        <div class="text-center text-neutral-light font-very-big-title">
+          <div class="gap-90"></div>
+          <i class="font-monster-size fad fa-exclamation-triangle"></i>
+          <div class="gap-30"></div>
+          Produto indisponível
+        </div>
+      </div>
+      <div class="height-40 b-t-1 white-content side-wrapper" ng-show="productSlideCtrl.initial_load">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <a href class="button button-white" ng-show="productSlideCtrl.editing" ng-click="!productSlideCtrl.block_button && productSlideCtrl.removeProduct()">
+              <span class="font-big">
+                <i class="fal fa-trash fixing-fixed-size-button"></i>
+              </span>
+            </a>
+          </aside>
+          <div class="document-footer-container stretch" ng-if="!productSlideCtrl.product_unavaliable">
+            <loading-tooltip form="section_product_form"></loading-tooltip>
+            <button class="button button-action pull-right" ng-click="!productSlideCtrl.block_button && productSlideCtrl.resetSlide(true)">
+              Limpar campos
+            </button>
+            <button class="button button-action pull-right" ng-disable="productSlideCtrl.block_button" ng-show="!productSlideCtrl.editing" ng-click="!productSlideCtrl.block_button && productSlideCtrl.insertProduct(section_product_form)">
+              <i class="button-icon fas fa-save"></i>
+              Inserir produto
+            </button>
+            <button class="button button-action pull-right" ng-disable="productSlideCtrl.block_button" ng-show="productSlideCtrl.editing" ng-click="!productSlideCtrl.block_button && productSlideCtrl.editProduct(section_product_form)">
+              <i class="button-icon fas fa-save"></i>
+              Salvar edição
+            </button>
+          </div>
+        </div>
+      </div>
+      <standard-loader margin-top="15" loading="!productSlideCtrl.initial_load"></standard-loader>
+    </div>
+  </div>
+  <div class="side-slide-insert-product-new-backdrop" id="size-slide-5-backdrop" ng-class="{'fade': !productSlideCtrl.open_slide}" style="display:block"></div>
+</div>

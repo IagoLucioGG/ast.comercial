@@ -1,0 +1,86 @@
+<div class="position-relative" context-menu="dynamicFunnelCardCtrl.menuOptions()">
+  <a
+    model="dynamicFunnelCardCtrl.front_card"
+    role="link"
+    class="deal"
+    ui-sref="deal({dealid: card.Id})"
+    data-cy="{{'deals-card-' + card.Id}}"
+    ng-class="card.on_hold ? 'saving-deal' : dynamicFunnelCardCtrl.status"
+    ng-click="dynamicFunnelCardCtrl.goToLink()"
+    patch-api="Deals"
+    submit-fn="dynamicFunnelCardCtrl.submitControl(item)"
+    properties="dynamicFunnelCardCtrl.deal_edit_form_keys"
+    aria-label="{{ 'ARIA_LABELS.DEAL.ENTER_DEAL_BY_CARD_ON_PIPELINE_VIEW' | translate_sentence_with_replace: { itemName: card.Title } }}"
+    inline-edit
+    non-editable="!card.Editable || blockInlineEdit"
+    build-async-inline-fn="dynamicFunnelCardCtrl.getEditModel()"
+  >
+    <div class="new-item" ng-if="!card.Read"></div>
+    <div class="super-mini-wrapper">
+      <div class="hbox">
+        <aside class="deal-details">
+          <div id="deal-card-title-{{card.Id}}" 
+            class="font-regular-size"
+            data-cy="{{'deals-card-title-' + card.Id}}"
+            aria-label="{{ 'ARIA_LABELS.DEAL.CARD_TITLE' | translate_sentence_with_replace: { cardTitle: card.Title } }}"
+            uib-tooltip="{{card.Title}}" 
+            tooltip-append-to-body="true" 
+          >
+            {{card.Title}} {{card.LastQuote.QuoteNumber ? '(#' + card.LastQuote.QuoteNumber + ')' : ''}}
+          </div>
+          <div>
+            <div class="nowrap ellipsis overflow-hidden display-inline-block float-left v-top contact-name-deal" ng-if="showStage">
+              <span class="deal-detail">{{card.Stage.Name}}</span>
+            </div>
+            <div class="nowrap ellipsis overflow-hidden all-in-center-flex float-left v-top contact-name-deal deal-detail" ng-if="!showStage">
+              <i class="fas fa-lock fs-10" ng-if="!card.Contact && card.ContactName"></i>
+              <span ng-class="{'display-inline-block': !dynamicFunnelCardCtrl.contact_name}">
+                {{ dynamicFunnelCardCtrl.contact_name }}
+              </span>
+            </div>
+            <div ng-if="card.Amount > 0" class="nowrap ellipsis overflow-hidden display-inline-block float-left v-top">
+              <span class="deal-detail eliminate-right-padding" aria-label="moeda e valor do card (do:deal:aa:s) (name:deal::s)">
+                <span>{{card.Currency.Symbol}} {{card.Amount.toLocaleString('LANGUAGE' | translate, { minimumFractionDigits: 2 })}}</span>
+              </span>
+            </div>
+          </div>
+        </aside>
+        <aside class="deal-actions v-middle">
+          <div class="pull-right">
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="deal-elements-bg">
+      <div class="deal-elements-container min-height-25">
+        <div class="simple-inline" ng-if="card.Owner" uib-tooltip="{{card.Owner.Name}}" aria-label="avatar do responsável do card (do:deal:aa:s) (name:deal::s)" tooltip-append-to-body="true">
+          <img class="mini-avatar-less-plus" ng-src="{{card.Owner.AvatarUrl}}">
+        </div>
+        <div class="deal-element">
+          <div class="inactive-days dark-background">
+            <div class="text-muted" 
+              aria-label="{{ 'ARIA_LABELS.DEAL.CARD_DAYS_IN_STAGE' | translate_sentence_with_replace: { daysInStage: card.DaysInStage } }}"
+            >
+              {{card.DaysInStage}}d
+            </div>
+          </div>
+        </div>
+        <div class="deal-element">
+          <span
+            ng-repeat="tag in card.Tags track by $index" 
+            aria-label="{{ 'ARIA_LABELS.DEAL.CARD_TAG' | translate_sentence_with_replace: { tagName: tag.Tag.Name } }}"
+            uib-tooltip="{{::tag.Tag.Name}}"
+            tooltip-placement="top"
+            tooltip-append-to-body="true"
+          >
+            <i class="fas fa-tag regular-icon" ng-style="{'color': tag.Tag.Color}"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="deal-evolution">
+      <div class="action-content height-3" ng-style="{'width': dynamicFunnelCardCtrl.progress + '%'}"></div>
+    </div>
+  </a>
+  <entity-tasks ng-if="entity" obj="card" entity="entity" contact="card.Contact" deal="card"></entity-tasks>
+</div>

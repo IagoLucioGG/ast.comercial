@@ -1,0 +1,21 @@
+<div>
+  <div class="short-side-bottom-wrapper">
+    <div class="font-big">
+      <span>Pessoas</span>
+      <a ng-if="personsCtrl.self.Profile.ContactsCreatePermission" class="button button-light-background-border button-plus pull-right" ui-sref="{{'contact.newperson({company: contactModel})'}}">
+        <i class="fas fa-plus font-super-super-small text-neutral"></i>
+      </a>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background"></div>
+    <div class="gap-5"></div>
+    <a class="contact-card panel no-quote" ng-if="personsCtrl.self.Profile.ContactsCreatePermission && personsCtrl.persons.length === 0" ui-sref="{{personsCtrl.state.current.name + '.newperson({company: contactModel})'}}">
+      <div class="font-semi-big">{{'Nenhuma pessoa associada. Clique aqui para criar.'}}</div>
+    </a>
+  </div>
+  <div class="contact-page-person-list">
+    <div ng-repeat="person in personsCtrl.persons track by person.Id">
+      <infos-widget form-key="contact_person_quick_form" entity-type="Contact" patch-fn="personsCtrl.patchFn(model)" model="person" replace-section-title="{{person.Name}}" replace-section-title-icon="fad fa-user" replace-section-title-link="contact({ contactid: {{person.Id}} })"></infos-widget>
+    </div>
+  </div>
+</div>

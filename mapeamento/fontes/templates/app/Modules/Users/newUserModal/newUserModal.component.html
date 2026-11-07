@@ -1,0 +1,65 @@
+<dynamic-modal modal-id="{{::modalId}}"
+  wide="false"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'USERS.NEW_USER' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  ng-form name="new_user_form"
+  cypress-prefix="administration-new-user"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container">
+        <div class="gap-15"></div>
+        <div>
+          <div class="hbox">
+            <aside class="width-160 text-center v-middle">
+              <img class="avatar-select" ng-src="{{$ctrl.model.user_avatar_url || 'assets/images/avatar_default.jpg'}}">
+              <label class="button button-white button-short avatar-select-button" href id="user-avatar-wrapper" data-cy="administration-new-user-choose-picture-button">
+                <span class="text-action"><i class="fal fa-image button-icon"></i></span>
+                {{ 'USERS.CHOOSE_AVATAR' | translate }}
+                <input id="user-avatar" type="file" style="display: none;" />
+              </label>
+            </aside>
+            <aside class="v-middle">
+              <forms model="$ctrl.model" fields="$ctrl.top_form" form="new_user_form"></forms>
+            </aside>
+          </div>
+        </div>
+
+        <div ng-repeat="section in $ctrl.sections">
+          <div ng-if="section.Id === 'null'">
+            <forms model="$ctrl.model" fields="$ctrl.forms[$index]" form="new_user_form">
+            </forms>
+            <div class="gap-20"></div>
+          </div>
+          <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+            <modal-section section-form="new_user_form" name="section.name" section-id="section.Id">
+              <forms model="$ctrl.model" fields="$ctrl.forms[$index]" form="new_user_form" name="'section_form_' + section.Id">
+              </forms>
+            </modal-section>
+            <div class="gap-20"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button
+            class="button button-action pull-right"
+            ng-disabled="$ctrl.loading"
+            ng-click="$ctrl.createUserConfirmationModal($ctrl.activateUserMessage(), $ctrl.submitControl, new_user_form)"
+            skip-reversible-message="true">
+            <i class="button-icon fas fa-save"></i>
+            {{ 'GENERICS.SAVE' | translate }}
+          </button>
+          <loading-tooltip loading="$ctrl.loading" form="new_user_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

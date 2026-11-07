@@ -92,8 +92,9 @@ async function carregarFormularios() {
       gruposAbertos.value[e] = (formulariosPorEntidade.value[e]?.length ?? 0) > 0
     }
     // Selecionar primeiro formulário automaticamente
-    if (formularios.value.length && !formularioSelecionado.value) {
-      await selecionarFormulario(formularios.value[0])
+    const primeiro = formularios.value[0]
+    if (primeiro && !formularioSelecionado.value) {
+      await selecionarFormulario(primeiro)
     }
   } finally { carregando.value = false }
 }

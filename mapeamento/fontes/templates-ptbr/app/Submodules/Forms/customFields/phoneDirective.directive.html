@@ -1,0 +1,63 @@
+<div class="phone-container">
+  <div class="input-group">
+    <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+      <button class="btn button button-white all-in-center-flex" uib-dropdown-toggle ng-disabled="disabled">
+        <img
+          ng-src="{{phoneCtrl.rootUrl + '/assets/images/paises/' + (model.Country ? model.Country.Short2.toLowerCase() : 'none') + '.png'}}"
+          width="15">
+      </button>
+      <ul class="dropdown-menu dropdown-max-height-small white-dropdown-menu" uib-dropdown-menu style="z-index: 10000;">
+        <li>
+          <a href class="white-dropdown-link" ng-click="!disabled && phoneCtrl.changeCountry(null, model)">
+            <img ng-src="{{phoneCtrl.rootUrl + '/assets/images/paises/none.png'}}" width="15" />
+            <span>Sem máscara</span>
+          </a>
+        </li>
+        <li ng-repeat="country in phoneCtrl.phoneCountries">
+          <a href class="white-dropdown-link" ng-click="!disabled && phoneCtrl.changeCountry(country, model)">
+            <img
+              ng-src="{{phoneCtrl.rootUrl + '/assets/images/paises/' + (country.Short2 ? country.Short2.toLowerCase() : 'none') + '.png'}}"
+              width="15" />
+            <span>{{country.PhoneMask.replace('?','')}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <input
+      name="{{::field.key}}"
+      class="form-control input-sm"
+      id="phone-field"
+      ui-mask="{{phoneCtrl.applied_phone_mask}}"
+      ui-options="{{phoneCtrl.ui_options}}"
+      model-view-value="true"
+      ng-model="model.PhoneNumber"
+      ng-model-options="{ 'debounce': 300 }"
+      maxlength="80"
+      ng-required="required"
+      ng-disabled="disabled"
+      ng-focus="phoneCtrl.updatePhoneMask(model, true)"
+      ng-blur="phoneCtrl.updatePhoneMask(model, false)"
+      check-uniqueness
+      check-uniqueness-field="field"
+      check-uniqueness-model="parentModel"
+      check-uniqueness-disable="false"
+      ng-change="phoneCtrl.handleOnChange(model)"
+      aria-label="{{ 'ARIA_LABELS.FIELD.PHONE' | translate_with_replace: { fieldLabel: field.label } }}"
+    >
+
+    <div class="input-group-btn" uib-dropdown dropdown-append-to-body>
+      <button class="btn button button-white" uib-dropdown-toggle ng-disabled="disabled">
+        {{model.Type.Name}}
+        <i class="fal fa-angle-down dropdown-sign font-very-small"></i>
+      </button>
+      <ul class="dropdown-menu pull-right white-dropdown-menu" uib-dropdown-menu style="z-index: 10000;">
+        <li ng-repeat="type in phoneCtrl.phoneTypes">
+          <a href class="white-dropdown-link" ng-click="!disabled && phoneCtrl.changeType(type, model)">
+            {{type.Name}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

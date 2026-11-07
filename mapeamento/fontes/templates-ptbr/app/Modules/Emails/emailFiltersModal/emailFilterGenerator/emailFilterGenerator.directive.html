@@ -1,0 +1,65 @@
+<div ng-class="{'wrapper': !skipWrapper}">
+  <div class="panel b-1 white-content medium-shadow">
+    <table class="table table-striped modal-table filter-generator-table">
+      <thead>
+        <tr>
+          <th class="width-20"></th>
+          <th class="break-words width-120">Campo</th>
+          <th class="break-words width-100">Operação</th>
+          <th class="break-words width-120">Valor</th>
+          <th class="text-center filter-generator-last-child-header"><a class="button-inherit button-fixed-size button-fixed-size-small" ng-show="emailFilterGenCtrl.conditionListState.length > 1" ng-click="emailFilterGenCtrl.removeOrCondition($parent.$index)"><i class="fal fa-trash"></i></a></th>
+        </tr>
+      </thead>
+      <tbody ui-sortable="emailFilterGenCtrl.options" ng-model="emailFilterGenCtrl.condition_list" class="filter-generator-tbody">
+        <tr ng-repeat="condition in emailFilterGenCtrl.condition_list">
+          <td class="v-middle width-20">
+            <div class="token-drag-indicator muted-token mini-dragger" style="cursor: grab"></div>
+          </td>
+          <td>
+            {{condition.field.label}}
+          </td>
+          <td>
+            <!-- {{condition.operation.Name}} -->
+            <select ng-options="operation.Operation.Name for operation in condition.field.operations track by operation.Operation.Id" class="form-control input-sm" ng-model="condition.operation" ng-change="filterGenCtrl.onConditionChange(condition)">
+            </select>
+          </td>
+          <td ng-class="{ 'invalid-input': condition.invalidCondition }">
+            <new-field ng-if="condition.operation" field="condition.field" model="condition.model" property="condition.field.key" required="false" disabled="false" wide="false" outside-form="true" hide-label="true" not-suggest-new-item="true" not-trigger-formula="true" ignore-default-values="true" model-change-callback="emailFilterGenCtrl.valueChangeCallback(new_val, old_val, first_trigger, condition)"></new-field>
+          </td>
+          <td class="text-center">
+            <a class="button-inherit button-fixed-size button-fixed-size-small" ng-click="emailFilterGenCtrl.condition_list.splice($index, 1)"><i class="fal fa-trash fixing-fixed-size-button"></i></a>
+          </td>
+        </tr>
+        <tr ng-if="maxQueriesAllowed === undefined || emailFilterGenCtrl.condition_list.length < maxQueriesAllowed">
+          <td class="width-20"></td>
+          <td class="v-top" ng-style="{ 'padding-top': emailFilterGenCtrl.selected_index > 0 ? ((emailFilterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+            <select ng-options="field.label for field in emailFilterGenCtrl.field_exibhition track by field.key" class="form-control input-sm" ng-model="emailFilterGenCtrl.selected_field">
+            </select>
+          </td>
+          <td class="v-top" ng-style="{ 'padding-top': emailFilterGenCtrl.selected_index > 0 ? ((emailFilterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+            <select ng-options="operation.Operation.Name for operation in emailFilterGenCtrl.selected_field.operations track by operation.Operation.Id" class="form-control input-sm" ng-model="emailFilterGenCtrl.selected_operation" ng-disabled="!emailFilterGenCtrl.selected_field" ng-change="emailFilterGenCtrl.onNewConditionChange()">
+            </select>
+          </td>
+          <td class="v-top" ng-class="{ 'invalid-input': emailFilterGenCtrl.hasValueError }" ng-style="{ 'padding-top': emailFilterGenCtrl.selected_index > 0 ? ((emailFilterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+            <new-field ng-if="emailFilterGenCtrl.selected_operation" field="emailFilterGenCtrl.selected_field" model="emailFilterGenCtrl.condition" property="emailFilterGenCtrl.selected_field.key" required="false" disabled="false" wide="false" outside-form="true" hide-label="true" not-suggest-new-item="true" not-trigger-formula="true" ignore-default-values="true" model-change-callback="emailFilterGenCtrl.onNewConditionChange()"></new-field>
+            <span ng-if="!emailFilterGenCtrl.selected_operation">
+              <input disabled="true" class="form-control input-sm" />
+            </span>
+          </td>
+          <td class="text-center v-top" ng-style="{ 'padding-top': emailFilterGenCtrl.selected_index > 0 ? ((emailFilterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+            <span
+              class="button-fixed-size button-action button-fixed-size-big"
+              ng-class="{'disabled': emailFilterGenCtrl.selected_operation === null || emailFilterGenCtrl.selected_operation === undefined}"
+              ng-click="emailFilterGenCtrl.selected_operation && emailFilterGenCtrl.createCondition()"
+              uib-tooltip="Clique para adicionar essa condição"
+              tooltip-append-to-body="true"
+              tooltip-is-open="emailFilterGenCtrl.condition[emailFilterGenCtrl.selected_field.key] !== undefined"
+              tooltip-trigger="none">
+              <i class="fas fa-check"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

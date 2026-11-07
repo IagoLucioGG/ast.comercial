@@ -1,0 +1,245 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-form="chart_slide_form">
+  <standard-loader margin-top="15" loading="!slideContentCtrl.can_load"></standard-loader>
+  <section ng-if="slideContentCtrl.can_load" class="scrollable scroll-shadow-container">
+    <div class="side-wrapper">
+      <!-- Nome da métrica-->
+      <div class="activity-history hist-separator"></div>
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="new-approval-item white-content b-1">
+              <span class="font-bold font-regular-size">1</span>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width">
+            <div class="hbox">
+              <aside>
+                <div class="hbox">
+                  <aside class="v-middle width-160 nowrap">
+                    <div class="gap-10"></div>
+                    <div class="font-bold font-semi-big">Descrição</div>
+                    <div class="gap-5"></div>
+                    <div ng-class="{'invalid-input': !slideContentCtrl.metric_name.length && chart_slide_form.$submitted && !chart_slide_form.$valid}">
+                      <input class="form-control input-sm" ng-model="slideContentCtrl.metric_name" ng-required="true">
+                    </div>
+                  </aside>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <!-- Campo e Agregação-->
+      <div class="activity-history hist-separator"></div>
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="new-approval-item white-content b-1">
+              <span class="font-bold font-regular-size">2</span>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width">
+            <div class="hbox">
+              <aside>
+                <div class="hbox">
+                  <aside class="v-middle">
+                    <div class="gap-10"></div>
+                    <div class="font-bold font-semi-big">
+                      Métrica
+                      <div
+                        class="font-regular-weight font-semi-small text-muted"
+                        ng-bind-html="('REPORTS.REPORT_CHART.METRIC_CONFIG.ENTITY_SELECT_HELPER' | translate) | to_trusted">
+                      </div>
+                    </div>
+                    <div class="gap-10"></div>
+                    <div class="panel b-1 white-content medium-shadow">
+                      <table class="table table-striped modal-table">
+                        <thead>
+                          <tr>
+                            <th class="width-100">
+                              Objeto da análise
+                            </th>
+                            <th class="width-100">
+                              Propriedade
+                            </th>
+                            <th class="width-100">
+                              Agregação
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div ng-class="{'invalid-input': !slideContentCtrl.entity && chart_slide_form.$submitted && !chart_slide_form.$valid}">
+                                <select ng-options="entity.Name for entity in slideContentCtrl.entities" class="form-control input-sm" ng-model="slideContentCtrl.entity" ng-disabled="editing" ng-change="slideContentCtrl.setEntity()" ng-required="true">
+                                  <option value=""></option>
+                                </select>
+                              </div>
+                            </td>
+                            <td>
+                              <select ng-options="field.label for field in slideContentCtrl.metric_fields" class="form-control input-sm" ng-disabled="!slideContentCtrl.entity" ng-model="slideContentCtrl.metric_field" ng-change="slideContentCtrl.checkMetricFieldExceptions()">
+                                <option value=""></option>
+                              </select>
+                            </td>
+                            <td>
+                              <div ng-class="{'invalid-input': !slideContentCtrl.aggregator && chart_slide_form.$submitted && !chart_slide_form.$valid}">
+                                <select ng-options="aggregator.Name for aggregator in slideContentCtrl.aggregators" class="form-control input-sm" ng-disabled="!slideContentCtrl.entity || slideContentCtrl.disable_aggregator" ng-model="slideContentCtrl.aggregator" ng-required="true">
+                                </select>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </aside>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <!-- Dimensões-->
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="new-approval-item white-content b-1">
+              <span class="font-bold font-regular-size">3</span>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width">
+            <div class="hbox">
+              <aside>
+                <div class="hbox">
+                  <aside class="v-middle">
+                    <div class="gap-10"></div>
+                    <div class="font-bold font-semi-big">
+                      Dimensão
+                      <div
+                        class="font-regular-weight font-semi-small text-muted"
+                        ng-bind-html="('REPORTS.REPORT_CHART.METRIC_CONFIG.DIMENSION_SELECT_HELPER' | translate) | to_trusted">
+                      </div>
+                    </div>
+                    <div class="gap-10"></div>
+                    <div ng-class="{'invalid-input': !slideContentCtrl.column_list.length && chart_slide_form.$submitted && !chart_slide_form.$valid}">
+                      <dynamic-table-column-selection
+                        ng-if="slideContentCtrl.entity && slideContentCtrl.show_dimension_selection"
+                        entity="slideContentCtrl.entity"
+                        column-list="slideContentCtrl.column_list"
+                        use-featured="false"
+                        max-num-of-columns="slideContentCtrl.max_dimension_fields"
+                        add-column-fn="slideContentCtrl.addColumn(column)"
+                        remove-column-fn="slideContentCtrl.removeColumn(column)"
+                        restrict-column-type="restrictDimension ? restrictDimension.typeId : null">
+                      </dynamic-table-column-selection>
+                    </div>
+                    <div ng-if="slideContentCtrl.has_date_dimension">
+                      <div class="gap-10"></div>
+                      <div class="panel white-content top-wrapper">
+                          <span class="font-bold font-semi-big">
+                            Intervalo
+                          </span>
+                          <div class="gap-5"></div>
+                          <select ng-options="modifier.Name for modifier in slideContentCtrl.modifiers" class="form-control input-sm" ng-model="slideContentCtrl.modifier" ng-disabled="restrictDimension">
+                          </select>
+                      </div>
+                    </div>
+                  </aside>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <div class="activity-history hist-separator"></div>
+      <!-- Adicionar Filtro-->
+      <div class="activity-history hist-separator" ng-if="slideContentCtrl.entity"></div>
+      <div class="hbox" ng-if="slideContentCtrl.entity">
+        <aside class="activity-history">
+          <div>
+            <div class="add-condition text-action" ng-click="slideContentCtrl.toggleShowFilter(!slideContentCtrl.show_filter)">
+              <i class="fal activity-icon" ng-class="{'fa-plus': !slideContentCtrl.show_filter, 'fa-minus': slideContentCtrl.show_filter}"></i>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width">
+            <div class="hbox filter-generator-table">
+              <aside class="v-middle">
+                <div class="gap-10"></div>
+                <div class="font-semi-big font-bold">
+                  Filtros
+                  <div
+                    class="font-regular-weight font-semi-small text-muted"
+                    ng-bind-html="('REPORTS.REPORT_CHART.METRIC_CONFIG.FILTER_SELECT_HELPER' | translate) | to_trusted">
+                  </div>
+                </div>
+                <div class="remove-filter-wrapper" ng-if="slideContentCtrl.show_filter">
+                  <div class="gap-10"></div>
+                  <div class="font-semi-big font-bold text-center wrapper">
+                    {{ 'REPORTS.REPORT_CHART.METRIC_CONFIG.ITEMS_AFFECTED' | translate_with_replace : { items: slideContentCtrl.items_counter } }}
+                    <div ng-if="slideContentCtrl.items_counter_alert" class="font-regular-weight" ng-class="slideContentCtrl.items_counter_alert_class">
+                      {{slideContentCtrl.items_counter_alert}}
+                    </div>
+                  </div>
+                  <div class="gap-20"></div>
+                  <filter-container 
+                    filter-fields="slideContentCtrl.filterFields"
+                    update-filter-fields="slideContentCtrl.updateFilterFields(filterFields)"
+                    ng-if="slideContentCtrl.show_filter && slideContentCtrl.entity" 
+                    entity="slideContentCtrl.entity" 
+                    query-object="slideContentCtrl.filterObject"
+                    compare-fields="true">
+                  </filter-container>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <!-- Cor-->
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="new-approval-item white-content b-1">
+              <span class="font-bold font-regular-size">4</span>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width">
+            <div class="hbox">
+              <aside>
+                <div class="hbox">
+                  <aside class="v-middle width-160 nowrap">
+                    <div class="gap-10"></div>
+                    <span class="font-bold font-semi-big">
+                      Cor
+                    </span>
+                    <div class="gap-5"></div>
+                    <input class="form-control input-sm" colorpicker="hex" ng-model="slideContentCtrl.metric_color" ng-style="{'background-color': slideContentCtrl.metric_color}">
+                  </aside>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch" ng-if="slideContentCtrl.can_load">
+  </div>
+</div>

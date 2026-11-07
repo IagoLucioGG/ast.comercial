@@ -1,0 +1,192 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - textbox "Buscar clientes"
+      - button "CNPJ "
+    - complementary:
+      - button "botão de criar novo cliente":  Novo cliente 
+      - text:  Menu
+      - link "Dropdown de 'Ações de filtros'" [expanded]:
+        - /url: ""
+        - text:  Filtros 
+      - button " Mapa"
+      - link " Quebrar por clientes ":
+        - /url: ""
+    - complementary:
+      - complementary: Abas
+      - complementary: Nova aba
+      - 'button "botão para selecionar aba: Todos PF e PJ"':
+        - complementary: Todos PF e PJ
+        - complementary: 
+      - 'button "botão para selecionar aba: Contratos de clientes"':
+        - complementary: Contratos de clientes
+        - complementary: 
+      - 'button "botão para selecionar aba: Clientes Iago"':
+        - complementary: Clientes Iago
+        - complementary: 
+      - 'button "botão para selecionar aba: Prospects sem contatos de venda aberto"':
+        - complementary: Prospects sem contatos de venda aberto
+        - complementary: 
+      - 'button "botão para selecionar aba: Clientes análise"':
+        - complementary: Clientes análise
+        - complementary: 
+    - complementary: 
+    - complementary:
+      - table:
+        - rowgroup:
+          - row "":
+            - columnheader:
+              - complementary: Nome
+              - complementary
+            - columnheader ""
+        - rowgroup
+        - rowgroup:
+          - 'link "linha da tabela selecionável do item: 700243547"':
+            - cell "Leonardo Barbosa "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 12945212"':
+            - cell "QUEIJARIA ESCOLA "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 13013259"':
+            - cell "ALEGRIA BRINQUEDOS "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 12936036"':
+            - cell "PARTEC "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 14067653"':
+            - cell "Klaus "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 14048191"':
+            - cell "Vertical indústria e Moda "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 14619924"':
+            - cell "BRUNO "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 14683772"':
+            - cell "NEW WAY DESIGNER EIRELI "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 14889989"':
+            - cell "FERNANDES & MANTOVAN "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 15687518"':
+            - cell "MADELESTE MADEIRAS "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 16072072"':
+            - cell "GUI TEST "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 13058559"':
+            - cell "BEBE BASICO FQ LARANJEIRAS "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 16203446"':
+            - cell "MARE SURF SHOP EIRELI "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 16212817"':
+            - cell "AMICHE - COMERCIO DE CALCADOS E ACESSORIOS LTDA "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+          - 'link "linha da tabela selecionável do item: 12855711"':
+            - cell "Jakson Lima "
+            - cell "ícone de tarefa do card":
+              - link "ícone de tarefa do card":
+                - /url: ""
+                - text: 
+      - text: Mostrando 1 - 15 de 845105
+      - menu:
+        - menuitem "Primeira":
+          - link "Primeira":
+            - /url: ""
+        - menuitem "Anterior":
+          - link "Anterior":
+            - /url: ""
+        - menuitem "1":
+          - link "1":
+            - /url: ""
+        - menuitem "2":
+          - link "2":
+            - /url: ""
+        - menuitem "3":
+          - link "3":
+            - /url: ""
+        - menuitem "4":
+          - link "4":
+            - /url: ""
+        - menuitem "5":
+          - link "5":
+            - /url: ""
+        - menuitem "...":
+          - link "...":
+            - /url: ""
+        - menuitem "Próxima":
+          - link "Próxima":
+            - /url: ""
+        - menuitem "Última":
+          - link "Última":
+            - /url: ""

@@ -1,0 +1,84 @@
+<div class="component-with-height">
+  <div class="vbox small-header">
+    <header class="regular-header new-header b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <documents-nav active="documents"></documents-nav>
+          <div class="display-inline-block height-40 pull-left">
+            <div class="input-group width-170 mtop5 special-size-search-button" tooltip-placement="right" uib-tooltip="Pesquise documentos pelo código ou pelo nome do cliente">
+              <input class="form-control input-sm light-background" placeholder="Busca por código ou pelo nome do cliente" ng-model="documentsCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? documentsCtrl.quickFilter(documentsCtrl.quick_filter) : documentsCtrl.onTypeQuickFilter(documentsCtrl.quick_filter)" data-cy="documents-quick-filter-input">
+              <div class="input-group-btn width-10">
+                <a class="btn button button-neutral-gray special-search-button" ng-click="documentsCtrl.quickFilter(documentsCtrl.quick_filter)">
+                  <i class="fas fa-search text-neutral"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <a class="button button-action pull-right" ng-if="documentsCtrl.cpq_beta_button_enabled && documentsCtrl.self.Profile.DocumentsCreatePermission" ng-click="documentsCtrl.openBetaNewDocument('.newdoccontact')" data-cy="documents-new-document-button">
+            <i class="button-icon fas fa-file-alt"></i>
+            Novo documento BETA
+          </a>
+          <a class="button button-action pull-right" ng-if="documentsCtrl.self.Profile.DocumentsCreatePermission" ng-click="documentsCtrl.openNewDocument('.newdoccontact')">
+            <i class="button-icon fas fa-file-alt"></i>
+            Novo documento
+          </a>
+          <a id="documents-menu-button" class="button button-white-no-border pull-right" open-side-menu side-menu-id="document_side_menu" ng-if="documentsCtrl.self.Profile.Administrator">
+            <span class="text-action"><i class="fal fa-cog button-icon"></i></span> Menu
+          </a>
+
+          <div class="dropdown pull-right">
+            <filters-menu filters="documentsCtrl.filters" applied-filter="documentsCtrl.applied_filter" filter-actions-fn="documentsCtrl.filterActions"></filters-menu>
+          </div>
+
+          <div class="dropdown pull-right">
+            <a class="dropdown-toggle button button-white-no-border pull-right" id="approvals" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="text-action"><i class="button-icon-margin" ng-class="documentsCtrl.current_mode.Icon"></i></span>
+              Quebrar por {{documentsCtrl.current_mode.Name.toLowerCase()}}<i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+              <div class="dropdown-subtitle">Opções de visualização</div>
+              <li ng-repeat="mode in documentsCtrl.modes|filter:{ Active: false }">
+                <a class="white-dropdown-link" href ng-click="documentsCtrl.changeMode(mode.EntityId)">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                        <i class="button-icon-margin" ng-class="mode.Icon"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      Quebrar por {{mode.Name.toLowerCase()}}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </header>
+    <section>
+      <div class="vbox">
+        <!-- CONTEÚDO DA TELA -->
+        <section ui-view="documents-view"></section>
+      </div>
+    </section>
+
+    <!--MODALS-->
+    <filters-modal
+        ng-if="documentsCtrl.state.current.name.endsWith('filter')"
+        modal-id="filter_modal"
+        entity="documentsCtrl.current_mode.EntityId === 66 ? documentsCtrl.main_entity : documentsCtrl.current_mode.EntityId === 68 ? documentsCtrl.product_entity : documentsCtrl.part_entity"
+        remove-simple-filter="true"
+        filter-actions-fn="documentsCtrl.filterActions">
+    </filters-modal>
+
+    <!--SIDE-MENU-->
+    <side-menu side-menu-id="document_side_menu">
+      <documents-side-menu></documents-side-menu>
+    </side-menu>
+    <!--END OF SIDE-MENU-->
+
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<dynamic-tabs ng-if="ordersTableCtrl.initial_load"
+  entity="ordersTableCtrl.mainEntity"
+  filter="ordersTableCtrl.table_filter"
+  tabs="ordersTableCtrl.tabs"
+  current-tab="ordersTableCtrl.currentTab"
+  change-tab-callback="ordersTableCtrl.changeTabCallback(current_tab)"
+  toggle-sidebar="ordersTableCtrl.tableSidebar"
+  toggle-sidebar-callback="ordersTableCtrl.toggleSidebarCallback(toggle)"
+  applied-filter="ordersTableCtrl.appliedFilter"
+  cypress-prefix="orders-table"
+></dynamic-tabs>

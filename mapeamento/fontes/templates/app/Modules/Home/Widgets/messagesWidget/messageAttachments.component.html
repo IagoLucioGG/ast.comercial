@@ -1,0 +1,22 @@
+<div class="attach-container wrapper height-150 b-1 nowrap overflow-overlay white-content"
+  ng-if="$ctrl.file_attachments.length > 0 || $ctrl.image_attachments.length > 0">
+  <a
+    class="attach-attached position-relative display-inline-block wrapper panel b-1 small-shadow medium-shadow v-top"
+    ng-class="{ 'tiny-attachment-format': $ctrl.tinyFormat }"
+    ng-click="$ctrl.downloadUrl(file)"
+    ng-repeat="file in $ctrl.file_attachments track by $index">
+    <div class="gap-10"></div>
+    <i class="fal fa-file-alt"></i>
+    <div class="gap-15"></div>
+    <div class="font-bold width-90 ellipsis nowrap">
+      {{file.FileName}}
+    </div>
+  </a>
+
+  <div
+    class="image-attached position-relative display-inline-block v-top"
+    ng-class="{ 'tiny-attachment-format': $ctrl.tinyFormat }"
+    ng-repeat="image in $ctrl.image_attachments track by $index">
+    <img class="panel small-shadow white-content b-1" ng-src="{{image.Url}}" ng-click="$ctrl.openImageModal(image)">
+  </div>
+</div>

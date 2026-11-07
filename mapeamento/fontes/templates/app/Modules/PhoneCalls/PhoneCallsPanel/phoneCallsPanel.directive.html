@@ -1,0 +1,63 @@
+<ul class="call-menu pull-right" aria-labelledby="telephone" uib-dropdown-menu>
+  <div class="height-40 regular-background b-b-1" ng-style="isOnline && {'cursor': 'grab'}">
+    <div class="hbox stretch">
+      <aside class="v-middle text-darkest-neutral font-bold side-wrapper">{{ 'PHONE_CALLS.PLOOMES_PHONE' | translate }}</aside>
+      <aside class="v-middle text-right side-wrapper">
+        <span class="button button-dark-background-border button-short" ng-if="phoneCallsPanelCtrl.self.Profile.Administrator" uib-tooltip="{{ 'GENERICS.CONFIG' | translate }}" tooltip-append-to-body="true" ng-click="phoneCallsPanelCtrl.goToSettings()">
+          <span class="text-neutral">
+            <i class="fas fa-cog"></i>
+          </span>
+        </span>
+        <span class="button button-dark-background-border button-short" ng-click="!connecting && phoneCallsPanelCtrl.toggleOnline()">
+          <span ng-class="{'text-action': isOnline, 'text-neutral': !isOnline}"><i class="fas fa-circle button-icon-2"></i></span>{{ isOnline ? 'Online' : 'Offline' }}
+        </span>
+      </aside>
+    </div>
+  </div>
+  <div class="text-center text-neutral-light font-very-big-title big-wrapper" ng-if="!isOnline">
+    <i class="font-monster-size fad fa-exclamation-triangle"></i>
+    <div class="gap-30"></div>
+    {{ connecting ? 'PHONE_CALLS.CONNECTING' : 'PHONE_CALLS.YOU_ARE_OFFLINE' | translate}}
+  </div>
+  <phone-calls-panel-dial
+    ng-if="phoneCallsPanelCtrl.status.Id === 1 && isOnline"
+    contact-id="contactId"
+    contact="contact"
+    deal-id="dealId"
+    phone-number="phoneNumber"
+    call-fn="phoneCallsPanelCtrl.call(contact, phone_number, deal)"
+    switch-dialing-fn="phoneCallsPanelCtrl.switchDialing"
+    is-in-call="phoneCallsPanelCtrl.is_in_call"
+    send-dtmf-fn="phoneCallsPanelCtrl.sendDTMF(number)">
+  </phone-calls-panel-dial>
+  <phone-calls-panel-calling
+    ng-if="phoneCallsPanelCtrl.status.Id === 2 && isOnline"
+    contact="contact"
+    phone-number="phoneCallsPanelCtrl.phone_number"
+    turn-off-fn="phoneCallsPanelCtrl.turnOff()">
+  </phone-calls-panel-calling>
+  <phone-calls-panel-in-call
+    ng-if="phoneCallsPanelCtrl.status.Id === 3 && isOnline"
+    contact="contact"
+    is-muted="phoneCallsPanelCtrl.is_muted"
+    phone-number="phoneCallsPanelCtrl.phone_number"
+    formatted-timer="phoneCallsPanelCtrl.formatted_timer"
+    interaction-record-model="phoneCallsPanelCtrl.interaction_record_model"
+    interaction-record-fields="phoneCallsPanelCtrl.interaction_record_fields"
+    toggle-mute-fn="phoneCallsPanelCtrl.toggleMute()"
+    turn-off-fn="phoneCallsPanelCtrl.turnOff()"
+    switch-dialing-fn="phoneCallsPanelCtrl.switchDialing">
+  </phone-calls-panel-in-call>
+  <phone-calls-panel-call-ended
+    ng-if="phoneCallsPanelCtrl.status.Id === 4 && isOnline"
+    contact="contact"
+    phone-number="phoneCallsPanelCtrl.phone_number"
+    formatted-timer="phoneCallsPanelCtrl.formatted_timer"
+    interaction-record-model="phoneCallsPanelCtrl.interaction_record_model"
+    interaction-record-fields="phoneCallsPanelCtrl.interaction_record_fields"
+    interaction-record-loading="phoneCallsPanelCtrl.interaction_record_loading"
+    register-contact-fn="phoneCallsPanelCtrl.registerContact"
+    switch-dialing-fn="phoneCallsPanelCtrl.switchDialing"
+    new-call-fn="phoneCallsPanelCtrl.newCall(true)">
+  </phone-calls-panel-call-ended>
+</ul>

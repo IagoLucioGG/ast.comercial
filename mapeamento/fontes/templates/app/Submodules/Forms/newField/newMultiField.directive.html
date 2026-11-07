@@ -1,0 +1,35 @@
+<div
+  formula
+  formula-model="model"
+  formula-field="field"
+  formula-trigger-hide-or-disable="formulaTriggerHideOrDisable"
+  ng-if="field.typeId === 7 && field.multiple && field.key.includes('_phones')"
+  ng-repeat="subModel in model[property]"
+  class="form-group {{(field.wide ? 'col-sm-12' : 'col-sm-6')}}">
+  <div ng-class="form.$submitted && form.$error.required[0][field.key].$error.required ? 'form_validator' : {}">
+    <span ng-if="field.typeId === 7 && field.multiple && field.key.includes('_phones')">
+      <label data-cy="{{'field-label-' + field.key}}" ng-hide="field.hideLabel || hideLabel">{{field.label}}</label>
+
+      <field-symbol-validation field="field" form="form" model="subModel" hide-dedup-rule-icon="$index > 0"></field-symbol-validation>
+
+      <a ng-if="$index === model[property].length - 1 && !disabled" ng-click="multiFieldCtrl.pushField()" class="icon-button-neutral pull-right button-action-phone">
+        <i class="fas fa-plus-circle"></i>
+      </a>
+      <a ng-if="model[property].length > 1 && !disabled" ng-click="multiFieldCtrl.removeField($index)" class="icon-button-neutral pull-right button-action-phone">
+        <i class="fas fa-minus-circle"></i>
+      </a>
+    </span>
+
+    <!-- case field is phone -->
+    <div ng-if="field.typeId === 7 && field.multiple && field.key.includes('_phones')" class="input-group full-width">
+      <phone-directive model="subModel" parent-model="model" field="field" display-property="{{field.displayProperty}}" required="required" disabled="disabled"></phone-directive>
+    </div>
+  </div>
+</div>
+
+<div ng-if="field.secondaryEntityId === 18" ng-repeat="subModel in model[property] track by $index">
+  <div ng-class="form.$submitted && form.$error.required[0][field.key].$error.required ? 'form_validator' : {}">
+    <!-- case field is address -->
+    <address-select ng-if="field.secondaryEntityId === 18" model="subModel" required="required" disabled="disabled" label="{{field.label}}"></address-select>
+  </div>
+</div>

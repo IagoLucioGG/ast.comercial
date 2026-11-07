@@ -1,0 +1,278 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-form name="checklist_form">
+  <section class="scrollable scroll-shadow-container">
+    <standard-loader margin-top="15" loading="!$ctrl.can_load"></standard-loader>
+    <div class="side-wrapper" ng-if="$ctrl.can_load">
+      <div>
+        <div class="activity-history hist-separator"></div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  1
+                </span>
+              </div>
+            </div>
+          </aside>
+          <div class="column-container">
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap">
+                        <div class="gap-10"></div>
+                        <div class="font-bold font-semi-big">{{ 'CHECKLISTS.SLIDE.CONTENT.CHECKLIST_DEFINITION' | translate }}</div>
+                        <div class="gap-5"></div>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle">
+                        <span class="font-semi-big">
+                          {{ 'CHECKLISTS.SLIDE.CONTENT.CHECKLIST_NAME' | translate }}
+                        </span>
+                        <span class="align-limited-characters">
+                          <span class="text-muted font-small">
+                            {{($ctrl.checklist_model.Name.length || '0') + '/' + $ctrl.nameMaxLength}}  
+                          </span>
+                        </span>
+                        <div class="gap-3"></div>
+                        <input 
+                          maxlength="{{ $ctrl.nameMaxLength }}" 
+                          class="form-control input-sm" 
+                          ng-model="$ctrl.checklist_model.Name" 
+                          ng-required="true"
+                          placeholder="{{ 'CHECKLISTS.SLIDE.CONTENT.CHECKLIST_NAME_PLACEHOLDER' | translate }}"
+                          ng-class="{ 'is-invalid-input': checklist_form.$submitted && !$ctrl.checklist_model.Name }"
+                          >
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+            <div class="gap-10"></div>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle">
+                        <span class="font-semi-big">
+                          {{ 'CHECKLISTS.SLIDE.CONTENT.CHECKLIST_DESCRIPTION' | translate }}
+                        </span>
+                        <span class="align-limited-characters">
+                          <span class="text-muted font-small">
+                            {{($ctrl.checklist_model.FillingInfo.length || '0') + '/' + $ctrl.fillingInfoMaxLength}}  
+                          </span>
+                        </span>
+                        <div class="gap-3"></div>
+                        <textarea
+                          maxlength="{{ $ctrl.fillingInfoMaxLength }}" 
+                          class="form-control input-sm overflow-hidden" 
+                          ng-model="$ctrl.checklist_model.FillingInfo" 
+                          placeholder="{{ 'CHECKLISTS.SLIDE.CONTENT.CHECKLIST_DESCRIPTION_PLACEHOLDER' | translate }}">
+                        </textarea>
+                        <span 
+                          class="text-muted font-small ml-10 d-inline-block" 
+                          style="margin-top: 3px"
+                        >
+                          {{ 'CHECKLISTS.SLIDE.CONTENT.INFORMATION_SHOWN_ON_ICON' | translate }}
+                          <i class='fal fa-info-circle'></i>
+                          {{ 'CHECKLISTS.SLIDE.CONTENT.IN_CHECKLIST_SECTION' | translate }}
+                        </span>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+        </div>
+        </div>
+      </div>
+      <div>
+        <div class="activity-history hist-separator" ng-if="!$ctrl.show_filter"></div>
+        <div class="hbox" ng-if="!$ctrl.show_filter">
+          <aside class="activity-history">
+            <div>
+              <div class="add-condition text-action" ng-click="$ctrl.toggleShowFilter(true)">
+                <i class="fal fa-plus activity-icon"></i>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside class="v-middle">
+                  <div class="gap-10"></div>
+                  <div class="font-semi-big text-muted">
+                    {{ 'CHECKLISTS.SLIDE.CONTENT.ADD_CONDITION' | translate_with_replace: { name: $ctrl.entity.plural_name } }}
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <!-- Condições-->
+        <div class="activity-history hist-separator" ng-if="$ctrl.show_filter"></div>
+        <div class="hbox" ng-if="$ctrl.show_filter">
+          <aside class="activity-history">
+            <div>
+              <div class="add-condition text-action" ng-click="$ctrl.toggleShowFilter(false)">
+                <i class="fal fa-minus activity-icon"></i>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="display-inline-block full-width">
+              <div class="hbox">
+                <aside>
+                  <div class="hbox filter-generator-table">
+                    <aside class="v-middle">
+                      <div class="gap-10"></div>
+                      <div class="goal-filter-header">
+                        <div class="font-bold font-semi-big">
+                          {{ 'CHECKLISTS.SLIDE.CONTENT.DEFINE_CONDITION' | translate_with_replace: { name: $ctrl.entity.plural_name } }}
+                        </div>
+                        <filter-clipboard-bar filter-fields="$ctrl.filterFields"></filter-clipboard-bar>
+                      </div>
+                      <div class="gap-10"></div>
+                      <filter-container
+                        entity="$ctrl.entity" 
+                        query-object="$ctrl.query_object" 
+                        skip-wrapper="true"
+                        filter-fields="$ctrl.filterFields"
+                        update-filter-fields="$ctrl.updateFilterFields(filterFields)"
+                        compare-fields="true"
+                      ></filter-container>
+                    </aside>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <span ng-repeat="checklist_item in $ctrl.checklist_model.Fields">
+        <div class="activity-history hist-separator"></div>
+        <div class="activity-history hist-separator"></div>
+        <div class="hbox">
+          <aside class="activity-history">
+            <div>
+              <div class="new-approval-item white-content b-1">
+                <span class="font-bold font-regular-size">
+                  {{$index + 2}}
+                </span>
+              </div>
+            </div>
+          </aside>
+          <aside class="v-middle">
+            <div class="checklist-action-container">
+              <div class="checklist-button-container">
+                <a class="button-fixed-size button-fixed-size-small button-white-light-border inline-edit-icon checklist-action button-fixed-side-round b-1"
+                  href ng-click="$ctrl.removeChecklistItem($index)" uib-tooltip="{{ 'CHECKLISTS.SLIDE.CONTENT.REMOVE_CHECKLIST_ITEM' | translate }}"
+                  tooltip-append-to-body="true">
+                  <i class="fal fa-trash fixing-fixed-size-button"></i>
+                </a>
+                <a class="button-fixed-size button-fixed-size-small button-white-light-border inline-edit-icon checklist-action button-fixed-side-round b-1"
+                  href ng-if="$index > 0" ng-click="$ctrl.moveChecklistItemUp($index)"
+                  uib-tooltip="{{ 'CHECKLISTS.SLIDE.CONTENT.MOVE_CHECKLIST_ITEM_UP' | translate }}" tooltip-append-to-body="true">
+                  <i class="fal fa-arrow-up fixing-fixed-size-button"></i>
+                </a>
+                <a class="button-fixed-size button-fixed-size-small button-white-light-border inline-edit-icon checklist-action button-fixed-side-round b-1"
+                  href ng-if="!$last" ng-click="$ctrl.moveChecklistItemDown($index)"
+                  uib-tooltip="{{ 'CHECKLISTS.SLIDE.CONTENT.MOVE_CHECKLIST_ITEM_DOWN' | translate }}" tooltip-append-to-body="true">
+                  <i class="fal fa-arrow-down fixing-fixed-size-button"></i>
+                </a>
+              </div>
+              <a class="button-neutral-gray button font-regular-size text-left button-full-width break-words"
+                role="button" data-toggle="collapse" data-target="{{'#checklist_item_' + $index}}" aria-expanded="true">
+                {{checklist_item.Name}}
+                <i class="fal fa-angle-down dropdown-sign"></i>
+              </a>
+              <div class="collapse" id="{{'checklist_item_' + $index}}" aria-expanded="true">
+                <div class="white-content clearfix b-1 border-bottom-fix wrapper">
+                  <checklist-item
+                    item="checklist_item"
+                    entity="$ctrl.entity"
+                    select-field-fn="$ctrl.setField(field, field_path_id, default_field_path, item)"
+                    remove-field-fn="$ctrl.removeField(item)"
+                    item-index="$index"
+                    inserted-fields="$ctrl.checklist_model.Fields">
+                  </checklist-item>
+                </div>
+              </div>
+              <div class="gap-15 col-sm-12"></div>
+            </div>
+          </aside>
+        </div>
+      </span>
+      <!-- new item -->
+      <div class="activity-history hist-separator"></div>
+      <div class="activity-history hist-separator"></div>
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="new-approval-item white-content b-1">
+              <span class="font-bold font-regular-size">
+                {{$ctrl.checklist_model.Fields.length + 2}}
+              </span>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="display-inline-block full-width">
+            <div class="hbox">
+              <aside>
+                <div class="white-content clearfix b-1 border-bottom-fix border-top-fix wrapper">
+                  <checklist-item
+                    item="$ctrl.checklist_item_model"
+                    entity="$ctrl.entity"
+                    select-field-fn="$ctrl.setField(field, field_path_id, default_field_path, item)"
+                    remove-field-fn="$ctrl.removeField(item)"
+                    item-index="$ctrl.checklist_model.Fields.length + 1"
+                    form="checklist_form"
+                    submitted="$ctrl.submitted_add_checklist_item"
+                    inserted-fields="$ctrl.checklist_model.Fields">
+                  </checklist-item>
+                </div>
+                <div class="gap-10"></div>
+                <a class="btn button button-action" ng-click="$ctrl.addChecklistItem()">
+                  <i class="fas fa-check-square button-icon"></i>
+                  {{ 'CHECKLISTS.SLIDE.CONTENT.ADD_ITEM_TO_CHECKLIST' | translate }}
+                </a>
+              </aside>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle" ng-if="$ctrl.can_load">
+      <a href class="button button-white-no-border" ng-click="$ctrl.backToChecklistsList()">
+        <span class="text-action"><i class="fal fa-arrow-left button-icon"></i></span>
+        {{ 'GENERICS.BACK' | translate }}
+      </a>
+    </aside>
+    <aside class="v-middle text-right" ng-if="$ctrl.can_load">
+      <div class="save-button-wrapper">
+        <loading-tooltip loading="$ctrl.loading" form="checklist_form"></loading-tooltip>
+        <a class="button button-action" href ng-click="$ctrl.submitControl(checklist_form)">
+          <i class="fas fa-save button-icon"></i>
+          {{ 'GENERICS.SAVE' | translate }}
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div class="{{customClasses || ''}} modal fade {{::(footer ? '' : 'no-footer')}}" id="{{::modalId}}" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" ng-class="{ 'proposal-transition': hasProposal || sideExpands, 'deal-modal': widest, 'width-450': thin,'width-600': medium, 'width-800': wide, 'width-900': modalCtrl.wider_filter_modal, 'width-1000': wider, 'modal-big-as-possible': modalCtrl.full_screen }">
+    <a class="new-proposal-btn wrapper b-t-2 b-l-2 b-b-2 b-r-2 text-center" href ng-if="hasProposal && !proposalOpen" ng-click="modalCtrl.toggleProposal(true)">
+      Incluir proposta
+    </a>
+    <div ng-if="sideExpands && !modalCtrl.not_found" class="options-types-container">
+      <a ng-repeat="side_expand in sideExpands" ng-if="!side_expand.open" ng-click="modalCtrl.toggleSideExpand(true, side_expand)" class="new-proposal-btn wrapper b-t-2 b-l-2 b-b-2 b-r-2 text-center options-types" href>
+        {{side_expand.title}}
+      </a>
+    </div>
+    <div ng-if="!widest" class="modal-header b-b-1 white-content modal-header-top">
+      <div class="hbox">
+        <aside class="v-middle" ng-class="{ 'width-180': featureKey && true }" ng-if="!isFetchingModalContent">
+            <span class="font-title font-thin" ng-if="!hiddenMenu" data-cy="{{ cypressPrefix + '-title' }}">{{modalTitle}}</span>
+            <div class="dropdown mtop5" ng-if="hiddenMenu">
+              <div class="d-flex align-items-center">
+                <span class="fs-14 mr-10 font-light-default">(Novo:deal:Aa:s) (name:deal::s) em</span>
+                <pipeline-pocket-selector
+                  select-fn="modalCtrl.changeHiddenMenuSelected"
+                  modal-version="true"
+                  selected-pipeline="hiddenMenuSelected.original_pipeline"
+                  pipelines="hiddenMenu"
+                ></pipeline-pocket-selector>
+              </div>
+            </div>
+        </aside>
+        <aside class="v-middle" ng-if="hasOptionsMenu && optionsMenu && optionsMenu.length > 0">
+          <div class="dropdown pull-right">
+            <a class="button button-white-no-border dropdown-toggle nowrap pull-right" href data-toggle="dropdown">
+              <span class="text-action"><i class="fal fa-cog button-icon"></i></span>
+              Opções<i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right">
+              <li ng-repeat="option in optionsMenu">
+                <a ng-if="option.ClickConfirm" class="white-dropdown-link" href ng-click-confirm="{{option.Name}}" reversible="false" ng-click="option.ClickFunction()">
+                  <i class="list-simple-line" ng-class="option.Icon"></i>{{option.Name}}
+                </a>
+                <a ng-if="!option.ClickConfirm" class="white-dropdown-link" href ng-click="option.ClickFunction()">
+                  <i class="list-simple-line" ng-class="option.Icon"></i>{{option.Name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <aside class="v-middle width-50">
+          <div class="hbox v-middle">
+            <aside class="v-middle width-50" ng-if="rightLegend">
+              <span 
+                ng-class="['modal-right-legend font-normal font-light-level-1', rightLegendCustomClasses || '']"
+                uib-tooltip="{{ rightLegendTooltip }}"
+                tooltip-append-to-body="true"
+                tooltip-placement="left"
+                tooltip-enable="showRightLegendTooltip"
+              >
+                {{rightLegend}}
+              </span>
+            </aside>
+            <aside class="v-middle width-50">
+              <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-if="toggleFullScreenFn" ng-click="modalCtrl.toggleFullScreen(!modalCtrl.full_screen)">
+              <i class="fal" ng-class="{ 'fa-arrow-down-left-and-arrow-up-right-to-center': modalCtrl.full_screen, 'fa-arrow-up-right-and-arrow-down-left-from-center': !modalCtrl.full_screen }"></i>
+            </a>
+            </aside>
+            <aside class="v-middle width-50" ng-if="auxButtons && auxButtons.length > 0" ng-repeat="aux_button in auxButtons">
+              <a ng-if="aux_button.Confirm" class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click-confirm="{{ aux_button.Confirm }}" ng-click="aux_button.Action()" uib-tooltip="{{::aux_button.Tooltip}}" tooltip-append-to-body="true">
+                <i class="fal" ng-class="aux_button.Icon"></i>
+              </a>
+              <a ng-if="!aux_button.Confirm" class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="aux_button.Action()" uib-tooltip="{{::aux_button.Tooltip}}" tooltip-append-to-body="true">
+                <i class="fal" ng-class="aux_button.Icon"></i>
+              </a>
+            </aside>
+            <aside>
+              <span class="v-middle width-50">
+                <helper-button ng-if="helperKey" helper-key="helperKey" tooltip-placement="'left'">
+              </span>
+            </aside>
+            <aside class="v-middle width-20" ng-if="!disableCloseModal">
+              <a 
+                class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" 
+                data-cy="{{ cypressPrefix + '-btn-close' }}"
+                ng-click="modalCtrl.closeModal()" 
+                aria-label="Botão de fechar modal"
+              >
+                <i class="fal fa-times"></i>
+              </a>
+            </aside>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <ng-transclude></ng-transclude>
+    <product-slide ng-if="hasProposal || isEditingQuote || hasOrder || hasDocument" toggle-full-screen="modalCtrl.full_screen"></product-slide>
+    <formula-config-slide ng-if="hasFormulaConfig" automation-formulas="automationFormulas" snippet-config="modalCtrl.snippetConfig"></formula-config-slide>
+    <modal-side-slide ng-if="includeDevFieldConfig" slide-id="dev_field_config_slide" modal-side-slide-title="Configuração do campo de desenvolvedor" side-slide-wider="true">
+      <dev-field-config-slide has-trigger-config="hasTriggerConfig"></dev-field-config-slide>
+    </modal-side-slide>
+  </div>
+</div>

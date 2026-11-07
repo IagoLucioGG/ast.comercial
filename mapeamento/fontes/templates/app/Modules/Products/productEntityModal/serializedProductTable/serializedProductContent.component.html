@@ -1,0 +1,42 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow" ng-form="contact_product_form">
+  <section class="scrollable scroll-shadow-container" ng-if="$ctrl.can_load">
+    <div class="gap-15"></div>
+    <div ng-repeat="section in $ctrl.sections">
+      <div ng-if="section.Id === 'null'">
+        <forms model="$ctrl.contact_product_model" fields="$ctrl.forms[$index]" form="contact_product_form"></forms>
+        <div class="gap-20"></div>
+      </div>
+      <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+        <modal-section section-form="contact_product_form" name="section.name" section-id="section.Id">
+          <forms model="$ctrl.contact_product_model" fields="$ctrl.forms[$index]" form="contact_product_form"></forms>
+        </modal-section>
+        <div class="gap-20"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="height-40 b-t-1 white-content side-wrapper serialized-product-content-form">
+  <div class="d-flex align-items-center h-100">
+    <div class="text-left">
+      <a href class="button button-white" ng-if="$ctrl.editing && $ctrl.has_contact_product_delete_permission"
+        ng-click-confirm="{{ 'PRODUCTS.ENTITY_MODAL.SERIALIZED.DELETE_CONFIRM' | translate }}" ng-click="$ctrl.deleteContactProduct()">
+        <span class="font-big">
+          <i class="fal fa-trash fixing-fixed-size-button"></i>
+        </span>
+      </a>
+    </div>
+    <div class="d-flex flex-1 align-items-center justify-content-end gap-flex-10">
+      <loading-tooltip loading="$ctrl.loading" form="contact_product_form"></loading-tooltip>
+      <button class="button button-white" ng-if="$ctrl.show_contact_page_button"
+        ui-sref="{{'contact({ contactid: $ctrl.api_contact_product_model.ContactId })'}}">
+        {{ 'PRODUCTS.ENTITY_MODAL.SERIALIZED.GO_TO_CONTACT' | translate }}
+      </button>
+      <button class="button button-action" ng-disabled="$ctrl.loading"
+        ng-click="$ctrl.submitControl($ctrl.contact_product_model, contact_product_form)">
+        <i class="button-icon fas fa-save"></i>
+        {{ 'GENERICS.SAVE' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

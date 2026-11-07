@@ -1,4 +1,4 @@
-using AST.Comercial.Application.Dtos;
+﻿using AST.Comercial.Application.Dtos;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.OData.Deltas;
 
@@ -8,11 +8,11 @@ public interface INegocioServico
 {
     IQueryable<Negocio> ObterTodos();
     Task<Negocio?> ObterPorIdAsync(long id, CancellationToken ct = default);
-    Task<NegocioDto> CriarAsync(Delta<Negocio> delta, CancellationToken ct = default);
-    Task<NegocioDto?> AtualizarAsync(long id, Delta<Negocio> delta, CancellationToken ct = default);
+    Task<Negocio> CriarAsync(Delta<Negocio> delta, CancellationToken ct = default);
+    Task<Negocio?> AtualizarAsync(long id, Delta<Negocio> delta, CancellationToken ct = default);
     Task<bool> RemoverAsync(long id, CancellationToken ct = default);
     Task GanharAsync(long id, CancellationToken ct = default);
-    Task PerderAsync(long id, CancellationToken ct = default);
+    Task PerderAsync(long id, long? motivoPerdaId = null, CancellationToken ct = default);
     Task ReabrirAsync(long id, CancellationToken ct = default);
     IQueryable<StatusNegocio> ObterStatus();
     Task<StatusNegocio> CriarStatusAsync(Delta<StatusNegocio> delta, CancellationToken ct = default);

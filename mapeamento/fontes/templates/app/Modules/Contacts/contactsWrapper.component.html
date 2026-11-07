@@ -1,0 +1,173 @@
+<div class="component-with-height">
+  <div class="vbox small-header">
+    <header class="regular-header new-header b-b-1 new-header-d-flex">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="input-group">
+            <input class="form-control input-sm light-background expandable-search-bar" placeholder="{{ (contactsCtrl.current_mode.EntityId === 1 ? 'CONTACTS.QUICK_SEARCH_PLACEHOLDER_WITH_FILTER' : 'CONTACTS.CONTACT_PRODUCTS_QUICK_SEARCH_PLACEHOLDER') | translate_sentence }}" ng-model="contactsCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? contactsCtrl.quickFilter(contactsCtrl.quick_filter) : contactsCtrl.onTypeQuickFilter(contactsCtrl.quick_filter)" data-cy="contacts-quick-filter-input">
+            <div class="input-group-btn dropdown" ng-if="contactsCtrl.current_mode.EntityId === 1">
+              <button class="btn button button-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="more_options"  ng-disabled="disabled">
+                {{contactsCtrl.current_quick_filter_property.Name}}
+                <i class="fal fa-angle-down dropdown-sign font-very-small"></i>
+              </button>
+              <ul class="dropdown-menu pull-right white-dropdown-menu no-padding-top" aria-labelledby="more_options">
+                <div class="dropdown-subtitle">{{ 'GENERICS.SEARCHING_FOR' | translate }}</div>
+                <li ng-repeat="quick_filter in contactsCtrl.quick_filter_properties">
+                  <a href class="white-dropdown-link" ng-class="{'active-dropdown-link': quick_filter.Id === contactsCtrl.current_quick_filter_property.Id}" ng-click="contactsCtrl.changeCurrentQuickFilterProperty(quick_filter)">
+                    <div class="hbox">
+                      <span class="v-middle">{{quick_filter.Name}}</span>
+                      <span class="text-center v-middle" style="float: right;" ng-if="quick_filter.Id === contactsCtrl.current_quick_filter_property.Id">
+                        <i class="fal fa-check font-very-small"></i>
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="input-group-btn dropdown" ng-if="contactsCtrl.current_mode.EntityId === 75">
+              <button class="btn button button-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="more_options"  ng-disabled="disabled">
+                {{contactsCtrl.current_quick_filter_property_products.Name}}
+                <i class="fal fa-angle-down dropdown-sign font-very-small"></i>
+              </button>
+              <ul class="dropdown-menu pull-right white-dropdown-menu no-padding-top" aria-labelledby="more_options">
+                <div class="dropdown-subtitle">{{ 'GENERICS.SEARCHING_FOR' | translate }}</div>
+                <li ng-repeat="quick_filter in contactsCtrl.quick_filter_properties_products">
+                  <a href class="white-dropdown-link" ng-class="{'active-dropdown-link': quick_filter.Id === contactsCtrl.current_quick_filter_property_products.Id}" ng-click="contactsCtrl.current_quick_filter_property_products = quick_filter">
+                    <div class="hbox">
+                      <span class="v-middle">{{quick_filter.Name}}</span>
+                      <span class="text-center v-middle" style="float: right;" ng-if="quick_filter.Id === contactsCtrl.current_quick_filter_property_products.Id">
+                        <i class="fal fa-check font-very-small"></i>
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div data-cy="contacts-wrapper-btn-new-contact" class="dropdown pull-right" ng-if="(contactsCtrl.self.Profile.ContactsCompanyCreatePermission || contactsCtrl.self.Profile.ContactsPersonCreatePermission) && contactsCtrl.current_mode.EntityId === 1">
+            <a class="dropdown-toggle button button-action pull-right" 
+              id="filter-list"
+              role="button"
+              type="button"
+              aria-label="{{ 'ARIA_LABELS.CONTACT.NEW_CONTACT_BUTTON' | translate }}"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-id-card button-icon"></i>
+              {{ 'CONTACTS.NEW_CONTACT' | translate }}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="filter-list">
+              <li ng-if="contactsCtrl.self.Profile.ContactsPersonCreatePermission" data-cy="contacts-wrapper-dropdown-person">
+                <a href
+                  role="button"
+                  class="white-dropdown-link"
+                  ng-click="contactsCtrl.openNewContact('person')"
+                  aria-label="{{ 'ARIA_LABELS.CONTACT.NEW_PERSON_BUTTON' | translate }}"
+                >
+                  <div class="hbox">
+                    <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                      <span><i class="fal fa-user list-simple-line"></i></span>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'CONTACTS.PERSON' | translate }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="contactsCtrl.self.Profile.ContactsCompanyCreatePermission" data-cy="contacts-wrapper-dropdown-company">
+                <a href
+                  role="button"
+                  class="white-dropdown-link"
+                  ng-click="contactsCtrl.openNewContact('company')" 
+                  aria-label="{{ 'ARIA_LABELS.CONTACT.NEW_COMPANY_BUTTON' | translate }}"
+                >
+                  <div class="hbox">
+                    <aside class="v-middle max-width-25 min-width-25 width-25 text-center">
+                      <span>
+                        <i class="fal fa-industry list-simple-line"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'CONTACTS.COMPANY' | translate }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a class="button button-action pull-right" ng-if="contactsCtrl.current_mode.EntityId === 75" href ng-click="contactsCtrl.openNewContactProduct()">
+            <i class="fas {{ contactsCtrl.customizables.contacts_products_module.icon_class }} button-icon"></i>
+            {{ 'CONTACTS.NEW_CONTACT_PRODUCT' | translate_sentence }}
+          </a>
+          <a id="contacts-menu-button" class="button button-white-no-border pull-right" open-side-menu side-menu-id="contact_side_menu" ng-if="contactsCtrl.show_menu" data-cy="contacts-wrapper-btn-menu">
+              <span class="text-action"><i class="fal fa-cog button-icon"></i></span>
+              {{ 'GENERICS.MENU' | translate }}
+          </a>
+          <div class="dropdown">
+            <filters-menu filters="contactsCtrl.filters" applied-filter="contactsCtrl.applied_filter" filter-actions-fn="contactsCtrl.filterActions"></filters-menu>
+          </div>
+          <button ng-if="contactsCtrl.current_mode.EntityId === 1" ng-click="contactsCtrl.toggleMap(!contactsCtrl.map_loaded)" class="button button-white-no-border pull-right bottom-menu-button" data-cy="contacts-wrapper-btn-map">
+            <span class="text-action"><i class="fal fa-map button-icon"></i></span>
+            <span>
+              {{ 'CONTACTS.MAP' | translate }}
+            </span>
+          </button>
+          <div class="dropdown pull-right" ng-if="contactsCtrl.modes.length > 1">
+            <a class="dropdown-toggle button button-white-no-border pull-right" id="approvals" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="text-action"><i class="button-icon-margin" ng-class="contactsCtrl.current_mode.Icon"></i></span>
+                {{ 'CONTACTS.SEGMENT_BY' | translate_with_replace : { name: contactsCtrl.current_mode.Name.toLowerCase() } }}
+                <i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+              <div class="dropdown-subtitle">
+                {{ 'CONTACTS.VISUALIZATION_MODE' | translate }}
+              </div>
+              <li ng-repeat="mode in contactsCtrl.modes|filter:{ Active: false }">
+                <a class="white-dropdown-link" href ng-click="contactsCtrl.changeMode(mode.EntityId)">
+                  <div class="hbox">
+                    <aside class="v-middle min-width-25 max-width-25 text-center">
+                      <span class="text-neutral">
+                        <i class="button-icon-margin" ng-class="mode.Icon"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'CONTACTS.SEGMENT_BY' | translate_with_replace : { name: mode.Name.toLowerCase() } }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </header>
+    <section>
+      <div class="vbox">
+        <!-- CONTEÚDO DA TELA -->
+        <section ui-view="contacts-view"></section>
+      </div>
+    </section>
+
+    <!--MODALS-->
+    <google-maps markers="contactsCtrl.map_contacts" loaded="contactsCtrl.map_loaded" modal="#main_contact_modal" force-dialog="true" limit="contactsCtrl.map_marker_limit"></google-maps>
+    <!-- <new-importation entity="contactsCtrl.main_entity" modal-id="importation" ng-if="contactsCtrl.state.current.name.endsWith('.contactimportation')"></new-importation>
+    <new-importation entity="contactsCtrl.product_entity" modal-id="importation" ng-if="contactsCtrl.state.current.name.endsWith('.contactproductimportation')"></new-importation> -->
+    <filters-modal
+        ng-if="contactsCtrl.state.current.name.endsWith('filter')"
+        modal-id="filter_modal"
+        entity="contactsCtrl.current_mode.EntityId === 1 ? contactsCtrl.main_entity : contactsCtrl.product_entity"
+        remove-simple-filter="contactsCtrl.current_mode.EntityId !== 1"
+        filter-actions-fn="contactsCtrl.filterActions">
+    </filters-modal>
+    <!--SIDE-MENU-->
+    <side-menu side-menu-id="contact_side_menu">
+      <contact-side-menu></contact-side-menu>
+    </side-menu>
+    <!--END OF SIDE-MENU-->
+
+  </div>
+</div>

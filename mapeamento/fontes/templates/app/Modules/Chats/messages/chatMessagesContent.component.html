@@ -1,0 +1,111 @@
+<div id="{{::$ctrl.chat_container_id}}" class="hbox stretch">
+  <aside class="v-bottom wrapper" ng-show="!$ctrl.loading">
+    <div ng-if="$ctrl.search_mode">
+      <div class="text-center font-very-big messages-date-divider">
+        <div class="mini-wrapper button button-neutral mright15" ng-click="$ctrl.loadBeforeMessages()">
+          <span class="font-regular-size">{{ 'CHATS.MESSAGES.LOAD_MORE' | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div
+      id="{{message.Id}}"
+      ng-repeat="message in $ctrl.messages">
+      <div class="text-center font-very-big messages-date-divider" ng-if="message.ShowDateDivider">
+        <div class="dark-background mini-wrapper display-inline-block text-darkest-neutral">
+          {{message.ShowDateDivider}}
+        </div>
+        <div class="line"></div>
+      </div>
+      <div
+        ng-class="{ 'other-user-message': $ctrl.self.Id !== message.SenderUserId, 'my-message': $ctrl.self.Id === message.SenderUserId, 'right-wrapper': $ctrl.self.Id === message.SenderUserId }"
+        class="clearfix position-relative">
+        <div class="hbox mtop30 mbottom5" ng-if="$ctrl.self.Id !== message.SenderUserId && (!$ctrl.messages[$index - 1] || $ctrl.messages[$index - 1].SenderUserId !== message.SenderUserId)">
+          <aside class="width-35">
+            <img class="avatar-regular panel small-shadow" ng-src="{{message.SenderUser.AvatarUrl || 'images/avatar_default.jpg'}}">
+          </aside>
+          <aside class="v-middle" ng-if="$ctrl.chat.IsGroup">
+            <div class="font-bold group-chat-user-name" ng-class="{ 'text-darkest-neutral': !$ctrl.isMiniChat, 'text-muted': $ctrl.isMiniChat }">
+              {{message.SenderUser.Name}}
+            </div>
+          </aside>
+        </div>
+        <div
+          uib-tooltip="{{message.FormattedDateTime}}"
+          tooltip-append-to-body="true"
+          tooltip-placement="auto {{$ctrl.self.Id === message.SenderUserId ? 'right top' : 'left'}}"
+          class="panel mini-wrapper display-inline-block small-shadow mtop5 position-relative"
+          ng-class="{ 'light-background pull-left': $ctrl.self.Id !== message.SenderUserId, 'dark-neutral-content pull-right': $ctrl.self.Id === message.SenderUserId, 'pointer-message': $ctrl.pointer_message && message.Id === $ctrl.pointer_message.Id }">
+          <a
+            href
+            class="main-badge-darker-border b-1 break-words"
+            ng-click="$ctrl.goToAnswerMessage(message.AnswerMessageId)"
+            ng-if="!message.IsDeletedForUser && message.AnswerMessageId">
+            <div class="hbox">
+              <aside class="width-25 v-middle text-center font-big text-very-darkest-neutral">
+                <i class="fal fa-reply top-fix-icon"></i>
+              </aside>
+              <aside class="v-middle mini-wrapper">
+                <div class="font-small text-darkest-neutral text-small">
+                  <span ng-if="$ctrl.new_sanitize_front" ng-bind-html="('CHATS.MESSAGES.ANSWERING' | translate_with_replace : { name: $ctrl.sanitizeHTML(message.AnswerMessageSenderUser.Name) }) | to_trusted"></span>
+                  <span ng-if="!$ctrl.new_sanitize_front" ng-bind-html="('CHATS.MESSAGES.ANSWERING' | translate_with_replace : { name: message.AnswerMessageSenderUser.Name }) | to_trusted"></span>
+                  <div class="text-very-darkest-neutral font-regular-size">{{message.AnswerMessageContentPreview}}</div>
+                </div>
+              </aside>
+            </div>
+          </a>
+          <div class="hbox" ng-if="!message.IsDeletedForUser">
+            <aside class="v-top font-semi-big break-words">
+              <message-content-parse message-content="message.Content"></message-content-parse>
+              <message-attachments-parse message-attachments="message.Attachments"></message-attachments-parse>
+              <message-inside-links-parse  is-mini-chat="$ctrl.isMiniChat" message-inside-links="message.InsideLinks"></message-inside-links-parse>
+            </aside>
+          </div>
+          <div class="hbox" ng-if="message.IsDeletedForUser">
+            <aside class="v-top font-semi-big text-muted font-small">
+              <div class="hbox">
+                <aside class="v-middle mini-side-wrapper width-30 font-big"><i class="fal fa-trash"></i></aside>
+                <aside class="v-middle mini-side-wrapper">
+                  {{ 'CHATS.DELETED_MESSAGE' | translate }}
+                </aside>
+              </div>
+            </aside>
+          </div>
+          <div class="message-actions nowrap">
+            <message-actions message="message" update-message-callback-fn="$ctrl.updateMessageCallback(action, message)"></message-actions>
+          </div>
+        </div>
+        <div class="chat-confirmation text-neutral">
+          <div
+            class="far fa-circle"
+            ng-if="message.TempId && !message.Id">
+          </div>
+          <div
+            class="fad fa-check-circle"
+            ng-if="message.TempId && message.Id && message.IsUnread && !$ctrl.users_last_message_reads[message.Id]">
+          </div>
+          <span ng-repeat="user in $ctrl.users_last_message_reads[message.Id].users | limitTo: 8" title="{{user.Name}}">
+            <img class="super-mini-avatar" ng-src="{{user.AvatarUrl || 'images/avatar_default.jpg'}}">
+          </span>
+          <span class="super-mini-avatar font-small text-muted" title="{{$ctrl.users_last_message_reads[message.Id].users_name_list}}" ng-if="$ctrl.users_last_message_reads[message.Id].users.length > 8">
+            {{'+' + ($ctrl.users_last_message_reads[message.Id].users.length - 8)}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div ng-if="$ctrl.search_mode">
+      <div class="text-center font-very-big messages-date-divider">
+        <div class="mini-wrapper button button-neutral mright15" ng-click="$ctrl.loadAfterMessages()">
+          <span class="font-regular-size">{{ 'CHATS.MESSAGES.LOAD_MORE' | translate }}</span>
+        </div>
+      </div>
+      <div class="mini-wrapper button button-white button-circle height-30 width-30 text-center pull-left" style="position: fixed; bottom: 80px;" ng-if="$ctrl.answer_mode" ng-click="$ctrl.clearMessages()">
+        <span class="font-regular-size text-darkest-neutral font-very-big">
+          <i class="far fa-caret-down very-negative-icon"></i>
+        </span>
+      </div>
+    </div>
+  </aside>
+  <aside class="v-middle wrapper" ng-if="$ctrl.loading">
+    <standard-loader loading="$ctrl.loading" margin-top="'-10'" optionalclass="'timeline-loader'"></standard-loader>
+  </aside>
+</div>

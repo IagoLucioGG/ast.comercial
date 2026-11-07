@@ -1,0 +1,7 @@
+passo: p_ploomesia
+url: https://app10.ploomes.com/ai-chat/new
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

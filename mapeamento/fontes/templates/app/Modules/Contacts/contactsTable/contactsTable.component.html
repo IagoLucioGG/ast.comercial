@@ -1,0 +1,12 @@
+<dynamic-tabs
+    ng-if="contactsTableCtrl.initial_load"
+    entity="contactsTableCtrl.mainEntity"
+    filter="contactsTableCtrl.table_filter"
+    tabs="contactsTableCtrl.tabs"
+    current-tab="contactsTableCtrl.currentTab"
+    change-tab-callback="contactsTableCtrl.changeTabCallback(current_tab)"
+    toggle-sidebar="contactsTableCtrl.tableSidebar"
+    toggle-sidebar-callback="contactsTableCtrl.toggleSidebarCallback(toggle)"
+    applied-filter="contactsTableCtrl.appliedFilter"
+    cypress-prefix="contacts-table"
+></dynamic-tabs>

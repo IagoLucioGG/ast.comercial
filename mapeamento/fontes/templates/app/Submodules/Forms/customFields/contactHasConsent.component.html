@@ -1,0 +1,25 @@
+﻿<div ng-if="!disabled" class="form-group">
+  <div class="hbox">
+    <aside class="v-middle" ng-hide="hideLabel">
+      <span class="font-semi-big">
+        {{ $ctrl.field.label }}
+      </span>
+      <br>
+      <span class="text-muted font-small">
+        {{ 'FORMS.CONTACT_HAS_CONSENT_HELPER' | translate }}
+      </span>
+    </aside>
+    <aside class="v-middle">
+      <div class="switch">
+        <input
+          id="cmn-toggle-has-consent"
+          type="checkbox"
+          class="cmn-toggle cmn-toggle-round-flat"
+          ng-model="$ctrl.model"
+          ng-change="$ctrl.validateChange()"
+          ng-required="$ctrl.required">
+        <label class="pull-right" for="cmn-toggle-has-consent"></label>
+      </div>
+    </aside>
+  </div>
+</div>

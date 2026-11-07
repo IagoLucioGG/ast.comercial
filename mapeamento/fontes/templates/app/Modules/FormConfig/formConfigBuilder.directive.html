@@ -1,0 +1,365 @@
+<div class="wrapper">
+  <div class="panel white-content margin-auto list-clean" ng-style="{ 'margin-bottom': fullWidth ? '0' : '200px' }"
+    data-cy="form-config-panel"
+    ng-class="{ 'form-config-panel--full-width': !fullWidth }"
+    ng-if="formConfigBuilderCtrl.current_entity && formConfigBuilderCtrl.can_load">
+    <div class="modal-header b-b-1 white-content modal-header-top"
+      ng-class="{'library-modal-header': formKey === 'folder-modal'}"
+      ng-style="{height: formKey === 'folder-modal' && formConfigBuilderCtrl.dirty ? 'auto' : ''}">
+      <aside class="v-middle company-title"
+        ng-style="{'vertical-align': formKey === 'folder-modal' && formConfigBuilderCtrl.dirty ? 'top' : ''}">
+        <h4 
+          class="modal-title"
+          id="form-modal-title"
+          uib-tooltip="{{formConfigBuilderCtrl.current_entity.Name}}" 
+          tooltip-append-to-body="true" 
+          tooltip-enable="{{formConfigBuilderCtrl.isTooltipEnabled('form-modal-title')}}">
+          <span class="font-title font-thin" data-cy="{{ 'form-config-builder-' + formConfigBuilderCtrl.current_entity_form.Key }}">{{formConfigBuilderCtrl.current_entity.Name}}</span>
+        </h4>
+      </aside>
+      <aside class="text-right v-middle nowrap">
+        <a class="button button-white-no-border pull-right"
+          ng-click="formConfigBuilderCtrl.toggleAllSectionsMinimize()"
+          ng-if="formConfigBuilderCtrl.canAddSections()"
+          uib-tooltip="{{ (formConfigBuilderCtrl.all_sections_minimized ? 'FORM_CONFIG.MAXIMIZE_ALL_SECTIONS' : 'FORM_CONFIG.MINIMIZE_ALL_SECTIONS') | translate }}"
+          tooltip-append-to-body="true">
+          <div class="hbox stretch">
+            <aside class="v-middle text-action">
+              <i class="fal"
+                ng-class="{ 'fa-layer-plus': formConfigBuilderCtrl.all_sections_minimized, 'fa-layer-minus': !formConfigBuilderCtrl.all_sections_minimized }"></i>
+            </aside>
+          </div>
+        </a>
+        
+        <a id="insert-form-section" href class="button button-white-no-border pull-right" type="button"
+          ng-click="formConfigBuilderCtrl.addSection()" ng-if="formConfigBuilderCtrl.canAddSections()"
+          uib-popover-template="formConfigBuilderCtrl.popoverTemplate"
+          popover-is-open="formConfigBuilderCtrl.popover_new_section_open" popover-append-to-body="true"
+          popover-enable="formConfigBuilderCtrl.popover_new_section_enable"
+          popover-placement="{{ formConfigBuilderCtrl.popoverPlacement }}"
+          popover-title="{{ 'FORM_CONFIG.NEW_SECTION' | translate }}">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <span class="text-action"><i class="fal fa-plus-square button-icon"></i></span>
+              <span>
+                {{ 'FORM_CONFIG.NEW_SECTION' | translate }}
+              </span>
+            </aside>
+          </div>
+        </a>
+        <div class="dropdown pull-right">
+          <a class="button button-white-no-border pull-right" id="insert-form-field" data-cy="insert-form-field-button" href type="button"
+            data-toggle="dropdown"
+            ng-click="formConfigBuilderCtrl.field_filtering = ''; formConfigBuilderCtrl.getFields()">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <span class="text-action"><i class="fal fa-plus-square button-icon"></i></span>
+                <span>
+                  {{ 'FORM_CONFIG.ADD_FIELD' | translate }}
+                </span>
+              </aside>
+            </div>
+          </a>
+          <ul class="dropdown-max-height dropdown-menu white-dropdown-menu pull-right no-padding-top width-300"
+            aria-labelledby="insert-form-field">
+            <div class="dropdown-subtitle">
+              {{ 'FORM_CONFIG.FIELDS' | translate }}
+            </div>
+            <li>
+              <a class="white-dropdown-link" ng-click="formConfigBuilderCtrl.openFieldConfigModal()" data-cy="create-field-button">
+                <i class="fal fa-plus-circle simple-line list-simple-line"></i>
+                <strong>
+                  {{ 'FORM_CONFIG.CREATE_FIELD' | translate }}
+                </strong>
+              </a>
+            </li>
+            <li>
+              <input type="text" ng-model="formConfigBuilderCtrl.field_filtering" ng-change="formConfigBuilderCtrl.filterFields()"
+                placeholder="{{ 'GENERICS.SEARCH' | translate }}..." class="form-control display-block mtop-bottom5">
+            </li>
+            <li ng-repeat="field in formConfigBuilderCtrl.filtered_fields">
+              <a uib-tooltip="{{ field.field.label }}" tooltip-enable="field.field.label.length > 30"
+                tooltip-append-to-body="true" class="white-dropdown-link" href
+                ng-click="formConfigBuilderCtrl.addField(field)">
+                <i class="simple-line list-simple-line"
+                  ng-class="'fal ' + field.field.icon"></i>{{field.field.label.length <= 30 ? field.field.label : field.field.label.substring(0, 29) + '...'}}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div ng-if="formConfigBuilderCtrl.dirty"
+          class="button button-action position-relative pull-right width-170 full-page-loading-tooltip"
+          ng-class="{ 'disabled': formConfigBuilderCtrl.loading, 'mb-5': formKey === 'folder-modal' }"
+          ng-click="formConfigBuilderCtrl.updateOrdination()">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <i class="fas fa-save button-icon"></i>
+              <span>
+                {{ 'FORM_CONFIG.SAVE_FORM' | translate }}
+              </span>
+            </aside>
+          </div>
+          <loading-tooltip loading="formConfigBuilderCtrl.loading"></loading-tooltip>
+        </div>
+      </aside>
+    </div>
+    <div class="gap-15"></div>
+    <ul class="clearfix fake-ul form-level form-{{formKey}}" ui-sortable="formConfigBuilderCtrl.formSortableOptions"
+      ng-model="formConfigBuilderCtrl.current_form">
+      <li ng-repeat="item in formConfigBuilderCtrl.current_form" ng-class="{
+              'block-section': item.type === 'section',
+              'col-sm-6': item.type === 'field' && !item.field.wide && !formConfigBuilderCtrl.current_original_form.quick_form,
+              'col-sm-12': item.type === 'section' || item.field.wide || formConfigBuilderCtrl.current_original_form.quick_form
+            }" class="form-group" style="word-break: break-word">
+        <div ng-if="item.type === 'field'">
+          <div class="move-field"></div>
+          <div class="hbox field-edit">
+            <aside class="text-right wrapper-right-small" ng-if="!formConfigBuilderCtrl.blockFieldEdit(item.field)">
+              <a href class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+                ng-click="formConfigBuilderCtrl.editField(item)"
+                uib-tooltip="{{ 'FORM_CONFIG.EDIT_FIELD' | translate }}" tooltip-append-to-body="true">
+                <i class="far fa-pen fixing-fixed-size-button"></i>
+              </a>
+            </aside>
+            <aside class="width-10 text-right">
+              <a href class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+                ng-click="formConfigBuilderCtrl.deleteField(item.field)"
+                uib-tooltip="{{ 'FORM_CONFIG.REMOVE_FIELD' | translate }}" tooltip-append-to-body="true">
+                <i class="far fa-trash fixing-fixed-size-button"></i>
+              </a>
+            </aside>
+          </div>
+          <label>{{item.field.label}}</label>
+          <span>
+            <span
+              class="text-neutral"
+              ng-if="formConfigBuilderCtrl.sankhyaIntegrationModule && formConfigBuilderCtrl.sankhyaIntegration.Active"
+              ng-repeat="integrationField in formConfigBuilderCtrl.fieldIntegrationsLib.filterByFieldKey(item.field.key)"
+              uib-tooltip="{{ 'GENERICS.INTEGRATED_FIELD' | translate_with_replace: { integration_name: integrationField.IntegrationName } }}"
+              tooltip-append-to-body="true"
+            >
+              <img ng-src="{{integrationField.IntegrationIconUrl}}" alt="{{integrationField.IntegrationName}}" height="10" class="v-unset">
+            </span>
+            <span
+              uib-tooltip="{{ 'FORM_CONFIG.REQUIRED_FIELD' | translate }}"
+              tooltip-append-to-body="true"
+              class="text-neutral"
+              ng-if="item.field.required"
+            >
+              <i class="fas fa-exclamation-circle dropdown-sign"></i>
+            </span>
+            <span
+              uib-tooltip="{{ 'FORM_CONFIG.UNIQUE_FIELD' | translate }}"
+              tooltip-append-to-body="true"
+              class="text-neutral"
+              ng-if="item.field.unique && !formConfigBuilderCtrl.isDedupManagedByMdm"
+            >
+              <i class="fas fa-key dropdown-sign"></i>
+            </span>
+            <span
+              uib-tooltip="{{ formConfigBuilderCtrl.grabDedupRuleTooltip(item.field.key) }}"
+              tooltip-append-to-body="true"
+              class="text-neutral"
+              ng-if="item.field.isDedupRuleField"
+            >
+              <i class="fas fa-merge dropdown-sign"></i>
+            </span>
+            <span
+              uib-tooltip="{{ 'FORM_CONFIG.MASKED_FIELD' | translate }}"
+              tooltip-append-to-body="true"
+              class="text-neutral"
+              ng-if="item.field.masked"
+            >
+              <i class="fas fa-keyboard dropdown-sign"></i>
+            </span>
+          </span>
+          <input class="form-control input-sm" placeholder="">
+        </div>
+        <div ng-if="item.type === 'section'">
+          <div class="side-wrapper">
+            <div class="hbox full-width">
+              <aside class="form-group position-relative">
+                <div class="move-field move-section"
+                  ng-click="formConfigBuilderCtrl.toggleSectionMinimize(item, $index)"></div>
+                <div class="hbox field-edit" ng-click="formConfigBuilderCtrl.toggleSectionMinimize(item, $index)">
+                  <aside class="text-right wrapper-right-small">
+                    <a class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+                      style="top: 4px" href
+                      ng-click="$event.preventDefault(); $event.stopPropagation(); formConfigBuilderCtrl.toggleSectionMinimize(item, $index)"
+                      uib-tooltip="{{ (item.minimized ? 'FORM_CONFIG.MAXIMIZE_SECTION' : 'FORM_CONFIG.MINIMIZE_SECTION') | translate}}"
+                      tooltip-append-to-body="true">
+                      <i class="fas fixing-fixed-size-button"
+                        ng-class="{ 'fa-minus': !item.minimized, 'fa-plus': item.minimized }"></i>
+                    </a>
+                  </aside>
+                  <aside class="width-10 text-right wrapper-right-small">
+                    <a href style="top: 4px"
+                      class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+                      ng-click="$event.preventDefault(); $event.stopPropagation(); formConfigBuilderCtrl.editSection(item, $index)"
+                      uib-tooltip="{{ 'FORM_CONFIG.EDIT_SECTION_TOOLTIP' | translate }}" tooltip-append-to-body="true"
+                      uib-popover-template="formConfigBuilderCtrl.popoverTemplate"
+                      popover-enable="formConfigBuilderCtrl.popover_edit_section_enable[$index]"
+                      popover-is-open="formConfigBuilderCtrl.popover_edit_section_open[$index]"
+                      popover-append-to-body="true" popover-placement="{{ formConfigBuilderCtrl.popoverPlacement }}"
+                      popover-title="{{ 'FORM_CONFIG.EDIT_SECTION' | translate }}">
+                      <i class="far fa-pen fixing-fixed-size-button"></i>
+                    </a>
+                  </aside>
+                  <aside class="width-10 text-right">
+                    <a href style="top: 4px"
+                      class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button"
+                      ng-if="item.Id" uib-tooltip="{{ 'FORM_CONFIG.REMOVE_SECTION_TOOLTIP' | translate }}"
+                      tooltip-append-to-body="true"
+                      ng-click="$event.preventDefault(); $event.stopPropagation(); formConfigBuilderCtrl.removeSectionWithoutDelete(item)"
+                      disable-confirm-fn="formConfigBuilderCtrl.sectionHasRequiredField(item)"
+                      ng-click-confirm="{{ 'FORM_CONFIG.REMOVE_SECTION_CONFIRM' | translate }}" reversible="false">
+                      <i class="far fa-trash fixing-fixed-size-button"></i>
+                    </a>
+                  </aside>
+                </div>
+                <a class="button-dry-background button font-regular-size text-left button-full-width" role="button">
+                  <span class="font-bold">{{item.name}}</span>
+                  <i class="fal fa-angle-down dropdown-sign"></i>
+                </a>
+              </aside>
+            </div>
+          </div>
+          <div class="collapse" ng-class="{ 'in': !item.minimized }">
+            <div class="side-wrapper">
+              <div class="clearfix b-l-1 b-r-1 b-b-1 border-bottom-fix white-content text-left neutral-background-rgba">
+                <div class="gap-15"></div>
+                <ul class="clearfix fake-ul section-level block-section-receive" ng-if="item.type === 'section'"
+                  ui-sortable="formConfigBuilderCtrl.sectionSortableOptions" ng-model="item.fields">
+                  <li ng-repeat="field in item.fields" class="form-group" ng-class="{
+                            'col-sm-6': !field.field.wide,
+                            'col-sm-12': field.field.wide
+                          }">
+                    <div class="move-field"></div>
+                    <div class="hbox field-edit">
+                      <aside class="text-right wrapper-right-small"
+                        ng-if="!formConfigBuilderCtrl.blockFieldEdit(field.field)">
+                        <a class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button" href
+                          ng-click="formConfigBuilderCtrl.editField(field.field, true, item.name)"
+                          uib-tooltip="{{ 'FORM_CONFIG.EDIT_FIELD' | translate }}" tooltip-append-to-body="true">
+                          <i class="far fa-pen fixing-fixed-size-button"></i>
+                        </a>
+                      </aside>
+                      <aside class="width-10 text-right">
+                        <a class="button-fixed-size button-fixed-size-small inline-edit-icon special-shadow-button" href
+                          ng-click="formConfigBuilderCtrl.deleteField(field.field)"
+                          uib-tooltip="{{ 'FORM_CONFIG.REMOVE_FIELD' | translate }}" tooltip-append-to-body="true">
+                          <i class="far fa-trash fixing-fixed-size-button"></i>
+                        </a>
+                      </aside>
+                    </div>
+                    <label>{{field.field.label}}</label>
+                    <span>
+                      <span
+                        class="text-neutral"
+                        ng-if="formConfigBuilderCtrl.sankhyaIntegrationModule && formConfigBuilderCtrl.sankhyaIntegration.Active"
+                        ng-repeat="integrationField in formConfigBuilderCtrl.fieldIntegrationsLib.filterByFieldKey(field.field.key)"
+                        uib-tooltip="{{ 'GENERICS.INTEGRATED_FIELD' | translate_with_replace: { integration_name: integrationField.IntegrationName } }}"
+                        tooltip-append-to-body="true"
+                      >
+                        <img ng-src="{{integrationField.IntegrationIconUrl}}" alt="{{integrationField.IntegrationName}}" height="10" class="v-unset">
+                      </span>
+                      <span uib-tooltip="{{ 'FORM_CONFIG.REQUIRED_FIELD' | translate }}" tooltip-append-to-body="true"
+                        class="text-neutral" ng-if="field.field.required"><i
+                          class="fas fa-exclamation-circle dropdown-sign"></i></span>
+                      <span uib-tooltip="{{ 'FORM_CONFIG.UNIQUE_FIELD' | translate }}" tooltip-append-to-body="true"
+                        class="text-neutral" ng-if="field.field.unique && !formConfigBuilderCtrl.isDedupManagedByMdm"><i class="fas fa-key dropdown-sign"></i></span>
+                      <span uib-tooltip="{{ formConfigBuilderCtrl.grabDedupRuleTooltip(field.field.key) }}" tooltip-append-to-body="true"
+                        class="text-neutral" ng-if="field.field.isDedupRuleField"><i class="fas fa-merge dropdown-sign"></i></span>
+                      <span uib-tooltip="{{ 'FORM_CONFIG.MASKED_FIELD' | translate }}" tooltip-append-to-body="true"
+                        class="text-neutral" ng-if="field.field.masked"><i
+                          class="fas fa-keyboard dropdown-sign"></i></span>
+                    </span>
+                    <input class="form-control input-sm" placeholder="">
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <div class="text-center text-neutral-light font-very-big-title ng-scope"
+        ng-if="formConfigBuilderCtrl.current_form.length === 0">
+        <i class="font-monster-size fal fa-exclamation-triangle"></i>
+        <div class="gap-30"></div>
+        {{ 'FORM_CONFIG.NO_FIELD_IN_FORM' | translate }}
+        <div class="gap-30"></div>
+      </div>
+    </ul>
+  </div>
+  <div class="text-center text-neutral-light font-very-big-title" ng-if="formConfigBuilderCtrl.not_found">
+    <div class="gap-90"></div>
+    <i class="font-monster-size fad fa-pen-square"></i>
+    <div class="gap-30"></div>
+    {{ 'FORM_CONFIG.SELECT_A_FORM' | translate }}
+  </div>
+  <script type="text/ng-template" id="section-template">
+    <div ng-form name="section_form" class="popover-form-section">
+      <!-- <forms model="formConfigBuilderCtrl.section_model" fields="formConfigBuilderCtrl.section_form" form="section_form"></forms> -->
+      <form>
+        <div class="col-sm-12 form-group">
+          <label>
+            {{ 'FORM_CONFIG.SECTION_NAME' | translate }}
+          </label>
+          <span
+            class="align-limited-characters"
+            uib-tooltip="{{ 'FORMS.FIELD_VALUE_TOO_LONG' | translate }}"
+            tooltip-append-to-body="true"
+            tooltip-is-open="(formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name && formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name.length || 0) > formConfigBuilderCtrl.maxLabelLength"
+            tooltip-enable="(formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name && formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name.length || 0) > formConfigBuilderCtrl.maxLabelLength">
+            <span
+              class="field-remaining-text"
+              ng-class="{'text-danger font-bold': (formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name && formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name.length || 0) > formConfigBuilderCtrl.maxLabelLength }">
+                {{ (formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name && formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name.length || 0) + '/' + formConfigBuilderCtrl.maxLabelLength }}
+              </span>
+          </span>
+          <div class="display-flex">
+            <input class="form-control input-sm" placeholder="" ng-model="formConfigBuilderCtrl.section_model.languages[formConfigBuilderCtrl.selectedLanguageIndex].Name">
+            <a
+              href
+              type="button"
+              id="insert-form-section"
+              class="button-fixed-size button-fixed-size-big button-white-light-border border-action-hover b-1 pull-right text-action"
+              uib-popover-template="formConfigBuilderCtrl.popoverTemplateSectionTranslation"
+              ng-click="formConfigBuilderCtrl.toggleTranslationPopover()"
+              popover-is-open="formConfigBuilderCtrl.isPopoverOpen"
+              popover-append-to-body="true"
+              popover-placement="auto bottom"
+              popover-title="{{ 'FIELD_CONFIG_MODAL.FIELD_TRANSLATION.TITLE' | translate }}"
+              uib-tooltip="{{ 'FIELD_CONFIG_MODAL.FIELD_TRANSLATION.POPOVER_TOOLTIP' | translate }}"
+              tooltip-append-to-body="true"
+            >
+              <i class="fal fa-globe"></i>
+            </a>
+          </div>
+        </div>
+        <allowed-users
+          class="clearfix light-background allowed-users-class"
+          model="formConfigBuilderCtrl.section_model.allowed_views_model"
+          title="('FORM_CONFIG.WHO_CAN_SEE_SECTION' | translate)"
+          skip-erase-views="true">
+        </allowed-users>
+      </form>
+      <button type="button" class="button button-action mleft15" ng-disabled="formConfigBuilderCtrl.loading" ng-click="formConfigBuilderCtrl.submitControl(formConfigBuilderCtrl.section_model, section_form)" title="Submit" aria-label="Submit">
+        {{ 'GENERICS.SAVE' | translate }}
+      </button>
+      <button type="button" class="button button-white" ng-disabled="formConfigBuilderCtrl.loading" ng-click="formConfigBuilderCtrl.closePopover()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+      <span class="text-danger font-very-big" ng-if="section_form.$submitted && section_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="{{ 'FORMS.REQUIRED_FIELDS_NOT_FILLED' | translate }}"><i class="fas fa-exclamation-triangle"></i></span>
+      <div class="loader" ng-if="formConfigBuilderCtrl.loading"></div>
+    </div>
+  </script>
+  <script type="text/ng-template" id="translation-popover">
+    <div 
+      field-translation-popover
+      is-popover-open="formConfigBuilderCtrl.isPopoverOpen"
+      languages="formConfigBuilderCtrl.section_model.languages"
+      selected-language-key="formConfigBuilderCtrl.selectedLanguageKey"
+      submit-form-fn="formConfigBuilderCtrl.translationPopoverSubmitForm(model)"
+      max-name-length="formConfigBuilderCtrl.maxLabelLength"
+    ></div>
+  </script>
+</div>

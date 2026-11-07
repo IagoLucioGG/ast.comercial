@@ -1,0 +1,285 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - text: Revisando proposta
+    - 'button "Modelo: Proposta Comercial 3.0"'
+    - button "Dados do cliente"
+    - button "Cancelar"
+    - button "Salvar proposta"
+    - text: Consultar Contratos
+    - iframe
+    - text: Data
+    - textbox "Data" [disabled]: 2026-11-06
+    - text: Engatilhar Proposta
+    - img
+    - checkbox [checked]
+    - text: Data de validade
+    - textbox "Data de validade": 2026-11-13
+    - text: Data de venc. Assinatura
+    - textbox "Data de venc. Assinatura"
+    - text: Total Assinatura (calculado)
+    - textbox "0,00" [disabled]: 4.134,60
+    - text: Data venc. Adesão/Impl./Conversão
+    - textbox "Data venc. Adesão/Impl./Conversão": 2027-01-20
+    - text: ← Dias para vencimento
+    - spinbutton [disabled]: "75"
+    - text: Parcelas Financiamento PARCELAMENTO 06x
+    - button "undefined-item-28872044-remove"
+    - text: Valor da Parcela
+    - textbox "0,00" [disabled]: 447,83
+    - text: Valor
+    - textbox "0,00" [disabled]: 6.821,60
+    - text: Total Adesão
+    - textbox "0,00" [disabled]: 2.687,00
+    - text: Total Assinatura
+    - textbox "0,00" [disabled]: 4.134,60
+    - text: Total Implantação/Visita
+    - textbox "0,00" [disabled]
+    - text: Total Conversão
+    - textbox "0,00" [disabled]
+    - strong: Produtos- 5 itens
+    - button
+    - button "undefined-collapse"
+    - grid:
+      - row "Produto Tipo de venda Situação do tipo de Venda⠀ Tabela de preço Pacote Visita tecnica Parcelamento Especifico? Modalidade de Assinatura Quantidades O cliente optou pela API Oficial Meta?":
+        - columnheader:
+          - button
+        - columnheader "Produto":
+          - text: Produto
+          - button
+        - columnheader "Tipo de venda"
+        - columnheader "Situação do tipo de Venda⠀"
+        - columnheader "Tabela de preço"
+        - columnheader "Pacote Visita tecnica"
+        - columnheader "Parcelamento Especifico?"
+        - columnheader "Modalidade de Assinatura"
+        - columnheader "Quantidades"
+        - columnheader "O cliente optou pela API Oficial Meta?"
+      - row "Karoo Chat One Tipo de venda Situação do tipo de Venda⠀ Tabela de preço Pacote Visita tecnica Parcelamento Especifico? Modalidade de Assinatura Quantidades O cliente optou pela API Oficial Meta?":
+        - gridcell:
+          - button
+        - gridcell "Karoo Chat One":
+          - text: Karoo Chat One
+          - button
+          - button
+          - button
+        - gridcell "Tipo de venda":
+          - button "Tipo de venda":
+            - text: Adesão Cobrada
+            - button "Botão de remover item"
+            - text: Assinatura Cobrada
+            - button "Botão de remover item"
+        - gridcell "Situação do tipo de Venda⠀": Tipo de venda compatível
+        - gridcell "Tabela de preço":
+          - button "Tabela de preço":
+            - text: Contabil
+            - button "Botão de remover item"
+        - gridcell "Pacote Visita tecnica":
+          - button "Pacote Visita tecnica"
+        - gridcell "Parcelamento Especifico?":
+          - button "Parcelamento Especifico?":
+            - textbox "Parcelamento Especifico?":
+              - /placeholder: Selecione sim ou não
+              - text: Não
+        - gridcell "Modalidade de Assinatura":
+          - button "Modalidade de Assinatura":
+            - text: Mensal
+            - button "Botão de remover item"
+        - gridcell "Quantidades":
+          - button "Quantidades":
+            - spinbutton: "1"
+        - gridcell "O cliente optou pela API Oficial Meta?":
+          - button "O cliente optou pela API Oficial Meta?":
+            - textbox "O cliente optou pela API Oficial Meta?":
+              - /placeholder: Selecione sim ou não
+              - text: Sim
+      - row "Karoo BOT Tipo de venda Situação do tipo de Venda⠀ Tabela de preço Pacote Visita tecnica Parcelamento Especifico? Modalidade de Assinatura Quantidades O cliente optou pela API Oficial Meta?":
+        - gridcell:
+          - button
+        - gridcell "Karoo BOT":
+          - text: Karoo BOT
+          - button
+          - button
+          - button
+        - gridcell "Tipo de venda":
+          - button "Tipo de venda":
+            - text: Adesão Doada
+            - button "Botão de remover item"
+            - text: Assinatura Cobrada
+            - button "Botão de remover item"
+        - gridcell "Situação do tipo de Venda⠀": Tipo de venda compatível
+        - gridcell "Tabela de preço":
+          - button "Tabela de preço":
+            - text: Contabil
+            - button "Botão de remover item"
+        - gridcell "Pacote Visita tecnica":
+          - button "Pacote Visita tecnica"
+        - gridcell "Parcelamento Especifico?":
+          - button "Parcelamento Especifico?":
+            - textbox "Parcelamento Especifico?":
+              - /placeholder: Selecione sim ou não
+              - text: Não
+        - gridcell "Modalidade de Assinatura":
+          - button "Modalidade de Assinatura":
+            - text: Mensal
+            - button "Botão de remover item"
+        - gridcell "Quantidades":
+          - button "Quantidades":
+            - spinbutton: "1"
+        - gridcell "O cliente optou pela API Oficial Meta?":
+          - button "O cliente optou pela API Oficial Meta?":
+            - textbox "O cliente optou pela API Oficial Meta?":
+              - /placeholder: Selecione sim ou não
+              - text: Sim
+      - row "Karoo KB Opcionais (1/1) Tipo de venda Situação do tipo de Venda⠀ Tabela de preço Pacote Visita tecnica Parcelamento Especifico? Modalidade de Assinatura Quantidades O cliente optou pela API Oficial Meta?":
+        - gridcell:
+          - button
+        - gridcell "Karoo KB Opcionais (1/1)":
+          - text: Karoo KB
+          - button
+          - button
+          - button
+          - button "Opcionais (1/1)"
+        - gridcell "Tipo de venda":
+          - button "Tipo de venda":
+            - text: Adesão Doada
+            - button "Botão de remover item"
+            - text: Assinatura Cobrada
+            - button "Botão de remover item"
+        - gridcell "Situação do tipo de Venda⠀": Tipo de venda compatível
+        - gridcell "Tabela de preço":
+          - button "Tabela de preço":
+            - text: Contabil
+            - button "Botão de remover item"
+        - gridcell "Pacote Visita tecnica":
+          - button "Pacote Visita tecnica"
+        - gridcell "Parcelamento Especifico?":
+          - button "Parcelamento Especifico?":
+            - textbox "Parcelamento Especifico?":
+              - /placeholder: Selecione sim ou não
+              - text: Não
+        - gridcell "Modalidade de Assinatura":
+          - button "Modalidade de Assinatura":
+            - text: Mensal
+            - button "Botão de remover item"
+        - gridcell "Quantidades":
+          - button "Quantidades":
+            - spinbutton: "1"
+        - gridcell "O cliente optou pela API Oficial Meta?":
+          - button "O cliente optou pela API Oficial Meta?"
+      - row "Karoo IA Opcionais (2/6) Tipo de venda Situação do tipo de Venda⠀ Tabela de preço Pacote Visita tecnica Parcelamento Especifico? Modalidade de Assinatura Quantidades O cliente optou pela API Oficial Meta?":
+        - gridcell:
+          - button
+        - gridcell "Karoo IA Opcionais (2/6)":
+          - text: Karoo IA
+          - button
+          - button
+          - button
+          - button "Opcionais (2/6)"
+        - gridcell "Tipo de venda":
+          - button "Tipo de venda":
+            - text: Adesão Cobrada
+            - button "Botão de remover item"
+            - text: Assinatura Cobrada
+            - button "Botão de remover item"
+        - gridcell "Situação do tipo de Venda⠀": Tipo de venda compatível
+        - gridcell "Tabela de preço":
+          - button "Tabela de preço":
+            - text: Contabil
+            - button "Botão de remover item"
+        - gridcell "Pacote Visita tecnica":
+          - button "Pacote Visita tecnica"
+        - gridcell "Parcelamento Especifico?":
+          - button "Parcelamento Especifico?":
+            - textbox "Parcelamento Especifico?":
+              - /placeholder: Selecione sim ou não
+              - text: Não
+        - gridcell "Modalidade de Assinatura":
+          - button "Modalidade de Assinatura":
+            - text: Mensal
+            - button "Botão de remover item"
+        - gridcell "Quantidades":
+          - button "Quantidades"
+        - gridcell "O cliente optou pela API Oficial Meta?":
+          - button "O cliente optou pela API Oficial Meta?":
+            - textbox "O cliente optou pela API Oficial Meta?":
+              - /placeholder: Selecione sim ou não
+              - text: Sim
+      - row "Integração WhatsApp API Oficial Tipo de venda Situação do tipo de Venda⠀ Tabela de preço Pacote Visita tecnica Parcelamento Especifico? Modalidade de Assinatura Quantidades O cliente optou pela API Oficial Meta?":
+        - gridcell:
+          - button
+        - gridcell "Integração WhatsApp API Oficial":
+          - text: Integração WhatsApp API Oficial
+          - button
+          - button
+          - button
+        - gridcell "Tipo de venda":
+          - button "Tipo de venda":
+            - text: Aquisição sem valor
+            - button "Botão de remover item"
+        - gridcell "Situação do tipo de Venda⠀": Tipo de venda compatível
+        - gridcell "Tabela de preço":
+          - button "Tabela de preço":
+            - text: Contabil
+            - button "Botão de remover item"
+        - gridcell "Pacote Visita tecnica":
+          - button "Pacote Visita tecnica"
+        - gridcell "Parcelamento Especifico?":
+          - button "Parcelamento Especifico?"
+        - gridcell "Modalidade de Assinatura":
+          - button "Modalidade de Assinatura":
+            - text: Mensal
+            - button "Botão de remover item"
+        - gridcell "Quantidades":
+          - button "Quantidades":
+            - spinbutton: "1"
+        - gridcell "O cliente optou pela API Oficial Meta?":
+          - button "O cliente optou pela API Oficial Meta?"
+      - row "Adicionar produto...":
+        - gridcell
+        - gridcell "Adicionar produto...":
+          - textbox "Adicionar produto..."
+          - button
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell
+    - text: Módulo Produto 0/250
+    - 'textbox "campo de texto simples: Módulo Produto"'
+    - text: Exigências de aprovação ‌ Formas de Pagamento BOLETO
+    - button "undefined-item-22795816-remove"
+    - text: Total adesão + conversão + impl/visita
+    - textbox "0,00" [disabled]: 2.687,00
+    - text: Observações gerais ‌ Nível de Aprovação/Aprovadores 9/250
+    - 'textbox "campo de texto simples: Nível de Aprovação/Aprovadores" [disabled]': Diretoria
+    - text: Proposta aceita pelo cliente ? Selecione sim ou não

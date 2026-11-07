@@ -1,0 +1,84 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow">
+  <section class="scrollable">
+    <ul class="nav nav-tabs b-b-1 gray-border-tabs arrange-mid">
+      <li ng-repeat="tab in $ctrl.tabs" ng-class="{ 'active': $ctrl.selected_tab.Id === tab.Id }" ng-click="$ctrl.selectTab(tab)">
+        <a class="text-muted" href>
+          {{tab.Name}}
+        </a>
+      </li>
+    </ul>
+    <div ng-if="$ctrl.selected_tab.Id === 1" class="white-content wrapper">
+      <div class="white-content">
+        <section class="scrollable scroll-shadow-container">
+          <code-input
+            language="'html'"
+            ng-if="$ctrl.model || $ctrl.model === ''"
+            initial-text="$ctrl.model"
+            on-change-text="$ctrl.onChangeValue"
+            set-reset-text-callback="$ctrl.setResetTextCallback">
+          </code-input>
+          <div class="gap-10"></div>
+          <a class="button button-white" href ng-click="$ctrl.runCode()">
+            <span class="text-action"><i class="fal fa-play button-icon"></i></span>
+            {{ 'FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.TEST' | translate }} {{ $ctrl.current_config_context_translation.toLowerCase() }}
+          </a>
+          <a class="button button-white" href ng-click="$ctrl.resetValue()" ng-click-confirm="{{ $ctrl.current_reset_translation }}">
+            <span class="text-action"><i class="fal fa-redo button-icon"></i></span>
+            {{ 'GENERICS.RESET' | translate }} {{ $ctrl.current_config_context_translation.toLowerCase() }}
+          </a>
+        </section>
+      </div>
+    </div>
+
+    <section class="scrollable">
+      <field-trigger-config ng-if="$ctrl.selected_tab.Id === 2" field-model="$ctrl.current_field_model" default-value-model="$ctrl.model" automation-formulas="false" on-value-change-fn="$ctrl.onTriggerChange"></field-trigger-config>
+
+      <div class="white-content wrapper no-padding-top">
+        <div class="white-content">
+          <section class="scrollable scroll-shadow-container">
+            <div class="font-semi-big">
+              <strong>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.LAST_TEST_RESULT' | translate }}</strong>
+            </div>
+            <div class="gap-10"></div>
+            <div class="white-content b-1 developer-field__preview">
+              <iframe id="{{'preview_' + $ctrl.field.key}}" class="developer-field"></iframe>
+            </div>
+          </section>
+          <div class="gap-10"></div>
+        </div>
+      </div>
+    </section>
+  </section>
+  <section class="best-practices" ng-show="$ctrl.show_best_practices">
+    <div class="best-practices-wrapper white-content wrapper font-semi-big">
+      <div class="regular-header b-b-1 scroll-shadow arrange-mid new-header">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <span class="font-thin font-title">✨ {{ 'FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.BEST_PRACTICES' | translate }}</span>
+          </aside>
+          <aside class="v-middle">
+            <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="$ctrl.toggleBestPractices()">
+              <i class="fal fa-times"></i>
+            </a>
+          </aside>
+        </div>
+      </div>
+      <div class="best-practices-content" ng-bind-html="('FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.BEST_PRACTICES_CONTENT' | translate) | to_trusted">
+      </div>
+    </div>
+  </section>
+</div>
+<div class="height-40 b-t-1 white-content side-wrapper">
+  <div class="hbox stretch">
+    <aside class="v-middle text-right">
+      <a class="button button-white" href ng-click="$ctrl.toggleBestPractices()">
+        <i class="fal fa-lightbulb button-icon"></i>
+        {{ 'FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.SHOW_BEST_PRACTICES' | translate }}
+      </a>
+      <a class="button button-action" href ng-click="$ctrl.submitControl()">
+        <i class="fas fa-save button-icon"></i>
+        {{ 'FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.SAVE' | translate }}
+      </a>
+    </aside>
+  </div>
+</div>

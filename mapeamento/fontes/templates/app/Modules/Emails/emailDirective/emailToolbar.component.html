@@ -1,0 +1,26 @@
+<div class="hbox">
+  <aside class="v-middle">
+    <a
+      href
+      class="button-fixed-size button-fixed-size-big button-white-no-border"
+      ng-repeat="action in $ctrl.email_actions | filter:{ Available: true }"
+      uib-tooltip="{{action.Name}}"
+      tooltip-append-to-body="true"
+      ng-click="action.Action()"
+      >
+      <span class="text-action"><i class="fal" ng-class="!action.Loading ? action.Icon : 'fa-spinner fa-spin'"></i></span>
+    </a>
+    <a
+      href
+      class="button-fixed-size button-fixed-size-big button-white-no-border"
+      ng-if="$ctrl.deleteAction.Available === true"
+      uib-tooltip="{{$ctrl.deleteAction.Name}}"
+      tooltip-append-to-body="true"
+      ng-click="$ctrl.deleteAction.Action()"
+      ng-click-confirm="{{ $ctrl.deleteAction.Warning }}"
+      reversible="false"
+      >
+      <span class="text-action"><i class="fal" ng-class="!$ctrl.deleteAction.Loading ? $ctrl.deleteAction.Icon : 'fa-spinner fa-spin'"></i></span>
+    </a>
+  </aside>
+</div>

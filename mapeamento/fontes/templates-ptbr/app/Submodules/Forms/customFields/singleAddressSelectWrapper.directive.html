@@ -1,0 +1,12 @@
+<!-- invisible input field to fool angular -->
+<input ng-show="false" ng-model="model[field.key]" name="{{ field.key }}" ng-required="required" maxlength="{{ field.maxLength }}">
+<single-address-select-react
+  force-update-model-value="model[field.key]"
+  model="model"
+  set-address-value-callback-fn="singleAddressSelectWrapperCtrl.setAddressValueCallbackFn"
+  field="field"
+  disabled="disabled || !field.valueEditable"
+  is-inline-form="isInlineForm"
+  set-value-length-fn="singleAddressSelectWrapperCtrl.setValueLengthFn"
+  >
+</single-address-select-react>

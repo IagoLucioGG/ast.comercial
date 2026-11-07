@@ -1,0 +1,183 @@
+<div class="vbox scroll-shadow neutral-shadow">
+  <header class="sub-header height-50 side-wrapper b-b-1 b-t-1 d-flex align-items-center justify-content-end gap-flex-10">
+    <div>
+      <button class="button button-white button-sm" ng-click="$ctrl.toggleFilters()">
+        <i class="fa-filter text-action ml-3" ng-class="$ctrl.filter ? 'fas' : 'fal'"></i>
+        {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.FILTER_TOGGLE' | translate }}
+        <i class="fal ml-5" ng-class="$ctrl.show_filters ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+      </button>
+    </div>
+    <div ng-if="$ctrl.filter && $ctrl.can_load">
+      <button class="button button-white button-sm" ng-click="$ctrl.clearFilterLogs()" ng-disabled="!$ctrl.can_load">
+        <i class="fal fa-times button-icon"></i>
+        {{ 'GENERICS.CLEAR_FILTERS' | translate }}
+      </button>
+    </div>
+  </header>
+  <div class="b-b-1 sub-header position-relative" style="background: #f9f9f9; padding: 10px 16px; z-index: 10; height: auto;" ng-show="$ctrl.show_filters">
+    <div class="container-fluid">
+      <div class="row" style="gap: 12px; flex-wrap: wrap; align-items: flex-end">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <p class="font-small text-muted mb-5">{{ 'AUTOMATIONS.AUTOMATIONS_LOGS.FILTER_FROM_DATE' | translate }}</p>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon"><i class="fal fa-calendar-alt"></i></span>
+              <input class="form-control light-background" datepicker ng-model="$ctrl.start_date" />
+              <span class="input-group-addon"><i class="fal fa-clock"></i></span>
+              <input class="form-control light-background" type="time" ng-model="$ctrl.start_time" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <p class="font-small text-muted mb-5">{{ 'AUTOMATIONS.AUTOMATIONS_LOGS.FILTER_TO_DATE' | translate }}</p>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon"><i class="fal fa-calendar-alt"></i></span>
+              <input class="form-control light-background" datepicker ng-model="$ctrl.end_date" />
+              <span class="input-group-addon"><i class="fal fa-clock"></i></span>
+              <input class="form-control light-background" type="time" ng-model="$ctrl.end_time" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <p class="font-small text-muted mb-5">{{ 'AUTOMATIONS.AUTOMATIONS_LOGS.FILTER_BY_DESCRIPTION' | translate }}</p>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon"><i class="fal fa-search"></i></span>
+              <input class="form-control light-background" ng-model="$ctrl.automation_name" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <p class="font-small text-muted mb-5">{{ 'AUTOMATIONS.AUTOMATIONS_LOGS.FILTER_BY_ID' | translate }}</p>
+            <div class="input-group input-group-sm">
+              <span class="input-group-addon"><i class="fal fa-hashtag"></i></span>
+              <input class="form-control light-background" type="number" ng-model="$ctrl.automation_id" />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <button class="button button-action button-sm" ng-click="$ctrl.filterLogs()" ng-disabled="!$ctrl.can_load">
+            <i class="fal fa-search button-icon"></i>
+            {{ 'GENERICS.SEARCH' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="scrollable scroll-shadow-container">
+    <standard-loader margin-top="15" loading="!$ctrl.initial_load"></standard-loader>
+    <div
+      class="vbox d-flex align-items-center justify-content-center"
+      ng-if="$ctrl.initial_load && $ctrl.show_error_page"
+      ng-style="!$ctrl.can_load && { opacity: '0.4' }"
+    >
+      <div class="text-center text-muted">
+        <span class="font-monster-size d-block">
+          <i class="fas fa-bomb"></i>
+        </span>
+        <h3 class="mt-10">
+          {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.LOAD_ERROR' | translate }}
+        </h3>
+        <h5>
+          {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.PLEASE_RELOAD' | translate }}
+        </h5>
+        <a class="button button-action" ng-click="$ctrl.changePageCallback($ctrl.current_page)" ng-disabled="!$ctrl.can_load">
+          <i class="fal fa-sync button-icon"></i>
+          <span>
+            {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.BUTTON_REFRESH' | translate }}
+          </span>
+        </a>
+      </div>
+    </div>
+    <table
+      class="table table-hover white-table"
+      ng-if="$ctrl.initial_load && !$ctrl.show_error_page"
+      ng-style="!$ctrl.can_load && { opacity: '0.4' }"
+    >
+      <thead>
+        <tr>
+          <th class="small-cell cursor-pointer" ng-click="$ctrl.sortBy('Automation/Name')">
+            {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.AUTOMATION' | translate }}
+            <i
+              ng-if="$ctrl.sort_field === 'Automation/Name'"
+              ng-class="$ctrl.sort_direction === 'asc' ? 'reorder-icon fas fa-sort-amount-up' : 'reorder-icon fas fa-sort-amount-down'"
+              class="ml-5"
+            ></i>
+          </th>
+          <th class="small-cell">
+            {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.ENTITY' | translate }}
+          </th>
+          <th class="small-cell cursor-pointer" ng-click="$ctrl.sortBy('ItemId')">
+            {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.ID' | translate }}
+            <i
+              ng-if="$ctrl.sort_field === 'ItemId'"
+              ng-class="$ctrl.sort_direction === 'asc' ? 'reorder-icon fas fa-sort-amount-up' : 'reorder-icon fas fa-sort-amount-down'"
+              class="ml-5"
+            ></i>
+          </th>
+          <th class="small-cell cursor-pointer" ng-click="$ctrl.sortBy('DateTime')">
+            {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.DATETIME' | translate }}
+            <i
+              ng-if="$ctrl.sort_field === 'DateTime'"
+              ng-class="$ctrl.sort_direction === 'asc' ? 'reorder-icon fas fa-sort-amount-up' : 'reorder-icon fas fa-sort-amount-down'"
+              class="ml-5"
+            ></i>
+          </th>
+          <th class="small-cell cursor-pointer" ng-click="$ctrl.sortBy('Success')">
+            {{ 'AUTOMATIONS.AUTOMATIONS_LOGS.RESULT' | translate }}
+            <i
+              ng-if="$ctrl.sort_field === 'Success'"
+              ng-class="$ctrl.sort_direction === 'asc' ? 'reorder-icon fas fa-sort-amount-up' : 'reorder-icon fas fa-sort-amount-down'"
+              class="ml-5"
+            ></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="contact-workplace-button" ng-repeat="log in $ctrl.logs track by $index" ng-click="$ctrl.goToLink(log)">
+          <td class="small-cell-break-word">
+            <span class="font-bold">
+              {{ log.Automation.Name }}
+            </span>
+          </td>
+          <td class="small-cell-break-word">
+            {{ log.Automation.Entity.Name }}
+          </td>
+          <td>
+            {{ log.ItemId }}
+          </td>
+          <td>
+            {{ log.formatted_date }}
+          </td>
+          <td>
+            <div class="line-item success-badge neutral-timeline-item-content badge-border" ng-if="log.Success">
+              <div class="font-small font-bold table-cell-align-top">
+                <span class="align-middle">
+                  {{ 'GENERICS.SUCCESS' | translate }}
+                </span>
+              </div>
+            </div>
+            <div class="line-item danger-badge neutral-timeline-item-content badge-border" ng-if="!log.Success">
+              <div class="font-small font-bold table-cell-align-top">
+                <span class="align-middle">
+                  {{ 'GENERICS.ERROR' | translate }}
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <dynamic-table-pagination
+      ng-if="$ctrl.initial_load"
+      items-per-page="$ctrl.top"
+      current-page="$ctrl.current_page"
+      total-items="$ctrl.total_items"
+      disable="!$ctrl.can_load"
+      change-page-callback-fn="$ctrl.changePageCallback(page)"
+    >
+    </dynamic-table-pagination>
+  </section>
+</div>

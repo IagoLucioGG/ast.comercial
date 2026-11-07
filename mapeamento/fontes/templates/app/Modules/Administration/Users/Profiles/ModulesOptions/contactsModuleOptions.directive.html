@@ -1,0 +1,206 @@
+<div class="tab-pane active" id="c">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_MODULE_ACCESS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsModule" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsModule" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_VISUALIZE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsView" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsView" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.UNDER_TEAM_MEMBERS_RESPONSIBILLITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsView" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_EDIT' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsEdit" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsEdit" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.UNDER_TEAM_MEMBERS_RESPONSIBILLITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsEdit" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsEdit" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12" ng-if="contactsModuleOptionsCtrl.data_management_feat">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_MERGE' | translate }}
+        <i class="fa fa-info-circle merge-permission-tooltip" tooltip-append-to-body="true" uib-tooltip="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_MERGE_INFO' | translate }}"></i>
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsMergePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsMergePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_DELETE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsDelete" ng-value="1"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.ALL' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsDelete" ng-value="2"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.UNDER_TEAM_MEMBERS_RESPONSIBILLITY' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsDelete" ng-value="3"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.UNDER_YOUR_RESPONSIBILITY/COLABORATION' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsDelete" ng-value="4"><strong>{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.NONE' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_COMPANY_CREATE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsCompanyCreatePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsCompanyCreatePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_PERSON_CREATE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsPersonCreatePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsPersonCreatePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div ng-if="contactsModuleOptionsCtrl.activeContactProductModule" class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_PRODUCTS_ACCESS' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsViewPermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsViewPermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div ng-if="contactsModuleOptionsCtrl.activeContactProductModule" class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_PRODUCTS_CREATE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsCreatePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsCreatePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div ng-if="contactsModuleOptionsCtrl.activeContactProductModule" class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_PRODUCTS_EDIT' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsEditPermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsEditPermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+    <div ng-if="contactsModuleOptionsCtrl.activeContactProductModule" class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.MODULES_OPTIONS.CONTACTS_MODULE_OPTIONS.CONTACTS_PRODUCTS_DELETE' | translate }}
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsDeletePermission" ng-value="true"><strong>{{ 'GENERICS.YES' | translate }}</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.ContactsProductsDeletePermission" ng-value="false"><strong>{{ 'GENERICS.NO' | translate }}</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+</div>

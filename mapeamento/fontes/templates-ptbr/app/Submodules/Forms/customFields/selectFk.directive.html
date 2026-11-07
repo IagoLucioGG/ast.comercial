@@ -1,0 +1,192 @@
+<div ng-class="{'input-group contact-field-min-width': apiUrl === 'Contacts'}" class="option-select-field-min-width" >
+  <div class="ploomes-host select-fk-ploomes-host" id="ploomes-host-{{selectFkCtrl.parsed_field_name}}" ng-click="selectFkCtrl.focus($event);"
+    ng-class="{'is-multiple': !list, 'host-disabled': selectFkCtrl.isDisabled(), 'border-right-square': apiUrl === 'Contacts'}">
+    <div class="ploomes-tags full-width" id="tag-holder-fk-{{selectFkCtrl.parsed_field_name}}" ng-init="selectFkCtrl.observerWrapperInputSearch()">
+      <span id="container-badges-{{selectFkCtrl.parsed_field_name}}">
+        <a
+          ng-click="$event.stopPropagation()"
+          class="light-badge neutral-content badge-border tag-holder-badge"
+          ng-repeat="item in model track by $index"
+          ng-show="item[selectFkCtrl.displayProperty] !== null && item[selectFkCtrl.displayProperty] !== undefined"
+          style="float:left;"
+          ng-class="{'full-width': list, 'ploomes-one-tag': list}"
+          uib-tooltip="{{item[selectFkCtrl.displayProperty]}}"
+          tooltip-placement="auto top"
+          tooltip-append-to-body="true"
+          tooltip-enable="selectFkCtrl.Utils.isActiveTooltipBadge(selectFkCtrl.$element, item[selectFkCtrl.displayProperty], $index)"
+          >
+          <div class="font-bold table-cell-align-top plooomes-tag-content text-darkest-neutral">
+            <div class="hbox fixed-size select-fk-fixed-size">
+              <aside class="v-middle">
+                <div class="full-width f-1 ai-center nowrap">
+                  <img
+                    ng-if="apiUrl === 'Users' || apiUrl.includes('GoalUsers') || field.key.includes('owner') || field.key.includes('collaborating_users')"
+                    ng-src="{{item.AvatarUrl || item.UserValue.AvatarUrl}}" class="avatar-timeline">
+                  <i ng-if="apiUrl === 'Contacts' && item.TypeId === 2" class="fal fa-user ajust-icon-margins"></i>
+                  <i ng-if="apiUrl === 'Contacts' && item.TypeId === 1" class="fal fa-industry ajust-icon-margins"></i>
+                  <i ng-if="apiUrl === 'Tags'" class="fal fa-tag ajust-icon-margins" ng-style="{'color': item.Color}"></i>
+                  <i ng-if="apiUrl === 'Products@Lists'" class="fal fa-tag ajust-icon-margins"
+                    ng-style="{'color': item.Color}"></i>
+                  <i ng-if="selectFkCtrl.isMoveInteractionRecordDealField() && item.Pipeline && selectFkCtrl.getPipelineIconClass(item.Pipeline)" ng-class="selectFkCtrl.getPipelineIconClass(item.Pipeline)" class="fal ajust-icon-margins"></i>
+                  <span class="align-middle ellipsis" id="badge-ellipsis{{$index}}">
+                    {{selectFkCtrl.buildBadgeDisplay(item)}}
+                  </span>
+                </div>
+              </aside>
+            </div>
+            <i class="fas fa-times remove-button-class" ng-click="selectFkCtrl.removeItem(item)" ng-if="!selectFkCtrl.isDisabled() && !loading" data-cy="select-fk-remove-item"></i>
+            <i class="fas fa-sync remove-button-class folder-loading-tooltip" ng-if="loading"></i>
+          </div>
+        </a>
+      </span>
+      <input type="hidden" ng-model="model" ng-required="required" name="{{field.key}}">
+      <input
+        id="select-fk-{{selectFkCtrl.parsed_field_name}}"
+        type="search"
+        autocomplete="off"
+        autocomplete="ploomes-dynamic-input"
+        placeholder="{{placeholder}}"
+        ng-style="{'width': selectFkCtrl.isDisabled() ? '100%' : list ? '100%' : (selectFkCtrl.hasQuoteSideForm ? '100%' : selectFkCtrl.input_width + 'px')}"
+        class="form-control input-sm"
+        ng-if="!list || (list && (!model || model.length === 0))"
+        ng-disabled="selectFkCtrl.isDisabled()"
+        ng-model="selectFkCtrl.query"
+        ng-model-options="{debounce: 300}"
+        ng-change="selectFkCtrl.loadItems(selectFkCtrl.query)"
+        ng-focus="selectFkCtrl.commonInputEvents()"
+        ng-paste="selectFkCtrl.commonInputEvents()"
+        ng-keydown="selectFkCtrl.keyboardOptions($event)"
+        ng-blur="selectFkCtrl.blurAction($event)"
+        uib-popover-template="selectFkCtrl.popoverTemplate"
+        popover-enable="selectFkCtrl.isOpen"
+        popover-is-open="selectFkCtrl.isOpen"
+        popover-trigger="none"
+        popover-append-to-body="true"
+        popover-placement="{{ apiUrl === 'Deals' && !selectFkCtrl.selected_pipeline ? 'auto' : 'auto right' }}"
+        popover-class="{{ selectFkCtrl.popover_class }}"
+        popover-title="{{ (selectFkCtrl.show_pipeline_list ? 'FORMS.SELECT_FK.SELECT_PIPELINE' : 'FORMS.SELECT_FK.CREATE_PIPELINE') | translate_sentence }}"
+        aria-label="{{ 'ARIA_LABELS.FIELD.PRE_REGISTERED_OPTIONS' | translate_with_replace: { fieldLabel: field.label } }}"
+      />
+    </div>
+  </div>
+  <div class="input-group-btn v-top select-fk-filter-contact-wrapper" ng-if="apiUrl === 'Contacts'">
+    <div class="dropdown" uib-dropdown dropdown-append-to-body="selectFkCtrl.dropdownAppendContactFilter">
+      <button
+        class="btn button button-white border-left-square z-index-1 dropdown-toggle"
+        ng-disabled="selectFkCtrl.isDisabled()"
+        uib-tooltip="{{ ('GENERICS.SEARCHING_FOR' | translate) + ': ' + selectFkCtrl.current_quick_filter_property.Name}}"
+        tooltip-append-to-body="true"
+        tooltip-enable="selectFkCtrl.current_quick_filter_property.PropertyName !== 'All'"
+        uib-dropdown-toggle
+        type="button"
+      >
+        <i class="fal fa-filter" ng-if="selectFkCtrl.current_quick_filter_property.PropertyName === 'All' || selectFkCtrl.isDisabled()"></i>
+        <i class="fas fa-filter text-action" ng-if="selectFkCtrl.current_quick_filter_property.PropertyName !== 'All' && !selectFkCtrl.isDisabled()"></i>
+        <i class="fal fa-angle-down dropdown-sign font-very-small"></i>
+      </button>
+      <ul class="dropdown-menu pull-right white-dropdown-menu no-padding-top" uib-dropdown-menu style="z-index: 10000; max-height: 350px; overflow-y: auto;" ng-class="{'dropdown-menu-right': selectFkCtrl.dropdown_right}">
+        <div class="dropdown-subtitle">Buscando por</div>
+        <li ng-repeat="quick_filter in selectFkCtrl.quick_filter_properties">
+          <a href class="white-dropdown-link" ng-class="{'active-dropdown-link': quick_filter.Id === selectFkCtrl.current_quick_filter_property.Id}" ng-click="selectFkCtrl.changeCurrentQuickFilterProperty(quick_filter)">
+            <div class="hbox">
+              <aside class="v-middle">{{quick_filter.Name}}</aside>
+              <aside class="text-center v-middle" style="float: right;" ng-if="quick_filter.Id === selectFkCtrl.current_quick_filter_property.Id">
+                <i class="fal fa-check font-very-small"></i>
+              </aside>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="autocomplete-template">
+  <div class="tags-input-class">
+    <div class="host">
+      <div class='autocomplete'>
+        <ul class='suggestion-list' id="suggestion-list-{{selectFkCtrl.parsed_field_name}}">
+          <li class='suggestion-item' 
+            data-cy="{{ 'select-input-option-' + item.Id }}"
+            ng-class="{'new-li-reference': item.pre_display && item.pre_display.length > 0, 'dropdown-keyboard': selectFkCtrl.active_index === $index}" 
+            ng-click='selectFkCtrl.addItem(item)' 
+            ng-repeat='item in selectFkCtrl.loaded_items track by $index' 
+            aria-label="{{ 'ARIA_LABELS.FIELD.PRE_REGISTERED_OPTION' | translate_with_replace: { optionLabel: item.display || '.' } }}"
+            tooltip-enable="selectFkCtrl.checkShowTooltip(item, $index)" 
+            uib-tooltip-html="selectFkCtrl.new_sanitize_front ? selectFkCtrl.sanitizeHTML(item.tooltipHTML) : item.tooltipHTML" 
+            tooltip-placement="auto right" 
+            tooltip-append-to-body="true" 
+          >
+            <div class="hbox fixed-size">
+              <aside class="v-middle">
+                <div class="full-width nowrap ellipsis" id="suggestion-item{{$index}}">
+                  <span class="text-center align-middle">
+                    <img ng-if="apiUrl === 'Users' || apiUrl.includes('GoalUsers') || apiUrl.includes('GetChatUsers') || field.key.includes('owner') || field.key.includes('collaborating_users')" ng-src="{{item.AvatarUrl}}" class="mini-avatar">
+                    <i ng-if="apiUrl === 'Contacts' && item.TypeId === 2" class="fal fa-user select-field-icon"></i>
+                    <i ng-if="apiUrl === 'Contacts' && item.TypeId === 1" class="fal fa-industry select-field-icon"></i>
+                    <i ng-if="apiUrl === 'Tags'" class="fal fa-tag select-field-icon" ng-style="{'color': item.Color}"></i>
+                    <i ng-if="apiUrl === 'Products@Lists'" class="fal fa-tag select-field-icon" ng-style="{'color': item.Color}"></i>
+                    <i ng-if="item.Pipeline && !selectFkCtrl.isMoveInteractionRecordDealField()" ng-class="item.Pipeline.Icon.Class" ng-style="{'color': item.Pipeline.Color}"></i>
+                    <i ng-if="item.Pipeline && selectFkCtrl.isMoveInteractionRecordDealField() && selectFkCtrl.getPipelineIconClass(item.Pipeline)" class="fal select-field-icon" ng-class="selectFkCtrl.getPipelineIconClass(item.Pipeline)" style="padding-left: 2px"></i>
+                  </span>
+                  <span class="align-middle">
+                    <strong>{{ selectFkCtrl.mountItemPreDisplay(item) }}</strong>
+                    <span ng-if="selectFkCtrl.checkShowItemSubtitle(item)" ng-bind-html="selectFkCtrl.mountItemSubtitle((item.display || '.'), selectFkCtrl.query, true, item)"></span>
+                  </span>
+                  <div ng-if="item.Pipeline && selectFkCtrl.isMoveInteractionRecordDealField()" class="text-muted text-small">
+                    {{item.Pipeline.Name}}
+                  </div>
+                  <div ng-if="item.Pipeline && !selectFkCtrl.isMoveInteractionRecordDealField()" class="text-muted text-small">
+                    {{selectFkCtrl.customizables.deals_module.pipeline_singular_unit_name | capitalize}}: {{item.Pipeline.Name}}
+                  </div>
+                  <div ng-if="apiUrl === 'Contacts'" class="text-muted text-small" id="suggestion-item-subtitle{{$index}}">
+                    <span ng-bind-html="item.subtitle"></span>
+                  </div>
+                  <div ng-if="item.Family" class="text-muted text-small" id="suggestion-item-subbadge{{$index}}">
+                    {{ ::('FORMS.SELECT_FK.FAMILY' | translate) }}: {{item.Family.Name}}
+                  </div>
+                  <div ng-if="item.Code" class="text-muted text-small" id="suggestion-item-subbadge{{$index}}">{{ ::('FORMS.SELECT_FK.CODE' | translate) }}: {{item.Code}}</div>
+                  <div ng-if="item.Contact" class="text-muted text-small" id="suggestion-item-subbadge{{$index}}">{{ ::('FORMS.SELECT_FK.CONTACT' | translate) }}: {{item.Contact.Name}}</div>
+                  <div ng-if="item.Product" class="text-muted text-small" id="suggestion-item-subbadge{{$index}}">{{ ::('FORMS.SELECT_FK.PRODUCT' | translate) }}: {{item.Product.Name}}</div>
+                  <div ng-if="item.State || item.Country" class="text-muted text-small" id="suggestion-item-subbadge{{$index}}">{{item.State.Name}}, {{item.Country.Name}}</div>
+                  <div ng-if="apiUrl === 'Fields' && item.Entity" class="text-muted text-small" id="suggestion-item-subbadge{{$index}}">{{item.Entity.Name}}</div>
+                  <div ng-if="apiUrl === 'Webhooks@Actions' && item.RestrictedEntity" class="text-muted text-small" id="suggestion-item-subbadge{{$index}}">{{item.RestrictedEntity.Name}}</div>
+                </div>
+              </aside>
+            </div>
+          </li>
+          <li ng-show="selectFkCtrl.loaded_items.length === 0 && selectFkCtrl.can_load" class="select-fk-no-results" data-cy="select-input-no-options">
+            {{ ::('FORMS.SELECT_FK.NO_RESULT_FOUND' | translate) }}
+          </li>
+        </ul>
+        <standard-loader margin-top="15" loading="!selectFkCtrl.can_load" optionalclass="'timeline-loader'"></standard-loader>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="new-item-template">
+  <pipeline-pocket-selector
+    modal-version="true"
+    select-fn="selectFkCtrl.selectPipelineCallback"
+    select-field="true"
+    dropdown-status-prop="selectFkCtrl.show_pipeline_list"
+    ng-if="selectFkCtrl.show_pipeline_list"
+    pipelines="selectFkCtrl.pipelines"
+  >
+  </pipeline-pocket-selector>
+  <div ng-if="selectFkCtrl.isOpen && !selectFkCtrl.show_pipeline_list" ng-form name="inline_new_form" id="{{selectFkCtrl.popoverId}}" ng-init="selectFkCtrl.onInitPopover()">
+    <mdm-duplicates-watcher
+      ng-if="selectFkCtrl.mdmContactType"
+      model="selectFkCtrl.new_model"
+      forms="selectFkCtrl.mdmForms"
+      contact-type="selectFkCtrl.mdmContactType">
+    </mdm-duplicates-watcher>
+    <forms model="selectFkCtrl.new_model" fields="selectFkCtrl.form" form="inline_new_form" formula-trigger-hide-or-disable="true"></forms>
+    <button type="button" ng-class="{disabled: !selectFkCtrl.form.length}" class="button button-action mleft15" ng-disabled="selectFkCtrl.loading || !selectFkCtrl.form.length" ng-click="selectFkCtrl.submitControl(selectFkCtrl.new_model, inline_new_form)" title="Submit" aria-label="Submit">Salvar</button>
+    <button type="button" class="button button-white" ng-disabled="selectFkCtrl.loading" ng-click="selectFkCtrl.cancel()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <div class="inline-edit-loading-tooltip-wrapper">
+      <loading-tooltip loading="selectFkCtrl.loading" form="inline_new_form"></loading-tooltip>
+    </div>
+  </div>
+</script>

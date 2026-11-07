@@ -1,0 +1,40 @@
+<div>
+  <div class="short-side-bottom-wrapper" ng-if="dealPageDocumentsCtrl.hasActiveDocumentModule && dealPageDocumentsCtrl.self.Profile.DocumentsModule && dealPageDocumentsCtrl.dealModel.Pipeline.MayCreateDocuments">
+    <div class="font-big">
+      <span>Documentos</span>
+      <a class="button button-light-background-border button-plus pull-right" href ng-click="dealPageDocumentsCtrl.goToNewDocument()" ng-if="dealPageDocumentsCtrl.dealModel.Editable && dealPageDocumentsCtrl.self.Profile.DocumentsCreatePermission">
+        <i class="fas fa-plus font-super-super-small text-neutral"></i>
+      </a>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background">
+      <div class="gap-5"></div>
+      <div ng-repeat="document in dealPageDocumentsCtrl.documents" ng-if="dealPageDocumentsCtrl.can_load && document">
+        <div class="gap-5"></div>
+        <a class="contact-card panel" ui-sref="{{'document({documentid: document.Id})'}}">
+          <div class="font-semi-big">{{document.Name}}</div>
+          <div class="gap-5"></div>
+          <span class="big-simple-inline text-muted">
+            <i class="fad fa-copy button-icon-margin"></i>
+            <span class="font-small">
+              {{document.Template.Name}}
+            </span>
+          </span>
+          <span class="big-simple-inline text-muted">
+            <i class="fad fa-calendar button-icon-margin"></i>
+            <span class="font-small">
+              {{document.formatted_create_date}}
+            </span>
+          </span>
+        </a>
+      </div>
+      <a class="contact-card panel no-quote" ng-click="dealPageDocumentsCtrl.goToNewDocument()" href ng-if="dealPageDocumentsCtrl.dealModel.Editable && dealPageDocumentsCtrl.self.Profile.DocumentsCreatePermission && dealPageDocumentsCtrl.can_load && dealPageDocumentsCtrl.documents.length === 0">
+        <div class="font-semi-big">Criar novo documento</div>
+      </a>
+      <span class="contact-card panel no-quote" ng-if="(!dealPageDocumentsCtrl.dealModel.Editable || !dealPageDocumentsCtrl.self.Profile.DocumentsCreatePermission) && dealPageDocumentsCtrl.can_load && dealPageDocumentsCtrl.documents.length === 0">
+        <div class="font-semi-big">Nenhum documento criado</div>
+      </span>
+      <standard-loader margin-top="15" optionalclass="'timeline-loader'" loading="!dealPageDocumentsCtrl.can_load"></standard-loader>
+    </div>
+  </div>
+</div>

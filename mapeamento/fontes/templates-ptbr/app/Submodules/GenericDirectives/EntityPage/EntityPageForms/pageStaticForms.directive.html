@@ -1,0 +1,390 @@
+<div>
+  <div class="panel white-content b-1 new-standard-shadow" ng-show="pageStaticFormsCtrl.can_load">
+    <div class="hbox">
+      <aside>
+        <ul class="nav nav-tabs no-borders white-content b-b-1 tabs-smaller" ng-class="{ 'background-border-tabs': newLayout, 'button-tabs': !newLayout }">
+          <li class="arrow-click" ng-class="{'active': pageStaticFormsCtrl.show_interaction_record_form}">
+            <a class="button-short" href ng-click="pageStaticFormsCtrl.togglePanel(1)">
+              <span class="font-regular-weight font-regular-size text-muted">
+                <i class="fal fa-comment-lines simple-line list-simple-line"></i>
+                Registrar interação
+              </span>
+            </a>
+          </li>
+          <li ng-if="pageStaticFormsCtrl.hasTaskModule" class="arrow-click" ng-class="{'active': pageStaticFormsCtrl.show_task_form}">
+            <a class="button-short" href ng-click="pageStaticFormsCtrl.togglePanel(2)">
+              <span class="font-regular-weight font-regular-size text-muted">
+                <i class="fal fa-calendar simple-line list-simple-line"></i>
+                Agendar tarefa
+              </span>
+            </a>
+          </li>
+          <li
+            class="arrow-click"
+            ng-if="entityType === 'Deal' && !model.Pipeline.NoAllowedPipelines"
+            ng-class="{ 'active': pageStaticFormsCtrl.show_pipelines_select, 'disabled': !pageStaticFormsCtrl.hasActivePipeline }"
+            tooltip-append-to-body="true" uib-tooltip="{{ pageStaticFormsCtrl.newDealButtonTooltip }}" tooltip-placement="top">
+            <a href 
+              role="button"
+              class="button-short" 
+              ng-click="pageStaticFormsCtrl.togglePanel(4)"
+              aria-label="botão de criar (novo:deal:aa:s) (name:deal::s) via timeline"
+            >
+              <span class="font-regular-weight font-regular-size text-muted">
+                <i class="fal simple-line list-simple-line" ng-class="pageStaticFormsCtrl.customizables.deals_module.icon_class"></i>
+                (Novo:deal:Aa:s) (name:deal::s)
+              </span>
+            </a>
+          </li>
+          <li ng-if="pageStaticFormsCtrl.state_tab_emails.show" class="arrow-click" ng-class="{'active': pageStaticFormsCtrl.show_email_form, 'disabled': pageStaticFormsCtrl.state_tab_emails.disabled}" tooltip-append-to-body="true" uib-tooltip="{{ pageStaticFormsCtrl.state_tab_emails.tooltipText }}" tooltip-enable="pageStaticFormsCtrl.state_tab_emails.tooltipEnable">
+            <a class="button-short" href ng-click="pageStaticFormsCtrl.togglePanel(3)">
+              <span class="font-regular-weight font-regular-size text-muted">
+                <i class="fal fa-envelope simple-line list-simple-line"></i>
+                Enviar e-mail
+              </span>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content" ng-form="page_static_form">
+          <page-interaction-record-form
+            ng-if="pageStaticFormsCtrl.show_interaction_record_form"
+            form="page_static_form"
+            contact="pageStaticFormsCtrl.contact_model"
+            deal="pageStaticFormsCtrl.deal_model"
+            deal-status-field="pageStaticFormsCtrl.selectedDealStatus_field"
+            submit-fn="pageStaticFormsCtrl.addTabContentIr"
+            upload-fn="pageStaticFormsCtrl.uploadFiles"
+            select-type-callback-fn="pageStaticFormsCtrl.selectTypeCallback(type)"
+            open-collapse="pageStaticFormsCtrl.open_collapse"
+            stored-model="pageStaticFormsCtrl.stored_ir_model"
+            dropdown-append-contact-filter="pageStaticFormsCtrl.dropdownAppendContactFilter"
+            store-model-fn="pageStaticFormsCtrl.storeIrModel(model)"
+            files="pageStaticFormsCtrl.files"
+            items="pageStaticFormsCtrl.items">
+          </page-interaction-record-form>
+          <page-task-form
+            ng-if="pageStaticFormsCtrl.show_task_form"
+            contact="pageStaticFormsCtrl.contact_model"
+            deal="pageStaticFormsCtrl.deal_model"
+            deal-status-field="pageStaticFormsCtrl.selectedDealStatus_field"
+            upload-fn="pageStaticFormsCtrl.uploadFiles"
+            submit-fn="pageStaticFormsCtrl.addTabContentTask"
+            open-collapse="pageStaticFormsCtrl.open_collapse"
+            stored-model="pageStaticFormsCtrl.stored_task_model"
+            store-model-fn="pageStaticFormsCtrl.storeTaskModel(model)">
+          </page-task-form>
+          <page-email-form
+            ng-if="pageStaticFormsCtrl.show_email_form"
+            contact="pageStaticFormsCtrl.contact_model"
+            deal="pageStaticFormsCtrl.deal_model"
+            deal-status-field="pageStaticFormsCtrl.selectedDealStatus_field"s
+            submit-fn="pageStaticFormsCtrl.addTabContentEmail"
+            files="pageStaticFormsCtrl.files"
+            items="pageStaticFormsCtrl.items"
+            subject-callback-fn="pageStaticFormsCtrl.subjectCallback(subject)"
+            stored-model="pageStaticFormsCtrl.stored_email_model"
+            store-model-fn="pageStaticFormsCtrl.storeEmailModel(model)">
+          </page-email-form>
+          <div class="b-t-1 white-content">
+            <pipelines-gallery 
+              ng-if="pageStaticFormsCtrl.show_pipelines_select" 
+              on-click-card-fn="pageStaticFormsCtrl.openNewDeal"></pipelines-gallery>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="white-contents short-wrapper page-static-forms-footer" ng-show="!pageStaticFormsCtrl.show_pipelines_select">
+      <div class="d-flex align-items-center gap-space-20">
+        <aside class="v-middle shrink">
+          <button
+            ng-if="!pageStaticFormsCtrl.buttonSoftToAction && (!model.Pipeline.EnableStatus || !dealFieldStatus.length || model.StatusId !== 1)"
+            ng-show="pageStaticFormsCtrl.show_interaction_record_form"
+            class="button button-action button-short"
+            ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.INTERACTION_RECORDS, false, page_static_form)"
+            ng-disabled="pageStaticFormsCtrl.loading"
+          >
+            <span class="font-regular-weight font-regular-size">
+              Salvar
+            </span>
+          </button>
+          <a 
+            ng-if="pageStaticFormsCtrl.buttonSoftToAction" 
+            class="button button-white pull-right" 
+            ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.INTERACTION_RECORDS, false, page_static_form)"
+          >
+            <span class="text-action"><i class="{{pageStaticFormsCtrl.buttonSoftToAction.icon}} button-icon"></i></span>
+            {{ pageStaticFormsCtrl.buttonSoftToAction.name }}
+          </a>
+          <div class="dropdown d-flex page-static-form-deal-status-save-button" 
+            ng-if="entityType === 'Deal' && model.StatusId === 1 && model.Pipeline.EnableStatus && dealFieldStatus.length"
+            ng-show="pageStaticFormsCtrl.show_interaction_record_form"
+          >
+            <button
+              class="button button-action"
+              ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.INTERACTION_RECORDS, false, page_static_form)"
+              ng-disabled="pageStaticFormsCtrl.loading"
+            >
+              <span class="font-regular-weight font-regular-size"
+                ng-if="pageStaticFormsCtrl.selectedDealStatus.Name"
+                ng-bind-html="('INTERACTION_RECORDS.SAVE_WITH_DEAL_STATUS' | translate_with_replace: { dealStatus: pageStaticFormsCtrl.selectedDealStatus.Name }) | to_trusted"
+              ></span>
+              <span class="font-regular-weight font-regular-size" ng-if="!pageStaticFormsCtrl.selectedDealStatus.Name">
+                Salvar
+              </span>
+            </button>
+            <button href
+              id="pageStaticFormDealStatusOptionsButton"
+              class="button button-action dropdown-toggle width-35"
+              ng-blur="pageStaticFormsCtrl.toggleDealStatusOptionList(false)"
+              ng-click="pageStaticFormsCtrl.toggleDealStatusOptionList()"
+              data-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="far dropdown-sign"
+                ng-class="{'fa-angle-down': !pageStaticFormsCtrl.isDealStatusButtonExpanded, 'fa-angle-up': pageStaticFormsCtrl.isDealStatusButtonExpanded }"
+                style="margin-left: -2px;"
+              ></i>
+            </button>
+            <ul class="dropdown-menu white-dropdown-menu field-status-list-container">
+              <li class="field-status-list w-100" ng-repeat="fieldStatus in dealFieldStatus track by fieldStatus.DealFieldStatusId">
+                <a class="field-status-option" ng-click="pageStaticFormsCtrl.selectDealStatus(fieldStatus)">
+                  {{fieldStatus.Name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a ng-show="pageStaticFormsCtrl.show_interaction_record_form && pageStaticFormsCtrl.show_whatsapp_web_button && pageStaticFormsCtrl.phones.length === 1" class="button button-white button-short button-save-from-wpp" href ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.INTERACTION_RECORDS, true, page_static_form)">
+            <span class="font-regular-weight font-regular-size">
+              <span class="text-success">
+                <i class="fab fa-whatsapp button-icon"></i>
+              </span>
+              Salvar e enviar pelo WhatsApp
+            </span>
+          </a>
+          <aside ng-show="pageStaticFormsCtrl.show_interaction_record_form && pageStaticFormsCtrl.show_whatsapp_web_button && pageStaticFormsCtrl.phones.length > 1" class="dropdown display-inline-force" uib-dropdown dropdown-append-to-body is-open="pageStaticFormsCtrl.whatsappDropdownOpen" on-toggle="pageStaticFormsCtrl.onWhatsappDropdownToggle(open)">
+            <a href class="dropdown-toggle button button-white-light-border button-short button-save-from-wpp" type="button" id="whatsapp-list" uib-dropdown-toggle aria-haspopup="true">
+              <span class="font-regular-weight font-regular-size">
+                <span class="text-success">
+                  <i class="fab fa-whatsapp button-icon"></i>
+                </span>
+                Salvar e enviar pelo WhatsApp
+                <i class="fal fa-angle-down dropdown-sign"></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu dropdown-menu-right whatsapp-phones-dropdown-menu" uib-dropdown-menu style="z-index: 10000;" aria-labelledby="population-list">
+              <div class="dropdown-subtitle">
+                Salvar e enviar pelo WhatsApp
+              </div>
+              <div ng-repeat="phone in pageStaticFormsCtrl.phones">
+                <li>
+                  <a class="white-dropdown-link nowrap" href ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.INTERACTION_RECORDS, phone.Id, page_static_form)">
+                    <div class="hbox">
+                      <aside class="font-semi-big v-middle">
+                        {{phone.PhoneNumber}}<span ng-if="phone.Type.Name"> - {{phone.Type.Name}}</span>
+                      </aside>
+                    </div>
+                  </a>
+                </li>
+              </div>
+            </ul>
+          </aside>
+          <a href
+            class="button button-action button-short" 
+            ng-if="!model.Pipeline.EnableStatus || !dealFieldStatus.length || model.StatusId !== 1"
+            ng-show="pageStaticFormsCtrl.show_task_form" 
+            ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.SCHEDULED_TASK, false, page_static_form)"
+          >
+            <span class="font-regular-weight font-regular-size">
+              Salvar
+            </span>
+          </a>
+          <div class="dropdown d-flex page-static-form-deal-status-save-button" 
+            ng-if="entityType === 'Deal' && model.Pipeline.EnableStatus && model.StatusId === 1 && dealFieldStatus.length"
+            ng-show="pageStaticFormsCtrl.show_task_form"
+          >
+            <button
+              class="button button-action"
+              ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.SCHEDULED_TASK, false, page_static_form)"
+              ng-disabled="pageStaticFormsCtrl.loading"
+            >
+              <span class="font-regular-weight font-regular-size"
+                ng-if="pageStaticFormsCtrl.selectedDealStatus.Name"
+                ng-bind-html="('INTERACTION_RECORDS.SAVE_WITH_DEAL_STATUS' | translate_with_replace: { dealStatus: pageStaticFormsCtrl.selectedDealStatus.Name }) | to_trusted"
+              ></span>
+              <span class="font-regular-weight font-regular-size" ng-if="!pageStaticFormsCtrl.selectedDealStatus.Name">
+                Salvar
+              </span>
+            </button>
+            <button href
+              id="pageStaticFormDealStatusOptionsButton"
+              class="button button-action dropdown-toggle"
+              ng-blur="pageStaticFormsCtrl.toggleDealStatusOptionList(false)"
+              ng-click="pageStaticFormsCtrl.toggleDealStatusOptionList()"
+              data-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="far dropdown-sign"
+                ng-class="{'fa-angle-down': !pageStaticFormsCtrl.isDealStatusButtonExpanded, 'fa-angle-up': pageStaticFormsCtrl.isDealStatusButtonExpanded }"
+                style="margin-left: -2px;"
+              ></i>
+            </button>
+            <ul class="dropdown-menu white-dropdown-menu field-status-list-container">
+              <li class="field-status-list w-100" ng-repeat="fieldStatus in dealFieldStatus track by fieldStatus.DealFieldStatusId">
+                <a class="field-status-option" ng-click="pageStaticFormsCtrl.selectDealStatus(fieldStatus)">
+                  {{fieldStatus.Name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a href
+            class="button button-action button-short" 
+            ng-if="!model.Pipeline.EnableStatus || !dealFieldStatus.length || model.StatusId !== 1"
+            ng-show="pageStaticFormsCtrl.show_email_form && pageStaticFormsCtrl.has_subject && !pageStaticFormsCtrl.is_support_user" 
+            ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.SEND_EMAILS, false, page_static_form)"
+          >
+            <span class="font-regular-weight font-regular-size">
+              Enviar
+            </span>
+          </a>
+          <div class="dropdown d-flex page-static-form-deal-status-save-button" 
+            ng-if="entityType === 'Deal' && model.Pipeline.EnableStatus && dealFieldStatus.length && model.StatusId === 1"
+            ng-show="pageStaticFormsCtrl.show_email_form && pageStaticFormsCtrl.has_subject && !pageStaticFormsCtrl.is_support_user"
+          >
+            <button
+              class="button button-action"
+              ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.SEND_EMAILS, false, page_static_form)"
+              ng-disabled="pageStaticFormsCtrl.loading"
+            >
+              <span class="font-regular-weight font-regular-size"
+                ng-if="pageStaticFormsCtrl.selectedDealStatus.Name"
+                ng-bind-html="('INTERACTION_RECORDS.SEND_WITH_DEAL_STATUS' | translate_with_replace: { dealStatus: pageStaticFormsCtrl.selectedDealStatus.Name }) | to_trusted"
+              ></span>
+              <span class="font-regular-weight font-regular-size" ng-if="!pageStaticFormsCtrl.selectedDealStatus.Name">
+                Enviar
+              </span>
+            </button>
+            <button href
+              id="pageStaticFormDealStatusOptionsButton"
+              class="button button-action dropdown-toggle"
+              ng-blur="pageStaticFormsCtrl.toggleDealStatusOptionList(false)"
+              ng-click="pageStaticFormsCtrl.toggleDealStatusOptionList()"
+              data-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="far dropdown-sign"
+                ng-class="{'fa-angle-down': !pageStaticFormsCtrl.isDealStatusButtonExpanded, 'fa-angle-up': pageStaticFormsCtrl.isDealStatusButtonExpanded }"
+                style="margin-left: -2px;"
+              ></i>
+            </button>
+            <ul class="dropdown-menu white-dropdown-menu field-status-list-container">
+              <li class="field-status-list w-100" ng-repeat="fieldStatus in dealFieldStatus track by fieldStatus.DealFieldStatusId">
+                <a class="field-status-option" ng-click="pageStaticFormsCtrl.selectDealStatus(fieldStatus)">
+                  {{fieldStatus.Name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a ng-if="!model.Pipeline.EnableStatus || !dealFieldStatus.length || model.StatusId !== 1" 
+            class="button button-action button-short" href ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.SEND_EMAILS, false, page_static_form)" 
+            ng-show="pageStaticFormsCtrl.show_email_form && !pageStaticFormsCtrl.has_subject && !pageStaticFormsCtrl.is_support_user"
+            skip-reversible-message="true"
+          >
+            <span class="font-regular-weight font-regular-size">
+              Enviar
+            </span>
+          </a>
+          <div class="dropdown d-flex page-static-form-deal-status-save-button" 
+            ng-if="entityType === 'Deal' && model.StatusId === 1 && model.Pipeline.EnableStatus && dealFieldStatus.length"
+            ng-show="pageStaticFormsCtrl.show_email_form && !pageStaticFormsCtrl.has_subject && !pageStaticFormsCtrl.is_support_user"
+          >
+            <button
+              class="button button-action"
+              ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.SEND_EMAILS, false, page_static_form)"
+              ng-disabled="pageStaticFormsCtrl.loading"
+            >
+              <span class="font-regular-weight font-regular-size"
+                ng-if="pageStaticFormsCtrl.selectedDealStatus.Name"
+                ng-bind-html="('INTERACTION_RECORDS.SEND_WITH_DEAL_STATUS' | translate_with_replace: { dealStatus: pageStaticFormsCtrl.selectedDealStatus.Name }) | to_trusted"
+              ></span>
+              <span class="font-regular-weight font-regular-size" ng-if="!pageStaticFormsCtrl.selectedDealStatus.Name">
+                Enviar
+              </span>
+            </button>
+            <button href
+              id="pageStaticFormDealStatusOptionsButton"
+              class="button button-action dropdown-toggle"
+              ng-blur="pageStaticFormsCtrl.toggleDealStatusOptionList(false)"
+              ng-click="pageStaticFormsCtrl.toggleDealStatusOptionList()"
+              data-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="far dropdown-sign"
+                ng-class="{'fa-angle-down': !pageStaticFormsCtrl.isDealStatusButtonExpanded, 'fa-angle-up': pageStaticFormsCtrl.isDealStatusButtonExpanded }"
+                style="margin-left: -2px;"
+              ></i>
+            </button>
+            <ul class="dropdown-menu white-dropdown-menu field-status-list-container">
+              <li class="field-status-list w-100" ng-repeat="fieldStatus in dealFieldStatus track by fieldStatus.DealFieldStatusId">
+                <a class="field-status-option" ng-click="pageStaticFormsCtrl.selectDealStatus(fieldStatus)">
+                  {{fieldStatus.Name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div ng-if="entityType === 'Deal' && model.Pipeline.EnableStatus && dealFieldStatus.length" class="gap-5"></div>
+          <a ng-show="pageStaticFormsCtrl.show_email_form && !pageStaticFormsCtrl.is_support_user" class="button button-white button-short" href ng-click="pageStaticFormsCtrl.addTabContentWrapper(pageStaticFormsCtrl.PAGE_STATIC_FORMS_TAB_ID.SEND_EMAILS, false, page_static_form, true)">
+            <span class="font-regular-weight font-regular-size">
+              Salvar rascunho
+            </span>
+          </a>
+          <div ng-show="pageStaticFormsCtrl.show_email_form && pageStaticFormsCtrl.is_support_user" class="font-regular-weight fs-14 text-muted text-ellipsis">
+            <i class="fas fa-exclamation-triangle text-warning"></i>
+            Usuários de suporte não tem permissão para enviar e-mails.
+          </div>
+        </aside>
+        <aside class="text-left customer-panel-actions-loader v-middle flex-1">
+          <loading-tooltip loading="pageStaticFormsCtrl.loading" skip-pull-right="true" form="page_static_form"></loading-tooltip>
+        </aside>
+        
+        <aside class="wrapper-left v-middle" ng-hide="pageStaticFormsCtrl.show_pipelines_select">
+          <attachment-upload
+            class="pull-right"
+            file-upload-callback="pageStaticFormsCtrl.fileUploadCallback"
+            save-selected-items-callback="pageStaticFormsCtrl.saveSelectedItemsCallback"
+            position="'right'"
+            items="pageStaticFormsCtrl.items">
+          </attachment-upload>
+        </aside>
+      </div>
+      <div class="line-itens-right mt-10 list-attachments-wrapper" ng-hide="pageStaticFormsCtrl.show_pipelines_select" ng-if="pageStaticFormsCtrl.files.length || pageStaticFormsCtrl.items.length">
+        <div class="line-item light-badge neutral-content badge-border badge-deletable" ng-repeat="badge in pageStaticFormsCtrl.files track by $index">
+          <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+            <span
+              class="align-middle"
+              uib-tooltip="{{ badge.name }}"
+              tooltip-append-to-body="true"
+              tooltip-enable="badge.name.length > 20"
+              >{{badge.name.length > 20 ? badge.name.substring(0, 19) + '...' : badge.name }}</span>
+            <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" href ng-click="pageStaticFormsCtrl.files.splice($index, 1)">
+              <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2"></i>
+            </div>
+          </div>
+        </div>
+        <div class="line-item light-badge neutral-content badge-border badge-deletable" ng-repeat="item in pageStaticFormsCtrl.items track by $index">
+          <div class="text-darkest-neutral font-small font-bold table-cell-align-top">
+            <span
+              class="align-middle"
+              uib-tooltip="{{ item.Name }}"
+              tooltip-append-to-body="true"
+              tooltip-enable="item.Name.length > 20"
+              >{{item.Name.length > 20 ? item.Name.substring(0, 19) + '...' : item.Name + (item.IsCollection ? '.zip' : '')}}</span>
+            <div class="button-light-background align-middle button-fixed-size button-fixed-size-small" href
+              ng-click="pageStaticFormsCtrl.items.splice($index, 1)">
+              <i class="fas fa-times text-darkest-neutral remove-button-class remove-button-class-2"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

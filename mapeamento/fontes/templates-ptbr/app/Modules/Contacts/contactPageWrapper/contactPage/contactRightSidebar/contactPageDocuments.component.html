@@ -1,0 +1,37 @@
+<div>
+  <div class="short-side-bottom-wrapper" ng-if="contactPageDocumentsCtrl.hasActiveDocumentModule && contactPageDocumentsCtrl.self.Profile.DocumentsModule">
+    <div class="font-big">
+      <span>Documentos</span>
+      <a class="button button-light-background-border button-plus pull-right" ui-sref="{{'contact.newdocument({contact: contactPageDocumentsCtrl.contactModel, secondary_entity_id: 1 })'}}" ng-if="contactPageDocumentsCtrl.self.Profile.DocumentsCreatePermission">
+        <i class="fad fa-plus font-super-super-small text-neutral"></i>
+      </a>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background">
+      <div class="gap-5"></div>
+      <div ng-repeat="document in contactPageDocumentsCtrl.documents" ng-if="contactPageDocumentsCtrl.can_load && document">
+        <div class="gap-5"></div>
+        <a class="contact-card panel" ui-sref="{{'document({documentid: document.Id})'}}">
+          <div class="font-semi-big">{{document.Name}}</div>
+          <div class="gap-5"></div>
+          <span class="big-simple-inline text-muted">
+            <i class="fad fa-file-alt button-icon-margin"></i>
+            <span class="font-small">
+              {{document.Template.Name}}
+            </span>
+          </span>
+          <span class="big-simple-inline text-muted">
+            <i class="fad fa-calendar button-icon-margin"></i>
+            <span class="font-small">
+              {{document.formatted_create_date}}
+            </span>
+          </span>
+        </a>
+      </div>
+      <a class="contact-card panel no-quote" ui-sref="{{'contact.newdocument({contact: contactPageDocumentsCtrl.contactModel, secondary_entity_id: 1 })'}}" ng-if="contactPageDocumentsCtrl.can_load && contactPageDocumentsCtrl.documents.length === 0 && contactPageDocumentsCtrl.self.Profile.DocumentsCreatePermission">
+        <div class="font-semi-big">Criar novo documento</div>
+      </a>
+      <standard-loader margin-top="'15'" optionalclass="'timeline-loader'" loading="!contactPageDocumentsCtrl.can_load"></standard-loader>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,174 @@
+<div class="vbox big-header-or-footer scroll-shadow neutral-shadow">
+  <div class="white-content wrapper">
+    <div class="white-content">
+      <div>
+        <ul class="nav nav-tabs white-button-tabs-background no-borders">
+          <li ng-class="{'active': fieldTriggerConfigCtrl.formula_type === 1}" ng-if="fieldTriggerConfigCtrl.allowed_formula_types['simple']">
+            <a href ng-click="fieldTriggerConfigCtrl.changeFormulaType(1)">
+              {{ 'FIELD_CONFIG_MODAL.FIELD_TRIGGER_CONFIG.INTERNAL_TRIGGER' | translate }}
+            </a>
+          </li>
+          <li ng-class="{'active': fieldTriggerConfigCtrl.formula_type === 3}" ng-if="fieldTriggerConfigCtrl.allowed_formula_types['if']">
+            <a href ng-click="fieldTriggerConfigCtrl.changeFormulaType(3)">
+              {{ 'FIELD_CONFIG_MODAL.FIELD_TRIGGER_CONFIG.CONDITIONAL_TRIGGER' | translate }}
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-content stretch">
+        <div class="tab-pane clearfix" ng-class="{'active': fieldTriggerConfigCtrl.formula_type === 1}" ng-if="fieldTriggerConfigCtrl.formula_type === 1 && fieldTriggerConfigCtrl.initial_load && fieldTriggerConfigCtrl.original_field_model">
+          <simple-formula-config
+            field="fieldTriggerConfigCtrl.original_field_model"
+            formula-string="fieldTriggerConfigCtrl.formula_string"
+            current-formula-valid="fieldTriggerConfigCtrl.current_formula_valid"
+            type-check-fn="fieldTriggerConfigCtrl.typeCheck(formula_string)"
+            set-cursor-position-fn="fieldTriggerConfigCtrl.setCursorPosition(cursor_position)"
+            add-formula-variable-fn="fieldTriggerConfigCtrl.addVariable(field, field_path_id, skip_formula_string_insert, var_name_by_prop, required, var_property)"
+            remove-formula-variable-fn="fieldTriggerConfigCtrl.removeVariable(token)"
+            update-formula-fn="fieldTriggerConfigCtrl.updateFormulaString(formula_string)"
+            edit-tree-fn="fieldTriggerConfigCtrl.addCustomNodes"
+            custom-filter-fn="fieldTriggerConfigCtrl.customFieldFilter"
+            insert-code-snippet-fn="fieldTriggerConfigCtrl.insertCodeSnippet"
+            clear-value-fn="fieldTriggerConfigCtrl.clearTrigger"
+            is-trigger-config="true"
+            loading-current-formula-validation="fieldTriggerConfigCtrl.isFormulaValidationLoading"
+            remove-hash-from-formula-fn="fieldTriggerConfigCtrl.removeHashFromFormula()"
+            grab-current-variables-fn="fieldTriggerConfigCtrl.getCurrentFormulaVariables()"
+            >
+          </simple-formula-config>
+        </div>
+        <div class="tab-pane clearfix" ng-class="{'active': fieldTriggerConfigCtrl.formula_type === 3}" ng-if="fieldTriggerConfigCtrl.formula_type === 3 && fieldTriggerConfigCtrl.initial_load && fieldTriggerConfigCtrl.original_field_model">
+          <if-formula-config field="fieldTriggerConfigCtrl.original_field_model" parent-ctrl="fieldTriggerConfigCtrl"></if-formula-config>
+        </div>
+      </div>
+    </div>
+    <div class="gap-10"></div>
+    <div class="regular-background">
+      <div>
+        <ul class="nav nav-tabs border-tabs special-tabs b-b-1 arrange-mid">
+          <li ng-class="{ 'active': fieldTriggerConfigCtrl.current_tab === 'variables'}" ng-click="fieldTriggerConfigCtrl.changeTab('variables')">
+            <a class="text-muted" href="">
+              {{ 'FIELD_CONFIG_MODAL.FIELD_TRIGGER_CONFIG.TRIGGER_VARIABLES' | translate }}
+            </a>
+          </li>
+          <li ng-class="{ 'active': fieldTriggerConfigCtrl.current_tab === 'test'}"
+            ng-click="fieldTriggerConfigCtrl.changeTab('test')" class="">
+            <a href="" class="text-muted">
+              {{ 'FIELD_CONFIG_MODAL.FIELD_TRIGGER_CONFIG.TEST_TRIGGER' | translate }}
+            </a>
+          </li>
+        </ul>
+        <div class="white-content b-1 rounded-regular" ng-if="fieldTriggerConfigCtrl.current_tab === 'variables' && fieldTriggerConfigCtrl.getCurrentFormulaVariables().length > 0">
+          <table class="table table-striped modal-table">
+            <thead>
+              <tr>
+                <th>
+                  {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.VARIABLE' | translate }}
+                </th>
+                <th class="width-100" ng-if="!automationFormulas && !fieldTriggerConfigCtrl.is_conditional_hide_formula && !fieldTriggerConfigCtrl.is_conditional_disable_formula">
+                  {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.PROPERTY' | translate }}
+                </th>
+                <th class="width-10" ng-if="!automationFormulas && !fieldTriggerConfigCtrl.is_conditional_hide_formula && !fieldTriggerConfigCtrl.is_conditional_disable_formula">
+                  {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.REQUIRED' | translate }}
+                </th>
+                <th class="width-10">
+                  {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.REMOVE' | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="formula_variable in fieldTriggerConfigCtrl.getCurrentFormulaVariables()">
+                <td>
+                  <span style="white-space: pre;">{{ formula_variable.var_name.replace('[', '').replace(']', '') }}</span>
+                </td>
+                <td ng-if="!automationFormulas && !fieldTriggerConfigCtrl.is_conditional_hide_formula && !fieldTriggerConfigCtrl.is_conditional_disable_formula">
+                  <select
+                    class="form-control input-sm"
+                    ng-options="property as property.Name for property in fieldTriggerConfigCtrl.getAllowedProperties(formula_variable)"
+                    ng-model="formula_variable.var_property"
+                    ng-disabled="!fieldTriggerConfigCtrl.canSelectVarProperty(formula_variable)">
+                    <option value=""></option>
+                  </select>
+                </td>
+                <td ng-if="!automationFormulas && !fieldTriggerConfigCtrl.is_conditional_hide_formula && !fieldTriggerConfigCtrl.is_conditional_disable_formula">
+                  <div class="switch" ng-click="fieldTriggerConfigCtrl.syncVariables(formula_variable)">
+                    <input class="cmn-toggle cmn-toggle-round-flat" id="{{formula_variable.var_name}}" type="checkbox" ng-model="formula_variable.required">
+                    <label class="pull-right" for="{{formula_variable.var_name}}"></label>
+                  </div>
+                </td>
+                <td class="text-center nowrap">
+                  <div ng-click="fieldTriggerConfigCtrl.removeVariable(formula_variable.var_name, true)" class="button-white align-middle button-fixed-size button-fixed-size-small" href>
+                    <i class="fal fa-trash fixing-fixed-size-button"></i>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="darkest-background b-1 rounded-regular" ng-if="fieldTriggerConfigCtrl.current_tab === 'test' && fieldTriggerConfigCtrl.getCurrentFormulaVariables().length > 0">
+          <table class="table table-striped modal-table">
+            <thead>
+              <tr>
+                <th class="width-200">
+                  {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.VARIABLE' | translate }}
+                </th>
+                <th>
+                  {{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.TEST_VALUE' | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="formula_variable in fieldTriggerConfigCtrl.getCurrentFormulaVariables()">
+                <td>
+                  {{formula_variable.var_name.replace('[', '').replace(']', '')}}
+                </td>
+                <td>
+                  <input ng-if="formula_variable.field.typeId !== 7" class="form-control input-sm" type="text" ng-model="formula_variable.value">
+                  <new-field
+                    ng-if="formula_variable.field.typeId === 7"
+                    field="formula_variable.field"
+                    model="formula_variable"
+                    property="'value'"
+                    required="false"
+                    disabled="false"
+                    wide="true"
+                    hide-label="true"
+                    not-trigger-formula="true">
+                  </new-field>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="white-content b-1 rounded-regular"
+          ng-if="(fieldTriggerConfigCtrl.current_tab === 'variables' || fieldTriggerConfigCtrl.current_tab === 'test') && fieldTriggerConfigCtrl.getCurrentFormulaVariables().length === 0">
+          <div class="wrapper text-neutral text-center">
+            {{ 'FIELD_CONFIG_MODAL.FIELD_TRIGGER_CONFIG.NO_TRIGGER_VARIABLE' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="gap-10"></div>
+    <div ng-show="fieldTriggerConfigCtrl.current_tab === 'test'" class="white-content">
+      <div class="hbox">
+        <aside>
+          <a class="button button-white nowrap" href ng-click="fieldTriggerConfigCtrl.runFormula(fieldTriggerConfigCtrl.formula_string)">
+            <span class="text-action"><i class="fal fa-play button-icon"></i></span>
+            {{ 'FIELD_CONFIG_MODAL.FIELD_TRIGGER_CONFIG.TEST_TRIGGER' | translate }}
+          </a>
+        </aside>
+      </div>
+      <div class="gap-10" ng-if="fieldTriggerConfigCtrl.last_formula_eval_error"></div>
+      <div class="font-semi-big" ng-if="fieldTriggerConfigCtrl.last_formula_eval_error">
+        <strong>{{ 'FIELD_CONFIG_MODAL.FORMULA_CONFIG.LAST_TEST_ERROR' | translate }}</strong>
+        <div class="nowrap side-scroll width-550">
+          <div class="side-scroll-container wrapper white-content b-1 rounded-regular">
+            {{fieldTriggerConfigCtrl.last_formula_eval_error}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

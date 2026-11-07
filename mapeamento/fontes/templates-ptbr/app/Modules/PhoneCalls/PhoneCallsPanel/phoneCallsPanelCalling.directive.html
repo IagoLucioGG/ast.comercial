@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <div class="gap-20"></div>
+  <div class="tab-content">
+    <div class="tab-pane active" id="call-status">
+      <div class="height-240 ongoing-call text-center">
+        <div class="font-semi-big">Ligando para {{contact ? contact.Name : ''}}
+          <div class="gap-10"></div>
+          <div class="font-bold font-big">{{phoneNumber}}</div>
+        </div>
+        <div class="gap-20"></div>
+        <div class="gap-20"></div>
+        <div class="spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gap-20"></div>
+  <div class="button button-neutral full-width" ng-click="turnOffFn()">
+    <div class="font-big">Desligar</div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="vbox small-header">
+  <header class="regular-header b-b-1 new-header light-background b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <span class="font-thin font-title" data-cy="goals-dashboard-sidebar-panels">
+          {{ 'GOALS.PANELS' | translate }}
+        </span>
+      </aside>
+      <aside class="text-right v-middle">
+        <div class="button button-light-background-border" ui-sref="{{'home.goals.panel.newpanel'}}" data-cy="goals-dashboard-sidebar-new-panel">
+          {{ 'GOALS.NEW_PANEL' | translate }}
+        </div>
+      </aside>
+    </div>
+  </header>
+  <section class="scrollable">
+    <div id="panels-list" class="wrapper" ui-sortable="$ctrl.options" ng-model="$ctrl.panels">
+      <div ng-repeat="panel in $ctrl.panels">
+        <a class="nowrap data-visualization button button-full-width button-very-big text-left" href ng-class="{'button-dry-background': $ctrl.currentPanel.Id === panel.Id, 'button-light-background': $ctrl.currentPanel.Id !== panel.Id}" ng-click="$ctrl.changePanel(panel)">
+          <div class="hbox position-relative">
+            <aside class="v-middle">
+              <span class="font-regular-weight font-regular-size text-regular"
+                    ng-class="{'text-regular': panel.Id !== $ctrl.currentPanel.Id}"
+                    uib-tooltip="{{panel.Name}}"
+                    tooltip-append-to-body="true"
+                    tooltip-placement="auto top"
+                    tooltip-enable="panel.Name.length >= 20">
+                {{panel.Name}}
+              </span>
+            </aside>
+            <aside class="v-middle width-50 text-right edit-tab">
+              <goal-panel-options panel="panel" ng-if="panel.Editable"></goal-panel-options>
+            </aside>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

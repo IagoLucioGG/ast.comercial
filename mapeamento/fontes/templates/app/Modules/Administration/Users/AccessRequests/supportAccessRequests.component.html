@@ -1,0 +1,103 @@
+<dynamic-modal
+  modal-id="users"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="{{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  has-general-slide="user_slide"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll">
+          <section class="scrollable">
+            <ul class="nav nav-tabs b-b-1 gray-border-tabs arrange-mid">
+              <li ng-repeat="access_type in $ctrl.access_types" ng-class="{ 'active': $ctrl.selected_access_type.Id === access_type.Id }"
+                ng-click="$ctrl.selectAccessType(access_type)">
+                <a class="text-muted" href>
+                  {{access_type.Name}}
+                </a>
+              </li>
+            </ul>
+            <table class="table table-hover white-table">
+              <thead>
+                <tr>
+                  <th class="small-cell cursor-pointer" ng-click="$ctrl.sortBy('SupportUser.Name')">
+                    {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.SUPPORT_USER' | translate }}
+                    <i ng-if="$ctrl.sort_column === 'SupportUser.Name'" class="fas fa-sort-amount-down m-l-xs" ng-class="{'fa-flip-vertical': $ctrl.sort_reverse}"></i>
+                  </th>
+                  <th class="small-cell cursor-pointer" ng-click="$ctrl.sortBy('RequestDate')">
+                    {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.REQUEST_DATE' | translate }}
+                    <i ng-if="$ctrl.sort_column === 'RequestDate'" class="fas fa-sort-amount-down m-l-xs" ng-class="{'fa-flip-vertical': $ctrl.sort_reverse}"></i>
+                  </th>
+                  <th class="small-cell cursor-pointer" ng-if="$ctrl.selected_access_type.Id !== 1" ng-click="$ctrl.sortBy('Approver.Name')">
+                    {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.OWNER' | translate }}
+                    <i ng-if="$ctrl.sort_column === 'Approver.Name'" class="fas fa-sort-amount-down m-l-xs" ng-class="{'fa-flip-vertical': $ctrl.sort_reverse}"></i>
+                  </th>
+                  <th class="small-cell cursor-pointer" ng-if="$ctrl.selected_access_type.Id !== 1" ng-click="$ctrl.sortBy('ApproveDate')">
+                    {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.APPROVAL_REFUSAL_DATE' | translate }}
+                    <i ng-if="$ctrl.sort_column === 'ApproveDate'" class="fas fa-sort-amount-down m-l-xs" ng-class="{'fa-flip-vertical': $ctrl.sort_reverse}"></i>
+                  </th>
+                  <th class="small-cell cursor-pointer" ng-if="$ctrl.selected_access_type.Id !== 1" ng-click="$ctrl.sortBy('ExpirationDate')">
+                    {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.LIMIT_ACCESS_DATE' | translate }}
+                    <i ng-if="$ctrl.sort_column === 'ExpirationDate'" class="fas fa-sort-amount-down m-l-xs" ng-class="{'fa-flip-vertical': $ctrl.sort_reverse}"></i>
+                  </th>
+                  <th class="small-cell" ng-if="$ctrl.selected_access_type.Id !== 3">{{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.ACCESS_ACTIONS' | translate }}</th>
+                  <th class="small-cell" ng-if="$ctrl.selected_access_type.Id === 3">{{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.SITUATION' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody ng-if="!$ctrl.loading">
+                <tr class="contact-workplace-button" ng-repeat="access in $ctrl.accesses | orderBy:$ctrl.sort_column:$ctrl.sort_reverse">
+                  <td>
+                    <img class="mini-avatar-less" ng-src="{{access.SupportUser.AvatarUrl}}">
+                    <span class="font-bold">{{access.SupportUser.Name}}</span>
+                  </td>
+                  <td>{{access.formatted_request_date}}</td>
+                  <td ng-if="$ctrl.selected_access_type.Id !== 1">{{access.Approver.Name}}</td>
+                  <td ng-if="$ctrl.selected_access_type.Id !== 1">{{access.formatted_approve_date || '--'}}</td>
+                  <td ng-if="$ctrl.selected_access_type.Id !== 1">{{access.formatted_expiration_date || '--'}}</td>
+                  <td ng-if="$ctrl.selected_access_type.Id === 1">
+                    <button
+                      class="button button-action"
+                      ng-class="{ 'disabled': access.processing }"
+                      mini-modal
+                      mini-modal-title="Defina a data e horário limites de acesso"
+                      mini-modal-fields="$ctrl.approve_access_fields"
+                      mini-modal-callback="$ctrl.approveAccess(model, access)">
+                      {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.APPROVE' | translate }}
+                    </button>
+                    <button class="button button-delete" ng-class="{ 'disabled': access.processing }" ng-click-confirm="{{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.REFUSE_CONFIRM' | translate }}" reversible="false" ng-click="$ctrl.refuseAccess(access)">{{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.REFUSE' | translate }}</button>
+                  </td>
+                  <td ng-if="$ctrl.selected_access_type.Id === 2">
+                    <button class="button button-neutral" ng-class="{ 'disabled': access.processing }" ng-click-confirm="{{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.REVOKE_CONFIRM' | translate }}" reversible="false" ng-click="$ctrl.revokeAccess(access)">{{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.REVOKE' | translate }}</button>
+                  </td>
+                  <td ng-if="$ctrl.selected_access_type.Id === 3">
+                    <span ng-if="access.Approved === false">
+                      {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.REFUSED' | translate }}
+                    </span>
+                    <span ng-if="access.Approved && access.Revoked">
+                      {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.REVOKED_BEFORE_CONCLUSION' | translate }}
+                    </span>
+                    <span ng-if="access.Approved && !access.Revoked">
+                      {{ 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.CONCLUDED' | translate }}
+                    </span>
+                  </td>
+                </tr>
+                <tr ng-if="$ctrl.accesses.length === 0" class="neutral-line empty-table-config">
+                  <td colspan="{{$ctrl.selected_access_type.Id === 1 ? 3 : 6}}" class="text-center empty-results">
+                    <span class="text-neutral">
+                      {{$ctrl.selected_access_type.Id === 1 ? ( 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.NONE_APPROVAL_REQUEST_PENDING' | translate ) : ''}}
+                      {{$ctrl.selected_access_type.Id === 2 ? ( 'ADMINISTRATION.USERS.ACCESS_REQUESTS.SUPPORT_ACCESS_REQUESTS.NONE_APPROVED_ACCESS' | translate ) : ''}}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+</dynamic-modal>

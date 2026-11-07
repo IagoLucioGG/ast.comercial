@@ -1,0 +1,37 @@
+<div class="tab-pane" id="interaction-record">
+  <form class="clearfix">
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Pode editar os seus próprios registros de interação?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordEditPermission" ng-value="true"><strong>Sim</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordEditPermission" ng-value="false"><strong>Não</strong>
+        </label>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <div class="font-thin font-title">
+        Pode excluir os seus próprios registros de interação?
+      </div>
+      <div class="line"></div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordDeletePermission" ng-value="true"><strong>Sim</strong>
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input class="inline-option" type="radio" ng-model="model.InteractionRecordDeletePermission" ng-value="false"><strong>Não</strong>
+        </label>
+      </div>
+    </div>
+  </form>
+  <div class="gap-50"></div>
+</div>

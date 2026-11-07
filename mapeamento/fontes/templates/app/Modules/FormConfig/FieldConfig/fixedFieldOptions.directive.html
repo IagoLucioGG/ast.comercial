@@ -1,0 +1,66 @@
+<div class="gap-10"></div>
+<a class="button-neutral-gray button font-regular-size text-left button-full-width" role="button" data-toggle="collapse" data-target="#fk_opt" aria-expanded="true" aria-controls="proposalProducts">
+  {{ 'FIELD_CONFIG_MODAL.FIELD_OPTIONS' | translate }}
+  <i class="fal fa-angle-down dropdown-sign"></i>
+</a>
+<div class="collapse in" id="fk_opt" aria-expanded="true" >
+  <div class="clearfix border-bottom-fix">
+    <div>
+      <div class="white-content b-1 rounded-regular overflow-hidden">
+        <div>
+          <table class="table table-striped modal-table">
+            <tbody>
+              <tr ng-if="field.canCreateNewProperty">
+                <td>
+                  <input class="form-control input-sm" placeholder="{{ 'FIELD_CONFIG_MODAL.ADD_OPTION_TOOLTIP' | translate }}..." ng-model="fixedFieldOptionsCtrl.opt_model" ng-model-options="{ debounce: 300 }" ng-change="fixedFieldOptionsCtrl.filterOptions()">
+                </td>
+                <td class="text-center nowrap">
+                  <a class="button-fixed-size button-fixed-size-big" ng-class="{ 'button-action': fixedFieldOptionsCtrl.opt_model, 'button-neutral disabled': !fixedFieldOptionsCtrl.opt_model }" ng-click="fixedFieldOptionsCtrl.insertNewOption(fixedFieldOptionsCtrl.opt_model)" uib-tooltip="{{ 'FIELD_CONFIG_MODAL.ADD_OPTION_TOOLTIP' | translate }}" tooltip-append-to-body="true" tooltip-enable="fixedFieldOptionsCtrl.opt_model && true">
+                    <i class="fas fa-check"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr ng-if="fixedFieldOptionsCtrl.options.length === 0">
+                <td colspan="2" class="text-center text-muted">
+                  {{ 'FIELD_CONFIG_MODAL.NO_OPTION_FOUND' | translate }}
+                </td>
+              </tr>
+              <tr ng-if="fixedFieldOptionsCtrl.options.length > 0" ng-repeat="option in fixedFieldOptionsCtrl.options track by $index">
+                <td class="field-option-size">
+                  {{ option[fixedFieldOptionsCtrl.display_property_name] }}
+                  <div ng-if="option.Pipeline && option.Pipeline.Name" class="text-muted text-small">
+                    {{ fixedFieldOptionsCtrl.customizables.deals_module.pipeline_singular_unit_name | capitalize }} : {{ option.Pipeline.Name }}
+                  </div>
+                </td>
+                <td class="text-center nowrap">
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" ng-if="fixedFieldOptionsCtrl.has_editable_property ? option.Editable : field.canCreateNewProperty" ng-click="fixedFieldOptionsCtrl.openPopover(option, $index); $event.stopPropagation()" uib-tooltip="{{ 'FIELD_CONFIG_MODAL.EDIT_OPTION' | translate }}" tooltip-append-to-body="true">
+                    <i class="fal fa-pen activity-icon-top-3" uib-popover-template="fixedFieldOptionsCtrl.popoverTemplate" popover-title="{{ 'FIELD_CONFIG_MODAL.EDIT_OPTION' | translate }}" popover-append-to-body="true" popover-placement="auto right" popover-is-open="fixedFieldOptionsCtrl.isOpen[$index]"></i>
+                  </a>
+                  <a class="button-inherit button-fixed-size button-fixed-size-small" ng-if="fixedFieldOptionsCtrl.has_editable_property ? option.Editable : field.canCreateNewProperty" ng-click-confirm="{{ 'FIELD_CONFIG_MODAL.DELETE_OPTION_CONFIRM' | translate }}" reversible="false" ng-click="fixedFieldOptionsCtrl.removeOption(option)" uib-tooltip="{{ 'FIELD_CONFIG_MODAL.DELETE_OPTION' | translate }}" tooltip-append-to-body="true">
+                    <i class="fal fa-trash fixing-fixed-size-button"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="text-center">
+                  <ul uib-pagination ng-model="fixedFieldOptionsCtrl.current_page" ng-change="fixedFieldOptionsCtrl.changePage()" total-items="fixedFieldOptionsCtrl.total_items" class="pagination-sm" items-per-page="fixedFieldOptionsCtrl.top" rotate="true" max-size="3" force-ellipses="true"
+                    ng-disabled="!fixedFieldOptionsCtrl.can_load" first-text="{{ 'FIELD_CONFIG_MODAL.FIRST' | translate }}" previous-text="{{ 'FIELD_CONFIG_MODAL.PREVIOUS' | translate }}" next-text="{{ 'FIELD_CONFIG_MODAL.NEXT' | translate }}" last-text="{{ 'FIELD_CONFIG_MODAL.LAST' | translate }}"></ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gap-15"></div>
+
+<script type="text/ng-template" id="popoverFixedField">
+  <div ng-if="fixedFieldOptionsCtrl.isOpen" ng-form name="inline_edit_form">
+    <forms model="fixedFieldOptionsCtrl.model" fields="fixedFieldOptionsCtrl.form" form="inline_edit_form"></forms>
+    <button class="button button-action mleft15" ng-disabled="fixedFieldOptionsCtrl.edit_loading" ng-click="fixedFieldOptionsCtrl.editOption(fixedFieldOptionsCtrl.model, inline_edit_form); $event.stopPropagation()" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+    <button class="button button-white" ng-disabled="fixedFieldOptionsCtrl.edit_loading" ng-click="fixedFieldOptionsCtrl.isOpen[$index] = false; $event.stopPropagation()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+    <loading-tooltip loading="fixedFieldOptionsCtrl.edit_loading" form="inline_edit_form"></loading-tooltip>
+  </div>
+</script>

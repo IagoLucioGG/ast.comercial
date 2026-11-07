@@ -1,0 +1,61 @@
+<dynamic-modal
+  modal-id="{{::modalId}}"
+  footer="true"
+  dark="true"
+  modal-title="{{ 'FIRST_LOGIN.SELF_INFO_MODAL.TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal"
+  ng-if="$ctrl.toggle_modal"
+  ng-form
+  name="self_form"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container" ng-if="$ctrl.can_load">
+        <div class="gap-15"></div>
+        <div class="hbox">
+          <aside class="width-160 text-center v-middle">
+            <img class="avatar-select" ng-src="{{$ctrl.avatar_url || 'images/avatar_default.jpg'}}">
+            <label
+              href
+              id="self-avatar-wrapper"
+              class="button button-action button-short avatar-select-button">
+              {{ 'FIRST_LOGIN.SELF_INFO_MODAL.CHOOSE_PHOTO' | translate }}
+              <input id="self-avatar" type="file" style="display: none;" />
+            </label>
+          </aside>
+          <aside>
+            <forms model="$ctrl.model" fields="$ctrl.top_form" form="self_form"></forms>
+          </aside>
+        </div>
+        <div ng-repeat="section in ::$ctrl.sections track by $index">
+          <div ng-if="section.Id === 'null'">
+            <forms model="$ctrl.model" fields="$ctrl.forms[$index]" form="self_form"></forms>
+            <div class="gap-20"></div>
+          </div>
+          <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+            <modal-section section-form="self_form" name="section.name" section-id="section.Id">
+              <forms model="$ctrl.model" fields="$ctrl.forms[$index]" form="self_form"></forms>
+            </modal-section>
+            <div class="gap-20"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <button
+            class="button button-action pull-right"
+            ng-disabled="$ctrl.loading"
+            ng-click="$ctrl.submitControl(self_form)">
+            {{ 'GENERICS.SAVE' | translate }}
+          </button>
+          <loading-tooltip loading="$ctrl.loading" form="self_form"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

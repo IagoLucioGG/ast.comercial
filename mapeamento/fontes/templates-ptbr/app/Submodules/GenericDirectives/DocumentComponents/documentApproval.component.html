@@ -1,0 +1,30 @@
+<a class="new-mail-pane-example button button-delete pull-right"
+  mini-modal
+  mini-modal-title="Motivo de recusa"
+  mini-modal-fields="$ctrl.refusal_fields"
+  mini-modal-callback="$ctrl.refuseDocument(model)"
+  ng-if="$ctrl.document.ApprovalStatusId === 1 && $ctrl.document.Approver">
+  {{ 'GENERIC_DIRECTIVES.DOCUMENT_APPROVAL.REFUSE' | translate_with_replace : { entity_name: $ctrl.current_entity.Name.toLowerCase() } }}
+</a>
+<a class="new-mail-pane-example button button-action pull-right"
+  mini-modal
+  mini-modal-title="Motivo de aprovação"
+  mini-modal-fields="$ctrl.approval_fields"
+  mini-modal-callback="$ctrl.approveDocument(true, model)"
+  ng-if="$ctrl.document.ApprovalStatusId === 1 && $ctrl.document.Approver">
+  {{ 'GENERIC_DIRECTIVES.DOCUMENT_APPROVAL.APPROVE' | translate_with_replace : { entity_name: $ctrl.current_entity.Name.toLowerCase() } }}
+</a>
+<span class="button bottom-menu-button transparent-border" ng-class="{'white-content': !$ctrl.useLightBackground, 'white-content': $ctrl.useLightBackground}" ng-if="($ctrl.document.ApprovalStatusId === 1 && !$ctrl.document.Approver) || $ctrl.document.ApprovalStatusId === 3">
+  <span ng-if="$ctrl.document.ApprovalStatusId === 1 && !$ctrl.document.Approver">
+    <span class="text-warning">
+      <i class="fas fa-exclamation-triangle button-icon"></i>
+    </span>
+    {{ 'GENERIC_DIRECTIVES.DOCUMENT_APPROVAL.WAITING_APPROVAL' | translate_with_replace : { entity_name: $ctrl.current_entity.Name.toLowerCase() } }}
+  </span>
+  <span ng-if="$ctrl.document.ApprovalStatusId === 3">
+    <span class="text-danger">
+      <i class="fas fa-exclamation-triangle button-icon"></i>
+    </span>
+    {{ 'GENERIC_DIRECTIVES.DOCUMENT_APPROVAL.REFUSED' | translate_with_replace : { entity_name: $ctrl.current_entity.Name } }}
+  </span>
+</span>

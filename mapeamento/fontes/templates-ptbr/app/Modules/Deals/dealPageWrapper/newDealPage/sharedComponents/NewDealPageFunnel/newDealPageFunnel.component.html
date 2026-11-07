@@ -1,0 +1,29 @@
+<div class="side-wrapper"> 
+  <div class="panel white-content b-1 overflow-hidden no-shadow">
+    <div class="rounded-regular wizard-open"
+         ng-if="$ctrl.currentPipeline && $ctrl.currentPipeline.Stages.length > 1"
+         ng-class="$ctrl.getWizardDealStatusClass($ctrl.deal.StatusId)">
+      <a href
+         ng-class="{'past-stage': $index <= $ctrl.current_deal_stage_index, 'current-stage': $index === $ctrl.current_deal_stage_index, 'disabled-wizard': $ctrl.deal.StatusId !== 1 || ($ctrl.original_pipeline.MustPassAllStages && $index > $ctrl.current_deal_stage_index + 1) || ($ctrl.original_pipeline.ForbiddenStageReturn && $index < $ctrl.current_deal_stage_index)}"
+         ng-repeat="stage in $ctrl.currentPipeline.Stages track by $index"
+         ng-click="$index !== $ctrl.current_deal_stage_index && $ctrl.changeDealStage(stage)"
+         uib-tooltip="{{ ($ctrl.deal.StatusId === 1 ? stage.Name : 'DEALS.CANT_MOVE_WON_DEAL') | translate }}"
+         tooltip-append-to-body="true">
+        <div class="stage-name">{{stage.Name}}</div>
+      </a>
+    </div>
+    <div class="wizard rounded-regular" ng-if="!$ctrl.currentPipeline">
+      <a class="disabled-wizard" href>
+        <div class="gap-10"></div>
+        <div class="font-regular text-wrap" ng-if="$ctrl.pipeline_archived">
+          (O:pipeline:Aa:s) (name:pipeline:aa:s) (deste:deal:aa:s) (name:deal::s) foi arquivado. É possível reabrir na lista de (name:pipeline:aa:p) ou remanejar no menu superior direito.
+        </div>
+        <div class="font-regular text-wrap" ng-if="!$ctrl.pipeline_archived">
+          {{ ($ctrl.deal.StatusId === 1 ? 'DEALS.DEAL_PAGE.THIS_PIPELINE_WAS_DELETED' : 'DEALS.DEAL_PAGE.THIS_PIPELINE_WAS_DELETED_CONTACT_SUPPORT') | translate_sentence }}
+        </div>
+        <div class="gap-10"></div>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="gap-10"></div>

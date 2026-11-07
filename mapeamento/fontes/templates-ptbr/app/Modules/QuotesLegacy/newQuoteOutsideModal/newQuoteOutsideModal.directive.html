@@ -1,0 +1,71 @@
+<dynamic-modal
+  modal-id="'new-quote'"
+  toggle-full-screen-fn="newQuoteCtrl.toggleFullScreenFn"
+  footer="true"
+  dark="true"
+  modal-title="{{::('QUOTES.NEW_QUOTE_OUTSIDE_MODAL.TITLE' | translate)}}"
+  toggle-modal="newQuoteCtrl.toggle_modal"
+  ng-form
+  name="new_quote_form"
+  is-editing-quote="true"
+  block-back-state="newQuoteCtrl.block_back_state"
+  is-fetching-modal-content="newQuoteCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="regular-header b-b-1 scroll-shadow arrange-mid" ng-if="!newQuoteCtrl.show_document_template_list && !newQuoteCtrl.display_no_templates">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="modal-title">
+            <small class="font-regular-weight text-muted">Modelo</small>
+          </div>
+          <div class="dropdown mtop-3">
+            <a class="button button-white-no-border button-super-small new-item-folder dropdown-toggle" data-toggle="dropdown">
+              <span class="font-big font-regular-weight">{{newQuoteCtrl.selected_template.Name}}<i class="fal fa-angle-down dropdown-sign"></i></span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu field-pick">
+              <li ng-repeat="model in newQuoteCtrl.quote_templates track by model.Id" ng-click="newQuoteCtrl.changeTemplate(model)" ng-show="model.Id !== newQuoteCtrl.selected_template.Id && newQuoteCtrl.quote_templates.length > 1">
+                <a class="white-dropdown-link" href>{{model.Name}}</a>
+              </li>
+              <li ng-show="newQuoteCtrl.quote_templates.length === 1">
+                <a class="white-dropdown-link" href>Você tem apenas um modelo de proposta</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="deals-vbox vbox scroll-shadow neutral-shadow" ng-if="!newQuoteCtrl.show_document_template_list && !newQuoteCtrl.display_no_templates">
+      <section class="scrollable scroll-shadow-container">
+        <div class="gap-15"></div>
+        <forms model="newQuoteCtrl.new_quote" fields="newQuoteCtrl.selected_form" form="new_quote_form" document-template-format="newQuoteCtrl.selected_template.NewFormat" ng-if="newQuoteCtrl.template_load" is-modal-full-screen="newQuoteCtrl.modal_is_full_screen"></forms>
+        <div class="text-center text-neutral-light font-very-big-title big-wrapper" ng-if="(!newQuoteCtrl.selected_form || !newQuoteCtrl.has_fields_to_show) && newQuoteCtrl.template_load">
+          <i class="font-monster-size fad fa-exclamation-triangle"></i>
+          <div class="gap-30"></div>
+          Sem campos para preenchimento
+        </div>
+        <standard-loader margin-top="30" loading="!newQuoteCtrl.template_load"></standard-loader>
+      </section>
+    </div>
+
+    <no-templates ng-if="newQuoteCtrl.display_no_templates" entity-id="7" modal="true"></no-templates>
+
+    <div class="vbox scroll-shadow neutral-shadow" ng-if="newQuoteCtrl.show_document_template_list">
+      <section class="scrollable">
+        <document-template-select entity-id="7" document-templates="newQuoteCtrl.quote_templates"
+          select-document-template-callback-fn="newQuoteCtrl.selectDocumentTemplateCallback(template)">
+        </document-template-select>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch" ng-if="!newQuoteCtrl.show_document_template_list && !newQuoteCtrl.display_no_templates">
+      <div class="document-footer-container stretch">
+        <loading-tooltip loading="!newQuoteCtrl.can_load" form="new_quote_form"></loading-tooltip>
+        <button class="button button-action pull-right" ng-class="{ 'disabled': !newQuoteCtrl.can_load }" ng-click="newQuoteCtrl.applyQuote(new_quote_form)" ng-disabled="!newQuoteCtrl.can_load">
+          Salvar
+        </button>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

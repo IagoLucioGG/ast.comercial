@@ -1,0 +1,269 @@
+<standard-loader margin-top="30" loading="!$ctrl.initial_load"></standard-loader>
+<div class="vbox" ng-if="!$ctrl.not_found && $ctrl.initial_load">
+  <section class="scrollable scroll-shadow-container white-content" ng-style="!$ctrl.iframeLoaded && {'overflow-y': 'hidden'}">
+    <div class="big-side-wrapper panel no-shadow white-content b-b-1">
+      <div class="gap-5"></div>
+      <div class="hbox stretch">
+        <aside>
+          <div class="hbox row-space">
+            <div class="hbox-row">
+              <aside class="max-width-200 min-width-100 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis text-uppercase font-bold" ng-class="{ 'pull-left': !$ctrl.emailGroupPage }" ng-class="{ 'pull-left': !$ctrl.emailGroupPage }" ng-class="{ 'pull-left': !$ctrl.emailGroupPage }">De:</div>
+              </aside>
+              <aside>
+                <div class="font-bold">
+                  <span class="font-bold">
+                    <a ui-sref="{{'user({userid: $ctrl.formatted_sender.user})'}}" ng-if="!$ctrl.formatted_sender.createNew && $ctrl.formatted_sender.user" class="inline-link-regular">
+                      {{$ctrl.formatted_sender.name}}
+                    </a>
+                    <a ui-sref="{{'contact({contactid: $ctrl.formatted_sender.contact})'}}" ng-if="!$ctrl.formatted_sender.createNew && $ctrl.formatted_sender.contact"
+                      class="inline-link-regular">
+                      {{$ctrl.formatted_sender.name}}
+                    </a>
+                    <span class="font-regular-weight">
+                      <span ng-if="(!$ctrl.formatted_sender.user && !$ctrl.formatted_sender.contact) && $ctrl.formatted_sender.name">{{$ctrl.formatted_sender.name}}</span>
+                    </span>
+                    <div class="display-inline-block" ng-if="$ctrl.formatted_sender.createNew" uib-dropdown>
+                      <a
+                        href
+                        class="inline-link-muted"
+                        uib-dropdown-toggle
+                        uib-popover-template="$ctrl.popoverTemplate"
+                        popover-enable="$ctrl.sender_open_contact_popover"
+                        popover-is-open="$ctrl.sender_open_contact_popover"
+                        popover-trigger="none"
+                        popover-append-to-body="true"
+                        popover-placement="auto right"
+                        popover-title="Criar novo cliente">
+                        <span class="text-action"><i class="fal fa-plus-circle regular-icon-email-plus"></i></span>
+                        {{$ctrl.formatted_sender.email}}
+                      </a>
+                      <ul class="white-dropdown-menu pull-right" uib-dropdown-menu>
+                        <li>
+                          <a class="white-dropdown-link new-proposal-pane-example"
+                            ng-click="$ctrl.startContactForm(false, $ctrl.formatted_sender.email); $ctrl.sender_open_contact_popover = true">
+                            <i class="fal fa-user list-simple-line"></i>Nova pessoa
+                          </a>
+                        </li>
+                        <li>
+                          <a class="ck-editor-pane-example white-dropdown-link"
+                            ng-click="$ctrl.startContactForm(true, $ctrl.formatted_sender.email); $ctrl.sender_open_contact_popover = true">
+                            <i class="fal fa-industry list-simple-line"></i>Nova empresa
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </span>
+                </div>
+              </aside>
+            </div>
+            <div class="hbox-row">
+              <aside class="max-width-200 min-width-100 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis text-uppercase font-bold" ng-class="{ 'pull-left': !$ctrl.emailGroupPage }" ng-class="{ 'pull-left': !$ctrl.emailGroupPage }">Para:</div>
+              </aside>
+              <aside>
+                <span class="text-muted font-bold" ng-repeat="receiver in $ctrl.formatted_receivers">
+                  <a ui-sref="{{'user({userid: receiver.user})'}}" ng-if="receiver.Id !== null && receiver.user && !receiver.contact" class="inline-link-regular">
+                    {{receiver.name}}
+                  </a>
+                  <a ui-sref="{{'contact({contactid: receiver.contact})'}}" ng-if="!receiver.user && receiver.contact" class="inline-link-regular">
+                    {{receiver.name}}
+                  </a>
+                  <span class="font-regular-weight">
+                    <span ng-if="(!receiver.user && !receiver.contact) && receiver.name">{{receiver.name}}</span>
+                  </span>
+                  <div
+                    class="display-inline-block"
+                    ng-if="receiver.createNew"
+                    uib-dropdown>
+                    <a
+                      href
+                      class="inline-link-muted"
+                      uib-dropdown-toggle
+                      uib-popover-template="$ctrl.popoverTemplate"
+                      popover-enable="$ctrl.open_contact_popovers[$index]"
+                      popover-is-open="$ctrl.open_contact_popovers[$index]"
+                      popover-trigger="none"
+                      popover-append-to-body="true"
+                      popover-placement="auto right"
+                      popover-title="Criar novo cliente">
+                      <span class="text-action"><i class="fal fa-plus-circle regular-icon-email-plus"></i></span>
+                      {{receiver.email}}
+                    </a>
+                    <ul class="white-dropdown-menu pull-right" uib-dropdown-menu>
+                      <li>
+                        <a class="white-dropdown-link new-proposal-pane-example"
+                          ng-click="$ctrl.startContactForm(false, receiver.email); $ctrl.open_contact_popovers[$index] = true">
+                          <i class="fal fa-user list-simple-line"></i>Nova pessoa
+                        </a>
+                      </li>
+                      <li>
+                        <a class="ck-editor-pane-example white-dropdown-link"
+                          ng-click="$ctrl.startContactForm(true, receiver.email); $ctrl.open_contact_popovers[$index] = true">
+                          <i class="fal fa-industry list-simple-line"></i>Nova empresa
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <span ng-if="!$last">,</span>
+                </span>
+              </aside>
+            </div>
+            <div class="hbox-row" ng-if="$ctrl.email.cc.length > 0">
+              <aside class="max-width-200 min-width-100 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis  text-uppercase font-bold">Cc:</div>
+              </aside>
+              <aside>
+                <span class="text-muted font-bold" ng-repeat="cc in $ctrl.formatted_cc">
+                  <a ui-sref="{{'user({userid: cc.user})'}}" ng-if="cc.user && !cc.contact" class="inline-link-regular">
+                    {{cc.name}}
+                  </a>
+                  <a ui-sref="{{'contact({contactid: cc.contact})'}}" ng-if="!cc.user && cc.contact" class="inline-link-regular">
+                    {{cc.name}}
+                  </a>
+                  <span class="font-regular-weight">
+                    <span ng-if="(!cc.user && !cc.contact) && cc.name">{{$cc.name}}</span>
+                  </span>
+                  <div
+                    class="display-inline-block"
+                    ng-if="cc.createNew"
+                    uib-dropdown>
+                    <a
+                      href
+                      class="inline-link-muted"
+                      uib-dropdown-toggle
+                      uib-popover-template="'new-contact-template'"
+                      popover-enable="$ctrl.cc_open_contact_popovers[$index]"
+                      popover-is-open="$ctrl.cc_open_contact_popovers[$index]"
+                      popover-trigger="none"
+                      popover-append-to-body="true"
+                      popover-placement="auto right"
+                      popover-title="Criar novo cliente">
+                      <span class="text-action"><i class="fal fa-plus-circle regular-icon-email-plus"></i></span>
+                      {{cc.email}}
+                    </a>
+                    <ul class="white-dropdown-menu pull-right" uib-dropdown-menu>
+                      <li>
+                        <a class="white-dropdown-link new-proposal-pane-example"
+                          ng-click="$ctrl.startContactForm(false, cc.email); $ctrl.cc_open_contact_popovers[$index] = true">
+                          <i class="fal fa-user list-simple-line"></i>Nova pessoa
+                        </a>
+                      </li>
+                      <li>
+                        <a class="ck-editor-pane-example white-dropdown-link"
+                          ng-click="$ctrl.startContactForm(true, cc.email); $ctrl.cc_open_contact_popovers[$index] = true">
+                          <i class="fal fa-industry list-simple-line"></i>Nova empresa
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <span ng-if="!$last">,</span>
+                </span>
+              </aside>
+            </div>
+            <div class="hbox-row" ng-if="!$ctrl.emailGroupPage">
+              <aside class="max-width-200 min-width-100 text-right nowrap width-10">
+                <div class="right-wrapper ellipsis text-uppercase font-bold" ng-class="{ 'pull-left': !$ctrl.emailGroupPage }">Assunto:</div>
+              </aside>
+              <aside>
+                <div>{{$ctrl.email.subject}}</div>
+              </aside>
+            </div>
+          </div>
+        </aside>
+        <aside class="text-right nowrap wrapper-left">
+          <email-toolbar
+            deal-id="$ctrl.dealId"
+            email="$ctrl.email"
+            update-email-folder-callback-fn="$ctrl.updateEmailFolderCallback(folder_id)"
+            email-group-page="$ctrl.emailGroupPage"
+            action-loading-callback-fn="$ctrl.actionLoadingCallback"
+            >
+          </email-toolbar>
+        </aside>
+      </div>
+      <div class="hbox stretch mb-10">
+        <aside class="v-middle">
+          <div class="text-left email-content__attachments">
+            <div
+              style="padding: 0; border: none;"
+              class="data-edit height-max text-break-word" 
+              ng-repeat="att in $ctrl.email.attachments track by $index"
+            >
+              <a style="width: -webkit-fill-available;height: 30px; display: flex; align-items: center;" class="light-badge neutral-content badge-border nowrap" href target="_blank"
+                ng-click="$ctrl.openAttachment(att)">
+                <div class="light-neutral-text-color font-small font-bold table-cell-align-top d-flex">
+                  <div class="align-middle button-fixed-size button-fixed-size-small">
+                    <i class="fal fa-paperclip remove-button-class remove-button-class-2"></i>
+                  </div>
+                  <show-tooltip-on-text-overflow
+                    class="align-middle"
+                    append-to-body="true"
+                    tooltip-text="{{att.file_name}}"
+                  ></show-tooltip-on-text-overflow>
+                </div>
+              </a>
+              <div 
+              style="
+                height: 100%;
+                position: absolute;
+                top: 0;
+                right: 4px;
+                display: flex;
+                align-items: center;
+              " 
+              >
+                <a ng-click="$ctrl.downloadAttachment(att)" style="position: relative;" class="button-fixed-size button-fixed-size-small inline-edit-icon all-in-center-flex edit-button light-badge">
+                  <i class="far fa-arrow-alt-to-bottom"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="hbox stretch mb-10" ng-if="$ctrl.modalId && $ctrl.email && $ctrl.formatted_last_email_open">
+        <aside class="v-middle">
+          <div class="text-left">
+            <span class="inline-link-muted" style="text-decoration: none">
+              <i class="big-simple-line fal fa-eye"></i>
+              <span class="font-small">{{ $ctrl.formatted_last_email_open }}</span>
+            </span>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+    <email-content-render
+      content="$ctrl.formattedEmailContent"
+      message-id="$ctrl.email.message_id"
+      is-open="$ctrl.contentIsOpen"
+      set-height-callback-fn="$ctrl.setHeightCallback"
+      ></email-content-render>
+    <div class="wrapper white-content" ng-if="!$ctrl.iframeLoaded">
+      <span class="text-action font-bold">
+        <i class="fal fa-spinner fa-spin"></i>
+      </span>
+    </div>
+  </section>
+</div>
+<div class="hbox stretch" ng-if="$ctrl.not_found && $ctrl.initial_load">
+  <page-not-found></page-not-found>
+</div>
+<div class="hbox stretch" ng-if="$ctrl.actionLoadingText && !$ctrl.initial_load">
+  <div class="gap-50"></div>
+  <div class="text-neutral text-center page-not-found font-big-title">
+    <div class="gap-30"></div>
+    {{ $ctrl.actionLoadingText }}
+  </div>
+</div>
+
+<script type="text/ng-template" id="new-contact-template">
+  <div ng-form name="inline_email_new_form">
+    <forms model="$ctrl.new_contact_model" fields="$ctrl.new_contact_form" form="inline_email_new_form"></forms>
+    <button type="button" class="button button-action mleft15" ng-disabled="$ctrl.loading" ng-click="$ctrl.submitControl($ctrl.new_contact_model, inline_email_new_form)" title="Submit" aria-label="Submit">Salvar</button>
+    <button type="button" class="button button-white" ng-disabled="$ctrl.loading" ng-click="$ctrl.cancel()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <span class="text-danger font-very-big" ng-if="inline_email_new_form.$submitted && inline_email_new_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="Existem campos obrigatórios não preenchidos"><i class="fad fa-exclamation-triangle"></i></span>
+    <div class="loader" ng-if="$ctrl.loading"></div>
+  </div>
+</script>

@@ -42,6 +42,8 @@ public class AgendadorAutomacaoService(
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         var agora = DateTime.UtcNow;
+        // TENANT: escopo de fundo sem EmpresaIdAtual. IgnoreQueryFilters com filtros explícitos (Ativo = habilitada;
+        // excluídas ficam Ativo=false) e cada item da fila herda o EmpresaId da própria automação, sem misturar empresas.
         var automacoes = await db.Automacoes
             .IgnoreQueryFilters()
             .Where(a => a.Ativo

@@ -1,0 +1,8 @@
+<div class="loader modal-loader" ng-class="{'pull-right': !skipPullRight}" ng-if="loading"></div>
+<span class="font-very-big" ng-class="loadingTooltipCtrl.errorIconClass()" ng-if="form && form.$submitted && form.$invalid && (useDefaultIcon || (!form.$error.required && !loadingTooltipCtrl.uniqueViolation()))" type="button" tooltip-placement="top" uib-tooltip="{{loadingTooltipCtrl.errorMessage()}}">
+  <i class="fad fa-exclamation-triangle"></i>
+</span>
+<span class="alert-message" ng-class="loadingTooltipCtrl.errorIconClass()" ng-if="form && form.$submitted && form.$invalid && !useDefaultIcon">
+  <div ng-if="form.$error.required || invalidOptions" data-cy="loading-tooltip-required-fields"><i class="fad fa-exclamation-circle"></i> Os campos destacados são obrigatórios!</div>
+  <div ng-if="loadingTooltipCtrl.uniqueViolation()"><i class="fad fa-exclamation-circle"></i> Há um ou mais campos chave com valores já existentes!</div>
+</span>

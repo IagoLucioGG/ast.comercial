@@ -1,0 +1,635 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - link "":
+        - /url: ""
+      - link "":
+        - /url: ""
+      - link "":
+        - /url: ""
+      - link "":
+        - /url: ""
+      - link "":
+        - /url: ""
+      - link "":
+        - /url: ""
+      - link "":
+        - /url: ""
+    - complementary:
+      - text:  Nova tarefa  Menu
+      - link " Tabela " [expanded]:
+        - /url: ""
+      - link "Dropdown de 'Ações de filtros'" [expanded]:
+        - /url: ""
+        - text:  Filtros 
+      - button " Mapa"
+      - img "Calendar-lines-pen"
+      - text: Iniciar transcrição
+      - button
+    - complementary: 
+    - complementary:
+      - table:
+        - rowgroup:
+          - row "":
+            - columnheader:
+              - complementary: Usuários
+              - complementary
+            - columnheader:
+              - complementary: Data
+              - complementary: 
+            - columnheader:
+              - complementary: Id de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Cliente
+              - complementary
+            - columnheader:
+              - complementary: Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Título
+              - complementary
+            - columnheader:
+              - complementary: Criador de Contato de venda
+              - complementary
+            - columnheader:
+              - complementary: Descrição
+              - complementary
+            - columnheader:
+              - complementary: Finalizada
+              - complementary
+            - columnheader:
+              - complementary: Horário
+              - complementary
+            - columnheader:
+              - complementary: Id
+              - complementary
+            - columnheader:
+              - complementary: Usuários
+              - complementary
+            - columnheader ""
+        - rowgroup
+        - rowgroup:
+          - 'link "linha da tabela selecionável do item: 700271626"':
+            - cell "DANNIALVES.RECIFE ":
+              - link "DANNIALVES.RECIFE":
+                - /url: ""
+                - img
+                - text: DANNIALVES.RECIFE
+              - text: 
+            - cell "20/04/2008 "
+            - cell "700155968"
+            - cell "Leonardo Barbosa "
+            - cell "Leonardo Barbosa "
+            - cell ""
+            - cell "DANNIALVES.RECIFE":
+              - link "DANNIALVES.RECIFE":
+                - /url: ""
+                - img
+                - text: DANNIALVES.RECIFE
+            - cell "Cliente participou do Evento Alterdata Experience Recife 2026 ficou em cantado..Tem interesse nos módulos financeiro e backup..  "
+            - cell "Não"
+            - cell "10:10 "
+            - cell "700271626"
+            - cell "DANNIALVES.RECIFE ":
+              - link "DANNIALVES.RECIFE":
+                - /url: ""
+                - img
+                - text: DANNIALVES.RECIFE
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7795457"':
+            - cell "ALESSANDRA.VENDAS ":
+              - link "ALESSANDRA.VENDAS":
+                - /url: ""
+                - img
+                - text: ALESSANDRA.VENDAS
+              - text: 
+            - cell "20/07/2009 "
+            - cell
+            - cell "Darlene "
+            - cell ""
+            - cell "Retornar a cliente "
+            - cell
+            - cell ""
+            - cell "Sim"
+            - cell "09:10 "
+            - cell "7795457"
+            - cell "ALESSANDRA.VENDAS ":
+              - link "ALESSANDRA.VENDAS":
+                - /url: ""
+                - img
+                - text: ALESSANDRA.VENDAS
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7769631"':
+            - cell "ALESSANDRA.VENDAS ":
+              - link "ALESSANDRA.VENDAS":
+                - /url: ""
+                - img
+                - text: ALESSANDRA.VENDAS
+              - text: 
+            - cell "20/07/2009 "
+            - cell
+            - cell "Paulo "
+            - cell ""
+            - cell "Buscar fechamento "
+            - cell
+            - cell ""
+            - cell "Sim"
+            - cell "15:16 "
+            - cell "7769631"
+            - cell "ALESSANDRA.VENDAS ":
+              - link "ALESSANDRA.VENDAS":
+                - /url: ""
+                - img
+                - text: ALESSANDRA.VENDAS
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 700054103"':
+            - cell "BEATRIZ.ABC ":
+              - link "BEATRIZ.ABC":
+                - /url: ""
+                - img
+                - text: BEATRIZ.ABC
+              - text: 
+            - cell "01/01/2018 "
+            - cell "700035607"
+            - cell "ADK CONTABILIDADE "
+            - cell "ADK CONTABILIDADE "
+            - cell "Retornar "
+            - cell "BEATRIZ.ABC":
+              - link "BEATRIZ.ABC":
+                - /url: ""
+                - img
+                - text: BEATRIZ.ABC
+            - cell "tentar novamente em 15 dias  "
+            - cell "Sim"
+            - cell "08:00 "
+            - cell "700054103"
+            - cell "BEATRIZ.ABC ":
+              - link "BEATRIZ.ABC":
+                - /url: ""
+                - img
+                - text: BEATRIZ.ABC
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7195385"':
+            - cell "KATIA.ATOUGUIA ":
+              - link "KATIA.ATOUGUIA":
+                - /url: ""
+                - img
+                - text: KATIA.ATOUGUIA
+              - text: 
+            - cell "20/05/2021 "
+            - cell
+            - cell "QUEIJARIA ESCOLA "
+            - cell ""
+            - cell "Nova Análise Cadastral Solicitada! "
+            - cell
+            - cell "Por gentileza, entrar no Processo vinculado a esta tarefa para realizar a Análise Cadastral do Cliente!  "
+            - cell "Não"
+            - cell "00:00 "
+            - cell "7195385"
+            - cell "KATIA.ATOUGUIA ":
+              - link "KATIA.ATOUGUIA":
+                - /url: ""
+                - img
+                - text: KATIA.ATOUGUIA
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7261221"':
+            - cell "Douglas.staff ":
+              - link "Douglas.staff":
+                - /url: ""
+                - img
+                - text: Douglas.staff
+              - text: 
+            - cell "28/05/2021 "
+            - cell
+            - cell "RENATA "
+            - cell ""
+            - cell "Follow Up de Proposta! "
+            - cell
+            - cell "Proposta enviada há 2 dias! Entrar em contato com o Cliente para seguir com a Negociação!  "
+            - cell "Sim"
+            - cell "11:46 "
+            - cell "7261221"
+            - cell "Douglas.staff ":
+              - link "Douglas.staff":
+                - /url: ""
+                - img
+                - text: Douglas.staff
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7362938"':
+            - cell "RENATA.RAMALHO ":
+              - link "RENATA.RAMALHO":
+                - /url: ""
+                - img
+                - text: RENATA.RAMALHO
+              - text: 
+            - cell "09/06/2021 "
+            - cell
+            - cell ""
+            - cell ""
+            - cell "teste "
+            - cell
+            - cell "teste  "
+            - cell "Sim"
+            - cell "13:43 "
+            - cell "7362938"
+            - cell "RENATA.RAMALHO ":
+              - link "RENATA.RAMALHO":
+                - /url: ""
+                - img
+                - text: RENATA.RAMALHO
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7439763"':
+            - cell "MARCIO.DSN.ERP ":
+              - link "MARCIO.DSN.ERP":
+                - /url: ""
+                - img
+                - text: MARCIO.DSN.ERP
+              - text: 
+            - cell "11/06/2021 "
+            - cell
+            - cell "INDÚSTRIA TESTE "
+            - cell ""
+            - cell ""
+            - cell
+            - cell "@Marcio.vendas realizar teste  "
+            - cell "Sim"
+            - cell "10:00 "
+            - cell "7439763"
+            - cell "MARCIO.DSN.ERP ":
+              - link "MARCIO.DSN.ERP":
+                - /url: ""
+                - img
+                - text: MARCIO.DSN.ERP
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7577523"':
+            - cell "MARIANA.STAFF ":
+              - link "MARIANA.STAFF":
+                - /url: ""
+                - img
+                - text: MARIANA.STAFF
+              - text: 
+            - cell "22/06/2021 "
+            - cell
+            - cell "RENATA "
+            - cell ""
+            - cell "teste "
+            - cell
+            - cell "teste  "
+            - cell "Sim"
+            - cell "11:00 "
+            - cell "7577523"
+            - cell "MARIANA.STAFF ":
+              - link "MARIANA.STAFF":
+                - /url: ""
+                - img
+                - text: MARIANA.STAFF
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7763273"':
+            - cell "Robson.rio ":
+              - link "Robson.rio":
+                - /url: ""
+                - img
+                - text: Robson.rio
+              - text: 
+            - cell "07/07/2021 "
+            - cell
+            - cell "PARTEC "
+            - cell ""
+            - cell "demo "
+            - cell
+            - cell "realizae demo  "
+            - cell "Não"
+            - cell "09:41 "
+            - cell "7763273"
+            - cell "Robson.rio ":
+              - link "Robson.rio":
+                - /url: ""
+                - img
+                - text: Robson.rio
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7797491"':
+            - cell "ROBERTA.VENDAS Ana.vendas ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - link "Ana.vendas":
+                - /url: ""
+                - img
+                - text: Ana.vendas
+              - text: 
+            - cell "08/07/2021 "
+            - cell
+            - cell "ADCON ASSESSORIA CONTABIL SOCIEDADE SIMPLES PURA "
+            - cell ""
+            - cell ""
+            - cell
+            - cell "@Ana.vendas teste  "
+            - cell "Sim"
+            - cell "12:00 "
+            - cell "7797491"
+            - cell "ROBERTA.VENDAS Ana.vendas ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - link "Ana.vendas":
+                - /url: ""
+                - img
+                - text: Ana.vendas
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7785470"':
+            - cell "CAMILACOSTA.VENDAS ":
+              - link "CAMILACOSTA.VENDAS":
+                - /url: ""
+                - img
+                - text: CAMILACOSTA.VENDAS
+              - text: 
+            - cell "13/07/2021 "
+            - cell
+            - cell "Priscila "
+            - cell ""
+            - cell "Demonstração "
+            - cell
+            - cell ""
+            - cell "Sim"
+            - cell "14:30 "
+            - cell "7785470"
+            - cell "CAMILACOSTA.VENDAS ":
+              - link "CAMILACOSTA.VENDAS":
+                - /url: ""
+                - img
+                - text: CAMILACOSTA.VENDAS
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7816528"':
+            - cell "SUELEM.RIO ":
+              - link "SUELEM.RIO":
+                - /url: ""
+                - img
+                - text: SUELEM.RIO
+              - text: 
+            - cell "15/07/2021 "
+            - cell
+            - cell "ANALITICA DO BRASIL CONTABILIDADE LTDA "
+            - cell ""
+            - cell "Demonstração cnd "
+            - cell
+            - cell "Demonstração cnd  "
+            - cell "Sim"
+            - cell "10:00 "
+            - cell "7816528"
+            - cell "SUELEM.RIO ":
+              - link "SUELEM.RIO":
+                - /url: ""
+                - img
+                - text: SUELEM.RIO
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7893779"':
+            - cell "ROBERTA.VENDAS Ana.vendas ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - link "Ana.vendas":
+                - /url: ""
+                - img
+                - text: Ana.vendas
+              - text: 
+            - cell "15/07/2021 "
+            - cell
+            - cell "ALTERDATA MATRIZ "
+            - cell ""
+            - cell ""
+            - cell
+            - cell "@Ana.vendas agendada demo para vc para hoje as 17:00  "
+            - cell "Sim"
+            - cell "17:00 "
+            - cell "7893779"
+            - cell "ROBERTA.VENDAS Ana.vendas ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - link "Ana.vendas":
+                - /url: ""
+                - img
+                - text: Ana.vendas
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7878752"':
+            - cell "Ana.vendas ":
+              - link "Ana.vendas":
+                - /url: ""
+                - img
+                - text: Ana.vendas
+              - text: 
+            - cell "15/07/2021 "
+            - cell
+            - cell "Daiana "
+            - cell ""
+            - cell "demo "
+            - cell
+            - cell ""
+            - cell "Sim"
+            - cell "18:00 "
+            - cell "7878752"
+            - cell "Ana.vendas ":
+              - link "Ana.vendas":
+                - /url: ""
+                - img
+                - text: Ana.vendas
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7900724"':
+            - cell "ROBERTA.VENDAS ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - text: 
+            - cell "16/07/2021 "
+            - cell
+            - cell "ALTERDATA MATRIZ "
+            - cell ""
+            - cell "Follow Up de Proposta! "
+            - cell
+            - cell "Proposta enviada há 2 dias! Entrar em contato com o Cliente para seguir com a Negociação!  "
+            - cell "Sim"
+            - cell "00:00 "
+            - cell "7900724"
+            - cell "ROBERTA.VENDAS ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7934370"':
+            - cell "Walter.vendas ":
+              - link "Walter.vendas":
+                - /url: ""
+                - img
+                - text: Walter.vendas
+              - text: 
+            - cell "19/07/2021 "
+            - cell
+            - cell "BA REPRESENTACOES "
+            - cell ""
+            - cell "Mandar e-mail para cliente "
+            - cell
+            - cell "@patricia.vendas  "
+            - cell "Sim"
+            - cell "00:00 "
+            - cell "7934370"
+            - cell "Walter.vendas ":
+              - link "Walter.vendas":
+                - /url: ""
+                - img
+                - text: Walter.vendas
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7904160"':
+            - cell "Edmar.rio ":
+              - link "Edmar.rio":
+                - /url: ""
+                - img
+                - text: Edmar.rio
+              - text: 
+            - cell "20/07/2021 "
+            - cell
+            - cell "DOM CARIOCA 2 "
+            - cell ""
+            - cell "Demonstração "
+            - cell
+            - cell ""
+            - cell "Sim"
+            - cell "14:30 "
+            - cell "7904160"
+            - cell "Edmar.rio ":
+              - link "Edmar.rio":
+                - /url: ""
+                - img
+                - text: Edmar.rio
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7966100"':
+            - cell "Cintia.vendas ":
+              - link "Cintia.vendas":
+                - /url: ""
+                - img
+                - text: Cintia.vendas
+              - text: 
+            - cell "22/07/2021 "
+            - cell
+            - cell "ALTERDATA MATRIZ "
+            - cell ""
+            - cell ""
+            - cell
+            - cell ""
+            - cell "Sim"
+            - cell "10:00 "
+            - cell "7966100"
+            - cell "Cintia.vendas ":
+              - link "Cintia.vendas":
+                - /url: ""
+                - img
+                - text: Cintia.vendas
+              - text: 
+            - cell
+          - 'link "linha da tabela selecionável do item: 7949571"':
+            - cell "ROBERTA.VENDAS ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - text: 
+            - cell "22/07/2021 "
+            - cell
+            - cell "ROBERTA BRANCO DE OLIVEIRA dos "
+            - cell ""
+            - cell "Follow Up de Proposta! "
+            - cell
+            - cell "Proposta enviada há 2 dias! Entrar em contato com o Cliente para seguir com a Negociação!  "
+            - cell "Sim"
+            - cell "11:46 "
+            - cell "7949571"
+            - cell "ROBERTA.VENDAS ":
+              - link "ROBERTA.VENDAS":
+                - /url: ""
+                - img
+                - text: ROBERTA.VENDAS
+              - text: 
+            - cell
+      - text: Mostrando 1 - 20 de 303541
+      - menu:
+        - menuitem "Primeira":
+          - link "Primeira":
+            - /url: ""
+        - menuitem "Anterior":
+          - link "Anterior":
+            - /url: ""
+        - menuitem "1":
+          - link "1":
+            - /url: ""
+        - menuitem "2":
+          - link "2":
+            - /url: ""
+        - menuitem "3":
+          - link "3":
+            - /url: ""
+        - menuitem "4":
+          - link "4":
+            - /url: ""
+        - menuitem "5":
+          - link "5":
+            - /url: ""
+        - menuitem "...":
+          - link "...":
+            - /url: ""
+        - menuitem "Próxima":
+          - link "Próxima":
+            - /url: ""
+        - menuitem "Última":
+          - link "Última":
+            - /url: ""

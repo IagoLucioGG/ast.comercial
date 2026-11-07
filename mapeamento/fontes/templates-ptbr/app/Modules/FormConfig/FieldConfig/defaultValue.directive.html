@@ -1,0 +1,55 @@
+<label>Valor padrão</label>
+<div class="input-group" ng-if="!defaultValueCtrl.selected_origin_field && field.dynamic">
+  <input ng-if="type.Id === 1 || type.Id === 21 || type.Id === 24" ng-model="field.default_value" type="text" class="form-control input-sm"/>
+  <input ng-if="type.Id === 20" colorpicker="hex" ng-style="{ 'background-color': field.default_value }" ng-model="field.default_value" type="text" class="form-control input-sm"/>
+  <input ng-if="type.Id === 4" number-only ng-model="field.default_value" type="number" class="form-control input-sm" max="{{defaultValueCtrl.FIELD_TYPE_NUMBER.MAX}}" min="{{defaultValueCtrl.FIELD_TYPE_NUMBER.MIN}}" type-id="{{type.Id}}" id="{{$ctrl.fieldUniqueId}}"/>
+  <input ng-if="type.Id === 5" currency-format placeholder="0,00" ng-model="field.default_value" class="form-control input-sm" autocomplete="off" />
+  <input ng-if="type.Id === 6" type="number" placeholder="0,00" ng-model="field.default_value" class="form-control input-sm" autocomplete="off" number-only type-id="{{type.Id}}" />
+  <input ng-if="type.Id === 8" ng-model="field.default_value" date datepicker="true" type="text" class="form-control input-sm" />
+  <image-field ng-if="type.Id === 18" model="field.default_value" field="field" label="{{field.label}}"></image-field>
+  <select class="form-control input-sm" ng-if="type.Id === 10" ng-options="( (item ? 'GENERICS.YES' : 'GENERICS.NO') | translate) for item in [true, false]" ng-model="field.default_value">
+    <option value=""></option>
+  </select>
+  <input ng-if="type.Id === 13" type="number" ng-model="field.default_value" class="form-control input-sm"  />
+
+  <div class="input-group-btn dropdown v-top" ng-if="type.Id !== 18">
+    <field-path-selection field-selection-fn="defaultValueCtrl.setLink(field, field_path_id)" start-entity-id="field.entityId" label="Vincular" check-field-disabling-fn="defaultValueCtrl.customFilterFunction(field)" validate-field-selection-fn="defaultValueCtrl.validateFieldSelectionFunction(field)" start-tree-edit-fn="defaultValueCtrl.addCustomNodes(tree)" original-field="field" custom-filter-fn="defaultValueCtrl.customFilterFn(field)"></field-path-selection>
+  </div>
+
+  <!-- <field-selection field-selection-fn="defaultValueCtrl.setLink(field, entity, is_default)" allowed="defaultValueCtrl.allowed_entities" label="Vincular"></field-selection> -->
+</div>
+<div class="input-group" ng-if="!defaultValueCtrl.selected_origin_field && field.dynamic && type.Id === 2">
+  <div class="gap-20"></div>
+  <textarea ng-model="field.default_value" ng-if="!defaultValueCtrl.rich_text_editor_feature && field.useRichTextEditor" pl-ckeditor="defaultValueCtrl.options" class="form-control height-100"></textarea>
+  <rich-text-editor
+    value="field.default_value"
+    ng-if="defaultValueCtrl.rich_text_editor_feature && field.useRichTextEditor"
+    min-height="250"
+    height="250"
+    language="field.language.Key"
+    angular-scope="defaultValueCtrl.angularScope"
+    dispatch-angular-scope-apply-on-value-change="true"
+    on-change-value="defaultValueCtrl.onRichTextEditorChangeValue">
+  </rich-text-editor>
+  <textarea ng-model="field.default_value" ng-if="!field.useRichTextEditor" class="form-control height-100"></textarea>
+</div>
+<div class="input-group" ng-if="!defaultValueCtrl.selected_origin_field && !field.dynamic">
+  <input disabled type="text" class="form-control input-sm"/>
+  <div class="input-group-btn dropdown v-top" ng-if="!blockLink">
+    <field-path-selection 
+      field-selection-fn="defaultValueCtrl.setLink(field, field_path_id)" 
+      start-entity-id="field.entityId" label="Vincular" 
+      check-field-disabling-fn="defaultValueCtrl.customFilterFunction(field)" 
+      validate-field-selection-fn="defaultValueCtrl.validateFieldSelectionFunction(field)" 
+      start-tree-edit-fn="defaultValueCtrl.addCustomNodes(tree)" 
+      original-field="field"
+      custom-filter-fn="defaultValueCtrl.customFilterFn(field)"
+    ></field-path-selection>
+  </div>
+</div>
+<div class="input-group remove-border-collapse" ng-if="defaultValueCtrl.selected_origin_field && !blockLink">
+  <input class="form-control input-sm" placeholder="" ng-model="defaultValueCtrl.selected_origin_field" ng-disabled="true">
+  <div class="input-group-addon button-white b-1 height-30 width-10 force-left-border" ng-click="defaultValueCtrl.unsetLink()" uib-tooltip="Desvincular campo" tooltip-append-to-body="true">
+    <i class="fal fa-trash"></i>
+  </div>
+</div>

@@ -1,0 +1,121 @@
+<div>
+  <standard-loader margin-top="15" loading="!nextStepsCtrl.can_load" optionalclass="'timeline-loader'"></standard-loader>
+  <div class="next-step-container" ng-if="nextStepsCtrl.can_load" ng-repeat="task in orderedTaskList track by task.Id">
+    <div class="hbox">
+      <aside class="activity-history">
+        <div>
+          <div ng-style="{ 'background-color': task.Type.Color, 'color': '#fff' }">
+            <i class="fal {{task.Type.Icon.replace('icon-', 'fa-')}} activity-icon"></i>
+          </div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="timeline-bubble">
+          <div class="history-arrow arrow-style"></div>
+          <div class="bubble-wrapper">
+            <div class="hbox">
+              <aside class="width-40">
+                <img ng-src="{{task.Users[0].User.AvatarUrl}}" class="avatar-timeline">
+              </aside>
+              <aside>
+                <a href class="font-bold inline-link-regular">{{task.Users[0].User.Name}}</a><span
+                  ng-repeat="user in task.Users.slice(1)">, {{user.User.Name}}</span>
+                <br>
+                <span class="timeline-clock">
+                  <div
+                    ng-class="{'warning-badge': nextStepsCtrl.dateClass(task) === 'warning', 'danger-badge': nextStepsCtrl.dateClass(task) === 'danger'}">
+                    <i class="fal fa-calendar"></i>
+                    {{nextStepsCtrl.dateFormat(task)}}
+                  </div>
+                </span>
+                <div class="timeline-item-content">
+                  <div class="mtop3">
+                    <span class="font-bold pre-wrap">{{task.Title}}</span>
+                  </div>
+                  <div class="mtop3" >
+                    <span ng-if="nextStepsCtrl.new_sanitize_front" class="pre-wrap" ng-bind-html="nextStepsCtrl.sanitizeHTML(nextStepsCtrl.formatDisplayTaskDescription(task.Description)) | to_trusted">
+                      {{nextStepsCtrl.sanitizeHTML(task.Description)}}
+                    </span>
+                    <span ng-if="!nextStepsCtrl.new_sanitize_front" class="pre-wrap" ng-bind-html="nextStepsCtrl.formatDisplayTaskDescription(task.Description) | to_trusted">
+                      {{task.Description}}
+                    </span>
+                  </div>
+                  <div class="gap-7" ng-if="task.Contacts.length > 0"></div>
+                  <div class="line-itens-left">
+                    <div class="line-item light-badge neutral-timeline-item-content badge-border"
+                      ng-repeat="contact in task.Contacts track by $index">
+                      <div class="text-darkest-neutral font-small font-bold table-cell-align-top"><i
+                          class="fal fa-user"></i><span class="align-middle"> {{contact.Contact.Name}} </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="gap-7" ng-if="task.Tags.length > 0"></div>
+                  <div class="line-itens-left">
+                    <div class="line-item light-badge neutral-timeline-item-content badge-border"
+                      ng-repeat="tag in task.Tags track by $index">
+                      <div class="text-darkest-neutral font-small font-bold table-cell-align-top"><i
+                          class="fas fa-tag" ng-style="{ 'color': tag.Tag.Color }"></i><span
+                          class="align-middle"> {{tag.Tag.Name}} </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="next-steps-actions">
+                  <div class="big-simple-inline text-muted font-big">
+                    <a ui-sref="{{state.current.name + '.task({id: task.Id})'}}" class="inline-link-muted">
+                      <span class="font-small">{{ 'TIMELINE.VISUALIZE' | translate }}</span>
+                    </a>
+                  </div>
+                  <div class="big-simple-inline text-muted font-big" ng-if="task.DealId && currentPage !== 'Deals'">
+                    <a class="inline-link-muted overflow-wrap" ui-sref="{{'deal({dealid: task.DealId})'}}">
+                      <i class="big-simple-line fal" ng-class="nextStepsCtrl.customizables.deals_module.icon_class"></i>
+                      <span class="font-small">{{task.Deal.Title}}</span>
+                    </a>
+                  </div>
+                  <div class="big-simple-inline text-muted">
+                    <a class="collapsed" href data-toggle="collapse" data-target="#{{task.Id}}" ng-click="nextStepsCtrl.toggleComments($index)">
+                      <i class="fal fa-comment-alt-lines big-simple-line"></i>
+                      <span class="font-small">{{task.Comments.length > 0 ? task.Comments.length : '0'}}</span>
+                    </a>
+                  </div>
+                  <div class="big-simple-inline text-muted" ng-if="task.Editable">
+                    <a 
+                      href 
+                      ng-click-confirm="{{ 'TASKS.TASK_MODAL.DELETE_TASK_CONFIRM' | translate }}" 
+                      reversible="false" 
+                      ng-click="nextStepsCtrl.deleteTask(task)"
+                      ng-class="{'finish-task disabled': nextStepsCtrl.invalidFinisherOwner(task)}" 
+                    >
+                      <i class="fal fa-trash big-simple-line"></i>
+                      <span class="font-small"></span>
+                    </a>
+                  </div>
+                </div>
+                <div class="collapse" id="{{task.Id}}" ng-if="nextStepsCtrl.opened_comments[$index]">
+                  <comments-directive api-url="'Tasks(' + task.Id + ')/NewComment'" comments="task.Comments"
+                    timeline-interface="true" object-id="task.Id" update-comments-callback="nextStepsCtrl.onUpdateComments"></comments-directive>
+                </div>
+              </aside>
+              <aside class="v-middle width-40" ng-if="task.Editable">
+                <div 
+                  ng-if="!task.loadingIcon" 
+                  class="round-checkbox pull-right finish-task"
+                  ng-click="nextStepsCtrl.finishTask(task)" 
+                  ng-class="{'disabled': nextStepsCtrl.invalidFinisherOwner(task)}" 
+                  ng-disabled="nextStepsCtrl.invalidFinisherOwner(task)" 
+                  uib-tooltip="{{ nextStepsCtrl.tooltipFinishMessage(task) }}" 
+                  tooltip-append-to-body="true"
+                >
+                  <div class="b-2"><i class="fas fa-check activity-icon"></i></div>
+                </div>
+                <div class="loader modal-loader task-list-loader pull-right"
+                  style="width: 27px; height: 27px; margin: 0" ng-if="task.loadingIcon"></div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="activity-history hist-separator" ng-if="!$last"></div>
+  </div>
+</div>

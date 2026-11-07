@@ -1,0 +1,183 @@
+<div ng-if="lexdocsCtrl.can_load">
+  <div class="side-wrapper">
+    <div class="activity-history hist-separator"></div>
+    <span ng-repeat="signer in lexdocsCtrl.signers track by $index">
+      <div class="hbox">
+        <aside class="activity-history">
+          <div>
+            <div class="no-color-timeline signing-status-circle">
+              <i class="fas fa-check activity-icon" ng-show="signer.Signed"></i>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="hbox fixed-size">
+            <aside>
+              <div class="gap-10"></div>
+              <div class="gap-3"></div>
+              <div ng-if="signer.recipientType.PhoneNumberRequired">
+                <i class="fa fa-phone font-bold"></i>
+                <span class="font-semi-big ellipsis">
+                  {{ ' ' + signer.Phone }}
+                </span>
+              </div>
+              <div ng-if="signer.Email">
+                <i class="fa fa-envelope font-bold"></i>
+                <span class="font-semi-big ellipsis">
+                  {{ ' ' + signer.Email }}
+                </span>
+              </div>
+              <div class="gap-3"></div>
+              <div class="text-darkest-neutral" ng-if="signer.SignerType && signer.recipientType.Name">
+                {{signer.SignerType}} {{ ('INTEGRATIONS.BY' | translate).toLowerCase() + ' ' + signer.recipientType.Name }}
+              </div>
+              <div class="gap-15"></div>
+            </aside>
+            <aside class="width-30 v-middle">
+              <a class="button-white button-fixed-size button-fixed-size-small" href ng-click="lexdocsCtrl.removeDocumentSigner($index)" ng-if="lexdocsCtrl.signing_open && !(lexdocsCtrl.remove_loading && lexdocsCtrl.removing_signer_index === $index)">
+                <i class="fal fa-trash fixing-fixed-size-button"></i>
+              </a>
+              <loading-tooltip loading="lexdocsCtrl.remove_loading && lexdocsCtrl.removing_signer_index === $index"></loading-tooltip>
+              <div class="gap-3"></div>
+            </aside>
+          </div>
+        </aside>
+      </div>
+      <div class="activity-history hist-separator"></div>
+    </span>
+    <div class="hbox" ng-if="lexdocsCtrl.signing_open">
+      <aside class="activity-history">
+        <div>
+          <div class="no-color-timeline signing-status-circle"></div>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <div class="hbox">
+          <aside>
+            <div class="font-bold font-semi-big">Novo signatário</div>
+            <div class="gap-3"></div>
+
+            <aside class="sign-fields">
+              <div class="dropdown" ng-if="lexdocsCtrl.signer_types.length > 0">
+                <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href data-toggle="dropdown"
+                  aria-expanded="false">
+                  <span>
+                    <span class="text-action"><i class="button-icon fal fa-pencil"></i></span>
+                    {{lexdocsCtrl.email_model_signer_type.Name}}
+                    <i class="fal fa-angle-down dropdown-sign"></i>
+                  </span>
+                </a>
+                <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                  <li ng-repeat="signer_type in lexdocsCtrl.signer_types" ng-click="lexdocsCtrl.changeSignerType(signer_type)">
+                    <a class="white-dropdown-link" href>
+                      {{signer_type.Name}}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="dropdown" ng-if="lexdocsCtrl.signer_types.length > 0">
+                <a class="button button-white-light-border dropdown-toggle nowrap sign-fields__button" href data-toggle="dropdown"
+                  aria-expanded="false">
+                  <span>
+                    <span class="text-action"><i class="button-icon fal fa-comment-alt-lines"></i></span>
+                    Via {{lexdocsCtrl.email_model_recipient_type.Name}}
+                    <i class="fal fa-angle-down dropdown-sign"></i>
+                  </span>
+                </a>
+                <ul class="dropdown-max-height dropdown-menu white-dropdown-menu">
+                  <li ng-repeat="recipient_type in lexdocsCtrl.recipient_types" ng-click="lexdocsCtrl.changeRecipientType(recipient_type)">
+                    <a class="white-dropdown-link" href>
+                      {{recipient_type.Name}}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="input-group" ng-class="{ 'multiple-email-on': lexdocsCtrl.multipleEmailFeature }">
+                <input class="form-control input-sm"
+                  ng-class="{ 'sign-fields__invalid-input': lexdocsCtrl.emailInvalid }"
+                  placeholder="Digite um e-mail"
+                  ng-model="lexdocsCtrl.emailInputModel"
+                  autocomplete="off"
+                  uib-typeahead="email for email in lexdocsCtrl.getEmails($viewValue)"
+                  typeahead-wait-ms="300"
+                  typeahead-popup-template-url="email-search-popup.html"
+                  typeahead-on-select="lexdocsCtrl.selectSignerEmail($item)"
+                  aria-label="campo de busca de e-mail"
+                  typeahead-min-length="0" />
+                <script type="text/ng-template" id="email-search-popup.html">
+                  <ul class="dropdown-menu deal-title-suggestion email-search-popup" ng-show="isOpen() && !moveInProgress">
+                    <div class="suggestion-group-header"
+                      ng-repeat-start="match in matches track by $index"
+                      ng-show="match.model.groupHeader"
+                      ng-bind="match.model.groupHeader"></div>
+                    <li class="uib-typeahead-match" ng-repeat-end
+                      ng-class="{'quicksearch-keyboard': isActive($index)}"
+                      ng-mouseenter="selectActive($index)"
+                      ng-click="selectMatch($index)" role="option"
+                      aria-label="{{ 'ARIA_LABELS.EMAILS.OPTION' | translate_with_replace: { email: match.model.email || match.model.Email } }}">
+                      {{ match.model.email || match.model.Email }}
+                      <div class="text-muted text-small">
+                        {{ match.model.name || match.model.Name }}<span ng-if="match.model.isMain"> | Principal</span>
+                      </div>
+                    </li>
+                  </ul>
+                </script>
+              </div>
+              <div class="input-group" ng-if="lexdocsCtrl.email_model_recipient_type.PhoneNumberRequired">
+                <input class="form-control input-sm"
+                  ng-class="{ 'sign-fields__invalid-input': lexdocsCtrl.phoneInvalid }"
+                  placeholder="Digite um telefone"
+                  ng-model="lexdocsCtrl.phoneInputModel"
+                  autocomplete="off"
+                  uib-typeahead="phone for phone in lexdocsCtrl.getPhones($viewValue)"
+                  typeahead-wait-ms="300"
+                  typeahead-popup-template-url="phone-search-popup.html"
+                  typeahead-on-select="lexdocsCtrl.selectSignerPhone($item)"
+                  typeahead-min-length="0" />
+                <script type="text/ng-template" id="phone-search-popup.html">
+                  <ul class="dropdown-menu deal-title-suggestion" ng-show="isOpen() && !moveInProgress">
+                    <li class="uib-typeahead-match"
+                      ng-class="{'quicksearch-keyboard': isActive($index)}"
+                      ng-repeat="match in matches track by $index"
+                      ng-mouseenter="selectActive($index)"
+                      ng-click="selectMatch($index)" role="option">
+                      {{ match.model.Phone.PhoneNumber }}
+                      <div class="text-muted text-small">
+                        {{ match.model.Name }}
+                      </div>
+                    </li>
+                  </ul>
+                </script>
+              </div>
+            </aside>
+            <div class="gap-15"></div>
+            <div class="d-flex align-items-center justify-content-center add-signer-button-wrapper">
+              <a class="btn button button-white sign-fields__button" href ng-click="lexdocsCtrl.addDocumentSigner()">
+                <span class="text-action"><i class="button-icon fal fa-user-plus"></i></span>
+                Adicionar
+              </a>
+              <div class="loader modal-loader signer-loader signer-loader-sign custom-load-important" ng-if="lexdocsCtrl.add_loading"></div>
+            </div>
+          </aside>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <div class="sign-action-container f-1 jc-center ai-center mt-20"
+    ng-if="(lexdocsCtrl.sign_fired && lexdocsCtrl.signing_open) || (lexdocsCtrl.sign_fired && !lexdocsCtrl.signing_open)">
+    <div class="custom-action-container-sign f-1 ai-center">
+      <div class="f-1 ai-center" ng-if="lexdocsCtrl.sign_fired && lexdocsCtrl.signing_open">
+        <i class="fa fa-lightbulb-on mr-10 custom-icon-sign"></i>
+        <span>Enviado para assinatura</span>
+      </div>
+      <div ng-if="lexdocsCtrl.sign_fired && lexdocsCtrl.signing_open"><button class="button  button-action" ng-click="lexdocsCtrl.fireSigning(true)" ng-click-confirm=" reenviar o documento para assinatura? Apenas os signatários que ainda não concluíram a assinatura receberão o documento novamente." skip-reversible-message="true" confirm-button-text="Reenviar para assinatura">Reenviar para assinatura</button></div>
+      <div ng-if="lexdocsCtrl.sign_fired && !lexdocsCtrl.signing_open">
+        <i class="fa fa-check mr-10 custom-icon-sign"></i>
+        <span>Documento finalizado</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="carefully-placed-loader">
+  <standard-loader loading="!lexdocsCtrl.can_load"></standard-loader>
+</div>

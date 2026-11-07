@@ -1,0 +1,4 @@
+<div class="wrapper display-inline-block font-regular-size v-top display-inline-block pull-left" ng-class="chart.SizeClass || 'full-width'">
+  <deals-history-chart ng-if="chart.TypeId === 9" panel="panel" chart="chart" filters="filters" panel-entities-filter="panelEntitiesFilter"></deals-history-chart>
+  <report-chart ng-if="chart.TypeId !== 9" panel="panel" chart="chart" panel-entities-filter="panelEntitiesFilter"></report-chart>
+</div>

@@ -1,0 +1,293 @@
+<div class="vbox header-or-footer">
+  <section class="scrollable">
+    <div class="top-wrapper" ng-form="receive_integration_form" data-cy="imap-integration-form">
+      <form class="clearfix" autocomplete="off" name="receiveIntegrationCtrl.form">
+
+        <div>
+          <div class="form-group col-sm-12">
+            <div class="hbox font-title font-thin white-content b-b-1" href>
+              Status
+            </div>
+            <div class="font-semi-big mt-10">
+              <div class="font-bold" ng-class="receiveIntegrationCtrl.integrationStatus.color">{{ receiveIntegrationCtrl.integrationStatus.text }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="receiveIntegrationCtrl.showDepreciationWarning('google')">
+          <div class="form-group col-sm-12">
+            <div class="font-semi-big ml-5">
+              <span class="font-bold font-big text-danger m-0"><i class="fas fa-exclamation-triangle"></i>&nbsp;{{ 'GENERICS.ATTENTION!' | translate }}</span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_WARNING' | translate_with_replace: { account: 'Gmail', company: 'Google' }) | to_trusted"></span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_INFO' | translate_with_replace: { account: 'Gmail', company: 'Google' }) | to_trusted"></span>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="receiveIntegrationCtrl.showDepreciationWarning('microsoft')">
+          <div class="form-group col-sm-12">
+            <div class="font-semi-big ml-5">
+              <span class="font-bold font-big text-danger m-0"><i class="fas fa-exclamation-triangle"></i>&nbsp;{{ 'GENERICS.ATTENTION!' | translate }}</span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_WARNING' | translate_with_replace: { account: 'Outlook', company: 'Microsoft' }) | to_trusted"></span>
+              <br />
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.DEPRECIATION_INFO' | translate_with_replace: { account: 'Outlook', company: 'Microsoft' }) | to_trusted"></span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-group col-sm-12" ng-if="receiveIntegrationCtrl.showIntegrateWithAccountSection">
+            <div class="hbox font-title font-thin white-content b-b-1" href>
+              {{ 'EMAILS.INTEGRATIONS.QUICK_INTEGRATION' | translate }}
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12" ng-if="receiveIntegrationCtrl.showGmailBtn">
+            <a id="google-gmail"class="button button-white button-google" ng-class="{'--disabled': receiveIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="receiveIntegrationCtrl.authorizeIntegration('google', false)">
+              <img width="18" height="18"
+                ng-src="{{receiveIntegrationCtrl.rootUrl + '/assets/images/google_logo_alpha.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.GOOGLE_LOGIN' | translate }}
+              </span>
+            </a>
+            <loading-tooltip loading="receiveIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+          <div class="form-group col-sm-12" ng-if="receiveIntegrationCtrl.showGoogleBtn">
+            <a id="google-api"class="button button-white button-google" ng-class="{'--disabled': receiveIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="receiveIntegrationCtrl.authorizeIntegration('google', true)">
+              <img width="18" height="18"
+                ng-src="{{receiveIntegrationCtrl.rootUrl + '/assets/images/google_logo_alpha.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.GOOGLE_LOGIN' | translate }}
+              </span>
+            </a>
+            <loading-tooltip loading="receiveIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+          <div class="form-group col-sm-12" ng-if="receiveIntegrationCtrl.showOutlook">
+            <a id="ms-outlook"class="button button-white button-google" ng-class="{'--disabled': receiveIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="receiveIntegrationCtrl.authorizeIntegration('ms', false)">
+              <img width="18" height="18"
+                ng-src="{{receiveIntegrationCtrl.rootUrl + '/assets/images/ms-symbollockup_mssymbol_19.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.MICROSOFT_LOGIN' | translate  }}
+              </span>
+            </a>
+            <loading-tooltip loading="receiveIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+          <div class="form-group col-sm-12" ng-if="receiveIntegrationCtrl.showMSBtn">
+            <a id="ms-graph-api"class="button button-white button-google" ng-class="{'--disabled': receiveIntegrationCtrl.loadingOauthIntegration}"
+              href ng-click="receiveIntegrationCtrl.authorizeIntegration('ms', true)">
+              <img width="18" height="18"
+                ng-src="{{receiveIntegrationCtrl.rootUrl + '/assets/images/ms-symbollockup_mssymbol_19.png'}}"></img>
+              <span class="button-google__text">
+                {{ 'GENERICS.MICROSOFT_LOGIN' | translate  }}
+              </span>
+            </a>
+            <loading-tooltip loading="receiveIntegrationCtrl.loadingOauthIntegration"></loading-tooltip>
+          </div>
+
+        </div>
+
+        <div ng-if="!receiveIntegrationCtrl.loadingOauthIntegration">
+          <div class="form-group col-sm-12">
+            <div class="hbox font-title font-thin white-content b-b-1" href>
+              {{ !receiveIntegrationCtrl.has_receive ? ('EMAILS.INTEGRATIONS.INTEGRATE_WITH_OTHERS' | translate) :
+              ('EMAILS.INTEGRATIONS.BASIC_CONFIG' | translate) }}
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <div class="input-group" ng-if="!receiveIntegrationCtrl.has_receive">
+              <div class="input-group-addon white-content force-right-border width-120">{{
+                'EMAILS.INTEGRATIONS.SYNC_EMAILS_FROM' | translate }}<span
+                  uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                    class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                    ng-class="{ 'text-danger': receiveIntegrationCtrl.form.imap_sync_date.$invalid && receiveIntegrationCtrl.form.$submitted }"></i></span>
+              </div>
+              <input class="form-control input-sm"
+                ng-class="{'has-error': receiveIntegrationCtrl.form.imap_sync_date.$invalid && receiveIntegrationCtrl.form.$submitted}" name="imap_sync_date" date datepicker="true" min-date="receiveIntegrationCtrl.limitSyncDate" max-date="receiveIntegrationCtrl.endSyncDate" 
+                ng-required="true" ng-model="receiveIntegrationCtrl.model.sync_date" ng-disabled="receiveIntegrationCtrl.limitSyncDate === receiveIntegrationCtrl.endSyncDate" 
+                ng-change="receiveIntegrationCtrl.setInvalidDate()">
+            </div>
+            <div ng-show="receiveIntegrationCtrl.invalidDate" class="text-danger">
+              <span ng-bind-html="('EMAILS.INTEGRATIONS.SYNC_EMAILS_LIMIT_WARNING' | translate_with_replace: { start_date: syncStartDelta || receiveIntegrationCtrl.defaultSyncStartDelta, sync_date: syncDelta || receiveIntegrationCtrl.defaultSyncDelta } ) | to_trusted"></span>
+            </div>
+            <div class="gap-5"></div>
+            <div class="input-group">
+              <div class="input-group-addon white-content force-right-border width-90">{{ 'EMAILS.INTEGRATIONS.EMAIL' |
+                translate }}<span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                    class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                    ng-class="{ 'text-danger': receiveIntegrationCtrl.form.imap_address.$invalid && receiveIntegrationCtrl.form.$submitted }"></i></span>
+              </div>
+              <input
+                ng-class="{'has-error': receiveIntegrationCtrl.form.imap_address.$invalid && receiveIntegrationCtrl.form.$submitted}"
+                class="form-control input-sm" name="imap_address" ng-required="true"
+                ng-model="receiveIntegrationCtrl.model.email" autocomplete="chrome-off"
+                ng-change="receiveIntegrationCtrl.checkForCommonHost()"
+                ng-blur="receiveIntegrationCtrl.checkIfShouldOpenAdvancedConfig()">
+            </div>
+            <div class="gap-5"></div>
+            <div class="input-group">
+              <div class="input-group-addon white-content force-right-border width-90">{{ 'EMAILS.INTEGRATIONS.PASSWORD'
+                |
+                translate }}
+                <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                    class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                    ng-class="{ 'text-danger': receiveIntegrationCtrl.form.imap_password.$invalid && receiveIntegrationCtrl.form.$submitted }"></i></span>
+              </div>
+              <input class="form-control input-sm"
+                ng-class="{'has-error': receiveIntegrationCtrl.form.imap_password.$invalid && receiveIntegrationCtrl.form.$submitted}"
+                name="imap_password" type="password" ng-required="true" autocomplete="chrome-off"
+                ng-model="receiveIntegrationCtrl.model.password">
+            </div>
+            <div class="gap-5"></div>
+            <span class="text-muted font-small">
+              {{ 'EMAILS.INTEGRATIONS.PASSWORD_DESCRIPTION' | translate }}
+            </span>
+          </div>
+          <div
+            ng-if="receiveIntegrationCtrl.selected_default_host.server === 'Outlook' || receiveIntegrationCtrl.model.host.includes('office365')">
+            <div class="form-group col-sm-12">
+              <a class="hbox font-title font-thin white-content b-b-1" href
+                ng-click="receiveIntegrationCtrl.showOutlookIntegrationInfo = !receiveIntegrationCtrl.showOutlookIntegrationInfo">
+                <aside class="v-middle">
+                  {{ 'EMAILS.INTEGRATIONS.HOW_TO_CONFIG_OUTLOOK' | translate }}
+                </aside>
+                <aside class="v-middle text-right">
+                  <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i class="fal"
+                      ng-class="{'fa-angle-down': !receiveIntegrationCtrl.showOutlookIntegrationInfo, 'fa-angle-up': receiveIntegrationCtrl.showOutlookIntegrationInfo}"></i></span>
+                </aside>
+              </a>
+            </div>
+            <div class="form-group col-sm-12" ng-if="receiveIntegrationCtrl.showOutlookIntegrationInfo">
+              <strong><span class="text-danger">{{ 'GENERICS.ATTENTION!' | translate }}</span> {{
+                'EMAILS.INTEGRATIONS.HOW_TO_CONFIG_OUTLOOK_TITLE' | translate }}</strong><br />
+              <ul style="margin-right: 90px">
+                <li ng-bind-html="receiveIntegrationCtrl.howToConfigOutlookBlock"></li>
+                <li ng-bind-html="receiveIntegrationCtrl.howToConfigOutlookTwoFactor"></li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group col-sm-12">
+            <a class="hbox font-title font-thin white-content b-b-1" href
+              ng-click="receiveIntegrationCtrl.show_advanced_config = !receiveIntegrationCtrl.show_advanced_config">
+              <aside class="v-middle">
+                {{ 'EMAILS.INTEGRATIONS.ADVANCED_CONFIG' | translate }}
+              </aside>
+              <aside class="v-middle text-right">
+                <span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i class="fal"
+                    ng-class="{'fa-angle-down': !receiveIntegrationCtrl.show_advanced_config, 'fa-angle-up': receiveIntegrationCtrl.show_advanced_config}"></i></span>
+              </aside>
+            </a>
+          </div>
+          <div
+            ng-if="receiveIntegrationCtrl.show_advanced_config || (receiveIntegrationCtrl.form.$submitted && receiveIntegrationCtrl.form.$invalid)">
+            <div class="form-group col-sm-12">
+              <div class="column-container">
+                <aside class="v-middle">
+                  <span class="font-semi-big">{{ 'EMAILS.INTEGRATIONS.GET_DEFAULT_SERVER_CONFIG' | translate }}</span>
+                </aside>
+                <div class="gap-5"></div>
+                <aside class="width-max">
+                  <div class="switch">
+                    <select ng-options="host as host.server for host in imapDefaultConfig" class="form-control input-sm"
+                      ng-model="receiveIntegrationCtrl.selected_default_host"
+                      ng-change="receiveIntegrationCtrl.selectCommonHost()"></select>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div class="form-group col-sm-12">
+              <!-- <div ng-if="!receiveIntegrationCtrl.has_receive" class="email-integrations__sync-info">
+                <span class="text-muted"><i class="fas fa-exclamation-triangle"></i></span>
+                <p ng-bind-html="('EMAILS.INTEGRATIONS.SYNC_EMAILS_LIMIT_WARNING' | translate_with_replace: { start_date: syncStartDelta || receiveIntegrationCtrl.defaultSyncStartDelta, sync_date: syncDelta || receiveIntegrationCtrl.defaultSyncDelta } ) | to_trusted"></p>
+              </div>
+              <div ng-if="receiveIntegrationCtrl.has_receive" class="email-integrations__sync-info">
+                <span class="text-muted"><i class="fas fa-exclamation-triangle"></i></span>
+                <p ng-bind-html="('EMAILS.INTEGRATIONS.SYNC_EMAILS_DYNAMIC_WARNING' | translate_with_replace: { sync_date: syncDelta || receiveIntegrationCtrl.defaultSyncDelta } ) | to_trusted"></p>
+              </div> -->
+              <span class="font-semi-big">{{ 'EMAILS.INTEGRATIONS.ADDRESS_AND_PORT_CONFIG' | translate }}</span>
+              <div class="gap-5"></div>
+              <div class="input-group">
+                <div class="input-group-addon white-content force-right-border width-120">{{
+                  'EMAILS.INTEGRATIONS.SERVER_ADDRESS' | translate }}<span
+                    uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                      class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                      ng-class="{ 'text-danger': receiveIntegrationCtrl.form.imap_host.$invalid && receiveIntegrationCtrl.form.$submitted }"></i></span>
+                </div>
+                <input class="form-control input-sm"
+                  ng-class="{'has-error': receiveIntegrationCtrl.form.imap_host.$invalid && receiveIntegrationCtrl.form.$submitted}"
+                  name="imap_host" ng-required="true" ng-model="receiveIntegrationCtrl.model.host">
+              </div>
+              <div class="gap-5"></div>
+              <div class="input-group">
+                <div class="input-group-addon white-content force-right-border width-100">{{ 'EMAILS.INTEGRATIONS.PORT'
+                  |
+                  translate }}<span uib-tooltip="{{ 'FORMS.REQUIRED' | translate }}" tooltip-append-to-body="true"><i
+                      class="fas fa-exclamation-circle email-integrations__required-sign text-muted"
+                      ng-class="{ 'text-danger': receiveIntegrationCtrl.form.imap_port.$invalid && receiveIntegrationCtrl.form.$submitted }"></i></span>
+                </div>
+                <input class="form-control input-sm"
+                  ng-class="{'has-error': receiveIntegrationCtrl.form.imap_port.$invalid && receiveIntegrationCtrl.form.$submitted}"
+                  name="imap_port" ng-required="true" ng-model="receiveIntegrationCtrl.model.port">
+              </div>
+              <div class="gap-5"></div>
+              <div class="column-container">
+                <aside class="v-middle">
+                  <span class="font-semi-big">{{ 'EMAILS.INTEGRATIONS.USES_SSL' | translate }}</span>
+                </aside>
+                <div class="gap-5"></div>
+                <aside class="v-middle">
+                  <div class="switch">
+                    <input name="imap_ssl" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-7" type="checkbox"
+                      ng-model="receiveIntegrationCtrl.model.has_ssl">
+                    <label for="cmn-toggle-7"></label>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <div ng-if="receiveIntegrationCtrl.has_receive" class="email-integrations__sync-info">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p ng-bind-html="('EMAILS.INTEGRATIONS.SYNC_EMAILS_DYNAMIC_WARNING' | translate_with_replace: { sync_date: syncDelta || receiveIntegrationCtrl.defaultSyncDelta } ) | to_trusted"></p>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <div class="gap-15"></div>
+            <a class="button button-action" href ng-click="receiveIntegrationCtrl.updateReceive()"
+              ng-if="!receiveIntegrationCtrl.has_receive">
+              <i class="button-icon fas fa-play"></i>
+              {{ 'EMAILS.INTEGRATIONS.ENABLE_INTEGRATION' | translate }}
+            </a>
+            <a class="button button-action" id="hidden-imap-modal-trigger" ng-show="false" href confirmation-modal
+              confirmation-modal-title="{{ 'GENERICS.ATTENTION!' | translate }}"
+              confirmation-modal-text="receiveIntegrationCtrl.confirmationModalText"
+              confirmation-modal-buttons="receiveIntegrationCtrl.confirmationModalButtons"></a>
+            <a class="button button-action" href ng-click="receiveIntegrationCtrl.updateReceive()"
+              ng-if="receiveIntegrationCtrl.has_receive">
+              <i class="button-icon fas fa-save"></i>
+              {{ 'EMAILS.INTEGRATIONS.UPDATE_INTEGRATION' | translate }}
+            </a>
+            <a class="button button-white" href ng-click="receiveIntegrationCtrl.deleteReceive()"
+              ng-if="receiveIntegrationCtrl.has_receive">
+              <div class="text-danger">
+                <i class="button-icon fal fa-pause"></i>
+                <span class="text-regular">{{ 'EMAILS.INTEGRATIONS.DISABLE_INTEGRATION' | translate }}</span>
+              </div>
+            </a>
+            <loading-tooltip loading="receiveIntegrationCtrl.loading" form="receiveIntegrationCtrl.form">
+            </loading-tooltip>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+</section>
+</div>

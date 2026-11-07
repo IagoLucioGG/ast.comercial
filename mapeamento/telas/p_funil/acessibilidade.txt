@@ -1,0 +1,728 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - button "botão de mudar funil": Funil de vendas
+      - textbox "Pesquise título ou pelo nome do cliente"
+      - text: 
+      - link " Exibir " [expanded]:
+        - /url: ""
+      - link "Dropdown de 'Ações de filtros'" [expanded]:
+        - /url: ""
+        - text:  Filtros 
+      - button "botão de mudar visualização de Contatos de Vendas" [expanded]:
+        - option "botão de mudar a visualização para funil":  Funil
+        - text: 
+      - text:  Menu
+      - button "botão de criar novo Contato de Venda":  Novo Negócio
+      - complementary:
+        - text: Suspect 🔍 R$ 3.907.374,12 - 5098 negócios
+        - 'link "card selecionável do Contato de Venda: 2026/11/06 Nov s/h || Pedido Demonstração - Site"':
+          - /url: /deal/700090818
+          - complementary: 2026/11/06 Nov s/h || Pedido Demonstração - Site (#48159) VALORE CONTABILIDADE R$ 3.822,50
+          - complementary
+          - img
+          - text: 556d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: Marilene Dindomani"':
+          - /url: /deal/700112221
+          - complementary: Marilene Dindomani Marilene Dindomani
+          - complementary
+          - img
+          - text: 428d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: MARCELA"':
+          - /url: /deal/700112219
+          - complementary: MARCELA MARCELA
+          - complementary
+          - img
+          - text: 428d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/12 Nov s/h || Pedido Demonstração - Site"':
+          - /url: /deal/700116807
+          - complementary: 2026/11/12 Nov s/h || Pedido Demonstração - Site Antonio Oliveira
+          - complementary
+          - img
+          - text: 405d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/01/22 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700128195
+          - complementary: 2026/01/22 Jan s/h || Pedido Demonstração - MARKETING Adriane machado
+          - complementary
+          - img
+          - text: 350d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2025/11/26 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700128198
+          - complementary: 2025/11/26 Nov s/h || Pedido Demonstração - MARKETING Udilisses Bonifácio
+          - complementary
+          - img
+          - text: 350d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2025/11/28 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700128204
+          - complementary: 2025/11/28 Nov s/h || Pedido Demonstração - MARKETING Ana Paula Xavier
+          - complementary
+          - img
+          - text: 350d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2025/11/28 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700129754
+          - complementary: 2025/11/28 Nov s/h || Pedido Demonstração - MARKETING Gomes De Freitas - Contabilidade &
+          - complementary
+          - img
+          - text: 344d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2025/11/28 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700130074
+          - complementary: 2025/11/28 Nov s/h || Pedido Demonstração - MARKETING Elielma
+          - complementary
+          - img
+          - text: 343d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2025/12/04 Dez s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700130518
+          - complementary: 2025/12/04 Dez s/h || Pedido Demonstração - MARKETING Rafaelle Vieira
+          - complementary
+          - img
+          - text: 340d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/20 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700135396
+          - complementary: 2026/11/20 Nov s/h || Pedido Demonstração - MARKETING Roberto Moreira
+          - complementary
+          - img
+          - text: 314d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/01/06 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700135867
+          - complementary: 2026/01/06 Jan s/h || Pedido Demonstração - MARKETING fernanda costa
+          - complementary
+          - img
+          - text: 308d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/01/12 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700136980
+          - complementary: 2026/01/12 Jan s/h || Pedido Demonstração - MARKETING Claucio Silva&#39;h
+          - complementary
+          - img
+          - text: 301d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/01/14 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700137261
+          - complementary: 2026/01/14 Jan s/h || Pedido Demonstração - MARKETING Victor Carvalho
+          - complementary
+          - img
+          - text: 300d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/01/16 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700137963
+          - complementary: 2026/01/16 Jan s/h || Pedido Demonstração - MARKETING Lucyanira
+          - complementary
+          - img
+          - text: 296d 
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+      - complementary:
+        - text: Prospect 🚀 R$ 934.942,68 - 875 negócios
+        - 'link "card selecionável do Contato de Venda: 2026/10/31 Out s/h || NRAUPP"':
+          - /url: /deal/700123428
+          - complementary: 2026/10/31 Out s/h || NRAUPP NRAUPP
+          - complementary
+          - img
+          - text: 371d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/12 Nov s/h || FMC CONTABILIDADE"':
+          - /url: /deal/700129794
+          - complementary: 2026/11/12 Nov s/h || FMC CONTABILIDADE (#65154) FMC CONTABILIDADE R$ 1.973,00
+          - complementary
+          - img
+          - text: 344d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/12/10 Dez s/h || MARQUES CONSULTORIA CONTABIL"':
+          - /url: /deal/700143798
+          - complementary: 2026/12/10 Dez s/h || MARQUES CONSULTORIA CONTABIL (#73071) MARQUES CONSULTORIA CONTABIL R$ 309,90
+          - complementary
+          - img
+          - text: 246d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/01/06 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700152838
+          - complementary: 2027/01/06 Jan s/h || Pedido Demonstração - MARKETING Layane Rodrigues
+          - complementary
+          - img
+          - text: 228d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/20 Nov s/h || ATITUDE PREMIER CONDOMINIOS LT"':
+          - /url: /deal/700152510
+          - complementary: 2026/11/20 Nov s/h || ATITUDE PREMIER CONDOMINIOS LT ATITUDE PREMIER CONDOMINIOS LT
+          - complementary
+          - img
+          - text: 233d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/19 Nov s/h || LUCAS CAVALCANTE"':
+          - /url: /deal/700154084
+          - complementary: 2026/11/19 Nov s/h || LUCAS CAVALCANTE LUCAS CAVALCANTE
+          - complementary
+          - img
+          - text: 227d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/12/09 Dez s/h || GIARDINI GASTRONOMIA"':
+          - /url: /deal/700161741
+          - complementary: 2026/12/09 Dez s/h || GIARDINI GASTRONOMIA (#83540) GIARDINI GASTRONOMIA R$ 501,80
+          - complementary
+          - img
+          - text: 144d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/12 Nov s/h || VIP SEGURANÇA"':
+          - /url: /deal/700148270
+          - complementary: 2026/11/12 Nov s/h || VIP SEGURANÇA VIP SEGURANÇA
+          - complementary
+          - img
+          - text: 249d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/01/12 Jan s/h || ARAFER"':
+          - /url: /deal/700177188
+          - complementary: 2027/01/12 Jan s/h || ARAFER (#84996) ARAFER R$ 935,00
+          - complementary
+          - img
+          - text: 144d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/19 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700179438
+          - complementary: 2026/11/19 Nov s/h || Pedido Demonstração - MARKETING ARIANE
+          - complementary
+          - img
+          - text: 44d     
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700182268
+          - complementary: 2026/11/09 Nov s/h || Pedido Demonstração - MARKETING (#94091) Jackson Steiner R$ 799,81
+          - complementary
+          - img
+          - text: 32d     
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/13 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700183279
+          - complementary: 2026/11/13 Nov s/h || Pedido Demonstração - MARKETING MF ASSESSORIA CONTABIL
+          - complementary
+          - img
+          - text: 102d     
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/16 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700183753
+          - complementary: 2026/11/16 Nov s/h || Pedido Demonstração - MARKETING (#86238) WEBEDIA INTERNET BRASIL S.A. R$ 8.424,10
+          - complementary
+          - img
+          - text: 7d     
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/17 Nov s/h || CONSELHO REGIONAL DE FARMACIA"':
+          - /url: /deal/700184165
+          - complementary: 2026/11/17 Nov s/h || CONSELHO REGIONAL DE FARMACIA CONSELHO REGIONAL DE FARMACIA
+          - complementary
+          - img
+          - text: 121d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700188022
+          - complementary: 2026/11/09 Nov s/h || Pedido Demonstração - MARKETING Alfredo Endlich
+          - complementary
+          - img
+          - text: 72d     
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+      - complementary:
+        - text: Demonstração 💵 R$ 4.491.018,07 - 1173 negócios
+        - 'link "card selecionável do Contato de Venda: 2026/11/12 Nov s/h || Pedido Demonstração - Site"':
+          - /url: /deal/700065653
+          - complementary: 2026/11/12 Nov s/h || Pedido Demonstração - Site (#36653) Vandalis Giansante - Unicamp - R$ 165.390,27
+          - complementary
+          - img
+          - text: 718d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/12 Nov s/h || TITO TABOSA PNEUS"':
+          - /url: /deal/700131115
+          - complementary: 2026/11/12 Nov s/h || TITO TABOSA PNEUS TITO TABOSA PNEUS
+          - complementary
+          - img
+          - text: 337d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/01/11 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700131824
+          - complementary: 2027/01/11 Jan s/h || Pedido Demonstração - MARKETING (#70953) Humberto Marques R$ 21.031,66
+          - complementary
+          - img
+          - text: 333d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || MEDGRUPO PARTICIPACOES LTDA."':
+          - /url: /deal/700084617
+          - complementary: 2026/11/09 Nov s/h || MEDGRUPO PARTICIPACOES LTDA. (#56220) ******** R$ 2.262,60
+          - complementary
+          - img
+          - text: 191d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/10 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700151343
+          - complementary: 2026/11/10 Nov s/h || Pedido Demonstração - MARKETING WURTH DO BRASIL PECAS DE FIXAC
+          - complementary
+          - img
+          - text: 196d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/06/29 Jun s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700152237
+          - complementary: 2026/06/29 Jun s/h || Pedido Demonstração - MARKETING 𝐽𝑢𝑙𝑖𝑎𝑛𝑎 𝐹𝑒𝑟𝑟𝑒𝑖𝑟𝑎 𝐷𝑖𝑎𝑠
+          - complementary
+          - img
+          - text: 218d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/01/25 Jan s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700155444
+          - complementary: 2027/01/25 Jan s/h || Pedido Demonstração - MARKETING (#77066) ANA KESSIA SILVA OLIVEIRA R$ 1.545,50
+          - complementary
+          - img
+          - text: 212d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || OTNI GESTAO CONTABIL DIGITAL"':
+          - /url: /deal/700161348
+          - complementary: 2026/11/09 Nov s/h || OTNI GESTAO CONTABIL DIGITAL (#95482) OTNI GESTAO CONTABIL DIGITAL R$ 600,80
+          - complementary
+          - img
+          - text: 182d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || TCHELLO BURGUER"':
+          - /url: /deal/700163012
+          - complementary: 2026/11/09 Nov s/h || TCHELLO BURGUER TCHELLO BURGUER
+          - complementary
+          - img
+          - text: 184d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/10 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700165663
+          - complementary: 2026/11/10 Nov s/h || Pedido Demonstração - MARKETING (#84956) Talita R$ 824,81
+          - complementary
+          - img
+          - text: 57d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/01/11 Jan s/h || RESTAURANTE CASA BRANCA"':
+          - /url: /deal/700169598
+          - complementary: 2027/01/11 Jan s/h || RESTAURANTE CASA BRANCA (#80836) RESTAURANTE CASA BRANCA R$ 2.628,00
+          - complementary
+          - img
+          - text: 170d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/10/16 Out s/h || FABIO ANDRADE DA SILVA"':
+          - /url: /deal/700164300
+          - complementary: 2026/10/16 Out s/h || FABIO ANDRADE DA SILVA FABIO ANDRADE DA SILVA
+          - complementary
+          - img
+          - text: 137d   
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/03/09 Mar s/h || Vikcan"':
+          - /url: /deal/700173411
+          - complementary: 2027/03/09 Mar s/h || Vikcan Vikcan
+          - complementary
+          - img
+          - text: 130d   
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/06 Nov s/h || Ls contabil"':
+          - /url: /deal/700173268
+          - complementary: 2026/11/06 Nov s/h || Ls contabil (#82623) Ls contabil R$ 5.225,00
+          - complementary
+          - img
+          - text: 149d    
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/12/10 Dez s/h || RW ASSESSORIA CONTABIL E FISCAL"':
+          - /url: /deal/700151426
+          - complementary: 2026/12/10 Dez s/h || RW ASSESSORIA CONTABIL E FISCAL RW ASSESSORIA CONTABIL E FISCAL
+          - complementary
+          - img
+          - text: 144d   
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+      - complementary:
+        - text: Negociação final 📅 R$ 7.431.631,44 - 707 negócios
+        - 'link "card selecionável do Contato de Venda: 2026/11/13 Nov s/h || CONASS Assessoria Contábil"':
+          - /url: /deal/700127367
+          - complementary: 2026/11/13 Nov s/h || CONASS Assessoria Contábil (#64531) CONASS Assessoria Contábil R$ 3.521,00
+          - complementary
+          - img
+          - text: 115d    
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/01/11 Jan 09:00 || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700134914
+          - complementary: 2027/01/11 Jan 09:00 || Pedido Demonstração - MARKETING (#80902) Aroldo Souza R$ 65.720,00
+          - complementary
+          - img
+          - text: 256d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/24 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700135023
+          - complementary: 2026/11/24 Nov s/h || Pedido Demonstração - MARKETING (#76850) POWER MASTER TECNOLOGIA EM ACI R$ 41.834,00
+          - complementary
+          - img
+          - text: 56d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/19 Nov s/h || Francisca Juscielly Pinheiro Silva"':
+          - /url: /deal/700136636
+          - complementary: 2026/11/19 Nov s/h || Francisca Juscielly Pinheiro Silva (#67707) Francisca Juscielly Pinheiro Silva R$ 651,00
+          - complementary
+          - img
+          - text: 283d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/16 Nov s/h || GB CONSULTORIA E ASSESSORIA EM"':
+          - /url: /deal/700152536
+          - complementary: 2026/11/16 Nov s/h || GB CONSULTORIA E ASSESSORIA EM (#77540) GB CONSULTORIA E ASSESSORIA EM R$ 4.542,39
+          - complementary
+          - img
+          - text: 207d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/05 Nov s/h || TRINDADE LOGISTICA"':
+          - /url: /deal/700140961
+          - complementary: 2026/11/05 Nov s/h || TRINDADE LOGISTICA (#71285) TRINDADE LOGISTICA R$ 4.024,33
+          - complementary
+          - img
+          - text: 259d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/18 Nov s/h || SMH SOCIEDADE MEDICO HOSPITALAR LTDA"':
+          - /url: /deal/700155576
+          - complementary: 2026/11/18 Nov s/h || SMH SOCIEDADE MEDICO HOSPITALAR LTDA (#92318) SMH SOCIEDADE MEDICO HOSPITALAR LTDA R$ 14.191,06
+          - complementary
+          - img
+          - text: 220d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/10 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700174102
+          - complementary: 2026/11/10 Nov s/h || Pedido Demonstração - MARKETING (#83700) Geyckson R$ 270,00
+          - complementary
+          - img
+          - text: 121d    
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2027/01/11 Jan s/h || ORGANIZACAO FUNERARIA SAO JOAO BATISTA LTDA"':
+          - /url: /deal/700176714
+          - complementary: 2027/01/11 Jan s/h || ORGANIZACAO FUNERARIA SAO JOAO BATISTA LTDA (#91171) ORGANIZACAO FUNERARIA SAO JOAO BATISTA LTDA R$ 3.105,00
+          - complementary
+          - img
+          - text: 137d    
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/12 Nov s/h || MENINAS E MULHERES"':
+          - /url: /deal/700177205
+          - complementary: 2026/11/12 Nov s/h || MENINAS E MULHERES (#83427) MENINAS E MULHERES R$ 10.504,10
+          - complementary
+          - img
+          - text: 107d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/10 Nov s/h || Leandro"':
+          - /url: /deal/700154882
+          - complementary: 2026/11/10 Nov s/h || Leandro (#84476) RUDRIC ITH PARTICIPACOES LTDA R$ 81.818,42
+          - complementary
+          - img
+          - text: 130d    
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/10/15 Out s/h || EMANUEL"':
+          - /url: /deal/700177705
+          - complementary: 2026/10/15 Out s/h || EMANUEL (#83372) EMANUEL R$ 576,76
+          - complementary
+          - img
+          - text: 142d    
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/13 Nov s/h || ASSOCIACAO COMUNITARIA DE PRODUCAO E COMERCIALIZAC"':
+          - /url: /deal/700181205
+          - complementary: 2026/11/13 Nov s/h || ASSOCIACAO COMUNITARIA DE PRODUCAO E COMERCIALIZAC (#92092) ASSOCIACAO COMUNITARIA DE PRODUCAO E COMERCIALIZAC R$ 111.996,23
+          - complementary
+          - img
+          - text: 51d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700186363
+          - complementary: 2026/11/09 Nov s/h || Pedido Demonstração - MARKETING (#92151) Sandro José de Oliveira R$ 822,16
+          - complementary
+          - img
+          - text: 50d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/16 Nov s/h || PRIME CONTABILIDADE"':
+          - /url: /deal/700186847
+          - complementary: 2026/11/16 Nov s/h || PRIME CONTABILIDADE (#91076) PRIME CONTABILIDADE R$ 6.018,88
+          - complementary
+          - img
+          - text: 56d   
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+      - complementary:
+        - text: Fechamento ✅ R$ 95.307,80 - 35 negócios
+        - 'link "card selecionável do Contato de Venda: 2026/11/12 Nov s/h || CENTRAL ALINHAMENTO"':
+          - /url: /deal/11668865
+          - complementary: 2026/11/12 Nov s/h || CENTRAL ALINHAMENTO (#22235) CENTRAL AUTO CENTER R$ 3.486,00
+          - complementary
+          - img
+          - text: 221d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/06 Nov s/h || BELLA DELLA"':
+          - /url: /deal/700003626
+          - complementary: 2026/11/06 Nov s/h || BELLA DELLA (#6579) BELLA DELLA R$ 1.599,00
+          - complementary
+          - img
+          - text: 851d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/08/10 Ago s/h || LIMPCAR LOCAÇÕES"':
+          - /url: /deal/700193582
+          - complementary: 2026/08/10 Ago s/h || LIMPCAR LOCAÇÕES (#88141) LIMPCAR LOCAÇÕES R$ 1.011,45
+          - complementary
+          - img
+          - text: 85d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/10/20 Out s/h || Pedido Demonstração - MARKETING"':
+          - /url: /deal/700215718
+          - complementary: 2026/10/20 Out s/h || Pedido Demonstração - MARKETING (#95458) Vagner Satiro de Oliveira R$ 1.149,50
+          - complementary
+          - img
+          - text: 17d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/11 Nov s/h || DOM AUGUSTO RESTAURANTE"':
+          - /url: /deal/700219227
+          - complementary: 2026/11/11 Nov s/h || DOM AUGUSTO RESTAURANTE (#96060) DOM AUGUSTO R$ 650,00
+          - complementary
+          - img
+          - text: 13d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || JR CONTABILIDADE LTDA"':
+          - /url: /deal/700225744
+          - complementary: 2026/11/09 Nov s/h || JR CONTABILIDADE LTDA (#97419) JR CONTABILIDADE LTDA R$ 6.237,90
+          - complementary
+          - img
+          - text: 0d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/06 Nov s/h || MULTIPLICANDO IDEIAS"':
+          - /url: /deal/700226650
+          - complementary: 2026/11/06 Nov s/h || MULTIPLICANDO IDEIAS (#97425) MULTIPLICANDO IDEIAS R$ 805,98
+          - complementary
+          - img
+          - text: 0d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || 51.564.549 HAYLANDER MARTINS D"':
+          - /url: /deal/700226616
+          - complementary: 2026/11/09 Nov s/h || 51.564.549 HAYLANDER MARTINS D (#97407) HAYLANDER MARTINS CONTABILIDAD R$ 614,43
+          - complementary
+          - img
+          - text: 0d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || MCJ CONTABILIDADE E ASSESSORIA LTDA"':
+          - /url: /deal/700226544
+          - complementary: 2026/11/09 Nov s/h || MCJ CONTABILIDADE E ASSESSORIA LTDA (#97385) MCJ CONTABILIDADE E ASSESSORIA LTDA R$ 555,70
+          - complementary
+          - img
+          - text: 0d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/05 Nov s/h || SNP CONTABILIDADE"':
+          - /url: /deal/700226218
+          - complementary: 2026/11/05 Nov s/h || SNP CONTABILIDADE (#97283) SNP CONTABILIDADE R$ 425,80
+          - complementary
+          - img
+          - text: 1d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/05 Nov s/h || MULTIPLICANDO IDEIAS"':
+          - /url: /deal/700226097
+          - complementary: 2026/11/05 Nov s/h || MULTIPLICANDO IDEIAS (#97217) MULTIPLICANDO IDEIAS R$ 805,98
+          - complementary
+          - img
+          - text: 0d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/11 Nov s/h || ART''G"':
+          - /url: /deal/700226023
+          - complementary: 2026/11/11 Nov s/h || ART'G (#97182) ART'G R$ 109,90
+          - complementary
+          - img
+          - text: 1d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/05 Nov s/h || D''AMORE"':
+          - /url: /deal/700226011
+          - complementary: 2026/11/05 Nov s/h || D'AMORE (#97179) D'AMORE R$ 1.571,00
+          - complementary
+          - img
+          - text: 1d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/05 Nov s/h || TRISEVEN SERVICOS E QUALIDADE"':
+          - /url: /deal/700225858
+          - complementary: 2026/11/05 Nov s/h || TRISEVEN SERVICOS E QUALIDADE (#97230) TRISEVEN SERVICOS E QUALIDADE R$ 265,80
+          - complementary
+          - img
+          - text: 1d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 
+        - 'link "card selecionável do Contato de Venda: 2026/11/09 Nov s/h || 33.946.016 GERDSON CRUZ MORAIS"':
+          - /url: /deal/700225370
+          - complementary: 2026/11/09 Nov s/h || 33.946.016 GERDSON CRUZ MORAIS (#96961) 33.946.016 GERDSON CRUZ MORAIS R$ 119,90
+          - complementary
+          - img
+          - text: 2d  
+        - link "ícone de tarefa do card":
+          - /url: ""
+          - text: 

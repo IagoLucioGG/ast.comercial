@@ -1,0 +1,42 @@
+<div id="{{$ctrl.dropAreaId}}" class="input-group">
+  <input type="hidden" ng-model="$ctrl.model" ng-required="$ctrl.required" />
+  <div class="ploomes-host empty-attachment attachment-field-min-width" ng-class="{'is-multiple': $ctrl.field.multiple, 'host-disabled': $ctrl.disabled, 'in-dragging': $ctrl.dragging, 'draggeble': $ctrl.draggable}">
+  <div class="ploomes-tags full-width">
+    <span>
+      <a
+        class="light-badge neutral-content badge-border"
+        style="float:left;"
+        ng-repeat="file in $ctrl.model track by $index"
+        ng-class="{'full-width': !$ctrl.field.multiple, 'ploomes-one-tag': !$ctrl.field.multiple}"
+        uib-tooltip="{{file.Name}}"
+        tooltip-append-to-body="true"
+        tooltip-placement="auto top"
+        tooltip-enable="file.Name.length > $ctrl.max_name_length">
+        <div class="font-bold table-cell-align-top plooomes-tag-content text-darkest-neutral">
+          <span 
+            ng-click="$ctrl.downloadAttachment(file); $event.preventDefault();" 
+            class="align-middle"
+          >
+            {{(file.Name || ".").length > $ctrl.max_name_length ? (file.Name || ".").substring(0, $ctrl.max_name_length) + '...' : (file.Name || ".") }}
+          </span>
+          <i 
+            class="fas fa-times remove-button-class" 
+            ng-click="$ctrl.removeAttachment($index); $event.preventDefault();" 
+            ng-if="!$ctrl.disabled"
+            style="margin-right: 2px;"
+          >
+          </i>
+        </div>
+      </a>
+    </span>
+  </div>
+</div>
+  <div class="input-group-btn dropdown" ng-if="!$ctrl.disabled" >
+    <label href>
+      <span class="button button-white" ng-class="{ 'disabled': (!$ctrl.can_load || (!$ctrl.field.multiple && $ctrl.model.length === 1)) }">
+        {{ ($ctrl.can_load ? 'GENERICS.SELECT' : 'GENERICS.LOADING') | translate }}
+      </span>
+      <input ng-if="$ctrl.can_load && ($ctrl.field.multiple || !$ctrl.model || $ctrl.model.length === 0)" type="file" style="display: none;" select-ng-files select-files-callback="$ctrl.selectFileCallback(files)" />
+    </label>
+  </div>
+</div>

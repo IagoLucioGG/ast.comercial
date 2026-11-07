@@ -1,0 +1,38 @@
+<div class="bottom-side-wrapper">
+  <div class="button full-width button-white-light-border b-1 button-very-big" ui-sref="{{'interactionrecords.table.interactionrecordsimportation'}}" ng-if="$ctrl.import_permission" data-cy="interaction-record-importation-button">
+    <div class="hbox">
+      <aside class="v-middle width-35 text-center">
+        <span ng-class="{'text-success': $ctrl.has_outlook_integration}">
+          <i class="fal fa-file-excel simple-line-space"></i>
+        </span>
+      </aside>
+      <aside class="text-left">
+        <span class="text-regular semi-big"> Importar registros pelo Excel</span>
+      </aside>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="$ctrl.administrator_permission" ui-sref="{{'formconfig.form({formid: ' + $ctrl.interaction_record_form_id + ' })'}}" data-cy="interaction-record-form-button">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-pen-square simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">Configurar campos de registros</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ui-sref="interactionrecords.table.newtag" data-cy="interaction-record-tags-button">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-tag simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">Configurar marcadores de tarefa e registro de interação</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

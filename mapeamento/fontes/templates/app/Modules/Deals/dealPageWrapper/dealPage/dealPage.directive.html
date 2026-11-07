@@ -1,0 +1,26 @@
+<div class="deal-or-contact-domain stretch">
+  <div class="vbox" ng-if="!mainDealCtrl.not_found">
+    <deal-page-header ng-if="mainDealCtrl.initial_load"></deal-page-header>
+    <section class="scrollable" ng-if="mainDealCtrl.initial_load">
+      <deal-page-funnel ng-if="mainDealCtrl.pipelines.length > 0"></deal-page-funnel>
+      <div class="hbox stretch">
+        <aside>
+          <div class="top-side-wrapper dark-background">
+            <page-static-forms model="mainDealCtrl.deal_view" entity-type="Deal"></page-static-forms>
+            <page-timeline model="mainDealCtrl.deal_view" entity-type="Deal" toggle-filter-modal="mainDealCtrl.toggle_filter_modal"></page-timeline>
+          </div>
+        </aside>
+        <deal-page-right-sidebar></deal-page-right-sidebar>
+      </div>
+    </section>
+    <standard-loader margin-top="'15'" optionalclass="'funnel-loader'" loading="!mainDealCtrl.initial_load"></standard-loader>
+  </div>
+  <div class="vbox" ng-if="mainDealCtrl.not_found">
+    <section class="scrollable">
+      <div class="hbox stretch">
+        <page-not-found></page-not-found>
+      </div>
+    </section>
+  </div>
+  <page-timeline-filter ng-if="mainDealCtrl.toggle_filter_modal" toggle-modal="mainDealCtrl.toggle_filter_modal"></page-timeline-filter>
+</div>

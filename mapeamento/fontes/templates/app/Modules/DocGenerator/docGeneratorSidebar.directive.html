@@ -1,0 +1,44 @@
+<aside class="regular-background width-325">
+  <div class="vbox white-content">
+    <header>
+      <ul class="nav nav-tabs border-tabs">
+        <li class="width-25-percent" ng-class="{'active': docGeneratorSidebarCtrl.current_tab === 1, 'disabled': docGeneratorSidebarCtrl.block_tab_change}">
+          <a class="text-muted" href ng-click="docGeneratorSidebarCtrl.changeTab(1)">
+            {{ 'DOC_GENERATOR.SIDEBAR.OPTIONS' | translate }}
+          </a>
+        </li>
+        <li class="width-25-percent" ng-class="{'active': docGeneratorSidebarCtrl.current_tab === 2}">
+          <a class="text-muted" href ng-click="docGeneratorSidebarCtrl.changeTab(2)">
+            {{ 'DOC_GENERATOR.SIDEBAR.FIELDS' | translate }}
+          </a>
+        </li>
+        <li class="width-25-percent" ng-class="{'active': docGeneratorSidebarCtrl.current_tab === 3}">
+          <a class="text-muted" href ng-click="docGeneratorSidebarCtrl.changeTab(3)">
+            {{ 'DOC_GENERATOR.SIDEBAR.BLOCKS' | translate }}
+          </a>
+        </li>
+        <li class="width-25-percent" ng-class="{'active': docGeneratorSidebarCtrl.current_tab === 4, 'disabled': docGeneratorSidebarCtrl.block_tab_change}">
+          <a class="text-muted" href ng-click="docGeneratorSidebarCtrl.changeTab(4)">
+            {{ 'DOC_GENERATOR.SIDEBAR.STYLES' | translate }}
+          </a>
+        </li>
+      </ul>
+    </header>
+    <section class="scrollable tabs-header-top regular-background b-t-1">
+      <div class="tab-content">
+        <div class="wrapper tab-pane active" ng-show="docGeneratorSidebarCtrl.current_tab === 1">
+          <doc-generator-model-options model="model"></doc-generator-model-options>
+        </div>
+        <div class="tab-pane active" ng-show="docGeneratorSidebarCtrl.current_tab === 2">
+          <doc-generator-tokens entity-id="model.EntityId" model="model"></doc-generator-tokens>
+        </div>
+        <div class="wrapper tab-pane active" ng-show="docGeneratorSidebarCtrl.current_tab === 3">
+          <doc-generator-blocks model="currentPage" entity-id="model.EntityId"></doc-generator-blocks>
+        </div>
+        <div class="wrapper tab-pane active" ng-show="docGeneratorSidebarCtrl.current_tab === 4">
+          <doc-generator-model-style model="currentPage"></doc-generator-model-style>
+        </div>
+      </div>
+    </section>
+  </div>
+</aside>

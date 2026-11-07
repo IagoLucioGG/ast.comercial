@@ -1,0 +1,91 @@
+<span ng-show="disabled">
+  <input ng-disabled="disabled" class="form-control input-sm" />
+</span>
+<span ng-show="!disabled">
+
+  <tags-input ng-class="{'has-tags': model.length && list}"
+              uib-popover-template="selectTagCtrl.popoverTemplate"
+              popover-enable="selectTagCtrl.isOpen"
+              popover-trigger="none"
+              popover-append-to-body="true"
+              popover-placement="auto right"
+              popover-title="Criar"
+              ng-model="model"
+              key-property="Id"
+              display-property="{{displayProperty}}"
+              add-from-autocomplete-only="true"
+              template="item-template"
+              placeholder="Adicionar..."
+              replace-spaces-with-dashes="false"
+              min-tags="{{required ? '1' : '0'}}"
+              min-length="1"
+              ng-blur="selectTagCtrl.leftoverTextValidation(false)"
+              ng-focus="selectTagCtrl.leftoverTextValidation(true)"
+              on-tag-adding="selectTagCtrl.checkNew($tag)"
+              on-tag-added="selectTagCtrl.insertNewTag($tag)"
+              on-tag-removed="selectTagCtrl.removeTag($tag)">
+
+
+      <auto-complete source="selectTagCtrl.filterByQuery($query)"
+                     scroll-source="selectTagCtrl.infiniteScroll()"
+                     template="auto-complete-template"
+                     load-on-focus="true"
+                     min-length="0"
+                     debounce-delay="300"
+                     highlight-matched-text="false"
+                     select-first-match="false"></auto-complete>
+
+  </tags-input>
+
+  <script type="text/ng-template" id="auto-complete-template">
+    <div class="left-panel">
+      <img ng-if="data.AvatarUrl" ng-src="{{data.AvatarUrl}}" class="mini-avatar">
+      <i ng-if="!data.AvatarUrl && data.TypeId === 2" class="fal fa-user"></i>
+      <i ng-if="!data.AvatarUrl && data.TypeId === 1" class="fal fa-industry"></i>
+      <i ng-if="!data.AvatarUrl && data.EntityId" class="fas fa-tag" style="color: {{data.Color}}"></i>
+      <span>
+        <strong>{{data.NewItem}}</strong>{{data.display}}
+      </span>
+      <div ng-if="data.Pipeline" class="text-muted text-small">Funil : {{data.Pipeline.Name}}</div>
+      <div ng-if="data.Register && data.TypeId === 1" class="text-muted text-small">CNPJ: {{data.Register}}</div>
+      <div ng-if="data.Company && data.TypeId === 2" class="text-muted text-small">Empresa: {{data.Company.Name}}</div>
+      <div ng-if="data.State || data.Country" class="text-muted text-small">{{data.State.Name}}, {{data.Country.Name}}</div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="item-template">
+    <span ng-if="list">
+      <div class="text-darkest-neutral font-bold table-cell-align-top">
+        <img ng-if="data.AvatarUrl" ng-src="{{data.AvatarUrl}}" class="avatar-timeline">
+        <i ng-if="!data.AvatarUrl && data.TypeId === 2" class="fal fa-user"></i>
+        <i ng-if="!data.AvatarUrl && data.TypeId === 1" class="fal fa-industry"></i>
+        <i ng-if="!data.AvatarUrl && data.EntityId" class="fas fa-tag" style="color: {{data.Color}}"></i>
+        <span class="align-middle">{{data.display}}</span>
+        <i class="fas fa-times remove-button-class" ng-click="$removeTag()"></i>
+      </div>
+    </span>
+    <span ng-if="!list">
+      <a href class="light-badge neutral-content badge-border" style="float:left;">
+    		<div class="text-darkest-neutral font-bold table-cell-align-top">
+    			<img ng-if="data.AvatarUrl" ng-src="{{data.AvatarUrl}}" class="avatar-timeline">
+          <i ng-if="!data.AvatarUrl && data.TypeId === 2" class="fal fa-user"></i>
+          <i ng-if="!data.AvatarUrl && data.TypeId === 1" class="fal fa-industry"></i>
+          <i ng-if="!data.AvatarUrl && data.EntityId" class="fas fa-tag" style="color: {{data.Color}}"></i>
+    			<span class="align-middle">{{data.display}}</span>
+          <i class="fas fa-times remove-button-class" ng-click="$removeTag()"></i>
+    		</div>
+    	</a>
+    </span>
+  </script>
+
+  <script type="text/ng-template" id="new-item-template">
+    <div ng-show="selectTagCtrl.isOpen" ng-form name="inline_new_form">
+      <forms model="selectTagCtrl.new_model" fields="selectTagCtrl.form" form="inline_new_form"></forms>
+      <button type="button" class="button button-action mleft15" ng-disabled="selectTagCtrl.loading" ng-click="selectTagCtrl.submitControl(selectTagCtrl.new_model, inline_new_form)" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+      <button type="button" class="button button-white" ng-disabled="selectTagCtrl.loading" ng-click="selectTagCtrl.cancel()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+      <span class="text-danger font-very-big" ng-if="inline_new_form.$submitted && inline_new_form.$invalid" type="button" tooltip-placement="top" uib-tooltip="{{ 'FORMS.REQUIRED_FIELDS_NOT_FILLED' | translate }}"><i class="fas fa-exclamation-triangle"></i></span>
+      <div class="loader" ng-if="selectTagCtrl.loading"></div>
+    </div>
+  </script>
+
+</span>

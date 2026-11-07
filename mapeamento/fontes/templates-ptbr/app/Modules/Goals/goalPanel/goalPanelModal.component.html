@@ -1,0 +1,44 @@
+<dynamic-modal
+  modal-id="report-panel"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="{{ ($ctrl.editing ? 'GOALS.GOALS_PANEL.EDIT_PANEL_TITLE' : 'GOALS.GOALS_PANEL.NEW_PANEL_TITLE') | translate }}"
+  cypress-prefix="goal-panel-modal"
+  toggle-modal="$ctrl.toggle_modal"
+  ng-form="panel_form"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox scroll-shadow neutral-shadow">
+      <section class="scrollable scroll-shadow-container" ng-if="$ctrl.can_load">
+        <div class="modal-body-no-padding">
+          <div class="gap-15"></div>
+          <form class="clearfix">
+            <div  ng-class="{'invalid-input': $ctrl.invalid_format}">
+              <forms model="$ctrl.front_panel" fields="$ctrl.panel_fields" form="panel_form"></forms>
+            </div>
+            <allowed-users ng-if="$ctrl.allowed_users_object" model="$ctrl.allowed_users_object" title="('GOALS.GOALS_PANEL.ALLOWED_USERS_TITLE' | translate)">
+            </allowed-users>
+          </form>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+
+    <aside class="v-middle text-left" ng-if="$ctrl.editing">
+      <a href class="button button-white" ng-click="$ctrl.deletePanel()"
+        ng-click-confirm="excluir este painel?" reversible="false">
+        <span class="font-big">
+          <i class="fal fa-trash"></i>
+        </span>
+      </a>
+    </aside>
+    <aside class="v-middle">
+      <button ng-click="$ctrl.submitControl(panel_form)" href
+        class="btn button button-action btn-sm pull-right">{{($ctrl.editing ? 'GENERICS.SAVE' : 'GOALS.GOALS_PANEL.CREATE_PANEL') | translate}}</button>
+      <loading-tooltip loading="$ctrl.loading" form="panel_form"></loading-tooltip>
+    </aside>
+  </modal-footer>
+</dynamic-modal>

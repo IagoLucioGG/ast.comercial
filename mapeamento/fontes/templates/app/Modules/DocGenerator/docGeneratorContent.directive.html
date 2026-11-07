@@ -1,0 +1,55 @@
+<div class="vbox tab-header ">
+    <section class="scrollable" ng-class="{'darkest-background': docGeneratorContentCtrl.creating_block}">
+      <standard-loader ng-show="!docGeneratorContentCtrl.ckeditor_loaded" loading="!docGeneratorContentCtrl.ckeditor_loaded"></standard-loader>
+      <div class="wrapper" ng-if="docGeneratorContentCtrl.initial_load && !docGeneratorContentCtrl.creating_block">
+        <div class="gap-20" ng-show="docGeneratorContentCtrl.initial_load && !docGeneratorContentCtrl.creating_block && docGeneratorContentCtrl.ckeditor_loaded"></div>
+        <div class="panel width-800 margin-auto overflow-hidden" ng-show="docGeneratorContentCtrl.ckeditor_loaded">
+          <div id="header" class="header-footer-reset-style" ng-if="model.HeaderSourceCode" ng-bind-html="docGeneratorContentCtrl.header_code"></div>
+          <div class="doc-body" ng-style="{'padding': model.TopMargin + 'mm ' + model.SideMargin + 'mm ' + model.BottomMargin + 'mm ' + model.SideMargin + 'mm'}">
+            <textarea ng-model="model.BodySourceCode" pl-ckeditor="docGeneratorContentCtrl.options" ckeditor-loaded="docGeneratorContentCtrl.ckeditor_loaded" skip-validation="editingHtml" class="form-control no-textarea-border" height="100%"></textarea>
+          </div>
+          <div id="footer" class="header-footer-reset-style" ng-if="model.FooterSourceCode" ng-bind-html="docGeneratorContentCtrl.footer_code"></div>
+        </div>
+      </div>
+      <div class="wrapper" ng-if="docGeneratorContentCtrl.initial_load && docGeneratorContentCtrl.creating_block">
+        <div ng-show="docGeneratorContentCtrl.ckeditor_loaded">
+          <div class="width-800 margin-auto regular-header b-1 panel regular-background">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <div class="simple-inline width-250 v-bottom">
+                  <input
+                    class="form-control input-sm"
+                    ng-if="!docGeneratorContentCtrl.editing_header && !docGeneratorContentCtrl.editing_footer && !docGeneratorContentCtrl.editing_cover"
+                    ng-model="docGeneratorContentCtrl.block_model.Name"
+                    placeholder="Nome do bloco">
+                  <input
+                    class="form-control input-sm"
+                    ng-if="docGeneratorContentCtrl.editing_header || docGeneratorContentCtrl.editing_footer || docGeneratorContentCtrl.editing_cover"
+                    placeholder="{{ (docGeneratorContentCtrl.editing_header ? 'DOC_GENERATOR.HEADER' : (docGeneratorContentCtrl.editing_cover ? 'DOC_GENERATOR.COVER' : 'DOC_GENERATOR.FOOTER')) | translate}}"
+                    ng-disabled="true">
+                </div>
+              </aside>
+              <aside class="v-middle">
+                <a class="button button-action pull-right" href ng-click="docGeneratorContentCtrl.saveBlock()">
+                  {{ 'GENERICS.SAVE' | translate }}
+                </a>
+                <a class="button button-delete pull-right" href ng-if="!docGeneratorContentCtrl.editing_header && !docGeneratorContentCtrl.editing_footer && !docGeneratorContentCtrl.editing_cover" ng-click="docGeneratorContentCtrl.deleteBlock()" ng-show="docGeneratorContentCtrl.editing">
+                  {{ 'GENERICS.DELETE' | translate }}
+                </a>
+                <a class="button button-neutral pull-right" href ng-click="docGeneratorContentCtrl.cancelBlock()">
+                  {{ 'GENERICS.CANCEL' | translate }}
+                </a>
+              </aside>
+            </div>
+          </div>
+          <div class="gap-20"></div>
+          <div class="panel width-800 margin-auto overflow-hidden">
+            <textarea ng-if="!docGeneratorContentCtrl.editing_header && !docGeneratorContentCtrl.editing_footer && !docGeneratorContentCtrl.editing_cover" ng-model="docGeneratorContentCtrl.block_model.BodySourceCode" pl-ckeditor="docGeneratorContentCtrl.options" ckeditor-loaded="docGeneratorContentCtrl.ckeditor_loaded" class="form-control" height="100%"></textarea>
+            <textarea ng-if="docGeneratorContentCtrl.editing_header" ng-model="docGeneratorContentCtrl.block_model.HeaderSourceCode" pl-ckeditor="docGeneratorContentCtrl.options" ckeditor-loaded="docGeneratorContentCtrl.ckeditor_loaded" class="form-control" height="100%"></textarea>
+            <textarea ng-if="docGeneratorContentCtrl.editing_footer" ng-model="docGeneratorContentCtrl.block_model.FooterSourceCode" pl-ckeditor="docGeneratorContentCtrl.options" ckeditor-loaded="docGeneratorContentCtrl.ckeditor_loaded" class="form-control" height="100%"></textarea>
+            <textarea ng-if="docGeneratorContentCtrl.editing_cover" ng-model="docGeneratorContentCtrl.block_model.CoverSourceCode" pl-ckeditor="docGeneratorContentCtrl.options" ckeditor-loaded="docGeneratorContentCtrl.ckeditor_loaded" class="form-control" height="100%"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>

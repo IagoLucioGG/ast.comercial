@@ -1,0 +1,252 @@
+<div class="hbox stretch deals-page">
+  <aside>
+    <div class="vbox small-header">
+      <header class="regular-header new-header b-b-1">
+        <div class="d-flex justify-content-between h-100 align-items-center flex-nowrap">
+          <div class="d-flex" ng-if="dealsCtrl.initial_load && (dealsCtrl.has_pipelines || dealsCtrl.isAllDealsPage)">
+            <pipeline-pocket-selector
+              current-view="dealsCtrl.current_view"
+              selected-pipeline="dealsCtrl.current_pipeline.original_pipeline"
+              pipelines="dealsCtrl.active_pipelines"
+              loading-pipelines="dealsCtrl.loadingPipelines"
+              ></pipeline-pocket-selector>
+            <div ng-if="dealsCtrl.initial_load && (dealsCtrl.has_pipelines || dealsCtrl.isAllDealsPage)" class="d-flex input-group deal-group-input-search pull-left position-relative top1" tooltip-placement="right" uib-tooltip="{{ dealsCtrl.quickSearchTooltipText }}">
+              <input class="form-control input-sm light-background border-color-transparent" placeholder="{{ dealsCtrl.quickSearchPlaceholderText }}" ng-model="dealsCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? dealsCtrl.quickFilter(dealsCtrl.quick_filter) : dealsCtrl.onTypeQuickFilter(dealsCtrl.quick_filter)" data-cy="deals-quick-filter-input">
+              <div class="input-group-btn w-auto">
+                <a class="btn button button-neutral-gray special-search-button" ng-click="dealsCtrl.quickFilter(dealsCtrl.quick_filter)">
+                  <i class="fas fa-search text-neutral"></i>
+                </a>
+              </div>
+            </div>
+            <div class="pull-left mtop7-side5" ng-if="dealsCtrl.initial_load && (dealsCtrl.has_pipelines || dealsCtrl.isAllDealsPage)">
+            </div>
+          </div>
+          <div class="d-flex flex-nowrap" style="flex-shrink: 0">
+            <div class="d-flex" ng-if="dealsCtrl.initial_load && (dealsCtrl.has_pipelines || dealsCtrl.isAllDealsPage)">
+              <div class="dropdown">
+                <a href ng-hide="dealsCtrl.current_view === 'table' || dealsCtrl.current_view === 'quotetable' || dealsCtrl.current_view === 'quoteproducttable'" class="dropdown-toggle button button-white-no-border pull-right" type="button" id="population-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-cy="deals-dropdown-display">
+                  <span class="text-action"><i class="fal fa-eye button-icon"></i></span>
+                    {{ 'DEALS.SHOW' | translate }}
+                    <i class="fal fa-angle-down dropdown-sign"></i>
+                </a>
+                <ul class="dropdown-max-height dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="population-list">
+                  <div class="dropdown-subtitle" data-cy="deals-dropdown-display-subtitle">
+                    {{ 'DEALS.DEALS_STATUS' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+                  </div>
+                  <li>
+                    <a class="white-dropdown-link" ng-click="dealsCtrl.in_progress_only = !dealsCtrl.in_progress_only; dealsCtrl.changePopulation(1); $event.stopPropagation()">
+                      <div class="hbox">
+                        <aside class="width-20 v-middle">
+                          <span ng-show="dealsCtrl.in_progress_only">
+                            <i class="fas fa-check"></i>
+                          </span>
+                        </aside>
+                        <aside class="font-semi-big v-middle">
+                          {{ 'DEALS.IN_PROGRESS_DEALS' | translate }}
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="white-dropdown-link" ng-click="dealsCtrl.won_only = !dealsCtrl.won_only; dealsCtrl.changePopulation(2); $event.stopPropagation()">
+                      <div class="hbox">
+                        <aside class="width-20 v-middle">
+                          <span ng-show="dealsCtrl.won_only">
+                            <i class="fas fa-check"></i>
+                          </span>
+                        </aside>
+                        <aside class="font-semi-big v-middle">
+                          {{ 'DEALS.WON_DEALS' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="white-dropdown-link" ng-click="dealsCtrl.lost_only = !dealsCtrl.lost_only; dealsCtrl.changePopulation(3); $event.stopPropagation()">
+                      <div class="hbox">
+                        <aside class="width-20 v-middle">
+                          <span ng-show="dealsCtrl.lost_only">
+                            <i class="fas fa-check"></i>
+                          </span>
+                        </aside>
+                        <aside class="font-semi-big v-middle">
+                          {{ 'DEALS.LOST_DEALS' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                  <div class="dropdown-subtitle">
+                    {{ 'DEALS.DEALS_OWNERS' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+                  </div>
+                  <li>
+                    <a class="white-dropdown-link" ng-click="dealsCtrl.user_only = !dealsCtrl.user_only; dealsCtrl.changePopulation(4); $event.stopPropagation()">
+                      <div class="hbox">
+                        <aside class="width-20 v-middle">
+                          <span ng-show="dealsCtrl.user_only">
+                            <i class="fas fa-check"></i>
+                          </span>
+                        </aside>
+                        <aside class="font-semi-big v-middle">
+                          {{ 'DEALS.MY_DEALS' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="white-dropdown-link"
+                      ng-if="dealsCtrl.self.Profile.DealsView < 3 || (dealsCtrl.self.Profile.DealsView === 3 && dealsCtrl.self.Profile.DealsContactsView)"
+                      ng-click="dealsCtrl.others_only = !dealsCtrl.others_only; dealsCtrl.changePopulation(5); $event.stopPropagation()">
+                      <div class="hbox">
+                        <aside class="width-20 v-middle">
+                          <span ng-show="dealsCtrl.others_only">
+                            <i class="fas fa-check"></i>
+                          </span>
+                        </aside>
+                        <aside class="font-semi-big v-middle">
+                          {{ 'DEALS.OTHERS_DEALS' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                  <div class="dropdown-subtitle">
+                    {{ 'DEALS.DEAL_ORDINATIONS' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+                  </div>
+                  <li ng-repeat="ordination in dealsCtrl.funnel_ordinations">
+                    <a class="white-dropdown-link" ng-click="dealsCtrl.ordination_buffer = ordination; dealsCtrl.changeOrdination(ordination); $event.stopPropagation()">
+                      <div class="hbox">
+                        <aside class="width-20 v-middle">
+                          <span ng-show="dealsCtrl.ordination_buffer.Name === ordination.Name">
+                            <i class="fas fa-check"></i>
+                          </span>
+                        </aside>
+                        <aside class="font-semi-big v-middle">
+                          {{ordination.Name}}
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="dropdown">
+                <filters-menu dynamic-enable-tooltip="true" custom-class="deals-filter-menu" filters="dealsCtrl.filters" applied-filter="dealsCtrl.applied_filter" filter-actions-fn="dealsCtrl.filterActions"></filters-menu>
+              </div>
+              <div class="dropdown" ng-if="dealsCtrl.current_pipeline.pipeline.allow_table_view && dealsCtrl.current_pipeline.pipeline.allow_funnel_view">
+                <a href 
+                  id="deal_views"
+                  data-cy="deals-view-mode-button"
+                  role="button"
+                  type="button"
+                  class="dropdown-toggle button button-white-no-border pull-right"
+                  aria-label="{{ 'ARIA_LABELS.DEAL.CHANGE_DEAL_VISUALIZATION_BUTTON' | translate_sentence }}"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="true"
+                >
+                  <ng-switch on="dealsCtrl.current_view">
+                    <span role="option" ng-switch-when="table" aria-label="{{ 'ARIA_LABELS.DEAL.TABLE_VIEW_BUTTON' | translate }}" data-cy="deals-pipeline-view-mode-table">
+                      <span class="text-action"><i class="fal fa-table button-icon"></i></span>
+                      {{ 'DEALS.TABLE' | translate }}
+                    </span>
+                    <span role="option" ng-switch-when="funnel" aria-label="{{ 'ARIA_LABELS.DEAL.PIPELINE_VIEW_BUTTON' | translate }}" data-cy="deals-pipeline-view-mode-funnel">
+                      <span class="text-action"><i class="fal fa-columns button-icon"></i></span>
+                      {{ 'DEALS.FUNNEL' | translate }}
+                    </span>
+                  </ng-switch>
+                  <i class="fal fa-angle-down dropdown-sign"></i>
+                </a>
+                <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+                  <div class="dropdown-subtitle">
+                    {{ 'DEALS.VISUALIZATION_MODE' | translate }}
+                  </div>
+                  <li>
+                    <a href class="white-dropdown-link" aria-label="{{ 'ARIA_LABELS.DEAL.TABLE_VIEW_BUTTON' | translate }}" ng-show="dealsCtrl.current_view !== 'table'" ng-click="dealsCtrl.changeVisualization('table')" data-cy="deals-view-table-mode">
+                      <div class="hbox">
+                        <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                          <span class="text-neutral">
+                            <i class="fal fa-table simple-line list-simple-line"></i>
+                          </span>
+                        </aside>
+                        <aside class="v-middle">
+                          <span>{{ 'DEALS.TABLE' | translate }}</span>
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href class="white-dropdown-link" aria-label="{{ 'ARIA_LABELS.DEAL.PIPELINE_VIEW_BUTTON' | translate }}" ng-show="dealsCtrl.current_view !== 'funnel'" ng-click="dealsCtrl.changeVisualization('funnel')" data-cy="deals-view-funnel-mode">
+                      <div class="hbox">
+                        <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                          <span class="text-neutral">
+                            <i class="fal fa-columns simple-line list-simple-line"></i>
+                          </span>
+                        </aside>
+                        <aside class="v-middle">
+                            <span>{{ 'DEALS.FUNNEL' | translate }}</span>
+                        </aside>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <a id="deals-menu-button" class="button button-white-no-border" open-side-menu side-menu-id="deal_side_menu" ng-if="dealsCtrl.show_menu" data-cy="deals-menu">
+                <span class="text-action">
+                  <i class="fal fa-cog button-icon"></i>
+                </span>
+                {{ 'GENERICS.MENU' | translate }}
+              </a>
+            </div>
+            <button role="button"
+              aria-label="{{ 'ARIA_LABELS.DEAL.NEW_DEAL_BUTTON' | translate_sentence }}"
+              ng-if="dealsCtrl.self.Profile.DealsCreatePermission && (dealsCtrl.has_pipelines || dealsCtrl.isAllDealsPage)" 
+              class="button button-action pull-right nowrap" 
+              ng-click="dealsCtrl.goToNewDeal()" 
+              data-cy="deals-btn-new-deal"
+              uib-tooltip="{{ dealsCtrl.newDealButtonTooltip }}" 
+              tooltip-placement="left" 
+              ng-disabled="!dealsCtrl.hasActivePipeline"
+              ng-class="{disabled: !dealsCtrl.hasActivePipeline}" 
+            >
+              <i class="fas button-icon" ng-class="dealsCtrl.current_pipeline.pipeline_icon.Class"></i>
+              {{ 'DEALS.NEW_DEAL' | translate_sentence : dealsCtrl.current_pipeline.Id }}
+            </button>
+          </div>
+        </div>
+      </header>
+      <section>
+        <div class="vbox side-scroll">
+          <!-- CONTEÚDO DA TELA -->
+          <section class="scrollable regular-background" ui-view="deals-view" ng-if="dealsCtrl.initial_load && (dealsCtrl.has_pipelines || dealsCtrl.isAllDealsPage)"></section>
+          <section ng-if="dealsCtrl.initial_load && dealsCtrl.has_pipelines === false && !dealsCtrl.isAllDealsPage">
+            <div class="vbox side-scroll">
+              <div class="gap-90"></div>
+              <div class="text-center text-neutral-light font-very-big-title">
+                <i class="font-monster-size fad fa-exclamation-triangle"></i>
+                <div class="gap-30"></div>
+                {{ 'DEALS.NO_PIPELINE_SELECTED' | translate_sentence }}
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!--MODALS-->
+      <!-- <new-importation entity="dealsCtrl.main_entity" modal-id="importation" ng-if="dealsCtrl.state.current.name.includes('.dealimportation')"></new-importation> -->
+      <filters-modal
+          ng-if="dealsCtrl.state.current.name.endsWith('filter')"
+          modal-id="filter_modal"
+          entity="dealsCtrl.current_view === 'quotetable' ? dealsCtrl.quote_entity : (dealsCtrl.current_view === 'quoteproducttable' ? dealsCtrl.quote_product_entity : dealsCtrl.main_entity)"
+          remove-simple-filter="dealsCtrl.current_view.includes('quote')"
+          filter-actions-fn="dealsCtrl.filterActions"
+          pipeline-form-id="dealsCtrl.current_pipeline.pipeline_form_id">
+      </filters-modal>
+
+      <!--SIDE-MENU-->
+      <side-menu side-menu-id="deal_side_menu">
+        <deal-side-menu pipelines="dealsCtrl.pipelines" current-pipeline="dealsCtrl.current_pipeline"></deal-side-menu>
+      </side-menu>
+      <!--END OF SIDE-MENU-->
+
+    </div>
+  </aside>
+</div>

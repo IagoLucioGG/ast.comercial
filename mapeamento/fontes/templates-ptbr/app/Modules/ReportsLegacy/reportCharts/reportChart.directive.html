@@ -1,0 +1,27 @@
+<div class="panel white-content position-relative b-1 overflow-hidden new-standard-shadow" ng-mouseover="showEdit = true" ng-mouseout="showEdit = false">
+  <div class="widget-header white-content b-b-1 border-top-fix new-header" ng-class="{'regular-header': chart.TypeId !== 7, 'regular-wrapper': chart.TypeId === 7}">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="font-big font-thin">{{chart.Name}}</div>
+      </aside>   
+      <aside class="v-middle text-right">
+        <div class="no-drag dropdown display-inline-block" ng-show="showEdit">
+          <a class="button button-white-no-border" ng-if="chartCtrl.can_edit_chart" ui-sref="{{'reportslegacy.panel.editchart({chartid: chart.Id})'}}">
+            <span class="font-regular-weight text-action">
+              <i class="fal fa-pen top-fix-icon"></i>
+            </span>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <div class="white-content border-bottom-fix chart-container" ng-class="{'wrapper': chartCtrl.loading}">
+    <standard-loader margin-top="0" loading="chartCtrl.loading" optionalclass="'timeline-loader'"></standard-loader>
+    <div ng-if="chartCtrl.errorLoadingChart" class="p-10 text-center font-big">
+      <span class="text-danger"><i class="fad fa-exclamation-circle"></i></span>&nbsp;Erro de processamento do gráfico
+    </div>
+    <div ng-class="{'deal-funnel-chart-table': chart.TypeId === 8}">
+      <div id="{{'chart_' + chart.Id}}" style="width: '100%'"></div>
+    </div>
+  </div>
+</div>

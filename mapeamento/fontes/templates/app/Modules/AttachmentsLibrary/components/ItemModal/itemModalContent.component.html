@@ -1,0 +1,154 @@
+<div ng-form name="item_model_form" class="ds-item-modal-content" style="height: 100%" ng-class="$ctrl.className">
+  <div class="vbox scroll-shadow neutral-shadow" ng-if="!$ctrl.not_found && $ctrl.can_load" ng-init="$ctrl.item_model_form = item_model_form">
+    <section class="scrollable scroll-shadow-container f-1 fd-col">
+      <div class="d-flex ai-center">
+        <ul class="nav nav-tabs b-b-1 gray-border-tabs arrange-mid f-1 p-15 bg-basic-light-i ai-center" style="height: 65px;" ng-if="$ctrl.is_collection || $ctrl.editing">
+          <div class="f-1 mr-30">
+            <li ng-class="{ 'active': $ctrl.current_tab.Key === tab.Key}" ng-click="$ctrl.changeTab(tab)"
+              ng-repeat="(index, tab) in $ctrl.tabs | filter : { Available: true }">
+              <a 
+                ng-class="text-muted" 
+                href
+                uib-tooltip="{{ tab.Name }}"
+                tooltip-append-to-body="true"
+                tooltip-placement="bottom"
+                tooltip-enable="$ctrl.enableTooltip('tab-' + {{ index }})"
+                id="tab-{{ index }}"
+              >
+                {{ tab.Name }}
+              </a>
+            </li>
+          </div>
+          <div class="d-flex" ng-if="$ctrl.editing">
+            <button-three-dots item="$ctrl.apiItemModel" go-to-edit-attachments="$ctrl.openItemsSelect" file-update-callback="$ctrl.fileUpdateCallback"></button-three-dots>
+          </div>
+        </ul>
+      </div>
+
+      <div ng-if="$ctrl.current_tab.Key === 'items'">
+        <items-grid-angular-wrapper items="$ctrl.selectedItems" go-to-edit-attachments="$ctrl.openItemsSelect"
+          go-to-item="$ctrl.changeItemModal"></items-grid-angular-wrapper>
+      </div>
+
+      <div ng-if="$ctrl.current_tab.Key === 'collections'">
+        <items-grid items="$ctrl.itemCollections" hidden-select="true" items-select-enabled="false"  left-click-callback="$ctrl.changeItemModal">
+        </items-grid>
+      </div>
+
+      <div ng-if="$ctrl.current_tab.Key === 'contacts'" class="tab-grid-container">
+        <entity-table
+          item-id="$ctrl.apiItemModel.Id"
+          entity-id="$ctrl.ENTITIES_ID.CONTACTS"
+          new-item-callback-fn="$ctrl.openEntitySelect">
+        </entity-table>
+      </div>
+
+      <div ng-if="$ctrl.current_tab.Key === 'deals'" class="tab-grid-container">
+        <entity-table
+          item-id="$ctrl.apiItemModel.Id"
+          entity-id="$ctrl.ENTITIES_ID.DEALS"
+          new-item-callback-fn="$ctrl.openEntitySelect">
+        </entity-table>
+      </div>
+
+      <div ng-if="$ctrl.current_tab.Key === 'products'" class="tab-grid-container">
+        <entity-table
+          item-id="$ctrl.apiItemModel.Id"
+          entity-id="$ctrl.ENTITIES_ID.PRODUCTS"
+          new-item-callback-fn="$ctrl.openEntitySelect">
+        </entity-table>
+      </div>
+
+      <div class="f-1 fd-col p-15 form-data" ng-if="$ctrl.current_tab.Key === 'data'">
+        <div ng-repeat="section in $ctrl.sections">
+          <div ng-if="section.Id === 'null'">
+            <forms
+              model="$ctrl.item_model"
+              fields="$ctrl.forms[$index]"
+              form="item_model_form"
+              model-change-callback="$ctrl.modelChangeCallback(new_val, old_val)"
+              watch-field-changes="true">
+            </forms>
+            <div class="gap-20"></div>
+          </div>
+          <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+            <modal-section section-form="item_model_form" name="section.name" section-id="section.Id">
+              <forms
+                model="$ctrl.item_model"
+                fields="$ctrl.forms[$index]"
+                form="item_model_form"
+                model-change-callback="$ctrl.modelChangeCallback(new_val, old_val)"
+                watch-field-changes="true">
+              </forms>
+            </modal-section>
+            <div class="gap-20"></div>
+          </div>
+        </div>
+
+        <div class="permissions mb-30" ng-if="!$ctrl.editing">
+          <span class="fw-400 fs-14 tc-font-light-default">
+            Vínculos
+          </span>
+          <div class="session-bar f-1 mb-15"></div>
+          <div class="f-1 fd-col ai-start">
+            <!-- BTN Attachments -->
+            <div class="button button-white outline ph-10 mb-20" ng-click="$ctrl.openItemsSelect()">
+              <span class="text-action">
+                <i class="fal fa-plus button-icon"></i>
+              </span>
+              {{ $ctrl.getAttachmentButtonContent() }}
+            </div>
+
+            <!-- BTN Contacts -->
+            <!-- <div class="button button-white outline ph-10 mb-20" ng-click="$ctrl.openEntitySelect(1)">
+              <span class="text-action">
+                <i class="fal fa-plus button-icon"></i>
+              </span>
+              {{ $ctrl.selectedLinks.contacts.length > 0 ? $ctrl.selectedLinks.contacts.length : '' }} Clientes
+              {{ $ctrl.selectedLinks.contacts.length > 0 ? 'adicionados, clique para editar' : '' }}
+            </div> -->
+
+            <!-- BTN Deals -->
+            <!-- <div class="button button-white outline ph-10 mb-20" ng-click="$ctrl.openEntitySelect(2)">
+              <span class="text-action">
+                <i class="fal fa-plus button-icon"></i>
+              </span>
+              {{ $ctrl.selectedLinks.deals.length > 0 ? $ctrl.selectedLinks.deals.length : '' }} Negócios
+              {{ $ctrl.selectedLinks.deals.length > 0 ? 'adicionados, clique para editar' : '' }}
+            </div> -->
+
+            <!-- BTN Products -->
+            <!-- <div class="button button-white outline ph-10" ng-click="$ctrl.openEntitySelect(10)">
+              <span class="text-action">
+                <i class="fal fa-plus button-icon"></i>
+              </span>
+              {{ $ctrl.selectedLinks.products.length > 0 ? $ctrl.selectedLinks.products.length : '' }} Produtos
+              {{ $ctrl.selectedLinks.products.length > 0 ? 'adicionados, clique para editar' : '' }}
+            </div> -->
+          </div>
+        </div>
+
+        <div class="permissions mb-30 d-flex" ng-if="$ctrl.editing && !$ctrl.is_collection">
+          <div class="button button-white outline ph-10 mr-15" ng-click="$ctrl.visualizeItem()">
+            <span class="text-action">
+              <i class="fal fa-eye button-icon"></i>
+            </span>
+            <span class="fs-14 text-dark">
+              {{ 'GENERICS.VISUALIZE' | translate }}
+            </span>
+          </div>
+          <div class="d-flex" ng-if="$ctrl.permissionsUser.canEdit">
+            <upload-button
+              file-upload-callback="$ctrl.fileUpdateCallback"
+              max-files="1"
+              button-label="('LIBRARY.ITEM_MODAL.UPDATE_ATTACHMENT' | translate_sentence)">
+            </upload-button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="vbox scroll-shadow neutral-shadow deal-or-contact-domain" ng-if="$ctrl.not_found && $ctrl.can_load">
+    <page-not-found></page-not-found>
+  </div>
+</div>

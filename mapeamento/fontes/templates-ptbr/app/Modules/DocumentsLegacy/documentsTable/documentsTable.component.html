@@ -1,0 +1,11 @@
+<dynamic-tabs ng-if="documentsTableCtrl.initial_load"
+  entity="documentsTableCtrl.mainEntity"
+  filter="documentsTableCtrl.table_filter"
+  tabs="documentsTableCtrl.tabs"
+  current-tab="documentsTableCtrl.currentTab"
+  change-tab-callback="documentsTableCtrl.changeTabCallback(current_tab)"
+  toggle-sidebar="documentsTableCtrl.tableSidebar"
+  toggle-sidebar-callback="documentsTableCtrl.toggleSidebarCallback(toggle)"
+  applied-filter="documentsTableCtrl.appliedFilter"
+  cypress-prefix="documents-table"
+></dynamic-tabs>

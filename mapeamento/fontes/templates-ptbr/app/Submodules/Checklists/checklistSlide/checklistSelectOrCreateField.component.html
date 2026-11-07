@@ -1,0 +1,94 @@
+<div class="hbox">
+  <aside class="width-100">
+    <field-selection
+      is-checklist="$ctrl.isChecklist"
+      field-path-selection-fn="$ctrl.selectField(field, field_path_id)"
+      allowed="$ctrl.allowedEntities"
+      dynamic-label="$ctrl.fieldLabel || 'GENERICS.SELECT_A_FIELD' | translate"
+      skip-pull-right="true"
+      custom-filter-function-fn="$ctrl.filterField(field)"
+      custom-filter-by-entity-functions="$ctrl.customFilterByEntityFunctions"
+      custom-build-group-name-fn="$ctrl.customBuildGroupNameFn"
+      inserted-fields="$ctrl.insertedFields"
+      mapped-fields="$ctrl.mappedFields">
+    </field-selection>
+  </aside>
+
+  <aside
+    class="v-middle text-center width-85 font-thin font-very-big"
+    ng-if="$ctrl.self.Profile.FieldsCreatePermission && !$ctrl.blockFieldCreation">
+    OU
+  </aside>
+
+  <aside ng-if="$ctrl.self.Profile.FieldsCreatePermission && !$ctrl.blockFieldCreation">
+    <div class="dropdown">
+      <a
+        class="dropdown-toggle button button-white"
+        id="filter-list"
+        type="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        uib-popover-template="$ctrl.popoverTemplate"
+        popover-title="Crie um campo novo"
+        popover-append-to-body="true"
+        popover-placement="auto right"
+        popover-is-open="$ctrl.isPopoverOpen"
+        popover-enable="$ctrl.isPopoverOpen"
+        popover-trigger="none">
+        <span class="text-action">
+          <i class="fal fa-plus-square button-icon"></i>
+        </span>
+        Crie um campo novo
+        <i class="fal fa-angle-down dropdown-sign"></i>
+      </a>
+      <ul class="dropdown-menu white-dropdown-menu" aria-labelledby="filter-list">
+        <li ng-repeat="entityObj in $ctrl.allowedEntities">
+          <a
+            href
+            class="white-dropdown-link"
+            ng-if="!$ctrl.quickFieldCreation"
+            ng-click="$ctrl.openFieldConfig(entityObj.entityId, entityObj.default_fieldpath)">
+            <div class="hbox">
+              <aside class="v-middle width-25 text-center">
+                <span class="text-darkest-neutral">
+                  <i ng-class="entityObj.entity_icon" class="fal list-simple-line"></i>
+                </span>
+              </aside>
+              <aside class="v-middle">
+                {{ 'CHECKLISTS.SLIDE.LIST_ITEM.FIELD_OF' | translate_with_replace: { name: entityObj.entity_name } }}
+              </aside>
+            </div>
+          </a>
+
+          <a
+            href
+            class="white-dropdown-link"
+            ng-if="$ctrl.quickFieldCreation"
+            ng-click="$ctrl.openPopover(entityObj)"
+            >
+            <div class="hbox">
+              <aside class="v-middle width-25 text-center">
+                <span class="text-darkest-neutral">
+                  <i ng-class="entityObj.entity_icon" class="fal list-simple-line"></i>
+                </span>
+              </aside>
+              <aside class="v-middle">
+                {{ 'CHECKLISTS.SLIDE.LIST_ITEM.FIELD_OF' | translate_with_replace: { name: entityObj.entity_name } }}
+              </aside>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<script type="text/ng-template" id="checklist-quick-field-template">
+  <div ng-if="$ctrl.isPopoverOpen" ng-form name="quick_field_form">
+    <forms model="$ctrl.new_field_model" fields="$ctrl.new_field_form" form="quick_field_form" formula-trigger-hide-or-disable="true"></forms>
+    <button type="button" class="button button-action mleft15" ng-disabled="$ctrl.loading" ng-click="$ctrl.submitControl($ctrl.new_field_model, quick_field_form)" title="Submit" aria-label="Submit">Salvar</button>
+    <button type="button" class="button button-white" ng-disabled="$ctrl.loading" ng-click="$ctrl.closePopover()" title="Cancel" aria-label="Cancel">Cancelar</button>
+    <loading-tooltip loading="$ctrl.loading" form="quick_field_form"></loading-tooltip>
+  </div>
+</script>

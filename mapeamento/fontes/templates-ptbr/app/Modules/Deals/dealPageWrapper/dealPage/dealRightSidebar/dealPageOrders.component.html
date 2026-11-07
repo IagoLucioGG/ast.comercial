@@ -1,0 +1,33 @@
+<div>
+  <div class="short-side-bottom-wrapper" ng-if="dealPageOrdersCtrl.self.Account.OrdersModule && dealPageOrdersCtrl.self.Profile.OrdersModule && dealPageOrdersCtrl.dealModel.Pipeline.MayCreateOrders">
+    <div class="font-big" ng-if="dealPageOrdersCtrl.orders.length > 0 || dealPageOrdersCtrl.dealModel.StatusId === 2">
+      <span>Vendas</span>
+      <a ng-if="dealPageOrdersCtrl.self.Profile.OrdersCreatePermission && dealPageOrdersCtrl.dealModel.StatusId === 2" class="button button-light-background-border button-plus pull-right" ng-click="dealPageOrdersCtrl.goToNewOrder()" href>
+        <i class="fas fa-plus font-super-super-small text-neutral"></i>
+      </a>
+    </div>
+    <div class="gap-5"></div>
+    <div class="b-t-1 dark-background" ng-if="dealPageOrdersCtrl.orders.length > 0 || dealPageOrdersCtrl.dealModel.StatusId === 2">
+      <div class="gap-5"></div>
+      <div class="deals-scroll">
+        <div ng-repeat="order in dealPageOrdersCtrl.orders" ng-if="dealPageOrdersCtrl.can_load && order">
+          <div class="gap-5"></div>
+          <a class="contact-card panel" ui-sref="{{'order({orderid: order.Id})'}}">
+            <div class="font-semi-big">#{{order.OrderNumber}}</div>
+            <div class="gap-3"></div>
+            <span class="deal-detail">
+              <span class="font-small">{{order.Products.length + " produtos - " + (order.Currency.Symbol || 'R$') + " " + order.Amount.toLocaleString('LANGUAGE' | translate, { minimumFractionDigits: 2})}}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+      <a class="contact-card panel no-quote" ng-click="dealPageOrdersCtrl.goToNewOrder()" href ng-if="dealPageOrdersCtrl.self.Profile.OrdersCreatePermission && dealPageOrdersCtrl.can_load && dealPageOrdersCtrl.orders.length === 0 && dealPageOrdersCtrl.dealModel.StatusId === 2">
+        <div class="font-semi-big">Criar nova venda</div>
+      </a>
+      <span class="contact-card panel no-quote" ng-if="!dealPageOrdersCtrl.self.Profile.OrdersCreatePermission && dealPageOrdersCtrl.can_load && dealPageOrdersCtrl.orders.length === 0 && dealPageOrdersCtrl.dealModel.StatusId === 2">
+        <div class="font-semi-big">Nenhuma venda criada</div>
+      </span>
+      <standard-loader margin-top="15" optionalclass="'timeline-loader'" loading="!dealPageOrdersCtrl.can_load"></standard-loader>
+    </div>
+  </div>
+</div>

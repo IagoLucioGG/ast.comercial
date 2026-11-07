@@ -1,0 +1,32 @@
+<div class="vbox small-header">
+  <header class="regular-header new-header white-content b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="input-group width-250" tooltip-placement="right"
+          uib-tooltip="{{ 'USERS.DEALS_TABLE.SEARCH_TOOLTIP' | translate }}" tooltip-append-to-body="true">
+          <input class="form-control input-sm light-background" placeholder="{{ 'USERS.DEALS_TABLE.SEARCH_PLACEHOLDER' | translate }}"
+            ng-model="userDealsCtrl.quick_filter"
+            ng-keyup="$event.keyCode == 13 ? userDealsCtrl.quickFilter(userDealsCtrl.quick_filter) : userDealsCtrl.onTypeQuickFilter(userDealsCtrl.quick_filter)">
+          <div class="input-group-btn width-10">
+            <a class="btn button button-neutral-gray special-search-button"
+              ng-click="userDealsCtrl.quickFilter(userDealsCtrl.quick_filter)">
+              <i class="fas fa-search text-neutral"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <section>
+    <div class="hbox stretch white-content">
+      <aside class="white-content">
+        <div class="vbox side-scroll">
+          <section class="scrollable">
+            <user-deals-table entity="userDealsCtrl.main_entity" quick-search-string="userDealsCtrl.quick_filter_string"></user-deals-table>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>

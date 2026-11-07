@@ -1,0 +1,112 @@
+<div ng-class="{'wrapper': !skipWrapper}">
+  <div class="panel b-1 white-content medium-shadow filter-generator-table-container">
+    <table class="table table-striped modal-table filter-generator-table">
+      <thead>
+        <tr>
+          <th class="width-10" ng-if="filterGenCtrl.condition_list.length"></th>
+          <th class="break-words" style="width: 70px">Entidade</th>
+          <th class="break-words" style="width: 120px">Campo</th>
+          <th class="break-words" style="width: 100px">Operação</th>
+          <th class="break-words" style="width: 120px">Valor</th>
+          <th class="text-center filter-generator-last-child-header"><a class="button-inherit button-fixed-size button-fixed-size-small" ng-show="$parent.filterContainerCtrl.condition_list.length > 1" ng-click="$parent.filterContainerCtrl.removeOrCondition($parent.$index)"><i class="fal fa-trash"></i></a></th>
+        </tr>
+      </thead>
+      <tbody ui-sortable="filterGenCtrl.options" ng-model="filterGenCtrl.condition_list" class="filter-generator-tbody">
+        <tr ng-repeat="condition in filterGenCtrl.condition_list">
+          <td class="v-middle width-10">
+            <div class="token-drag-indicator muted-token mini-dragger" style="cursor: grab"></div>
+          </td>
+          <td class="break-words" style="width: 100px" aria-label="Entidade: {{condition.condition_name}}">
+            {{condition.condition_name}}
+          </td>
+          <td class="break-words" style="width: 180px" aria-label="Campo: {{condition.field.label}}">
+            {{condition.field.label}}
+          </td>
+          <td class="break-words" style="width: 160px">
+            <select 
+              class="form-control input-sm" 
+              ng-model="condition.operation" 
+              ng-change="filterGenCtrl.onConditionChange(condition)"
+              ng-options="operation.Operation.Name for operation in condition.field.operations track by operation.Operation.Id" 
+              aria-label="Botão de selecionar operação: {{condition.operation.Operation.Name}}"
+            >
+            </select>
+          </td>
+          <td ng-class="{ 'invalid-input': condition.invalidCondition === true }">
+            <new-field ng-if="condition.operation" field="condition.field" model="condition.model" property="condition.field.key" required="false" disabled="condition.field.typeId === 19" wide="false" outside-form="true" hide-label="true" not-suggest-new-item="true" not-trigger-formula="true" ignore-default-values="true" model-change-callback="filterGenCtrl.valueChangeCallback(new_val, old_val, first_trigger, condition)"></new-field>
+          </td>
+          <td class="text-center">
+            <a 
+              class="button-inherit button-fixed-size button-fixed-size-small" 
+              data-cy="{{ 'filter-generator-delete-condition-' + $index }}"
+              ng-click="filterGenCtrl.condition_list.splice($index, 1)" 
+              aria-label="Botão de deletar condição: {condition}"
+            >
+              <i class="fal fa-trash fixing-fixed-size-button"></i>
+            </a>
+          </td>
+        </tr>
+        <tr ng-if="maxQueriesAllowed === undefined || filterGenCtrl.condition_list.length < maxQueriesAllowed">
+          <td class="width-10" ng-if="filterGenCtrl.condition_list.length"></td>
+          <td class="v-top" style="width: 70px">
+            <span ng-repeat="entity in filterGenCtrl.entity_list">
+              <a 
+                class="main-badge b-1"
+                ng-class="entity === filterGenCtrl.selected_entity ? 'neutral-badge' : ''" 
+                ng-click="filterGenCtrl.selected_entity = entity; filterGenCtrl.selected_index = $index" 
+                aria-label="Selecionar Entidade: {{entity.name}}"
+              >
+                {{entity.name}}
+              </a>
+            </span>
+          </td>
+          <td class="v-top" ng-style="{ 'padding-top': filterGenCtrl.selected_index > 0 ? ((filterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }" data-cy="filters-select-fields-input">
+            <select-field
+            model="filterGenCtrl.selected_field"
+            required="(!filterGenCtrl.condition_list.length && invalidFilterLength) || false"
+            not-suggest-new-item="true"
+            item-list="filterGenCtrl.field_exibhition"
+            data-cy="filter-generator-select-field"
+            placeholder="">
+          </select-field>
+          </td>
+          <td class="v-top" ng-style="{ 'padding-top': filterGenCtrl.selected_index > 0 ? ((filterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+            <select aria-label="Botão de selecionar operação" class="form-control input-sm" ng-model="filterGenCtrl.selected_operation" ng-disabled="!filterGenCtrl.selected_field" ng-change="filterGenCtrl.onNewConditionChange(condition)" data-cy="filters-select-condition">
+            <option ng-repeat="operation in filterGenCtrl.selected_field.operations track by operation.Operation.Id" label="{{operation.Operation.Name}}" ng-value="{{operation}}" data-cy="{{'filters-condition-' + operation.Operation.Identifier}}">{{operation.Operation.Name}}</option>
+            </select>
+          </td>
+          <td class="v-top" ng-class="{'invalid-input': filterGenCtrl.hasValueError }" ng-style="{ 'padding-top': filterGenCtrl.selected_index > 0 ? ((filterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+            <new-field ng-if="filterGenCtrl.selected_operation" field="filterGenCtrl.selected_field" model="filterGenCtrl.condition" property="filterGenCtrl.selected_field.key" required="false" disabled="filterGenCtrl.selected_field.typeId === 19" wide="false" outside-form="true" hide-label="true" not-suggest-new-item="true" not-trigger-formula="true" ignore-default-values="true" model-change-callback="filterGenCtrl.onNewConditionValueChange()" data-cy="filters-condition-value"></new-field>
+            <span ng-if="!filterGenCtrl.selected_operation">
+              <input disabled="true" class="form-control input-sm" />
+            </span>
+          </td>
+          <td class="text-center v-top width-40" ng-style="{ 'padding-top': filterGenCtrl.selected_index > 0 ? ((filterGenCtrl.selected_index * 40) + 10) + 'px' : '10px' }">
+            <span
+              class="button-fixed-size button-action button-fixed-size-big"
+              data-cy="filters-add-condition"
+              ng-class="{'disabled': filterGenCtrl.selected_operation === null || filterGenCtrl.selected_operation === undefined}"
+              ng-click="filterGenCtrl.selected_operation && filterGenCtrl.createCondition()"
+              aria-label="Botão de adicionar condição: {condition}"
+              uib-tooltip="Clique para adicionar essa condição"
+              tooltip-append-to-body="true"
+              tooltip-is-open="filterGenCtrl.condition[filterGenCtrl.selected_field.key] !== undefined"
+              tooltip-trigger="none" 
+            >
+              <i class="fas fa-check"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script type="text/ng-template" id="field-item-template">
+  <a class="light-badge neutral-content badge-border pull-left">
+    <div class="text-darkest-neutral font-bold table-cell-align-top">
+      <span class="align-middle">{{data.text}}</span>
+      <i class="fas fa-times" ng-click="$removeTag()"></i>
+    </div>
+  </a>
+</script>

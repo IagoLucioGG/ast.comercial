@@ -1,0 +1,537 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - complementary:
+      - list:
+        - listitem:
+          - link:
+            - /url: ""
+            - complementary: 
+            - complementary: Resumo
+        - listitem:
+          - link:
+            - /url: /goals
+            - complementary: 
+            - complementary: Metas
+    - complementary
+    - complementary:
+      - text: Empresa  Hoje  Contatos de Vendas criados 328  Empresa  Hoje  Propostas geradas 146  Empresa  Hoje  Vendas realizadas 0 
+      - complementary: Publicações
+      - complementary: 
+      - complementary:
+        - link:
+          - /url: /newmessage
+          - complementary: 
+          - complementary: Nova publicação...
+      - complementary:
+        - img
+      - complementary:
+        - link "JEFERSON.ABC":
+          - /url: /user/111617
+        - text:  terça-feira, 27 de outubro às 15:35 *** ATENÇÃO COM OS CONTATOS EM ATRASO E AGENDAS EM BRANCO****
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "BARBARA.MACEIO":
+          - /url: /user/70000551
+        - text:  sexta-feira, 27 de fevereiro às 10:16 Pessoal, fiquem ligados nas propostas de Nuvem em que o cliente já possuia o backup. Agora quando for incluir o item BUNKER precisa ser no tipo de venda 'adesão doada + troca de sistema' e no campo do sistema devolvido indicar o BKP ou a ADM vai mandar voltar a venda.
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "BARBARA.MACEIO":
+          - /url: /user/70000551
+        - text:  segunda-feira, 12 de janeiro às 15:41 Pessoal, o ploomes está dando erro na emissão da proposta. Esperem um pouco + f5 que ela aparece.
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "JORDAO.MACEIO":
+          - /url: /user/70000553
+        - text:  quarta-feira, 10 de dezembro de 2025 às 11:37 *Quer começar 2026 com o melhor* *software de controle e emissão de notas fiscais* *do Brasil, mantendo a tabela de* *2025 durante todo o ano e só se preocupar* *com o pagamento só em Março de 2026?* *Zeramos a mensalidade até lá para você.* Livre-se das gambiarras e comece o ano novo com o caixa tranquilo! Essa condição é a ÚLTIMA chance do ano e não volta mais. Aproveite agora o sistema com mensalidade zerada e tabela de 2025* *Fale comigo agora aqui no WhatsApp 82 98741-0916.*
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "WILSON.GOIANIA":
+          - /url: /user/70000213
+        - text:  terça-feira, 28 de outubro de 2025 às 07:57 "Faça o teu melhor, na condição que você tem, enquanto você não tem condições melhores, para fazer melhor ainda!" Mario Sergio Cortella
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "WILSON.GOIANIA":
+          - /url: /user/70000213
+        - text:  quinta-feira, 15 de maio de 2025 às 08:38 "Se você não está disposto a aprender, ninguém pode ajudá-lo. Se você está determinado a aprender, ninguém pode detê-lo." Zig Ziglar
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "WILSON.GOIANIA":
+          - /url: /user/70000213
+        - text:  terça-feira, 13 de maio de 2025 às 07:56 "A responsabilidade de todos nós é fazer o máximo com o que nós temos" Angelina Jolie
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "WILSON.GOIANIA":
+          - /url: /user/70000213
+        - text: " sexta-feira, 02 de maio de 2025 às 10:22 Todo mês é um recomeço, tipo jogo zerado, Meta nova na tela, coração acelerado. “Mas mês passado eu arrebentei!” — Tá cancelado… Aqui é assim, meu chapa: vendedor não tem passado!"
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "WILSON.GOIANIA":
+          - /url: /user/70000213
+        - text:  sexta-feira, 07 de março de 2025 às 08:14 "Quem não planeja estrategicamente sua semana, não terá resultados no mês e nem o que comemorar no ano" Tiago Brunet
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary:
+        - img
+      - complementary:
+        - link "WILSON.GOIANIA":
+          - /url: /user/70000213
+        - text:  sexta-feira, 07 de fevereiro de 2025 às 07:38 "Nosso futuro é decidido pelas decisões que tomamos e não pelas desculpas que damos" Tiago Brunet
+        - link " 0":
+          - /url: ""
+      - complementary:
+        - link "":
+          - /url: ""
+        - text:  
+      - complementary: Tarefas do dia
+      - complementary
+      - complementary:
+        - text: "Reunião Presencial-Review pós atualização Agendado por: RAYSSA GERMANO DE MORAES DA SILVA DOMINGOS Pessoa: ALTERDATA IMPLANTAÇÃO DO ERP Descrição: Review pós atualização Participantes: email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test  quinta-feira, 22 de agosto de 2024 às 11:00"
+        - link "Visualizar":
+          - /url: /task/700086470
+        - link " 0":
+          - /url: ""
+      - complementary
+      - complementary:
+        - text: "Reunião Gerencial-Validar Atendimentos Ploomes, com correções. Atendimentos: 0035152686 01781503... Agendado por: IAGO LUCIO PEREIRA DE CARVALHO Pessoa: ALTERDATA IMPLANTAÇÃO DO ERP Descrição: Validar Atendimentos Ploomes, com correções. Atendimentos: 0035152686 0178150362 0178032857 Participantes: email.mascarado@exemplo.test email.mascarado@exemplo.test  segunda-feira, 26 de agosto de 2024 às 10:00"
+        - link "Visualizar":
+          - /url: /task/700086868
+        - link " 0":
+          - /url: ""
+      - complementary
+      - complementary:
+        - text: "Reunião Gerencial-Reunião para realizar a apresentação de como foi nosso 1º semestre do ano. Pres... Agendado por: JOÃO VICTOR DE OLIVEIRA VIANA Pessoa: ALTERDATA IMPLANTAÇÃO DO ERP Descrição: Reunião para realizar a apresentação de como foi nosso 1º semestre do ano. Presencial, sexto andar. Sala de reunião. Participantes: email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test  segunda-feira, 26 de agosto de 2024 às 14:30"
+        - link "Visualizar":
+          - /url: /task/700085777
+        - link " 0":
+          - /url: ""
+      - complementary
+      - complementary:
+        - text: "Reunião Gerencial-Reunião para realizar a apresentação de como foi nosso 1º semestre do ano. Pres... Agendado por: JOÃO VICTOR DE OLIVEIRA VIANA Pessoa: ALTERDATA IMPLANTAÇÃO DO ERP Descrição: Reunião para realizar a apresentação de como foi nosso 1º semestre do ano. Presencial, sexto andar. Sala de reunião. Participantes: email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test email.mascarado@exemplo.test  segunda-feira, 26 de agosto de 2024 às 14:30"
+        - link "Visualizar":
+          - /url: /task/700085778
+        - link " 0":
+          - /url: ""
+      - complementary
+      - complementary:
+        - text: "Reunião Gerencial-Reunião para validarmos as configurações da campanha Alter Sale Atendimento Re... Agendado por: IAGO LUCIO PEREIRA DE CARVALHO Pessoa: ALTERDATA IMPLANTAÇÃO DO ERP Descrição: Reunião para validarmos as configurações da campanha Alter Sale Atendimento Relacionado: 0178474364 Participantes: email.mascarado@exemplo.test email.mascarado@exemplo.test  segunda-feira, 09 de setembro de 2024 às 15:00"
+        - link "Visualizar":
+          - /url: /task/700090908
+        - link " 0":
+          - /url: ""
+      - complementary: Situação dos Contatos de Vendas
+      - complementary:
+        - link "Dropdown de 'Ações de filtros'" [expanded]:
+          - /url: ""
+          - text:  Filtros 
+        - link " Funil de vendas " [expanded]:
+          - /url: ""
+        - link " Exibir ":
+          - /url: ""
+      - table:
+        - rowgroup:
+          - row "Estágio Quantidade Valor":
+            - cell
+            - cell "Estágio"
+            - cell "Quantidade"
+            - cell "Valor"
+        - rowgroup:
+          - row "Suspect 🔍 5098 negócios R$ 3.907.374,12":
+            - cell
+            - cell "Suspect 🔍"
+            - cell "5098 negócios"
+            - cell "R$ 3.907.374,12"
+          - row "Prospect 🚀 875 negócios R$ 934.942,68":
+            - cell
+            - cell "Prospect 🚀"
+            - cell "875 negócios"
+            - cell "R$ 934.942,68"
+          - row "Demonstração 💵 1173 negócios R$ 4.491.018,07":
+            - cell
+            - cell "Demonstração 💵"
+            - cell "1173 negócios"
+            - cell "R$ 4.491.018,07"
+          - row "Negociação final 📅 707 negócios R$ 7.431.631,44":
+            - cell
+            - cell "Negociação final 📅"
+            - cell "707 negócios"
+            - cell "R$ 7.431.631,44"
+          - row "Fechamento ✅ 35 negócios R$ 95.307,80":
+            - cell
+            - cell "Fechamento ✅"
+            - cell "35 negócios"
+            - cell "R$ 95.307,80"
+          - 'row "Ganho 49625 negócios (Taxa de conversão: 26,54 %) R$ 61.330.961,29"':
+            - cell
+            - cell "Ganho"
+            - 'cell "49625 negócios (Taxa de conversão: 26,54 %)"'
+            - cell "R$ 61.330.961,29"
+          - row "Perdido 129470 negócios R$ 140.523.453,91":
+            - cell
+            - cell "Perdido"
+            - cell "129470 negócios"
+            - cell "R$ 140.523.453,91"
+          - row "186983 Negócios R$ 218.714.689,31":
+            - cell
+            - cell
+            - cell "186983 Negócios"
+            - cell "R$ 218.714.689,31"
+    - complementary:
+      - complementary: Atividades
+      - complementary:  Todas as atividades 
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 20:00
+          - button
+          - button
+          - text: Simples
+          - strong: Resumo do Contato
+          - text: "Produto: ERP For Me Observação: Possui Negócio? Sim, já tenho Referência: Plataforma: instagram | Campanha: [E.D] C8 - FORM GERAL - CERTO | Nome do Formulário: [erp-for-me][forms padrão] [E.D] - FORM1 - LÓGICA NÍVEL 1 Data Contato: 06/11/2026 20:00 Origem da campanha: Patrocinado - social_ads"
+          - strong: "Dados do Contato:"
+          - text: "Nome: Verenice Elisa E-mail: email.mascarado@exemplo.test Telefone: 21971396994 CEP: 28992090 Cidade: SAQUAREMA Estado: RJ Visualizar"
+          - link " Verenice Elisa":
+            - /url: /contact/700297156
+          - link " Pedido Demonstração - MARKETING":
+            - /url: /deal/700226683
+          - text:  0  06/11/2026
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 20:00 Negócio Pedido Demonstração - MARKETING criado. Visualizar
+          - link " Verenice Elisa":
+            - /url: /contact/700297156
+          - link " Pedido Demonstração - MARKETING":
+            - /url: /deal/700226683
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 20:00 Pessoa Verenice Elisa criada. Visualizar
+          - link " Verenice Elisa":
+            - /url: /contact/700297156
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Facileads":
+            - /url: /user/70001013
+          - text:  Hoje às 19:53
+          - button
+          - button
+          - text: "Simples 📋 Lead cadastrado via FaciLeads Deal ID: 700226682 Título: EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Simone Pipeline: FUNIL DE EVENTOS Login: PABLO.MANAUS Data/Hora: 06/11/2026 19:53:57 Origem: FaciLeads 📝 Observações: Visitou nosso stand e utiliza um sistema bem ruim, procura de novo sistema para empresa onde trabalha.  Cadastro de evento Visualizar"
+          - link " Simone":
+            - /url: /contact/700297154
+          - link " EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Simone":
+            - /url: /deal/700226682
+          - text:  0  06/11/2026
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Facileads":
+            - /url: /user/70001013
+          - text:  Hoje às 19:53 Negócio EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Simone criado. Visualizar
+          - link " Simone":
+            - /url: /contact/700297154
+          - link " EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Simone":
+            - /url: /deal/700226682
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 19:52
+          - button
+          - button
+          - text: Simples
+          - strong: Resumo do Contato
+          - text: "Produto: NF Stock Observação: OBS: Referência: Plataforma: facebook | Campanha: [E.D] C2 - ALTERSALES 2026 | Nome do Formulário: [nfstock][NFSTOCK][E.D] ALTERSALES - NÍVEL 02 Data Contato: 06/11/2026 19:52 Origem da campanha: Patrocinado - social_ads"
+          - strong: "Dados do Contato:"
+          - text: "Nome: Olavo Pereira de Araújo E-mail: email.mascarado@exemplo.test Telefone: 84981526564 CEP: 59621110 Cidade: MOSSORO Estado: RN Visualizar"
+          - link " Olavo Pereira de Araújo":
+            - /url: /contact/700297155
+          - link " Pedido Demonstração - MARKETING":
+            - /url: /deal/700226681
+          - text:  0  06/11/2026
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 19:52 Negócio Pedido Demonstração - MARKETING criado. Visualizar
+          - link " Olavo Pereira de Araújo":
+            - /url: /contact/700297155
+          - link " Pedido Demonstração - MARKETING":
+            - /url: /deal/700226681
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 19:52 Pessoa Olavo Pereira de Araújo criada. Visualizar
+          - link " Olavo Pereira de Araújo":
+            - /url: /contact/700297155
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Facileads":
+            - /url: /user/70001013
+          - text:  Hoje às 19:52 Pessoa Simone criada. Visualizar
+          - link " Simone":
+            - /url: /contact/700297154
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Facileads":
+            - /url: /user/70001013
+          - text:  Hoje às 19:50
+          - button
+          - button
+          - text: "Simples 📋 Lead cadastrado via FaciLeads Deal ID: 700226680 Título: EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Juliana Pipeline: FUNIL DE EVENTOS Login: ANICE.MANAUS Data/Hora: 06/11/2026 19:50:50 Origem: FaciLeads 📝 Observações: visitou nosso stand e se interessou, entrar em contato e agendar demonstração.  Cadastro de evento Visualizar"
+          - link " Juliana":
+            - /url: /contact/700297153
+          - link " EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Juliana":
+            - /url: /deal/700226680
+          - text:  0  06/11/2026
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Facileads":
+            - /url: /user/70001013
+          - text:  Hoje às 19:50 Negócio EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Juliana criado. Visualizar
+          - link " Juliana":
+            - /url: /contact/700297153
+          - link " EVENTO - 2026 - VI CONVENÇÃO DO AMAZONAS - Juliana":
+            - /url: /deal/700226680
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Facileads":
+            - /url: /user/70001013
+          - text:  Hoje às 19:49 Pessoa Juliana criada. Visualizar
+          - link " Juliana":
+            - /url: /contact/700297153
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "RAFAELA.RIO":
+            - /url: /user/70001023
+          - text:  Hoje às 19:28
+          - button
+          - button
+          - text: Simples SEGUNDA DEMO PRESENCIAL COM SULLEN AGENDADA PARA O DIA 23/11  Agendamentos Comerciais  Demo presencial Visualizar
+          - link " Marcos":
+            - /url: /contact/700283035
+          - link " 2026/11/23 Nov 10:00 || Pedido Demonstração - MARKETING":
+            - /url: /deal/700211225
+          - text:  0  06/11/2026
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "ALISON.SALVADOR":
+            - /url: /user/70001114
+          - text:  Hoje às 19:18 Negócio TEXCONT criado. Visualizar
+          - link " TEXCONT":
+            - /url: /contact/700268745
+          - link " TEXCONT":
+            - /url: /deal/700226679
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "ALISON.SALVADOR":
+            - /url: /user/70001114
+          - text:  Hoje às 19:17 Negócio 2026/11/06 Nov s/h || CPJ ASSESSORIA CONTABIL desqualificado - R$ 0,00 - _Sem interesse. Visualizar
+          - link " CPJ ASSESSORIA CONTABIL":
+            - /url: /contact/13006728
+          - link " 2026/11/06 Nov s/h || CPJ ASSESSORIA CONTABIL":
+            - /url: /deal/700226678
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "ALISON.SALVADOR":
+            - /url: /user/70001114
+          - text:  Hoje às 19:17
+          - button
+          - button
+          - text: Simples Durante a visita, o responsável pelo escritório não estava presente. Fui atendido e me foi disponibilizado um contato para tentar estabelecer uma comunicação posteriormente, porém ainda não obtive retorno. Foi deixado um folheto institucional com informações sobre a Mandala e os serviços disponíveis no site da Alterdata.  Contato Inicial Visualizar
+          - link " CPJ ASSESSORIA CONTABIL":
+            - /url: /contact/13006728
+          - link " 2026/11/06 Nov s/h || CPJ ASSESSORIA CONTABIL":
+            - /url: /deal/700226678
+          - text:  0  03/11/2026
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "ALISON.SALVADOR":
+            - /url: /user/70001114
+          - text:  Hoje às 19:15 Negócio 2026/11/06 Nov s/h || CPJ ASSESSORIA CONTABIL criado. Visualizar
+          - link " CPJ ASSESSORIA CONTABIL":
+            - /url: /contact/13006728
+          - link " 2026/11/06 Nov s/h || CPJ ASSESSORIA CONTABIL":
+            - /url: /deal/700226678
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 19:10
+          - button
+          - button
+          - text: Simples
+          - strong: Resumo do Contato
+          - text: "Produto: Contábil First Observação: a Referência: Plataforma: instagram | Campanha: [E][LEADS] [CONTABIL-FIRST] [2026] | Nome do Formulário: [contabil-first][CONTÁBIL][E.D] FORM 5 - CONTÁBIL FIRST- 02 Data Contato: 06/11/2026 19:09 Origem da campanha: Patrocinado - social_ads"
+          - strong: "Dados do Contato:"
+          - text: "Nome: João Vitor E-mail: email.mascarado@exemplo.test Telefone: 12991104401 CEP: 12081290 Cidade: TAUBATE Estado: SP Visualizar"
+          - link " João Vitor":
+            - /url: /contact/700297152
+          - link " Pedido Demonstração - MARKETING":
+            - /url: /deal/700226677
+          - text:  0  06/11/2026
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 19:10 Negócio Pedido Demonstração - MARKETING criado. Visualizar
+          - link " João Vitor":
+            - /url: /contact/700297152
+          - link " Pedido Demonstração - MARKETING":
+            - /url: /deal/700226677
+      - complementary: 
+      - complementary:
+        - complementary:
+          - img
+        - complementary:
+          - link "Contatos.Marketing":
+            - /url: /user/114069
+          - text:  Hoje às 19:10 Pessoa João Vitor criada. Visualizar
+          - link " João Vitor":
+            - /url: /contact/700297152

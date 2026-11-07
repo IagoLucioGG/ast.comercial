@@ -1,0 +1,16 @@
+<div class="hbox stretch">
+  <aside>
+    <div class="vbox">
+      <section>
+        <div class="hbox stretch">
+          <aside ui-view="goals-view" ng-if="$ctrl.state.params.goalpanelid"></aside>
+          <aside class="width-250 light-background b-l-1">
+            <goals-dashboard-sidebar class="vbox" panels="$ctrl.panels" current-panel="$ctrl.current_panel" change-panel-fn="$ctrl.changePanel(panel)"></goals-dashboard-sidebar>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>
+<!-- MODALS -->
+<goal-panel-modal ng-if="$ctrl.state.current.name.endsWith('.newpanel') || $ctrl.state.current.name.endsWith('.editpanel')"></goal-panel-modal>

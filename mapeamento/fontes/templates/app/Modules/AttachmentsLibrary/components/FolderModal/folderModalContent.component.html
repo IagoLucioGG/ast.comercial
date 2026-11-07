@@ -1,0 +1,131 @@
+<div ng-form name="folder_model_form" class="ds-folder-modal p-15" style="height: 100%">
+  <div class="vbox scroll-shadow neutral-shadow" ng-if="!$ctrl.not_found && $ctrl.can_load"
+    ng-init="$ctrl.folder_model_form = folder_model_form">
+    <section class="scrollable scroll-shadow-container">
+      <div ng-show="$ctrl.current_tab.Key === 'form'">
+        <div class="form-folder mb-30">
+          <div ng-repeat="section in $ctrl.sections">
+            <div ng-if="section.Id === 'null' && !$ctrl.selectedFolder.IsRag">
+              <forms model="$ctrl.folder_model" fields="$ctrl.forms[$index]" form="folder_model_form"></forms>
+            </div>
+            <div ng-if="section.Id !== 'null' && !$ctrl.selectedFolder.IsRag" ng-hide="section.hidden">
+              <modal-section section-form="folder_model_form" name="section.name" section-id="section.Id">
+                <forms model="$ctrl.folder_model" fields="$ctrl.forms[$index]" form="folder_model_form"></forms>
+              </modal-section>
+            </div>
+            <div class="d-flex" ng-if="$ctrl.selectedFolder.IsRag">
+              <img style="width: 100px; height: 100px; margin-right: 20px;" ng-src="{{$ctrl.ragImgUrl}}">
+              <div>
+                <p class="fw-600">{{$ctrl.selectedFolder.Name}}</p>
+                <p ng-bind-html="('LIBRARY.FOLDER_MODAL.RAG_DESCRIPTION' | translate_with_replace: {link: 'https://suporte.ploomes.com/pt-BR/articles/12532625-biblioteca-com-ia'}) | to_trusted"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-if="$ctrl.selectedFolder.IsRag" class="session-bar"></div>
+        <!-- Permissions -->
+        <div class="permissions mb-30" ng-if="$ctrl.is_root_folder">
+          <span class="fw-600 fs-14 ">
+            {{ 'LIBRARY.FOLDER_MODAL.PERMISSIONS' | translate }}
+          </span>
+          <div ng-if="!$ctrl.selectedFolder.IsRag" class="session-bar"></div>
+          <div ng-if="$ctrl.selectedFolder.IsRag" class="mb-20" ng-bind-html="('LIBRARY.FOLDER_MODAL.RAG_PERMISSION_LEGEND' | translate) | to_trusted"></div>
+
+          <!-- Allowed users -->
+          <div class="d-flex fd-col mb-10">
+            <span class="fw-400 fs-14 tc-font-light-default mb-5">
+              {{ 'LIBRARY.FOLDER_MODAL.PERMISSIONS_CAN_SEE' | translate }}
+            </span>
+            <div class="allowed-users-wrapper-makeup"  ng-class="{ 'rag-permissions': $ctrl.selectedFolder.IsRag}">
+              <allowed-users
+                block-users-select="$ctrl.block_allowed_users||$ctrl.view_mode"
+                block-teams-select="$ctrl.block_allowed_teams||$ctrl.view_mode"
+                block-user-profile-select="$ctrl.block_allowed_profiles||$ctrl.view_mode"
+                block-view-all-select="$ctrl.block_allowed_view_all||$ctrl.view_mode"
+                model="$ctrl.allowed_views_model"
+                sub-folder="$ctrl.sub_folder"
+                key="see" 
+                block_edit="$ctrl.view_mode || $ctrl.selectedFolder.IsRag"
+                ng-class="{'is-invalid-allowed-users': $ctrl.is_submitted && !$ctrl.allowed_view_is_valid}"
+                model-change-callback-fn="$ctrl.allowedValidation">
+              </allowed-users>
+            </div>
+          </div>
+
+          <!-- Edition Allowed users -->
+          <div class="d-flex fd-col mb-10">
+            <span class="fw-400 fs-14 tc-font-light-default mb-5">
+              {{ 'LIBRARY.FOLDER_MODAL.PERMISSIONS_CAN_EDIT' | translate }}
+            </span>
+            <div class="allowed-users-wrapper-makeup" ng-class="{ 'rag-permissions': $ctrl.selectedFolder.IsRag}">
+              <allowed-users
+                block-users-select="$ctrl.block_allowed_edit_users||$ctrl.view_mode"
+                block-teams-select="$ctrl.block_allowed_edit_teams||$ctrl.view_mode"
+                block-user-profile-select="$ctrl.block_allowed_edit_profiles||$ctrl.view_mode"
+                block-view-all-select="$ctrl.block_allowed_edit_all||$ctrl.view_mode"
+                model="$ctrl.edit_allowed_views_model"
+                sub-folder="$ctrl.sub_folder"
+                key="edition" 
+                block_edit="$ctrl.view_mode || $ctrl.selectedFolder.IsRag"
+                ng-class="{'is-invalid-allowed-users': $ctrl.is_submitted && !$ctrl.allowed_edit_is_valid}"
+                model-change-callback-fn="$ctrl.allowedValidation">
+              </allowed-users>
+            </div>
+          </div>
+
+          <!-- Delete Allowed users -->
+          <div class="d-flex fd-col">
+            <span class="fw-400 fs-14 tc-font-light-default mb-5">
+              {{ 'LIBRARY.FOLDER_MODAL.PERMISSIONS_CAN_DELETE' | translate }}
+            </span>
+            <div class="allowed-users-wrapper-makeup" ng-class="{ 'rag-permissions': $ctrl.selectedFolder.IsRag}">
+              <allowed-users
+                block-users-select="$ctrl.block_allowed_delete_users||$ctrl.view_mode"
+                block-teams-select="$ctrl.block_allowed_delete_teams||$ctrl.view_mode"
+                block-user-profile-select="$ctrl.block_allowed_delete_profiles||$ctrl.view_mode"
+                block-view-all-select="$ctrl.block_allowed_delete_all||$ctrl.view_mode"
+                model="$ctrl.delete_allowed_views_model"
+                sub-folder="$ctrl.sub_folder"
+                key="deletion" 
+                block_edit="$ctrl.view_mode || $ctrl.selectedFolder.IsRag"
+                ng-class="{'is-invalid-allowed-users': $ctrl.is_submitted && !$ctrl.allowed_delete_is_valid}"
+                model-change-callback-fn="$ctrl.allowedValidation">
+              </allowed-users>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="permissions mb-30" ng-if="$ctrl.is_root_folder && $ctrl.editing && !$ctrl.selectedFolder.IsRag">
+          <span class="fw-400 fs-14 tc-font-light-default">
+            {{ 'LIBRARY.FOLDER_MODAL.COLLECTIONS' | translate_sentence : null : $ctrl.folder_translation_obj }}
+          </span>
+          <div class="session-bar"></div>
+          <div class="f-1 fd-col ai-start">
+            <div class="button button-white outline ph-10 mb-20" ng-click="$ctrl.changeTab('item_form_config')">
+              <span class="text-action">
+                <i class="fal fa-plus button-icon"></i>
+              </span>
+              {{ 'LIBRARY.FOLDER_MODAL.COLLECTION_FORM_SETTINGS' | translate_sentence : null : $ctrl.folder_translation_obj }}
+            </div>
+            <div class="button button-white outline ph-10 mb-20" ng-click="$ctrl.changeTab('item_data_config')">
+              <span class="text-action">
+                <i class="fal fa-plus button-icon"></i>
+              </span>
+              {{ 'LIBRARY.FOLDER_MODAL.COLLECTION_NAMING_SETTINGS' | translate_sentence : null : $ctrl.folder_translation_obj }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-if="$ctrl.is_root_folder" ng-show="$ctrl.current_tab.Key === 'item_form_config'">
+        <form-config-builder form-id="$ctrl.api_folder_model.CollectionFormId" full-width="true" form-key="folder-modal"></form-config-builder>
+      </div>
+      <div ng-if="$ctrl.is_root_folder" ng-show="$ctrl.current_tab.Key === 'item_data_config'">
+        <forms model="$ctrl.folder_model" fields="$ctrl.item_data_fields" form="folder_model_form"></forms>
+      </div>
+    </section>
+  </div>
+  <div class="vbox scroll-shadow neutral-shadow deal-or-contact-domain" ng-if="$ctrl.not_found && $ctrl.can_load">
+    <page-not-found custom-message="$ctrl.message_not_found"></page-not-found>
+  </div>
+</div>

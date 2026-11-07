@@ -1,4 +1,4 @@
-using AST.Comercial.Domain.Entidades;
+﻿using AST.Comercial.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -43,6 +43,12 @@ public class NegocioConfiguracao : IEntityTypeConfiguration<Negocio>
             .HasForeignKey(n => n.MotivoPerdaId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasOne(n => n.Responsavel)
+            .WithMany()
+            .HasForeignKey(n => n.ResponsavelId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasIndex(n => n.ResponsavelId);
         builder.HasIndex(n => n.StatusId);
         builder.HasIndex(n => n.ClienteId);
         builder.HasIndex(n => n.PessoaContatoId);

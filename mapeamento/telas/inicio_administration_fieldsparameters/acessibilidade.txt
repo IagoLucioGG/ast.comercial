@@ -1,0 +1,165 @@
+- document:
+  - complementary:
+    - button "Ploomes IA": Ploomes IA Novo
+    - button "Operação Beta"
+    - button "Resumo"
+    - button "botão de navegar para a página de clientes": Clientes
+    - button "Contato Venda"
+    - button "botão para entrar na página de propostas, vendas ou documentos": Documentos
+    - button "Produtos"
+    - button "Relatórios"
+    - button "Administração"
+    - img "Logo"
+    - button
+    - button
+  - complementary:
+    - button "botão genérico de criar novo item de alguma entidade selecionada"
+    - text: Busque em qualquer lugar
+    - img
+    - text: Assistente
+    - button
+    - button
+    - text: "1782"
+    - button
+    - button
+    - text: "793"
+    - button
+    - button "IAGO.LUCIO IAGO.LUCIO":
+      - img "IAGO.LUCIO"
+      - text: IAGO.LUCIO
+    - img
+    - text: Seu CRM totalmente personalizado! Sua conta já possui 2 construções com IA, continue gerando.
+    - button "Consumo de IA"
+    - button "Ver construções"
+    - complementary:
+      - text: Geral
+      - link "":
+        - /url: /system-modules
+        - text: 
+        - complementary: 
+        - complementary: Módulos do sistema
+      - link "":
+        - /url: /formconfig
+        - text: 
+        - complementary: 
+        - complementary: Campos e formulários
+      - text: 
+      - complementary: 
+      - complementary: Opções pré-cadastradas
+      - text: 
+      - complementary: 
+      - complementary: Dados da empresa
+      - text: 
+      - complementary: 
+      - complementary: Configurações do sistema
+      - link "":
+        - /url: /administration/automations
+        - text: 
+        - complementary: 
+        - complementary: Automações
+      - text: 
+      - complementary: 
+      - complementary: Ploo Store
+      - link "":
+        - /url: /administration/processingqueue
+        - text: 
+        - complementary: 
+        - complementary: Fila de Processamento
+    - complementary:
+      - text: Usuários
+      - link "":
+        - /url: /Users/table
+        - text: 
+        - complementary: 
+        - complementary: Tabela de usuários
+      - text: 
+      - complementary: 
+      - complementary: Equipes de usuários
+      - text: 
+      - complementary: 
+      - complementary: Perfis de usuário
+      - text: 
+      - complementary: 
+      - complementary: Permissão ao Suporte Ploomes
+      - link "":
+        - /url: /Logs/changes
+        - text: 
+        - complementary: 
+        - complementary: Registros
+    - complementary:
+      - text: Propostas e vendas
+      - link "":
+        - /url: /templates
+        - text: 
+        - complementary: 
+        - complementary: Modelos de documento
+      - text: 
+      - complementary: 
+      - complementary: Fluxos de aprovação
+    - complementary:
+      - text: Integrações 
+      - complementary: 
+      - complementary: Integrações plug-and-play
+      - text: 
+      - complementary: 
+      - complementary: Usuários de integração
+      - text: 
+      - complementary: 
+      - complementary: Formulários externos
+    - complementary:
+      - text: Pagamentos 
+      - complementary: 
+      - complementary: Dados de pagamento
+      - text: 
+      - complementary: 
+      - complementary: Histórico de fatura
+      - link "":
+        - /url: /administration/aiconsumption
+        - text: 
+        - complementary: 
+        - complementary: Créditos de IA
+    - complementary: Opções pré-cadastradas
+    - complementary:
+      - complementary
+      - complementary
+      - complementary: 
+    - table:
+      - rowgroup:
+        - row "Cliente ":
+          - cell "Cliente "
+      - rowgroup:
+        - row "Contato de Venda ":
+          - cell "Contato de Venda "
+      - rowgroup:
+        - row "Proposta ":
+          - cell "Proposta "
+      - rowgroup:
+        - row "Produto ":
+          - cell "Produto "
+      - rowgroup:
+        - row "Produto da proposta ":
+          - cell "Produto da proposta "
+      - rowgroup:
+        - row "Sua Empresa ":
+          - cell "Sua Empresa "
+      - rowgroup:
+        - row "Usuário ":
+          - cell "Usuário "
+      - rowgroup:
+        - row "Registro de Interação ":
+          - cell "Registro de Interação "
+      - rowgroup:
+        - row "Vínculo de produtos ":
+          - cell "Vínculo de produtos "
+      - rowgroup:
+        - row "Documento ":
+          - cell "Documento "
+      - rowgroup:
+        - row "Produto do documento ":
+          - cell "Produto do documento "
+      - rowgroup:
+        - row "Contato relacionado ":
+          - cell "Contato relacionado "
+      - rowgroup:
+        - row "Produto de cliente ":
+          - cell "Produto de cliente "

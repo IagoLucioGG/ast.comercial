@@ -1,0 +1,134 @@
+<div class="vbox stretch">
+  <header class="text-editor-header regular-background doc-gen-master-class">
+    <div class="height-40 brand-content">
+      <div class="hbox stretch">
+        <a class="aside-click button-square button-brand width-70 v-middle text-center" ng-click="docGeneratorCtrl.goHome()">
+          <img
+            class="logo"
+            ng-src="{{docGeneratorCtrl.self.Account.WhiteLabel && docGeneratorCtrl.self.Account.WhiteLabelUseCustomLogo ? docGeneratorCtrl.self.Account.LogoUrl : 'assets/images/logo.svg'}}"/>
+        </a>
+        <aside class="width-300 v-middle">
+          <div class="side-wrapper" ng-if="docGeneratorCtrl.initial_load && !docGeneratorCtrl.editing_html" data-cy="administration-document-templates-template-config-title">
+            {{ 'DOC_GENERATOR.TEMPLATE_CONFIG' | translate }}
+          </div>
+          <div class="side-wrapper" ng-if="docGeneratorCtrl.initial_load && docGeneratorCtrl.editing_html">
+            {{ 'DOC_GENERATOR.VISUAL_MODIFICATION' | translate }}
+          </div>
+        </aside>
+        <aside class="v-middle text-right">
+          <div class="side-wrapper" ng-hide="docGeneratorCtrl.open_block_editor" ng-class="{'doc-gen-header-actions-entering': docGeneratorCtrl.animateHeaderActionsIn}">
+            <a class="button button-action pull-right button-short" href ng-click="docGeneratorCtrl.saveModel()" ng-class="{disabled: docGeneratorCtrl.save_in_progress}">
+              <div class="font-regular-size font-regular-weight">
+                {{ 'GENERICS.SAVE' | translate }}
+              </div>
+            </a>
+            <a class="button button-brand button-short pull-right" ng-click="docGeneratorCtrl.goBack()">
+              <div class="font-regular-size font-regular-weight">
+                {{ 'GENERICS.BACK' | translate }}
+              </div>
+            </a>
+            <!-- <div class="font-regular-size font-regular-weight" ng-if="docGeneratorCtrl.model.LastUpdateDate">Última atualização em {{docGeneratorCtrl.lastUpdate(docGeneratorCtrl.model.LastUpdateDate)}}</div> -->
+          </div>
+        </aside>
+      </div>
+    </div>
+    <doc-generator-toolbar ng-if="docGeneratorCtrl.initial_load"></doc-generator-toolbar>
+  </header>
+  <section class="text-editor-container dark-background b-t-1">
+    <div class="hbox stretch">
+      <aside class="doc-gen-master-class">
+        <div class="vbox">
+          <section>
+            <div class="hbox stretch fixed-size" ng-if="docGeneratorCtrl.initial_load">
+              <doc-generator-sidebar model="docGeneratorCtrl.model" current-page="docGeneratorCtrl.model.Pages[docGeneratorCtrl.current_page_index]" ng-if="!docGeneratorCtrl.editing_html"></doc-generator-sidebar>
+              <aside class="min-width-830 b-l-1 dark-background">
+                <header class="regular-background" ng-if="docGeneratorCtrl.initial_load" ng-hide="docGeneratorCtrl.open_block_editor">
+                  <div class="main-div-header-document-config" ui-sortable="docGeneratorCtrl.options" ng-model="docGeneratorCtrl.model.Pages">
+                    <button
+                      class="new-page-button-document-config" 
+                      ng-click="docGeneratorCtrl.addNewPage()">
+                      {{ 'DOC_GENERATOR.NEW_SECTION' | translate }}
+                    </button>
+                    <a 
+                      id="{{'button-doc-page-' + $index}}"
+                      uib-tooltip="{{page.Name}}"
+                      tooltip-append-to-body="true"
+                      tooltip-enable="docGeneratorCtrl.shouldShowTooltip($index, page.Name)"
+                      class="page-button-document-config"
+                      ng-class="{'page-button-current-page': $index === docGeneratorCtrl.current_page_index, 'page-button-inactive-page': $index !== docGeneratorCtrl.current_page_index}"
+                      ng-repeat="page in docGeneratorCtrl.model.Pages" 
+                      ng-click="docGeneratorCtrl.changeCurrentPageIndex($index, $event)"
+                      ng-dblclick="docGeneratorCtrl.openRenamePage(page, $index, $event)"
+                      context-menu="docGeneratorCtrl.menuOptions(page, $index)">
+                      <span
+                        class="absolute-center-page-button-span"
+                        uib-popover-template="docGeneratorCtrl.popoverTemplate" 
+                        popover-title="{{ 'GENERICS.EDIT' | translate }}" 
+                        popover-append-to-body="true"
+                        popover-placement="auto right" 
+                        popover-is-open="docGeneratorCtrl.page_name_open[$index]" 
+                        popover-trigger="none">
+                      </span>
+                      <span>{{page.Name}}</span>
+                    </a>
+                  </div>
+                </header>
+                <doc-generator-content ng-if="docGeneratorCtrl.current_page_index !== undefined" model="docGeneratorCtrl.model.Pages[docGeneratorCtrl.current_page_index]" editing-html="docGeneratorCtrl.editing_html" entity-id="docGeneratorCtrl.model.EntityId"></doc-generator-content>
+              </aside>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </section>
+  <!-- MODALS -->
+  <ai-html-generator
+    ng-if="!docGeneratorCtrl.editing_html"
+    set-show-modal="docGeneratorCtrl.setShowAiModal"
+    show-modal="docGeneratorCtrl.showAiModal"
+    on-submit="docGeneratorCtrl.saveAiGeneration"
+    on-submit-sections="docGeneratorCtrl.saveAiGeneratedSections"
+    root-entity-id="docGeneratorCtrl.model.EntityId"
+    stack-index="docGeneratorCtrl.cpqFormAiEnabled ? 1 : 0"
+    current-source="docGeneratorCtrl.model.Pages[docGeneratorCtrl.current_page_index].BodySourceCode"
+  ></ai-html-generator>
+  <ai-form-generator
+    ng-if="docGeneratorCtrl.cpqFormAiEnabled && !docGeneratorCtrl.editing_html"
+    project-id="docGeneratorCtrl.model.ExternalGeneratedFormProjectId"
+    stack-index="0"
+    document-template-id="docGeneratorCtrl.model.Id"
+    model-name="docGeneratorCtrl.model.Name"
+    on-form-deleted="docGeneratorCtrl.onAiFormDeleted"
+  ></ai-form-generator>
+  <save-form-confirm-modal
+    ng-if="docGeneratorCtrl.cpqFormAiEnabled && !docGeneratorCtrl.editing_html"
+    show="docGeneratorCtrl.showSaveFormConfirmModal"
+    document-template-id="docGeneratorCtrl.model.Id"
+    project-id="docGeneratorCtrl.model.ExternalGeneratedFormProjectId"
+    added-field-keys="docGeneratorCtrl.addedFieldKeys"
+    removed-field-keys="docGeneratorCtrl.removedFieldKeys"
+    on-cancel="docGeneratorCtrl.onCancelSaveFormConfirm"
+    on-confirm-save="docGeneratorCtrl.onConfirmSaveFormConfirm"
+  ></save-form-confirm-modal>
+
+  <field-config ng-if="docGeneratorCtrl.state.current.name.endsWith('fieldconfig')"></field-config>
+  <new-contact-modal ng-if="$ctrl.state.current.name.endsWith('.newperson')" modal-id="new_contact_modal" type="$ctrl.state.params.type" model="$ctrl.state.params.model"></new-contact-modal>
+  <script type="text/ng-template" id="popover">
+    <div ng-show="docGeneratorCtrl.page_name_open[docGeneratorCtrl.popover_index]" ng-form name="page_name_form">
+      <form class="clearfix form">
+        <div class="form-group col-sm-12">
+          <label>{{ 'GENERICS.NAME' | translate }}</label>
+          <span class="align-limited-characters">
+            <span class="text-muted font-small">
+              {{ docGeneratorCtrl.page_name_model.length || 0 }}/{{ docGeneratorCtrl.pageNameLabelMaxLength }}
+            </span>
+          </span>
+          <input class="form-control input-sm" placeholder="" ng-model="docGeneratorCtrl.page_name_model" id="page_name" maxlength="{{ docGeneratorCtrl.pageNameLabelMaxLength }}">
+        </div>
+      </form>
+      <button class="button button-action mleft15" ng-click="docGeneratorCtrl.changeName(docGeneratorCtrl.current_page, docGeneratorCtrl.page_name_model); $event.stopPropagation()" title="Submit" aria-label="Submit">{{ 'GENERICS.SAVE' | translate }}</button>
+      <button class="button button-white" ng-click="docGeneratorCtrl.page_name_open[docGeneratorCtrl.popover_index] = false; $event.stopPropagation()" title="Cancel" aria-label="Cancel">{{ 'GENERICS.CANCEL' | translate }}</button>
+      <loading-tooltip loading="docGeneratorCtrl.loading" form="page_name_form"></loading-tooltip>
+    </div>
+  </script>
+</div>

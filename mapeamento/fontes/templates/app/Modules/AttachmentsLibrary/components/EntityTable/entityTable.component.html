@@ -1,0 +1,38 @@
+<div class="h-100">
+  <div class="side-scroll panel b-1 attachment-dynamic-table h-100">
+    <div class="b-b-1 wrapper" style="height: 62px;">
+      <div class="hbox">
+        <aside class="v-middle">
+          <div class="input-group pull-right width-250 mright10">
+            <input
+              class="form-control input-sm light-background"
+              placeholder="{{ 'GENERICS.SEARCH' | translate }}"
+              ng-model="$ctrl.quick_filter"
+              ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)">
+            <div class="input-group-btn width-10">
+              <a ng-click="$ctrl.quickFilter($ctrl.quick_filter)" class="btn button button-neutral-gray special-search-button">
+                <i class="fas fa-search"></i>
+              </a>
+            </div>
+          </div>
+        </aside>
+        <aside class="text-right width-10">
+          <div class="dropdown">
+            <a class="button button-action nowrap" ng-click="$ctrl.linkEntityToItem()">Vincular entidades</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content ovf-y-scroll" style="height: calc(100% - 62px);">
+      <dynamic-table
+          ng-if="$ctrl.can_load"
+          entity="$ctrl.current_entity"
+          opt-filter="$ctrl.current_filter"
+          table-edit-fn="$ctrl.editTablePatch"
+          current-tab="$ctrl.front_tab"
+          block-table-edit="true"
+          entity-page-loader="true">
+      </dynamic-table>
+    </div>
+  </div>
+</div>

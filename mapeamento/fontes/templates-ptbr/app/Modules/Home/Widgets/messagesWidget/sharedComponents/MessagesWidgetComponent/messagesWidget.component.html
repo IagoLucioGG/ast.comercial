@@ -1,0 +1,92 @@
+<div class="panel white-content overflow-hidden new-standard-shadow" ng-class="{ 'height-350': !$ctrl.self.MessagesExpandedView, 'height-730': $ctrl.self.MessagesExpandedView }">
+  <div class="vbox small-header">
+    <header class="regular-header b-b-1 white-content new-header">
+      <div class="hbox stretch">
+        <aside class="v-middle width-80">
+          <div class="font-big" data-cy="messages-widget-publications">Publicações</div>
+        </aside>
+        <aside class="v-middle width-50">
+          <a class="button-fixed-size button-fixed-size-big button-white pull-right"
+            ng-click="$ctrl.toggleMessagesView()">
+            <span class="text-action">
+              <i class="fal" ng-class="{ 'fa-arrow-down-left-and-arrow-up-right-to-center': $ctrl.self.MessagesExpandedView, 'fa-arrow-up-right-and-arrow-down-left-from-center': !$ctrl.self.MessagesExpandedView }"></i>
+            </span>
+          </a>
+        </aside>
+      </div>
+    </header>
+    <section
+      class="scrollable"
+      infinite-scroll='$ctrl.loadMessages()'
+      infinite-scroll-disabled="!$ctrl.can_load || $ctrl.reached_end || !$ctrl.first_load_finished"
+      infinite-scroll-distance="-2">
+      <div class="height-50 white-content" ng-if="$ctrl.has_messages_enabled">
+        <div class="hbox stretch">
+          <aside class="v-middle side-wrapper">
+            <a class="button-white button b-1 mini-wrapper button-full-width" ui-sref="{{state.current.name + '.newmessage'}}" data-cy="new-message-button">
+              <div class="hbox stretch">
+                <aside class="v-middle width-20 text-left text-action">
+                  <i class="fal fa-comment-alt-edit"></i>
+                </aside>
+                <aside class="v-middle font-regular-weight text-left">
+                  Nova publicação...
+                </aside>
+              </div>
+            </a>
+          </aside>
+        </div>
+      </div>
+
+      <div class="wrapper white-content b-b-1" ng-repeat="message in $ctrl.messages">
+        <div class="hbox comment-wrapper fixed-size">
+          <aside class="width-40">
+            <img class="avatar-timeline" ng-src="{{message.Creator.AvatarUrl}}">
+          </aside>
+          <aside>
+            <a class="font-bold inline-link-regular" ui-sref="{{'user({userid: message.CreatorId})'}}">{{message.Creator.Name}}</a>
+            <br>
+            <span class="timeline-clock">
+              <i class="fal fa-clock"></i>{{message.formatted_time}}
+            </span>
+            <div class="mtop3">
+              <message-content-parse style="word-break: break-word" message-content="message.Content"></message-content-parse>
+            </div>
+            <message-attachments class="mtop5 display-block" attachments="message.Attachments" tiny-format="true"></message-attachments>
+            <div class="gap-5"></div>
+            <div class="big-simple-inline text-muted" ng-if="$ctrl.can_send_global_message || message.Teams.length > 0">
+              <a class="collapsed" href data-toggle="collapse" data-target="#{{message.Id}}" ng-click="$ctrl.toggleComments($index)">
+                <i class="fal fa-comment-alt-lines big-simple-line"></i>
+                <span class="font-small">
+                  {{message.Comments.length > 0 ? message.Comments.length : '0'}}
+                </span>
+              </a>
+            </div>
+            <div class="collapse" id="{{message.Id}}" ng-if="$ctrl.opened_comments[$index]">
+              <comments-directive
+                api-url="'Messages(' + message.Id + ')/NewComment'"
+                comments="message.Comments"
+                object-id="message.Id"
+                update-comments-callback="$ctrl.onUpdateComments"
+                has-messages-enabled="$ctrl.has_messages_enabled"
+                timeline-interface="true"
+                >
+              </comments-directive>
+            </div>
+          </aside>
+          <aside class="text-right nowrap width-50">
+            <a class="button-inherit button-fixed-size button-fixed-size-small" href ng-click="$ctrl.openMessageModal(message.Id)" data-cy="open-message-{{message.Id}}">
+              <i class="fal fa-arrow-up-right-and-arrow-down-left-from-center"></i>
+            </a>
+            <a class="button-inherit button-fixed-size button-fixed-size-small" ng-if="message.Editable" ng-click="$ctrl.deleteMessage(message)" ng-click-confirm="apagar essa publicação?" reversible="false">
+              <i class="fal fa-trash"></i>
+            </a>
+            <a class="button-fixed-size button-fixed-size-small" ng-show="message.Teams.length > 0" uib-tooltip="{{message.formatted_teams}}" tooltip-append-to-body="true">
+              <i class="text-warning fal fa-users"></i>
+            </a>
+          </aside>
+        </div>
+      </div>
+      <standard-loader margin-top="0" loading="!$ctrl.can_load" optionalclass="table-loader"></standard-loader>
+    </section>
+  </div>
+</div>

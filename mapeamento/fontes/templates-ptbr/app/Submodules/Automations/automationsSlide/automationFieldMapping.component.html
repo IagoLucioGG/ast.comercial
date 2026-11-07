@@ -1,0 +1,120 @@
+<div class="white-content b-1 panel">
+  <table class="table white-table table-smaller-header double-header break-last-child">
+    <thead>
+      <tr>
+        <th ng-if="!$ctrl.hideFieldColumn">
+          Campo
+        </th>
+        <th>
+          Tipo de preenchimento
+        </th>
+        <th>
+          Valor
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="o_field in $ctrl.fields track by o_field.key">
+        <td ng-if="!$ctrl.hideFieldColumn">
+          <span style="line-height: 22px;">{{o_field.label}}</span>
+          <span
+            ng-if="o_field.tooltipMessage"
+            uib-tooltip="{{o_field.tooltipMessage}}"
+            tooltip-append-to-body="true"
+            class="small text-neutral pl-5"
+          >
+            <i class="fas fa-exclamation-circle"></i>
+          </span>
+          <span
+            ng-if="o_field.required && o_field.applyRequiredFieldRules"
+            uib-tooltip="Campo obrigatório"
+            tooltip-append-to-body="true"
+            class="small ml-5"
+            ng-class="{'text-neutral': !$ctrl.isRequiredFieldEmpty(o_field, $index), 'text-danger': $ctrl.isRequiredFieldEmpty(o_field, $index)}"
+          >
+            <i class="fas fa-exclamation-circle"></i>
+          </span>
+          <span class="text-right wrapper-right-small pl-5" ng-if="$ctrl.allowUnique(o_field)">
+            <a
+              href
+              uib-tooltip="{{ $ctrl.modelFieldMapping[o_field.key].Unique ? 'AUTOMATIONS.AUTOMATION_ACTION.REMOVE_UNIQUE' : 'AUTOMATIONS.AUTOMATION_ACTION.MAKE_IT_UNIQUE' | translate }}"
+              tooltip-append-to-body="true"
+              tooltip-class="automation-action__field-unique-tooltip"
+              class="button-fixed-size button-fixed-size-small inline-edit-icon b-1"
+              ng-class="{ 'selected-unique-automation-mapping-field': $ctrl.modelFieldMapping[o_field.key].Unique, 'button-white-light-border': !$ctrl.modelFieldMapping[o_field.key].Unique }"
+              ng-click="$ctrl.toggleFieldUnique(o_field, $index)">
+              <i class="fas fa-key fixing-fixed-size-button"></i>
+            </a>
+          </span>
+        </td>
+        <td>
+          <select ng-options="type as type.Name for type in $ctrl.types_for_fields[$index].avaliable_types track by type.Id" ng-model="$ctrl.types_for_fields[$index].selected_type" ng-change="$ctrl.selectType($ctrl.types_for_fields[$index].selected_type, o_field, $index)" class="form-control input-sm"></select>
+        </td>
+        <td class="width-180">
+          <span ng-if="$ctrl.showRequiredIndicator && o_field.required" uib-tooltip="Campo obrigatório" tooltip-append-to-body="true" class="small" ng-class="{'text-danger': !$ctrl.isValuePresent(o_field, $index), 'text-neutral': $ctrl.isValuePresent(o_field, $index)}" style="position: absolute; right: 2px; transform: translateY(-50%);">
+            <i class="fas fa-exclamation-circle"></i>
+          </span>
+          <div
+            uib-tooltip="Campo incompatível. A automação requer um campo do tipo múltiplo."
+            tooltip-placement="auto bottom"
+            tooltip-enable="$ctrl.checkInvalidClearValuesOption($ctrl.types_for_fields[$index].selected_type.Id, o_field.multiple)"
+            tooltip-class="width-220"
+            ng-class="{
+              'invalid-input': o_field.typeId !== 7 && (o_field.forcedRequired || ($ctrl.isSubmitted && $ctrl.isRequiredFieldEmpty(o_field, $index)) || ($ctrl.showRequiredIndicator && o_field.required && !$ctrl.isValuePresent(o_field, $index)) || $ctrl.checkInvalidClearValuesOption($ctrl.types_for_fields[$index].selected_type.Id, o_field.multiple)),
+              'invalid-input-ploomes-host': o_field.typeId === 7 && ($ctrl.checkInvalidClearValuesOption($ctrl.types_for_fields[$index].selected_type.Id, o_field.multiple) || ($ctrl.isSubmitted && $ctrl.isRequiredFieldEmpty(o_field, $index)))
+            }"
+            class="input-group full-width"
+            ng-if="($ctrl.types_for_fields[$index].selected_type.Id === 1 || $ctrl.types_for_fields[$index].selected_type.Id === 6 || $ctrl.types_for_fields[$index].selected_type.Id === 5) && o_field.typeId !== 22"
+          >
+            <new-field field="o_field" required="o_field.required" model="$ctrl.model" property="o_field.key" disabled="$ctrl.disableSelect($ctrl.types_for_fields[$index].selected_type.Id, o_field)" hide-label="true" outside-form="true" force-hide-label="true" not-trigger-formula="true" model-change-callback="$ctrl.modelChangeCallback(new_val, old_val, first_trigger, o_field)" dropdown-append-contact-filter="false"></new-field>
+          </div>
+
+          <a ng-if="$ctrl.types_for_fields[$index].selected_type.Id === 1 && o_field.typeId === 22" href class="button button-white nowrap" ng-click="$ctrl.openDevFieldConfig(o_field)">
+            <span class="text-action"><i class="fal fa-code button-icon"></i></span>
+            Configurar
+          </a>
+
+          <div
+            ng-if="$ctrl.types_for_fields[$index].selected_type.Id === 2"
+            ng-class="{'automation-action__field-selection--invalid': ($ctrl.isSubmitted && $ctrl.isRequiredFieldEmpty(o_field, $index))}"
+          >
+            <field-path-selection
+              field-selection-fn="$ctrl.fieldMappingSelect(field, field_path_id, $ctrl.modelFieldMapping, o_field)"
+              start-entity-id="$ctrl.entity.Id"
+              uib-tooltip="{{$ctrl.modelFieldMapping[o_field.key].raw_label}}"
+              tooltip-enable="$ctrl.modelFieldMapping[o_field.key].label && $ctrl.modelFieldMapping[o_field.key].label.length > 20"
+              dynamic-label="$ctrl.modelFieldMapping[o_field.key].label || ('GENERICS.SELECT_A_FIELD' | translate)"
+              custom-filter-fn="$ctrl.fieldMappingFilter(field, path_fields, o_field)"
+              remove-field-selection-fn="$ctrl.fieldMappingRemove($ctrl.modelFieldMapping, o_field)"
+              filter-quick-creation-field-type-fn="$ctrl.filterQuickCreationFieldType(field, o_field)"
+              check-field-disabling-fn="$ctrl.checkFieldDisabling(field, o_field)">
+            </field-path-selection>
+            
+            <input
+              type="hidden" 
+              ng-required="o_field.required && o_field.applyRequiredFieldRules"
+              ng-model="$ctrl.modelFieldMapping[o_field.key].field"
+            >
+          </div>
+
+          <a
+            ng-if="$ctrl.types_for_fields[$index].selected_type.Id === 3" href
+            class="button nowrap" 
+            ng-click="$ctrl.openFormulaConfig(o_field)"
+            ng-class="{'border-invalid-field': ($ctrl.isSubmitted && $ctrl.isRequiredFieldEmpty(o_field, $index)), 'button-white': (!$ctrl.isSubmitted || !$ctrl.isRequiredFieldEmpty(o_field, $index))}"
+          >
+            <input
+              type="hidden" 
+              ng-required="o_field.required && o_field.applyRequiredFieldRules"
+              ng-model="$ctrl.modelFieldMapping[o_field.key].InternalFormula"
+            >
+            <span class="text-action"><i class="fal fa-calculator button-icon"></i></span>
+            {{ ($ctrl.hasFormula($ctrl.modelFieldMapping[o_field.key]) ? 'GENERICS.EDIT' : 'GENERICS.ADD') | translate }}
+          </a>
+
+          <input ng-if="$ctrl.types_for_fields[$index].selected_type.Id === 4" ng-model="$ctrl.modelFieldMapping[o_field.key].DaysFromNow" type="number" class="form-control input-sm" ng-class="{'invalid-input': $ctrl.showRequiredIndicator && !$ctrl.isValuePresent(o_field, $index)}"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

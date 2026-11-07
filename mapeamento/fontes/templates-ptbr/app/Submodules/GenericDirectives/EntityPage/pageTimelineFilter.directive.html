@@ -1,0 +1,46 @@
+<dynamic-modal
+  modal-id="{{modalId}}"
+  wide="true"
+  footer="true"
+  dark="true"
+  modal-title="Filtrar Histórico"
+  toggle-modal="toggleModal"
+  block-back-state="true"
+  is-fetching-modal-content="timelineFilterCtrl.isFetchingModalContent"
+>
+    <modal-content>
+      <div class="gap-15"></div>
+      <form class="clearfix">
+        <!-- <div class="form-group col-sm-12">
+          <label>Tipo de item</label>
+          <input class="form-control input-sm" placeholder="">
+        </div>
+        <div class="form-group col-sm-12">
+          <label>Tags</label>
+          <input class="form-control input-sm" placeholder="">
+        </div> -->
+        <div class="form-group col-sm-12">
+          <label>Usuários</label>
+          <new-field field="timelineFilterCtrl.users" model="timelineFilterCtrl.filter" property="timelineFilterCtrl.users.key" required="false" disabled="false" wide="false"></new-field>
+        </div>
+        <div class="form-group col-sm-6">
+          <label>A partir de</label>
+          <new-field field="timelineFilterCtrl.start_date" model="timelineFilterCtrl.filter" property="timelineFilterCtrl.start_date.key" required="false" disabled="false" wide="false"></new-field>
+        </div>
+        <div class="form-group col-sm-6">
+          <label>Até</label>
+          <new-field field="timelineFilterCtrl.end_date" model="timelineFilterCtrl.filter" property="timelineFilterCtrl.end_date.key" required="false" disabled="false" wide="false"></new-field>
+        </div>
+      </form>
+    </modal-content>
+    <modal-footer>
+      <div class="side-wrapper stretch">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <button class="button button-action pull-right" ng-click="timelineFilterCtrl.applyFilter(false)">Aplicar Filtro</button>
+            <button class="button button-neutral pull-right" ng-click="timelineFilterCtrl.applyFilter(true)">Limpar Filtro</button>
+          </aside>
+        </div>
+      </div>
+    </modal-footer>
+</dynamic-modal>

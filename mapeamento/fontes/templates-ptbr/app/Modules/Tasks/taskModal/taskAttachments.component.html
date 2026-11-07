@@ -1,0 +1,46 @@
+<div class="form-group col-sm-12">
+  <div class="data-edit" ng-class="{'min-height-35': $ctrl.files.length !== 0 || $ctrl.items.length !== 0}">
+    <div class="pull-left">
+      <a ng-repeat="file in $ctrl.files track by $index"
+        class="light-badge neutral-content badge-border nowrap badge-deletable" ng-click="$ctrl.downloadUrl(file)">
+        <div class="light-neutral-text-color font-small font-bold table-cell-align-top">
+          <span
+            class="align-middle"
+            uib-tooltip="{{ file.FileName }}"
+            tooltip-append-to-body="true"
+            tooltip-enable="file.FileName.length > 20">{{file.FileName.length > 20 ? file.FileName.substring(0, 19) + '...' : file.FileName}}</span>
+          <div ng-if="$ctrl.model.Editable" ng-click="$ctrl.removeAttachment($index); $event.preventDefault();"
+            class="align-middle button-fixed-size button-fixed-size-small" href>
+            <i class="fas fa-times remove-button-class remove-button-class-2"></i>
+          </div>
+        </div>
+      </a>
+      <a ng-repeat="item in $ctrl.items track by $index"
+        class="light-badge neutral-content badge-border nowrap badge-deletable" ng-click="$ctrl.downloadUrl(file || item, true)">
+        <div class="light-neutral-text-color font-small font-bold table-cell-align-top">
+          <span
+            class="align-middle"
+            uib-tooltip="{{ item.Name }}"
+            tooltip-append-to-body="true"
+            tooltip-enable="item.Name.length > 20">{{item.Name.length > 20 ? item.Name.substring(0, 19) + '...' : item.Name}}</span>
+          <div ng-if="$ctrl.model.Editable" ng-click="$ctrl.removeAttachmentItem($index); $event.preventDefault();"
+            class="align-middle button-fixed-size button-fixed-size-small" href>
+            <i class="fas fa-times remove-button-class remove-button-class-2"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="height-40 pull-left">
+    <attachment-upload
+      form-key="$ctrl.apiUrl.toLowerCase()"
+      file-upload-callback="$ctrl.addAttachment"
+      save-selected-items-callback="$ctrl.saveSelectedItemsCallback"
+      position="'left'"
+      items="$ctrl.items"
+      disabled="$ctrl.disabled"  
+    >
+    </attachment-upload>
+  </div>
+  <div class="gap-40"></div>
+</div>

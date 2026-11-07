@@ -1,0 +1,26 @@
+<div class="width-450 stretch proposal-transition">
+  <div class="regular-header b-b-1 scroll-shadow arrange-mid new-header">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <span class="font-very-big font-thin">{{sideExpandCtrl.sideExpand.title}}</span>
+      </aside>
+      <aside class="v-middle">
+        <a class="button-fixed-size button-fixed-size-medium button-fixed-size-flex button-white-light-border product-side-expand-button-padding b-1 pull-right" ng-click="sideExpandCtrl.closeSideExpand()">
+          <i class="fal fa-times"></i>
+        </a>
+      </aside>
+    </div>
+  </div>
+  <product-side-expand-content
+    ng-if="sideExpandCtrl.entity.Id === 10"
+    model="sideExpandCtrl.model"
+    entity="sideExpandCtrl.entity"
+    product-parts="sideExpandCtrl.selectedItems"
+    update-product-parts-fn="sideExpandCtrl.updateProductParts"
+    editing="sideExpandCtrl.editing"
+    part-group-id="sideExpandCtrl.sideExpand.part_group_id">
+  </product-side-expand-content>
+  <group-side-expand-content ng-if="sideExpandCtrl.entity.Id === 11" model="sideExpandCtrl.model" entity="sideExpandCtrl.entity" products="sideExpandCtrl.selectedItems" editing="sideExpandCtrl.editing"></group-side-expand-content>
+  <family-side-expand-content ng-if="sideExpandCtrl.entity.Id === 43" model="sideExpandCtrl.model" entity="sideExpandCtrl.entity" groups="sideExpandCtrl.selectedItems" editing="sideExpandCtrl.editing"></family-side-expand-content>
+  <list-side-expand-content ng-if="sideExpandCtrl.entity.Id === 76" model="sideExpandCtrl.model" entity="sideExpandCtrl.entity" products="sideExpandCtrl.selectedItems" editing="sideExpandCtrl.editing"></list-side-expand-content>
+</div>

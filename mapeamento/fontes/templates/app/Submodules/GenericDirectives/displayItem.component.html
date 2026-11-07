@@ -1,0 +1,233 @@
+<!-- Display data that is multiple -->
+<span ng-if="::(!$ctrl.field.dynamic && $ctrl.field.multiple && !$ctrl.field.key.includes('_tasks') && !$ctrl.field.key.includes('_phones') && !$ctrl.field.key.includes('_email_addresses'))" ng-repeat="item in $ctrl.display track by $index">
+  <div
+    uib-tooltip="{{ item.display || item }}"
+    tooltip-placement="auto top"
+    tooltip-append-to-body="true"
+    tooltip-enable="{{ item.display.length > 30 || item.length > 30 }}">
+    <a ng-if="::(!$ctrl.whiteDisplay && $ctrl.field.key.endsWith('_contacts'))" ui-sref="{{'contact({contactid: item.object.ContactId})'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <i class="fal fa-user" ng-if="::($ctrl.field.key.endsWith('_contacts'))"></i>
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.display || item}}</span>
+      </div>
+    </a>
+  <a ng-if="::(!$ctrl.whiteDisplay && !$ctrl.field.key.endsWith('_contacts') && !$ctrl.field.key.includes('_companies') && !$ctrl.field.key.includes('contacts_products') && $ctrl.field.key.includes('_users'))" ui-sref="{{'user({userid: item.object.UserId })'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ng-class="{'success-badge' : item.object.StatusId === 2, 'danger-badge' : item.object.StatusId === 3}" ng-click="$ctrl.clickOnItem($event, item, $index)">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <img ng-src="{{item.object.User.AvatarUrl}}" class="avatar-timeline">
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.display || item}}</span>
+      </div>
+    </a>
+  <a ng-if="::(!$ctrl.whiteDisplay && !$ctrl.field.key.endsWith('_contacts') && !$ctrl.field.key.includes('_companies') && !$ctrl.field.key.includes('contacts_products') && !$ctrl.field.key.includes('_users') && !$ctrl.field.key.includes('_products'))" href class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ng-class="{'success-badge' : item.object.StatusId === 2, 'danger-badge' : item.object.StatusId === 3}" ng-click="$ctrl.clickOnItem($event, item, $index)">
+      <div class="text-darkest-neutral font-bold size-limiter">
+        <i ng-if="::($ctrl.field.key.includes('_tags'))" class="fas fa-tag" ng-style="{'color': item.object.Tag.Color}"></i>
+        <i ng-if="::($ctrl.field.key.includes('_lists'))" class="fas fa-tag" ng-style="{'color': item.object.List.Color}"></i>
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.display || item}}</span>
+      </div>
+    </a>
+  <a ng-if="::(!$ctrl.whiteDisplay && !$ctrl.field.key.endsWith('_contacts') && !$ctrl.field.key.includes('_companies') && !$ctrl.field.key.includes('contacts_products') && !$ctrl.field.key.includes('_users') && $ctrl.field.key.includes('_products'))" ui-sref="{{'products.table.product({productid: item.object.ProductId })'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ng-class="{'success-badge' : item.object.StatusId === 2, 'danger-badge' : item.object.StatusId === 3}" ng-style="$ctrl.shouldShowProductTooltip() ? {'cursor': 'not-allowed'} : {}" ng-click="$ctrl.clickOnItem($event, item, $index)" uib-tooltip="{{$ctrl.shouldShowProductTooltip() ? $ctrl.getProductTooltipMessage() : (item.display || item)}}" tooltip-placement="auto top" tooltip-append-to-body="true" tooltip-enable="$ctrl.shouldShowProductTooltip() || (item.display.length > 30 || item.length > 30)">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <i ng-if="$ctrl.shouldShowProductTooltip()" class="fal fa-lock"></i>
+        <i ng-if="::(!$ctrl.shouldShowProductTooltip() && $ctrl.field.key.includes('_tags'))" class="fas fa-tag" ng-style="{'color': item.object.Tag.Color}"></i>
+        <i ng-if="::(!$ctrl.shouldShowProductTooltip() && $ctrl.field.key.includes('_lists'))" class="fas fa-tag" ng-style="{'color': item.object.List.Color}"></i>
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.display || item}}</span>
+      </div>
+    </a>
+  <a ng-if="::(!$ctrl.whiteDisplay && $ctrl.field.key.includes('contacts_products'))" href class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ng-style="$ctrl.shouldShowContactProductTooltip() ? {'cursor': 'not-allowed'} : {}" href ng-click="$ctrl.goToContactProduct($event, item)" uib-tooltip="{{$ctrl.shouldShowContactProductTooltip() ? $ctrl.getContactProductTooltipMessage() : (item.display || item)}}" tooltip-placement="auto top" tooltip-append-to-body="true" tooltip-enable="$ctrl.shouldShowContactProductTooltip() || (item.display.length > 30 || item.length > 30)">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <i ng-class="$ctrl.shouldShowContactProductTooltip() ? 'fal fa-lock' : $ctrl.customizables.contacts_products_module.icon_class"></i>
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.display || item}}</span>
+      </div>
+    </a>
+    <a ng-if="::(!$ctrl.whiteDisplay && $ctrl.field.key.includes('_companies'))" href class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ui-sref="{{'contact({contactid: item.object.CompanyId})'}}">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <i class="fal fa-industry"></i>
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.display || item}}</span>
+      </div>
+    </a>
+  </div>
+</span>
+
+<!-- Display data that is phones -->
+<span ng-if="::($ctrl.field.key.includes('_phones') && !$ctrl.whiteDisplay)" ng-repeat="item in $ctrl.displayModel track by $index">
+  <div class="badge-inline-wrapper d-flex">
+    <a 
+      href class="light-badge neutral-content badge-border nowrap size-limiter"
+      uib-tooltip="{{item.PhoneNumber}}"
+      tooltip-append-to-body="true"
+      tooltip-placement="auto top"
+      tooltip-enable="$ctrl.isTooltipEnabled('phone-number-' + {{item.Id}})"
+      ng-click="$ctrl.triggerPhoneCall(item.PhoneNumber)">
+      <div id="phone-number-{{item.Id}}" class="text-darkest-neutral font-bold ellipsis">
+        <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{item.PhoneNumber}}</span>
+      </div>
+    </a>
+    <a ng-if="::($ctrl.whatsapp_integration_object && $ctrl.whatsapp_integration_object[item.PhoneNumber])" href class="light-badge neutral-content badge-border nowrap" ng-click="$ctrl.openWhatsAppWeb(item)">
+      <div class="text-darkest-neutral font-bold table-cell-align-top">
+        <i class="fab fa-whatsapp text-success font-title m0"></i>
+      </div>
+    </a>
+  </div>
+</span>
+
+<!-- Display data that is emails -->
+<span ng-if="::($ctrl.field.key.includes('_email_addresses') && !$ctrl.whiteDisplay)" ng-repeat="item in $ctrl.display track by $index">
+  <div class="badge-inline-wrapper d-flex">
+    <span
+      class="light-badge neutral-content badge-border nowrap size-limiter"
+      uib-tooltip="{{item}}"
+      tooltip-append-to-body="true"
+      tooltip-placement="auto top"
+      tooltip-enable="{{ item.length > 30 }}">
+      <div class="text-darkest-neutral font-bold ellipsis">
+        <span class="align-middle">{{item}}</span>
+      </div>
+    </span>
+  </div>
+</span>
+
+<!-- Display data that is of the owner type or dynamic user field -->
+<span ng-if="::((!$ctrl.field.multiple && ($ctrl.field.key.includes('owner') || $ctrl.field.key.includes('creator'))) || ($ctrl.field.dynamic && $ctrl.display.hasOwnProperty('AvatarUrl') && $ctrl.display.AvatarUrl !== null))" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}" class="single-user-badge">
+  <a 
+    ng-if="!$ctrl.whiteDisplay && $ctrl.display.Name"
+    ui-sref="{{'user({userid: $ctrl.display.Id})'}}"
+    class="light-badge neutral-content badge-border nowrap badge-inline-wrapper"
+    uib-tooltip="{{$ctrl.display.Name}}"
+    tooltip-append-to-body="true"
+    tooltip-placement="auto top"
+    tooltip-enable="{{ $ctrl.display.Name.length > 30 }}">
+    <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+      <img ng-src="{{$ctrl.display.AvatarUrl}}" class="avatar-timeline">
+      <span class="align-middle" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">{{$ctrl.display.Name}}</span>
+    </div>
+  </a>
+</span>
+
+<!-- Display data of image type -->
+<span ng-if="::($ctrl.field.typeId === 18)" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">
+  <!-- <span class="pre-wrap">{{$ctrl.display}}</span> -->
+  <img ng-src="{{$ctrl.display.replace('Images/', 'Images/Thumb/')}}" class="dynamic-image" alt="" ng-click="$ctrl.openImageModal()">
+</span>
+
+<!-- Display data of all other types -->
+<span ng-if="::(!$ctrl.field.dynamic && !$ctrl.field.multiple && !$ctrl.field.key.includes('owner') && !($ctrl.field.dynamic && $ctrl.display.hasOwnProperty('AvatarUrl') && $ctrl.display.AvatarUrl !== null) && $ctrl.field.typeId !== 18) && $ctrl.display" ng-style="$ctrl.whiteDisplay ? {'color' : 'white'} : {}">
+  <span ng-if="::($ctrl.field.key === 'deal_contact' || $ctrl.field.key.includes('deal_person') || $ctrl.field.key.includes('contact_company') || $ctrl.field.key.includes('interaction_record_contact'))">
+    <a
+      ui-sref="{{'contact({contactid: $ctrl.objectId})'}}"
+      class="light-badge neutral-content badge-border nowrap badge-inline-wrapper"
+      uib-tooltip="{{$ctrl.display}}"
+      tooltip-append-to-body="true"
+      tooltip-placement="auto top"
+      tooltip-enable="{{ $ctrl.reducedLayout ? $ctrl.display.length > 21 : $ctrl.display.length > 30 }}">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <span class="align-middle">{{$ctrl.display}}</span>
+      </div>
+    </a>
+  </span>
+  <span ng-if="::($ctrl.field.key.includes('interaction_record_deal'))">
+    <a ui-sref="{{'deal({dealid: $ctrl.objectId})'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <span class="align-middle">{{$ctrl.display}}</span>
+      </div>
+    </a>
+  </span>
+  <span ng-if="::($ctrl.field.key.includes('contact_product')) && $ctrl.objectId">
+    <a ui-sref="{{$ctrl.state.current.name + '.contactproduct({ contactproductid: ' + $ctrl.objectId + ' })'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ng-style="$ctrl.shouldShowContactProductTooltip() ? {'cursor': 'not-allowed'} : {}" ng-click="$ctrl.goToContactProduct($event)" uib-tooltip="{{$ctrl.shouldShowContactProductTooltip() ? $ctrl.getContactProductTooltipMessage() : $ctrl.display}}" tooltip-placement="auto top" tooltip-append-to-body="true" tooltip-enable="$ctrl.shouldShowContactProductTooltip() || ($ctrl.display.length > 35)">
+      <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+        <i ng-if="$ctrl.shouldShowContactProductTooltip()" class="fal fa-lock"></i>
+        <span class="align-middle">{{$ctrl.display}}</span>
+      </div>
+    </a>
+  </span>
+  <span ng-if="::(!($ctrl.field.key === 'deal_contact' || $ctrl.field.key.includes('deal_person') || $ctrl.field.key.includes('contact_company') || $ctrl.field.key.includes('interaction_record_contact') || $ctrl.field.key.includes('interaction_record_deal') || $ctrl.field.key.includes('contact_product')))">
+    <span ng-if="$ctrl.new_sanitize_front" class="pre-wrap" ng-bind-html="$ctrl.sanitizeHTML($ctrl.display) | to_trusted" aria-label="{{ 'ARIA_LABELS.DISPLAY_FIELD.OTHER_TYPES' | translate_sentence_with_replace: { fieldLabel: $ctrl.field.label } }}"></span>
+    <span ng-if="!$ctrl.new_sanitize_front" class="pre-wrap" ng-bind-html="$ctrl.display | to_trusted" aria-label="{{ 'ARIA_LABELS.DISPLAY_FIELD.OTHER_TYPES' | translate_sentence_with_replace: { fieldLabel: $ctrl.field.label } }}"></span>
+  </span>
+</span>
+
+<!-- Display dynamic fields -->
+<span ng-if="::($ctrl.field.dynamic && $ctrl.field.typeId !== 19 && !$ctrl.field.multiple && !($ctrl.field.dynamic && $ctrl.display.hasOwnProperty('AvatarUrl') && $ctrl.display.AvatarUrl !== null) && $ctrl.field.typeId !== 18) && $ctrl.field.typeId !== 22 && $ctrl.field.secondaryEntityId !== 10 && $ctrl.field.secondaryEntityId !== 24 && $ctrl.field.secondaryEntity.Id !== 1"
+  uib-tooltip="{{ $ctrl.tooltip }}"
+  tooltip-placement="auto top"
+  tooltip-append-to-body="true"
+  tooltip-enable="{{ !!$ctrl.tooltip }}">
+  <span ng-if="::($ctrl.new_sanitize_front && $ctrl.field.typeId !== 20)" class="pre-wrap" ng-class="{ 'multiline-field-display': $ctrl.field.typeId === 2 }" ng-bind-html="$ctrl.sanitizeHTML($ctrl.display) | to_trusted"></span>
+  <span ng-if="::(!$ctrl.new_sanitize_front && $ctrl.field.typeId !== 20)" class="pre-wrap" ng-class="{ 'multiline-field-display': $ctrl.field.typeId === 2 }" ng-bind-html="$ctrl.display | to_trusted"></span>
+  <i ng-if="$ctrl.field.typeId === 20 && $ctrl.display" class="fas fa-tag" ng-style="{'color': $ctrl.display }"></i>
+</span>
+
+<span ng-if="::($ctrl.field.dynamic && !$ctrl.field.multiple && !($ctrl.field.key === 'deal_contact') && $ctrl.field.key.includes('deal_') && $ctrl.field.apiUrl === 'Contacts')">
+  <a ui-sref="{{'contact({contactid: $ctrl.otherObjectsId || $ctrl.objectId })'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper">
+    <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+      <span class="align-middle">{{$ctrl.display}}</span>
+    </div>
+  </a>
+</span>
+
+<span ng-if="::($ctrl.field.dynamic && !$ctrl.field.multiple && ($ctrl.field.key.includes('contact_') || $ctrl.field.key.includes('product_') || $ctrl.field.key.includes('user_') || $ctrl.field.key.includes('lead_')) && $ctrl.field.apiUrl === 'Contacts' && $ctrl.field.typeId === 7)">
+  <a ui-sref="{{'contact({contactid: $ctrl.otherObjectsId || $ctrl.objectId })'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" uib-tooltip="{{ $ctrl.display }}" tooltip-placement="auto top" tooltip-append-to-body="true" tooltip-enable="{{ $ctrl.reducedLayout ? $ctrl.display.length > 25 : $ctrl.display.length > 35 }}">
+    <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+      <span class="align-middle">{{$ctrl.display}}</span>
+    </div>
+  </a>
+</span>
+
+<span ng-if="::($ctrl.field.dynamic && !$ctrl.field.multiple && $ctrl.field.secondaryEntityId === 10)">
+  <a ui-sref="{{'products.table.product({productid: $ctrl.otherObjectsId || $ctrl.objectId })'}}" class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ng-style="$ctrl.shouldShowProductTooltip() ? {'cursor': 'not-allowed'} : {}" ng-click="$ctrl.goToProduct($event, 0)" uib-tooltip="{{$ctrl.shouldShowProductTooltip() ? $ctrl.getProductTooltipMessage() : $ctrl.display}}" tooltip-placement="auto top" tooltip-append-to-body="true" tooltip-enable="$ctrl.shouldShowProductTooltip() || ($ctrl.display.length > 35)">
+    <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+      <i ng-if="$ctrl.shouldShowProductTooltip()" class="fal fa-lock"></i>
+      <span class="align-middle">{{$ctrl.display}}</span>
+    </div>
+  </a>
+</span>
+
+<span ng-if="::($ctrl.field.dynamic && !$ctrl.field.multiple && $ctrl.field.secondaryEntityId === 24)" class="single-user-badge">
+  <a
+    ng-if="$ctrl.display"
+    ui-sref="{{'user({userid: $ctrl.objectId})'}}"
+    class="light-badge neutral-content badge-border nowrap badge-inline-wrapper"
+    uib-tooltip="{{$ctrl.display}}"
+    tooltip-placement="auto top"
+    tooltip-append-to-body="true"
+    tooltip-enable="{{ $ctrl.display.length > 30 }}">
+    <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+      <img ng-if="$ctrl.displayModel[0].AvatarUrl" ng-src="{{$ctrl.displayModel[0].AvatarUrl}}" class="avatar-timeline">
+      <span class="align-middle">{{$ctrl.display}}</span>
+    </div>
+  </a>
+</span>
+
+<span ng-if="::($ctrl.field.dynamic && $ctrl.field.multiple && $ctrl.field.typeId !== 19)" ng-repeat="item in $ctrl.display track by $index">
+  <a href class="light-badge neutral-content badge-border nowrap badge-inline-wrapper" ng-click="$ctrl.clickOnItem($event, item, $index)"
+    uib-tooltip="{{ item }}"
+    tooltip-placement="auto top"
+    tooltip-append-to-body="true"
+    tooltip-enable="{{ item.length > 35 }}">
+    <div class="text-darkest-neutral font-bold size-limiter ellipsis">
+      <span class="align-middle">{{item}}</span>
+    </div>
+  </a>
+</span>
+
+<!-- Dynamic attachment field -->
+ <span ng-if="::($ctrl.field.dynamic && $ctrl.field.typeId === 19)" ng-repeat="file in $ctrl.display track by $index" class="d-inline-block w-fit-content">
+   <a class="new-badge-layout text-darkest-neutral" 
+    inline-edit 
+    non-editable="false" 
+    attachments-badge="true"
+    model="file"
+    custom-fields="[$ctrl.attachment_name_field]"
+    patch-api="Attachments"
+    submit-fn="$ctrl.submitInlineAttachmentEdit(item)"
+    no-pull-right="true"
+    ng-click="$ctrl.downloadUrl(file)"
+    target="_blank"
+    uib-tooltip="{{file.Name}}"
+    tooltip-append-to-body="true"
+    tooltip-enable="$ctrl.isTooltipEnabled('attachment-' + $index)"
+    stop-delete-attachment="true"
+   > 
+    <span id="attachment-{{$index}}">
+      {{file.Name}}
+    </span>
+  </a>
+ </span>

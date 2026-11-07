@@ -1,4 +1,4 @@
-using AST.Comercial.Domain.Entidades;
+﻿using AST.Comercial.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -10,6 +10,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     /// Usuário atual (definido pelo middleware/controller antes de salvar)
     /// </summary>
     public string UsuarioAtual { get; set; } = "Sistema";
+
+    /// <summary>Id do usuário autenticado (claim "sub"). Nulo para sistema/automação/link público.</summary>
+    public long? UsuarioIdAtual { get; set; }
+
+    /// <summary>Nome do usuário autenticado (claim "nome"). Nulo quando não há usuário humano.</summary>
+    public string? UsuarioNomeAtual { get; set; }
 
     /// <summary>
     /// Empresa do usuário logado (define o tenant para filtro global)
@@ -72,6 +78,29 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Departamento> Departamentos => Set<Departamento>();
     public DbSet<Cargo> Cargos => Set<Cargo>();
     public DbSet<VisualizacaoSalva> VisualizacoesSalvas => Set<VisualizacaoSalva>();
+
+    /// <summary>
+    /// Npgsql (timestamptz) só aceita DateTime com Kind=Utc. Todo DateTime gravado ou usado em parâmetro de consulta
+    /// passa por aqui: Utc fica como está, Local é convertido e Unspecified é assumido como UTC.
+    /// </summary>
+    internal static DateTime ParaUtc(DateTime valor) => valor.Kind switch
+    {
+        DateTimeKind.Utc => valor,
+        DateTimeKind.Local => valor.ToUniversalTime(),
+        _ => DateTime.SpecifyKind(valor, DateTimeKind.Utc)
+    };
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<DateTime>().HaveConversion<ConversorUtc>();
+        configurationBuilder.Properties<DateTime?>().HaveConversion<ConversorUtcNulavel>();
+    }
+
+    private sealed class ConversorUtc() : Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<DateTime, DateTime>(
+        v => ParaUtc(v), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+    private sealed class ConversorUtcNulavel() : Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter<DateTime?, DateTime?>(
+        v => v.HasValue ? ParaUtc(v.Value) : v, v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : v);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -156,6 +185,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         // Gerar um RegistroAlteracao por entidade raiz
         var registros = new List<RegistroAlteracao>();
+        var criadosSemId = new List<(RegistroAlteracao Registro, EntidadeBase Raiz, List<object> Entidades)>();
         foreach (var (chave, entidades) in alteracoesPorRaiz)
         {
             var (entidadeAlvo, registroId) = chave;
@@ -186,11 +216,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             else
             {
                 // Alteração apenas em filhas (ex: ValorCampo alterado sem alterar a raiz)
-                dadosDepois = JsonSerializer.Serialize(entidades, SerializerOpcoes);
+                dadosDepois = JsonSerializer.Serialize(entidades.Select(Escalares).ToList(), SerializerOpcoes);
             }
 
-            registros.Add(new RegistroAlteracao
+            var empresaDoRegistro = raiz?.EmpresaId > 0 ? raiz.EmpresaId
+                : (entidades.OfType<EntidadeBase>().FirstOrDefault(e => e.EmpresaId > 0)?.EmpresaId
+                    ?? (EmpresaIdAtual > 0 ? EmpresaIdAtual : (long?)null));
+
+            var registro = new RegistroAlteracao
             {
+                EmpresaId = empresaDoRegistro,
+                UsuarioId = UsuarioIdAtual,
+                UsuarioNome = UsuarioNomeAtual,
                 Usuario = UsuarioAtual,
                 Acao = acao,
                 EntidadeAlvo = entidadeAlvo,
@@ -198,13 +235,55 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 Titulo = raiz is not null ? ObterTitulo(raiz) : null,
                 DadosAntes = dadosAntes,
                 DadosDepois = dadosDepois
-            });
+            };
+            registros.Add(registro);
+
+            // Criação: o Id real só existe depois do INSERT; ajustado logo após o primeiro SaveChanges
+            if (estado == EntityState.Added && raiz is not null)
+                criadosSemId.Add((registro, raiz, entidades));
         }
 
         if (registros.Count > 0)
             RegistrosAlteracao.AddRange(registros);
 
-        return await base.SaveChangesAsync(cancellationToken);
+        // Registros de auditoria criados fora do auditor (ex.: motor de automação) herdam o contexto atual
+        foreach (var r in ChangeTracker.Entries<RegistroAlteracao>().Where(e => e.State == EntityState.Added).Select(e => e.Entity))
+        {
+            r.EmpresaId ??= EmpresaIdAtual > 0 ? EmpresaIdAtual : null;
+            r.UsuarioId ??= UsuarioIdAtual;
+            r.UsuarioNome ??= UsuarioNomeAtual;
+        }
+
+        NormalizarDatasParaUtc();
+
+        var linhas = await base.SaveChangesAsync(cancellationToken);
+
+        if (criadosSemId.Count > 0)
+        {
+            foreach (var (registro, raiz, entidades) in criadosSemId)
+            {
+                registro.RegistroId = raiz.Id;
+                registro.DadosDepois = SerializarSnapshotCompleto(raiz, entidades);
+            }
+            await base.SaveChangesAsync(cancellationToken);
+        }
+
+        return linhas;
+    }
+
+    /// <summary>Cinto e suspensório: normaliza qualquer DateTime pendente de gravação para UTC.</summary>
+    private void NormalizarDatasParaUtc()
+    {
+        foreach (var entry in ChangeTracker.Entries().Where(e => e.State is EntityState.Added or EntityState.Modified))
+        {
+            foreach (var prop in entry.Properties)
+            {
+                if (prop.Metadata.ClrType == typeof(DateTime) && prop.CurrentValue is DateTime dt && dt.Kind != DateTimeKind.Utc)
+                    prop.CurrentValue = ParaUtc(dt);
+                else if (prop.Metadata.ClrType == typeof(DateTime?) && prop.CurrentValue is DateTime dtn && dtn.Kind != DateTimeKind.Utc)
+                    prop.CurrentValue = ParaUtc(dtn);
+            }
+        }
     }
 
     private static readonly JsonSerializerOptions SerializerOpcoes = new()
@@ -262,16 +341,40 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         _ => null
     };
 
-    private static string SerializarSnapshotCompleto(EntidadeBase raiz, List<object> entidades)
+    /// <summary>
+    /// Propriedades que nunca vão para o log de auditoria: segredos (hash de senha, tokens) e qualquer coisa
+    /// marcada com [IgnoreDataMember] (ex.: Usuario.SenhaHash/TokenIntegracao). O System.Text.Json NÃO respeita
+    /// IgnoreDataMember, por isso o snapshot é montado a partir das propriedades escalares do EF, filtradas aqui.
+    /// </summary>
+    private static bool PropriedadeSensivel(Microsoft.EntityFrameworkCore.Metadata.IProperty p)
+        => p.PropertyInfo?.IsDefined(typeof(System.Runtime.Serialization.IgnoreDataMemberAttribute), true) == true
+           || p.Name is "SenhaHash" or "TokenIntegracao" or "Token" or "RefreshToken";
+
+    private static object? ValorParaLog(object? v) => v is Enum e ? e.ToString() : v;
+
+    /// <summary>Valores escalares atuais da entidade (sem navegações e sem campos sensíveis).</summary>
+    private Dictionary<string, object?> Escalares(object entidade)
+    {
+        var entry = Entry(entidade);
+        var valores = new Dictionary<string, object?>();
+        foreach (var prop in entry.Properties)
+        {
+            if (PropriedadeSensivel(prop.Metadata)) continue;
+            valores[prop.Metadata.Name] = ValorParaLog(prop.CurrentValue);
+        }
+        return valores;
+    }
+
+    private string SerializarSnapshotCompleto(EntidadeBase raiz, List<object> entidades)
     {
         var relacionados = entidades.Where(e => e != raiz).ToList();
         if (relacionados.Count == 0)
-            return JsonSerializer.Serialize(raiz, SerializerOpcoes);
+            return JsonSerializer.Serialize(Escalares(raiz), SerializerOpcoes);
 
         var snapshot = new Dictionary<string, object?>
         {
-            ["Entidade"] = raiz,
-            ["Relacionados"] = relacionados
+            ["Entidade"] = Escalares(raiz),
+            ["Relacionados"] = relacionados.Select(Escalares).ToList()
         };
         return JsonSerializer.Serialize(snapshot, SerializerOpcoes);
     }
@@ -279,15 +382,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     private static string SerializarValoresOriginais(Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry entry)
     {
         var valores = new Dictionary<string, object?>();
-        foreach (var prop in entry.Properties.Where(p => p.IsModified))
+        foreach (var prop in entry.Properties.Where(p => p.IsModified && !PropriedadeSensivel(p.Metadata)))
         {
-            valores[prop.Metadata.Name] = prop.OriginalValue;
+            valores[prop.Metadata.Name] = ValorParaLog(prop.OriginalValue);
         }
         return JsonSerializer.Serialize(valores, SerializerOpcoes);
     }
 }
-
-
-
-
-

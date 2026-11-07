@@ -1,0 +1,59 @@
+<div>
+  <div class="col-sm-12 clearfix product-section">
+    <a class="button-neutral-gray button font-regular-size text-left button-full-width" role="button" data-toggle="collapse" data-target="{{::'#installments_' + field.key}}">
+      Parcelas
+      <i class="fal fa-angle-down dropdown-sign"></i>
+    </a>
+    <div class="collapse in" id="{{::'installments_' + field.key}}">
+      <div class="darkest-background clearfix b-1 border-bottom-fix installment-section">
+        <div class="gap-15"></div>
+        <div class="form-group col-sm-6">
+          <div class="input-group full-width">
+            <label>
+              Quantidade de parcelas
+            </label>
+            <span class="align-limited-characters">
+              <span class="text-muted font-small">
+                {{ documentInstallmentsCtrl.installments_number || 0 }}/{{ 500 }}
+              </span>
+            </span>
+            <input type="number" only-positive="true" type-id="{{ documentInstallmentsCtrl.field_type }}" max="500" min="0" number-only ng-model="documentInstallmentsCtrl.installments_number" ng-change="documentInstallmentsCtrl.updateInstallmentsWrapper()" ng-model-options="{ debounce: 300 }" class="form-control input-sm quote-installments-input">
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <div class="gap-15"></div>
+          <a class="button-small button button-neutral button-full-width" ng-click="documentInstallmentsCtrl.updateInstallmentsWrapper()">
+            <span class="text-semi-small">
+              Atualizar parcelas
+            </span>
+          </a>
+        </div>
+        <div class="gap-10 col-sm-12"></div>
+        <div ng-form name="installment_form"  class="installment-line" ng-class="{'installments-first-child': $index === 0}">
+          <div class="form-group col-sm-12">
+            <div class="side-scroll">
+              <div class="side-scroll-container white-content">
+                <table class="table modal-table table-static" ng-if="documentInstallmentsCtrl.model[documentInstallmentsCtrl.entityPrefix + '_installments'] && documentInstallmentsCtrl.model[documentInstallmentsCtrl.entityPrefix + '_installments'].length > 0">
+                  <thead>
+                    <tr>
+                      <th class="small-cell" ng-repeat="field in documentInstallmentsCtrl.installment_form">{{field.label}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="installment in documentInstallmentsCtrl.model[documentInstallmentsCtrl.entityPrefix + '_installments'] track by $index">
+                      <td ng-repeat="field in documentInstallmentsCtrl.installment_form">
+                        <new-field field="field" model="installment" property="field.key" required="field.required"
+                          formula-scope="$parent.$parent.$parent"></new-field>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gap-15 col-sm-12"></div>
+</div>

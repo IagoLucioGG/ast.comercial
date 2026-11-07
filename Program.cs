@@ -150,15 +150,21 @@ builder.Services.AddControllers(options =>
             .RequireAuthenticatedUser()
             .Build();
         options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
+        options.Filters.Add<AST.Comercial.Infrastructure.Middleware.CorpoODataInvalidoFilter>();
     })
-    .AddOData(options => options
-        .Select()
-        .Filter()
-        .OrderBy()
-        .Expand()
-        .Count()
-        .SetMaxTop(100)
-        .AddRouteComponents("odata", modelBuilder.GetEdmModel()));
+    .AddOData(options =>
+    {
+        // Datas OData em UTC (sem isso o servidor converte literais de data-hora pelo fuso local da máquina)
+        options.TimeZone = TimeZoneInfo.Utc;
+        options
+            .Select()
+            .Filter()
+            .OrderBy()
+            .Expand()
+            .Count()
+            .SetMaxTop(100)
+            .AddRouteComponents("odata", modelBuilder.GetEdmModel());
+    });
 
 builder.Services.AddOpenApi();
 

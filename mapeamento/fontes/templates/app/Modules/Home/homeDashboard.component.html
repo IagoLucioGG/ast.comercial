@@ -1,0 +1,69 @@
+<div class="hbox stretch">
+  <aside class="b-r-1 dark-background">
+    <div class="vbox side-scroll darkest-background">
+      <section class="scrollable">
+        <div class="widgets-board" data-cy="home-dashboard-widgets">
+          <created-leads-widget ng-if="$ctrl.self.Account.LeadsModule && $ctrl.self.Profile.LeadsModule"
+            user-id="{{::$ctrl.self.Id}}" size-class="$ctrl.small_widgets_sizes"></created-leads-widget>
+          <created-deals-widget ng-if="$ctrl.activeDealsModule && $ctrl.self.Profile.DealsModule"
+            user-id="{{::$ctrl.self.Id}}" size-class="$ctrl.small_widgets_sizes"></created-deals-widget>
+          <created-quotes-widget ng-if="$ctrl.activeQuoteModule && $ctrl.self.Profile.DealsModule"
+            user-id="{{::$ctrl.self.Id}}" size-class="$ctrl.small_widgets_sizes"></created-quotes-widget>
+          <created-orders-widget
+            ng-if="(($ctrl.activeDealsModule && $ctrl.self.Profile.DealsModule) || ($ctrl.activeOrderModule && $ctrl.self.Profile.OrdersModule))"
+            user-id="{{::$ctrl.self.Id}}"
+            size-class="$ctrl.small_widgets_sizes">
+          </created-orders-widget>
+          <div
+            class="wrapper display-inline-block font-regular-size"
+            ng-class="{'full-width': !$ctrl.self.Profile.TasksModule || $ctrl.self.MessagesExpandedView, 'width-50-percent': $ctrl.self.Profile.TasksModule && !$ctrl.self.MessagesExpandedView}">
+            <messages-widget user-id="{{::$ctrl.self.Id}}"></messages-widget>
+          </div>
+          <today-tasks-widget ng-if="$ctrl.self.Profile.TasksModule" user-id="{{::$ctrl.self.Id}}">
+          </today-tasks-widget>
+          <current-deals-widget ng-if="$ctrl.activeDealsModule && $ctrl.self.Profile.DealsModule"
+            user-id="{{::$ctrl.self.Id}}"></current-deals-widget>
+        </div>
+      </section>
+    </div>
+  </aside>
+  <aside class="width-400 regular-background first-screen-timeline">
+    <div class="vbox side-scroll small-header">
+      <header class="regular-header b-b-1 white-content header-zindex new-header">
+        <div class="hbox stretch">
+          <aside class="v-middle">
+            <div class="font-thin font-very-big">{{ 'HOME.TIMELINE' | translate }}</div>
+          </aside>
+          <aside class="v-middle text-right">
+            <div class="dropdown display-inline-block">
+              <a class="button button-white-no-border dropdown-toggle" data-toggle="dropdown">
+                <span class="font-regular-weight">
+                  <span class="text-action"><i class="button-icon fal fa-eye"></i></span>
+                  {{$ctrl.current_population_option.Name}}
+                  <i class="fal fa-angle-down dropdown-sign"></i>
+                </span>
+              </a>
+              <ul class="dropdown-menu white-dropdown-menu no-padding-top pull-right">
+                <div class="dropdown-subtitle">{{ 'TIMELINE.SHOW_ACTIVITIES' | translate }}</div>
+                <div ng-repeat="population_option in $ctrl.population_options">
+                  <li>
+                    <a class="white-dropdown-link" href
+                      ng-click="$ctrl.current_population_option = population_option; $ctrl.changeFilter()">
+                      {{population_option.Name}}
+                    </a>
+                  </li>
+                </div>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </header>
+      <section class="scrollable">
+        <div class="side-wrapper">
+          <main-timeline entity-type="" entity-id="" standard-filter="$ctrl.standard_timeline_filter" minimize-icon="true"
+            ng-if="$ctrl.can_load_timeline" days-range-filter="30"></main-timeline>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>

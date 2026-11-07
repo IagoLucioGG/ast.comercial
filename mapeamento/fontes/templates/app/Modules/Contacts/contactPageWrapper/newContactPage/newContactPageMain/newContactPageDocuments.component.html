@@ -1,0 +1,79 @@
+<div>
+  <div class="side-scroll">
+    <div class="regular-header new-header white-content b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <div class="input-group pull-left width-250 mright10">
+            <input class="form-control input-sm light-background" placeholder="{{ 'GENERICS.SEARCH' | translate }}"
+                 ng-model="$ctrl.quick_filter"
+                 ng-keyup="$event.keyCode == 13 ? $ctrl.quickFilter($ctrl.quick_filter) : $ctrl.onTypeQuickFilter($ctrl.quick_filter)">
+            <div class="input-group-btn width-10">
+              <a ng-click="$ctrl.quickFilter($ctrl.quick_filter)" class="btn button button-neutral-gray special-search-button">
+                <i class="fas fa-search text-neutral"></i>
+              </a>
+            </div>
+          </div>
+          <div class="pull-right">
+            <div class="dropdown pull-left contact-filter-menu">
+              <filters-menu filters="$ctrl.filters" applied-filter="$ctrl.applied_filter"
+              filter-actions-fn="$ctrl.filterActions"></filters-menu>
+            </div>
+            <div class="dropdown pull-right">
+              <a class="dropdown-toggle button button-white-no-border pull-right" id="approvals" href
+                 type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                 <span class="text-action"><i class="fal button-icon-margin" ng-class="$ctrl.current_mode.Icon"></i></span>
+                 {{ 'CONTACTS.CONTACT_PAGE.SEGMENT_BY' | translate_with_replace : { name: $ctrl.current_mode.Name.toLowerCase() } }}
+                 <i class="fal fa-angle-down dropdown-sign"></i>
+              </a>
+              <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top"
+                  aria-labelledby="more_options">
+                <div class="dropdown-subtitle">{{ 'CONTACTS.CONTACT_PAGE.VISUALIZATION_MODE' | translate }}</div>
+                <li ng-repeat="mode in $ctrl.modes|filter:{ Active: false }">
+                  <a class="white-dropdown-link" href ng-click="$ctrl.changeMode(mode.EntityId)">
+                    <span class="text-darkest-neutral">
+                      <i class="fal button-icon-margin" ng-class="mode.Icon"></i>
+                    </span>
+                    {{ 'CONTACTS.CONTACT_PAGE.SEGMENT_BY' | translate_with_replace : { name: mode.Name.toLowerCase() } }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+        <aside class="text-right width-10 v-middle" ng-if="$ctrl.self.Profile.DocumentsCreatePermission && !$ctrl.blockCreate">
+          <div class="dropdown">
+            <a class="button button-action nowrap" ng-click="$ctrl.openNewDocument()">
+              <i class="button-icon-margin fas fa-file-alt"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_DOCUMENT' | translate }}
+            </a>
+          </div>
+        </aside>
+        <div class="width-5"></div>
+        <aside class="text-right width-10 v-middle" ng-if="$ctrl.cpq_beta_button_enabled && $ctrl.self.Profile.DocumentsCreatePermission && !$ctrl.blockCreate">
+          <div class="dropdown">
+            <a class="button button-action nowrap" ng-click="$ctrl.openBetaNewDocument()">
+              <i class="button-icon-margin fas fa-file-alt"></i>
+              {{ 'CONTACTS.CONTACT_PAGE.NEW_DOCUMENT' | translate }}&nbsp;{{ 'GENERICS.BETA_UPPER' | translate }}
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="side-scroll-container white-content">
+      <dynamic-table
+          ng-if="$ctrl.can_load"
+          entity="$ctrl.current_entity"
+          opt-filter="$ctrl.current_filter"
+          table-edit-fn="$ctrl.editTablePatch"
+          current-tab="$ctrl.front_tab"
+          block-table-edit="$ctrl.blockCreate"
+          entity-page-loader="true">
+      </dynamic-table>
+    </div>
+  </div>
+</div>
+<portal>
+  <filters-modal ng-if="$ctrl.state.current.name.endsWith('filter')" modal-id="filter_modal"
+    entity="$ctrl.current_entity" filter-actions-fn="$ctrl.filterActions" remove-simple-filter="true">
+  </filters-modal>
+</portal>

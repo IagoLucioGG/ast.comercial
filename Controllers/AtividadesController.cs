@@ -1,4 +1,4 @@
-using AST.Comercial.Application.Dtos;
+﻿using AST.Comercial.Application.Dtos;
 using AST.Comercial.Application.Interfaces;
 using AST.Comercial.Domain.Entidades;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +11,16 @@ namespace AST.Comercial.Controllers;
 public class AtividadesController(IAtividadeServico servico) : ODataController
 {
     [EnableQuery]
-    public IQueryable<AtividadeDto> Get() => servico.ObterTodos();
+    public IQueryable<Atividade> Get() => servico.ObterTodos();
 
     [EnableQuery]
-    public async Task<ActionResult<AtividadeDto>> Get(long key)
+    public async Task<ActionResult<Atividade>> Get(long key)
     {
         var resultado = await servico.ObterPorIdAsync(key);
         return resultado is null ? NotFound() : Ok(resultado);
     }
 
-    public async Task<ActionResult<AtividadeDto>> Post([FromBody] Delta<Atividade> delta)
+    public async Task<ActionResult<Atividade>> Post([FromBody] Delta<Atividade> delta)
     {
         var resultado = await servico.CriarAsync(delta);
         return Created(resultado);

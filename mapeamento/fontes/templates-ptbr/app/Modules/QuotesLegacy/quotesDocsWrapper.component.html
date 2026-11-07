@@ -1,0 +1,104 @@
+<div class="component-with-height">
+  <div class="vbox small-header">
+    <header class="regular-header new-header b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle">
+          <documents-nav active="quotes"></documents-nav>
+          <div class="display-inline-block height-40 pull-left">
+            <div class="input-group width-170 mtop5 special-size-search-button" tooltip-placement="right" uib-tooltip="{{ quotesCtrl.quickSearchTooltipText }}">
+              <input class="form-control input-sm light-background" placeholder="{{ quotesCtrl.quickSearchPlaceholderText }}" ng-model="quotesCtrl.quick_filter" ng-keyup="$event.keyCode == 13 ? quotesCtrl.quickFilter(quotesCtrl.quick_filter) : quotesCtrl.onTypeQuickFilter(quotesCtrl.quick_filter)">
+              <div class="input-group-btn width-10">
+                <a class="btn button button-neutral-gray special-search-button" ng-click="quotesCtrl.quickFilter(quotesCtrl.quick_filter)">
+                  <i class="fas fa-search text-neutral"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <button class="button button-action pull-right" ng-click="quotesCtrl.openBetaNewQuote()" ng-if="quotesCtrl.cpq_beta_button_enabled && quotesCtrl.self.Profile.QuotesCreatePermission" data-cy="documents-quotes-new-quote-button"
+            uib-tooltip="{{ quotesCtrl.newQuoteButtonTooltip }}" 
+            tooltip-placement="left" 
+            ng-disabled="!quotesCtrl.hasActivePipeline"
+            ng-class="{disabled: !quotesCtrl.hasActivePipeline}"
+            data-cy="new-quote-beta-button"
+          >
+            <i class="button-icon fas fa-file-invoice-dollar"></i>
+            Nova proposta BETA
+          </button>
+          <button class="button button-action pull-right" 
+            role="button"
+            aria-label="botão de criar nova proposta"
+            ng-if="quotesCtrl.self.Profile.QuotesCreatePermission"
+            ng-click="quotesCtrl.openNewQuote()" 
+            uib-tooltip="{{ quotesCtrl.newQuoteButtonTooltip }}" 
+            tooltip-placement="left" 
+            ng-disabled="!quotesCtrl.hasActivePipeline"
+            ng-class="{disabled: !quotesCtrl.hasActivePipeline}"
+            data-cy="new-quote-legacy-button"
+          >
+            <i class="button-icon fas fa-file-invoice-dollar"></i>
+            Nova proposta
+          </button>
+          <a id="quotes-menu-button" class="button button-white-no-border pull-right" open-side-menu side-menu-id="quote_side_menu" ng-if="quotesCtrl.self.Profile.Administrator">
+            <span><span class="text-action"><i class="fal fa-cog button-icon"></i></span> Menu </span>
+          </a>
+          <div class="dropdown pull-right">
+            <filters-menu filters="quotesCtrl.filters"
+                          applied-filter="quotesCtrl.applied_filter"
+                          filter-actions-fn="quotesCtrl.filterActions">
+            </filters-menu>
+          </div>
+          <div class="dropdown pull-right">
+            <a class="dropdown-toggle button button-white-no-border pull-right" id="approvals" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span>
+                <span class="text-action"><i class="button-icon-margin" ng-class="quotesCtrl.current_mode.Icon"></i></span>
+                {{ 'QUOTES.DOCS_WRAPPER.SELECTED_SEGMENTATION' | translate_with_replace: {quote_selected_mode: quotesCtrl.current_mode.Name.toLowerCase()} }}<i class="fal fa-angle-down dropdown-sign"></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+              <div class="dropdown-subtitle">Opções de visualização</div>
+              <li ng-repeat="mode in quotesCtrl.modes|filter:{ Active: false }">
+                <a class="white-dropdown-link" href ng-click="quotesCtrl.changeMode(mode.EntityId)">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                      <span>
+                         <i class="button-icon-margin" ng-class="mode.Icon"></i>
+                      </span>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'QUOTES.DOCS_WRAPPER.SEGMENT_BY' | translate_with_replace: {quote_segment_by: mode.Name.toLowerCase()} }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </aside>
+      </div>
+    </header>
+    <section>
+      <div class="vbox">
+        <!-- CONTEÚDO DA TELA -->
+        <section ui-view="quotes-view"></section>
+      </div>
+    </section>
+
+    <!--MODALS-->
+    <filters-modal
+        ng-if="quotesCtrl.state.current.name.endsWith('filter')"
+        modal-id="filter_modal"
+        entity="quotesCtrl.current_mode.EntityId === 7 ?  quotesCtrl.main_entity : quotesCtrl.current_mode.EntityId === 14 ? quotesCtrl.product_entity : quotesCtrl.part_entity"
+        filter-actions-fn="quotesCtrl.filterActions"
+        remove-simple-filter="true">
+    </filters-modal>
+
+    <!--SIDE-MENU-->
+    <side-menu side-menu-id="quote_side_menu">
+      <quotes-side-menu></quotes-side-menu>
+    </side-menu>
+    <!--END OF SIDE-MENU-->
+
+  </div>
+</div>

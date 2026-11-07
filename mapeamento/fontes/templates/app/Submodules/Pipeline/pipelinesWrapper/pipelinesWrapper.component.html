@@ -1,0 +1,129 @@
+<div class="component-with-height">
+  <div class="vbox" ng-class="{'small-header': !$ctrl.state.current.name.includes('pipelines.list')}">
+    <header ng-if="!$ctrl.state.current.name.includes('pipelines.list')" ng-hide="!$ctrl.show_header" class="regular-header new-header b-b-1">
+      <div class="hbox stretch">
+        <aside class="v-middle" ng-if="!$ctrl.state.current.name.includes('pipelines.list')">
+          <a class="btn-invisible" ui-sref="pipelines.list">
+            <div class="display-flex">
+              <div class="back-arrow-button">
+                <i class="fal fa-arrow-left"></i>
+              </div>
+              <span class="font-title font-thin">
+                {{ 'PIPELINES.BACK_TO_PIPELINE_LIST' | translate_sentence }}
+              </span>
+            </div>
+          </a>
+        </aside>
+        <aside class="v-middle" ng-if="$ctrl.state.current.name.includes('pipelines.list')">
+          
+        </aside>
+        <aside class="v-middle" ng-if="$ctrl.state.current.name.includes('pipelines.list')">
+          <a ng-if="$ctrl.self.Profile.DealsCreatePermission" class="button button-action pull-right" ui-sref="pipelines.list.newdeal({ show_pipeline_list: true })">
+            {{ 'PIPELINES.NEW_DEAL' | translate_sentence }}
+          </a>
+        </aside>
+        <aside class="v-middle" ng-if="$ctrl.current_pipeline && !$ctrl.state.current.name.includes('pipelines.list') && $ctrl.self.Profile.Administrator && $ctrl.can_load">
+          <div class="dropdown pull-right">
+            <span class="width-30 d-inline-block v-middle">
+              <helper-button helper-key="'PIPELINE_CONFIG'" tooltip-placement="'left'"></helper-button>
+            </span>
+            <a class="button button-white-no-border dropdown-toggle nowrap" href data-toggle="dropdown" aria-expanded="false">
+              <span class="text-action"><i class="fal fa-cogs button-icon"></i></span>
+              {{ 'PIPELINES.OPTIONS' | translate }}<i class="fal fa-angle-down dropdown-sign"></i>
+            </a>
+            <ul class="dropdown-menu white-dropdown-menu pull-right">
+              <li>
+                <a class="white-dropdown-link" ng-click="$ctrl.toggleArchivedPipeline()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <i class="fal fa-cabinet-filing simple-line list-simple-line"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ ($ctrl.current_pipeline.archived ? 'PIPELINES.DEARCHIVE_PIPELINE' : 'PIPELINES.ARCHIVE_PIPELINE') | translate_sentence }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a class="white-dropdown-link" ng-click-confirm="{{ 'PIPELINES.DUPLICATE_PIPELINE_CONFIRM' | translate_sentence }}" skip-reversible-message="true" ng-click="$ctrl.duplicatePipeline()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <i class="fal fa-clone simple-line list-simple-line"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'PIPELINES.DUPLICATE_PIPELINE' | translate_sentence }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+              <li ng-if="!$ctrl.state.params.is_only_pipeline">
+                <a class="white-dropdown-link" ng-click-confirm="{{ 'PIPELINES.DELETE_PIPELINE_CONFIRM' | translate_sentence }}" reversible="false" ng-click="$ctrl.deletePipeline()">
+                  <div class="hbox">
+                    <aside class="v-middle width-25 text-center">
+                      <i class="fal fa-trash simple-line list-simple-line"></i>
+                    </aside>
+                    <aside class="v-middle">
+                      {{ 'PIPELINES.DELETE_PIPELINE' | translate_sentence }}
+                    </aside>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </header>
+    <section ng-style="{'pointer-events': $ctrl.open_slide ? 'none' : ''}">
+      <div class="vbox">
+        <section ng-class="{'regular-background': !$ctrl.state.current.name.includes('pipelines.list')}" class="scrollable">
+          <div ui-view="pipelines-view" ng-if="$ctrl.can_load"></div>
+          <standard-loader margin-top="15" loading="!$ctrl.can_load"></standard-loader>
+        </section>
+      </div>
+    </section>
+
+    <div class="side-slide stage-config-slide white-content hide-size-slide" ng-class="{ 'hide-size-slide': !$ctrl.open_slide }">
+      <div class="stretch" ng-if="$ctrl.open_slide">
+        <div class="regular-header new-header b-b-1 scroll-shadow arrange-mid">
+          <div class="hbox stretch">
+            <aside class="v-middle">
+              <span class="font-thin font-title" ng-if="!$ctrl.cut_stage_name" data-cy="{{ ($ctrl.slide_key === 'automation' ? 'pipelines-wrapper-automation-title-label' : 'pipelines-wrapper-checklist-title-label') }}">
+                  {{ ($ctrl.slide_key === 'automation' ? ('PIPELINES.AUTOMATION' | translate_with_replace : { stageName: $ctrl.selected_stage.Name }) : ('PIPELINES.CHECKLIST' | translate_with_replace : { stageName: $ctrl.selected_stage.Name })) }}
+              </span>
+              <span class="font-thin font-title" 
+                    ng-if="$ctrl.cut_stage_name"
+                    uib-tooltip="{{ ($ctrl.slide_key === 'automation' ? ('PIPELINES.AUTOMATION' | translate_with_replace : { stageName: $ctrl.selected_stage.Name }) : ('PIPELINES.CHECKLIST' | translate_with_replace : { stageName: $ctrl.selected_stage.Name })) }}"
+                    tooltip-append-to-body="true">
+                  {{$ctrl.cut_stage_name}}
+              </span>
+            </aside>
+            <div class="pipeline-button-wrapper h-100">
+              <a class="button-fixed-size button-fixed-size-big button-white-light-border b-1 pull-right" ng-click="$ctrl.manualClose()">
+                <i class="fal fa-times"></i>
+              </a>
+              <helper-button ng-if="$ctrl.slide_key === 'automation'" aria-label="Intercom Helper Button" helper-key="'PIPELINE_AUTOMATION'" tooltip-placement="'left'"></helper-button>
+              <helper-button ng-if="$ctrl.slide_key === 'checklist'" aria-label="Intercom Helper Button" helper-key="'PIPELINE_CHECKLIST'" tooltip-placement="'left'"></helper-button>
+              <div
+                ng-show="$ctrl.slide_key === 'automation' && $ctrl.show_limit"
+                uib-tooltip="{{ 'AUTOMATIONS.PIPELINE_AUTOMATION_CREATION_LIMIT_LABEL' | translate_sentence }}"
+                tooltip-append-to-body="true"
+                tooltip-placement="left"
+                class="mx-10"
+              >
+                <span class="v-middle" ng-class="{'text-danger': $ctrl.active_automations_count >= $ctrl.max_automations }">{{$ctrl.active_automations_count}}</span><span class="text-muted v-middle">/{{$ctrl.max_automations}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <modal-side-slide slide-id="dev_field_config_pipelines_wrapper_slide" modal-side-slide-title="{{ 'FIELD_CONFIG_MODAL.DEV_FIELD_CONFIG_SLIDE.TITLE' | translate }}" side-slide-wider="true">
+          <dev-field-config-slide has-trigger-config="false" is-from-pipeline-automation-config="true"></dev-field-config-slide>
+        </modal-side-slide>
+        <automations-slide ng-if="$ctrl.slide_key === 'automation'" stage="$ctrl.selected_stage" toggle-automation-enabled-callback-fn="$ctrl.toggleAutomationEnabled(enabled)"></automations-slide>
+        <checklist-slide ng-if="$ctrl.slide_key === 'checklist'" stage="$ctrl.selected_stage"></checklist-slide>
+      </div>
+    </div>
+    <div class="stage-config-slide-backdrop fade" ng-class="{'fade': !$ctrl.open_slide}" style="display:block"></div>
+
+
+  </div>
+</div>

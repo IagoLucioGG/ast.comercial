@@ -1,0 +1,617 @@
+<dynamic-modal modal-id="'goal-modal'" 
+  wide="true" 
+  footer="true" 
+  dark="true" 
+  modal-title="{{ 'GOALS.GOAL_MODAL.TITLE' | translate }}"
+  toggle-modal="$ctrl.toggle_modal" 
+  ng-form name="goal_slide_form" 
+  cypress-prefix="goals-new-goal"
+  is-fetching-modal-content="$ctrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section
+        ng-if="$ctrl.can_load && !$ctrl.not_found"
+        class="scrollable scroll-shadow-container">
+        <div class="side-wrapper">
+          <!-- Nome da meta-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">1</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.goal_name }">
+                        <div class="gap-10"></div>
+                        <div class="font-bold font-semi-big d-flex align-items-center justify-content-between">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_NAME' | translate }}
+                          <span
+                            class="text-muted font-small"
+                            ng-class="{ 'text-danger font-bold': ($ctrl.goal_name.length || 0) > $ctrl.fields_max_length.name }"
+                          >
+                            {{ ($ctrl.goal_name.length || '0') + '/' + $ctrl.fields_max_length.name }}
+                          </span>
+                        </div>
+                        <div class="gap-5"></div>
+                        <input class="form-control input-sm" ng-model="$ctrl.goal_name" ng-required="true" maxlength="{{$ctrl.fields_max_length.name}}">
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Campo-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">2</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle">
+                        <div class="gap-10"></div>
+                        <div class="font-bold font-semi-big">{{ 'GOALS.GOAL_MODAL.GOAL_METRIC' | translate }}</div>
+                        <div class="gap-10"></div>
+                        <div class="panel b-1 white-content medium-shadow">
+                          <table class="table table-striped modal-table">
+                            <thead>
+                              <tr>
+                                <th class="width-100">{{ 'GOALS.GOAL_MODAL.GOAL_METRIC_ENTITY' | translate }}</th>
+                                <th class="width-100">{{ 'GOALS.GOAL_MODAL.GOAL_METRIC_FIELD' | translate }}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.entity }">
+                                  <!-- <select ng-options="entity.Name for entity in $ctrl.entities"
+                                    class="form-control input-sm" ng-model="$ctrl.entity" ng-disabled="$ctrl.editing"
+                                    ng-change="$ctrl.setEntity()" ng-required="true">
+                                    <option value=""></option>
+                                  </select> -->
+                                  <select-field
+                                    model="$ctrl.entity"
+                                    required="true"
+                                    item-list="$ctrl.entities"
+                                    disabled="$ctrl.editing"
+                                    placeholder=""
+                                    custom-display-property="'Name'">
+                                  </select-field>
+                                </td>
+                                <td ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.goal_field }">
+                                  <select-field
+                                    model="$ctrl.goal_field"
+                                    required="true"
+                                    item-list="$ctrl.goal_fields"
+                                    disabled="!$ctrl.entity"
+                                    placeholder="">
+                                  </select-field>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Agregação-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">3</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.aggregator }">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">{{ 'GOALS.GOAL_MODAL.GOAL_METRIC_AGGREGATOR' | translate }}</span>
+                        <div class="gap-5"></div>
+                        <!-- <select ng-options="aggregator.Name for aggregator in $ctrl.aggregators"
+                          class="form-control input-sm" ng-disabled="!$ctrl.entity || $ctrl.disable_aggregator"
+                          ng-model="$ctrl.aggregator" ng-required="true">
+                          <option value=""></option>
+                        </select> -->
+                        <select-field
+                          model="$ctrl.aggregator"
+                          required="true"
+                          item-list="$ctrl.aggregators"
+                          disabled="!$ctrl.entity || $ctrl.disable_aggregator"
+                          placeholder=""
+                          custom-display-property="'Name'">
+                        </select-field>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Adicionar Filtro-->
+          <div class="activity-history hist-separator" ng-if="$ctrl.entity"></div>
+          <div class="hbox" ng-if="$ctrl.entity">
+            <aside class="activity-history">
+              <div>
+                <div class="add-condition text-action" ng-click="$ctrl.toggleShowFilter(!$ctrl.show_filter)">
+                  <i class="fal activity-icon"
+                    ng-class="{'fa-plus': !$ctrl.show_filter, 'fa-minus': $ctrl.show_filter}"></i>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox filter-generator-table">
+                  <aside class="v-middle">
+                    <div class="gap-15"></div>
+                    <div class="goal-filter-header">
+                      <div>
+                        <span class="font-semi-big font-bold">{{ 'GOALS.GOAL_MODAL.GOAL_FILTER' | translate }}: </span>
+                        <br />
+                        <span>
+                          {{ 'GOALS.GOAL_MODAL.GOAL_FILTER_HELPER' | translate }}
+                        </span>
+                      </div>
+                      <filter-clipboard-bar filter-fields="$ctrl.filterFields" ng-if="$ctrl.show_filter && $ctrl.entity"></filter-clipboard-bar>
+                    </div>
+                    <div class="gap-10" ng-if="$ctrl.show_filter"></div>
+                    <filter-container
+                      ng-if="$ctrl.show_filter && $ctrl.entity" 
+                      query-object="$ctrl.filterObject"
+                      entity="$ctrl.entity"
+                      filter-fields="$ctrl.filterFields"
+                      update-filter-fields="$ctrl.updateFilterFields(filterFields)"
+                      compare-fields="true"
+                      force-use-old-filter="!$ctrl.filter_compare_fields"
+                    ></filter-container>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Usuarios responsáveis -->
+          <div class="activity-history hist-separator" ng-if="$ctrl.entity"></div>
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">4</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_OWNERS' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <input class="form-control input-sm" ng-disabled="true" ng-if="!$ctrl.entity" />
+                        <allowed-users
+                          ng-if="$ctrl.entity"
+                          model="$ctrl.designated_views_model"
+                          remove-side-wrapper="true"
+                          custom-users-api-url="$ctrl.entity.UsersApiUrl"
+                          custom-teams-api-url="$ctrl.entity.TeamsApiUrl"
+                          block-teams-select="!$ctrl.entity.AllowTeamsSelect"
+                          block-view-all-select="!$ctrl.entity.AllowAllUsersSelect"
+                          disable-selector="!$ctrl.entity.AllowTeamsSelect && !$ctrl.entity.AllowAllUsersSelect">
+                        </allowed-users>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Campo de usuario -->
+          <div class="activity-history hist-separator""></div>
+            <div class=" hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">5</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox" ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.user_field }">
+                      <aside class="v-middle width-160 nowrap">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_OWNERS_ROLE' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <select-field
+                          model="$ctrl.user_field"
+                          required="true"
+                          item-list="$ctrl.user_fields"
+                          disabled="!$ctrl.entity"
+                          placeholder="">
+                        </select-field>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Usuarios que podem ver -->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">6</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_USERS_AND_TEAM_VISIBILITY' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <allowed-users model="$ctrl.allowed_views_model" remove-side-wrapper="true"></allowed-users>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Data de inicio-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">7</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': goal_slide_form.$submitted && (!$ctrl.goal_start_date || $ctrl.errorBackdating) }">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_START_DATE' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <input ng-model="$ctrl.goal_start_date" date datepicker="true"
+                          ng-change="$ctrl.handleIntervalFieldChange()" ng-required="true" type="text"
+                          class="form-control input-sm" />
+                        </select>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Data de término-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">8</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': goal_slide_form.$submitted && (!$ctrl.goal_end_date || $ctrl.errorBackdating) }">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_END_DATE' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <input ng-model="$ctrl.goal_end_date" date datepicker="true"
+                          ng-change="$ctrl.handleIntervalFieldChange()" ng-required="true" type="text"
+                          class="form-control input-sm" />
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Campo de data do Intervalo-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">9</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.date_field }">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_DATE_FIELD' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <select-field
+                          model="$ctrl.date_field"
+                          required="true"
+                          item-list="$ctrl.date_fields"
+                          disabled="!$ctrl.entity"
+                          placeholder="">
+                        </select-field>
+                        </select>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Intervalo-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">10</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.interval }">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_INTERVAL' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <!-- <select ng-options="interval.Name for interval in $ctrl.intervals" class="form-control input-sm"
+                          ng-model="$ctrl.interval"
+                          ng-disabled="!($ctrl.entity && $ctrl.goal_start_date && $ctrl.goal_end_date)"
+                          ng-change="$ctrl.handleIntervalFieldChange()" ng-required="true">
+                          <option value=""></option>
+                        </select> -->
+                        <select-field
+                          model="$ctrl.interval"
+                          required="true"
+                          item-list="$ctrl.intervals"
+                          disabled="!($ctrl.entity && $ctrl.goal_start_date && $ctrl.goal_end_date)"
+                          placeholder=""
+                          custom-display-property="'Name'">
+                        </select-field>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Intervalos-->
+          <div class="activity-history hist-separator" ng-if="$ctrl.entity && $ctrl.goal_field && $ctrl.interval"></div>
+          <div class="hbox" ng-if="$ctrl.entity && $ctrl.goal_field && $ctrl.interval">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span class="font-bold font-regular-size">11</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_INTERVAL_VALUES' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <div class="panel b-1 white-content medium-shadow">
+                          <table class="table table-striped modal-table">
+                            <thead>
+                              <tr>
+                                <th class="width-100">{{ 'GOALS.GOAL_MODAL.START_DATE' | translate }}</th>
+                                <th class="width-100" ng-if="$ctrl.interval.Id !== 1">
+                                  {{ 'GOALS.GOAL_MODAL.END_DATE' | translate }}
+                                </th>
+                                <th>{{ 'GOALS.GOAL_MODAL.VALUE' | translate }}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="interval in $ctrl.goal_intervals">
+                                <td>
+                                  <input ng-model="interval.start_date" date datepicker="true" ng-disabled="true"
+                                    type="text" class="form-control input-sm" />
+                                </td>
+                                <td ng-if="$ctrl.interval.Id !== 1">
+                                  <input ng-model="interval.end_date" date datepicker="true" ng-disabled="true"
+                                    type="text" class="form-control input-sm" />
+                                </td>
+                                <td>
+                                  <div class="input-group">
+                                    <!-- case field is number -->
+                                    <input ng-if="$ctrl.goal_field.typeId === 4 && !$ctrl.goal_field.isDurationField" ng-model="interval.value" type="number"
+                                      class="form-control input-sm" />
+                                    <!-- case field is call duration -->
+                                    <input type="time" step="1" ng-if="$ctrl.goal_field.isDurationField" ng-model="interval.timeValue" type="number"
+                                      class="form-control input-sm" ng-change="$ctrl.durationChanged(interval)"/>
+                                    <!-- case field is amount -->
+                                    <input ng-if="$ctrl.goal_field.typeId === 5" ng-model="interval.value"
+                                      currency-format placeholder="{{'NUMBER_FORMATS.AMOUNT_PLACEHOLDER' | translate}}"
+                                      class="form-control input-sm" />
+                                    <!-- case field is unlimited decimal places or aggregator -->
+                                    <input ng-if="$ctrl.goal_field.typeId === 6 || $ctrl.goal_field.typeId === 23" ng-model="interval.value" step="0.01"
+                                      placeholder="{{'NUMBER_FORMATS.AMOUNT_PLACEHOLDER' | translate}}" type="number"
+                                      class="form-control input-sm" />
+                                    <div class="input-group-btn dropdown">
+                                      <a class="btn button button-white" ng-disabled="disabled" href ng-click="$ctrl.copyValues($index)" uib-tooltip="{{'GOALS.GOAL_MODAL.FILL_ALL_FIELDS' | translate}}" tooltip-append-to-body="true">
+                                        <i class="fal fa-clone font-very-small"></i>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Cor-->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span
+                    class="font-bold font-regular-size">{{$ctrl.entity && $ctrl.goal_field && $ctrl.interval ? '13' : '12'}}</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap" ng-class="{ 'invalid-input': goal_slide_form.$submitted && !$ctrl.goal_color }">
+                        <div class="gap-10"></div>
+                        <span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_COLOR' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <div class="position-relative">
+                          <input colorpicker-parent class="form-control input-sm" colorpicker="hex" ng-model="$ctrl.goal_color"
+                            ng-style="{'background-color': $ctrl.goal_color}" ng-required="true">
+                        </div>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <!-- Porcentagem -->
+          <div class="activity-history hist-separator"></div>
+          <div class="hbox">
+            <aside class="activity-history">
+              <div>
+                <div class="new-approval-item white-content b-1">
+                  <span
+                    class="font-bold font-regular-size">{{$ctrl.entity && $ctrl.goal_field && $ctrl.interval ? '14' : '13'}}</span>
+                </div>
+              </div>
+            </aside>
+            <aside class="v-middle">
+              <div class="display-inline-block full-width">
+                <div class="hbox">
+                  <aside>
+                    <div class="hbox">
+                      <aside class="v-middle width-160 nowrap">
+                        <div class="gap-10"></div><span class="font-bold font-semi-big">
+                          {{ 'GOALS.GOAL_MODAL.GOAL_SHOW_PERCENTAGE' | translate }}
+                        </span>
+                        <div class="gap-5"></div>
+                        <select
+                          class="form-control input-sm"
+                          ng-options="option.Value as option.Name for option in $ctrl.showPercentageOptions"
+                          ng-model="$ctrl.goal_show_percentage">
+                        </select>
+                      </aside>
+                    </div>
+                  </aside>
+                </div>
+              </div>
+            </aside>
+          </div>
+          <div class="activity-history hist-separator"></div>
+          <div class="activity-history hist-separator"></div>
+        </div>
+      </section>
+      <section ng-if="$ctrl.can_load && $ctrl.not_found" class="scrollable scroll-shadow-container">
+        <page-not-found custom-message="$ctrl.not_found_message"></page-not-found>
+      </section>
+    </div>
+  </modal-content>
+  <modal-footer>
+    <div class="stretch">
+      <div class="hbox stretch" ng-if="$ctrl.can_load">
+        <aside class="v-middle width-30" ng-if="$ctrl.editing">
+          <a href class="button button-white" ng-click-confirm="{{ 'GOALS.GOAL_MODAL.CONFIRM_GOAL_DELETE' | translate }}" reversible="false"
+            ng-click="$ctrl.deleteGoal()">
+            <span class="font-big">
+              <i class="fal fa-trash"></i>
+            </span>
+          </a>
+        </aside>
+        <aside class="v-middle text-right">
+          <a class="button button-action pull-right" ng-if="!$ctrl.not_found" href ng-click="$ctrl.submitControl(goal_slide_form)">
+            <i class="fas fa-save button-icon"></i>
+            {{ 'GENERICS.SAVE' | translate }}
+          </a>
+          <a class="button button-white pull-right" href mini-modal mini-modal-title="{{ 'GOALS.GOAL_MODAL.DUPLICATE_GOAL' | translate }}" mini-modal-fields="$ctrl.duplicate_goal_fields" mini-modal-model="$ctrl.duplicate_model" mini-modal-callback="$ctrl.duplicateGoal(goal_slide_form)" mini-modal-pre-open-callback="$ctrl.openDuplicateModal" mini-modal-cancel-callback="$ctrl.cancelDuplicateModal" ng-if="$ctrl.editing && !$ctrl.not_found">
+            <span class="text-action"><i class="fal fa-clone button-icon"></i></span>
+            {{ 'GOALS.GOAL_MODAL.DUPLICATE_GOAL' | translate }}
+          </a>
+          <loading-tooltip loading="$ctrl.loading" form="goal_slide_form" custom-error-message="('GENERICS.ALL_FIELDS_REQUIRED' | translate)"></loading-tooltip>
+        </aside>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

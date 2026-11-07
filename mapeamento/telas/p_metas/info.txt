@@ -1,0 +1,7 @@
+passo: p_metas
+url: https://app10.ploomes.com/goals/panel/7000015
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

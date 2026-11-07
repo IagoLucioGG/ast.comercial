@@ -1,0 +1,24 @@
+<div class="display-inline-block dropdown" ng-class="{ 'open': $ctrl.dropdown_open }" uib-dropdown dropdown-append-to="$ctrl.dropdown_append_element" is-open="$ctrl.dropdown_open">
+  <span class="chat-options" ng-class="{ 'font-semi-big text-muted': $ctrl.isUsersSidebar, 'font-very-big text-neutral': !$ctrl.isUsersSidebar }" uib-dropdown-toggle>
+    <i class="fal fa-cog top-fix-icon "></i>
+  </span>
+  <ul class="dropdown-max-height dropdown-menu white-dropdown-menu no-padding-top width-200 dropdown-menu-right" uib-dropdown-menu>
+    <div class="dropdown-subtitle">
+      {{ 'CHATS.ACTIONS' | translate }}
+    </div>
+    <li ng-repeat="chat_action in $ctrl.chat_actions | filter : { Enabled: true }" ng-click="chat_action.Action()">
+      <a class="white-dropdown-link">
+        <div class="hbox">
+          <aside class="v-middle width-30">
+            <span class="text-darkest-neutral">
+              <i class="list-simple-line fad" ng-class="chat_action.Icon"></i>
+            </span>
+          </aside>
+          <aside class="v-middle">
+            {{chat_action.Name}}
+          </aside>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>

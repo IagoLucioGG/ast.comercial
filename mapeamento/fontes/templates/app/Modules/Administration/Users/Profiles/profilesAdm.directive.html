@@ -1,0 +1,93 @@
+<dynamic-modal
+  helper-key="'USER_PROFILES'"
+  modal-id="profiles"
+  footer="false"
+  wider="true"
+  dark="true"
+  modal-title="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.PROFILES_ADM.TITLE' | translate }}"
+  toggle-modal="profilesAdmCtrl.toggle_modal"
+  has-general-slide="user_slide"
+  cypress-prefix="administration-user-profiles-modal"
+  is-fetching-modal-content="profilesAdmCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="vbox">
+      <section class="scrollable scroll-shadow-container">
+        <div class="vbox side-scroll small-header">
+          <header class="regular-header b-b-1 new-header">
+            <div class="hbox stretch">
+              <aside class="v-middle">
+                <div class="simple-inline width-200 v-bottom">
+                  <div class="input-group">
+                    <input class="form-control input-sm light-background" placeholder="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.PROFILES_ADM.QUICK_SEARCH_PLACEHOLDER' | translate }}" ng-model="profilesAdmCtrl.profile_name_filter" ng-model-options="{debounce:300}">
+                    <div class="input-group-btn">
+                      <a class="btn button button-neutral-gray special-search-button">
+                        <i class="fas fa-search text-neutral"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+              <aside class="v-middle">
+                <a class="button button-action pull-right" ng-click="profilesAdmCtrl.newProfileSlide()" data-cy="administration-user-profiles-new-profile-button">
+                  <i class="button-icon fas fa-user-crown"></i>
+                  {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.PROFILES_ADM.NEW_PROFILE' | translate }}
+                </a>
+              </aside>
+            </div>
+          </header>
+          <section class="scrollable">
+            <div>
+              <table class="table table-hover white-table">
+                <thead>
+                  <tr>
+                    <th class="cursor-pointer" ng-click="profilesAdmCtrl.sortBy('Name')">
+                      {{ 'ADMINISTRATION.USERS.PROFILES_MODAL.PROFILES_ADM.NAME' | translate }}
+                      <i ng-if="profilesAdmCtrl.sort_column === 'Name'" class="fas m-l-xs" ng-class="profilesAdmCtrl.sort_reverse ? 'fa-sort-amount-down' : 'fa-sort-amount-up'"></i>
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="contact-workplace-button" ng-repeat="profile in profilesAdmCtrl.profiles | filter:{ Name: profilesAdmCtrl.profile_name_filter }:false | orderBy:profilesAdmCtrl.sort_column:profilesAdmCtrl.sort_reverse" data-cy="profile-{{profile.Id}}">
+                    <td ng-click="profilesAdmCtrl.editProfileSlide(profile)">
+                      <span>{{profile.Name}}</span>
+                    </td>
+                    <td class="options-column text-center width-40">
+                      <a class="options-column-button" id="more_options" href type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="profilesAdmCtrl.setDeleteProfileFieldException(profile)">
+                        <i class="fal fa-cog table-options-simple-line"></i>
+                      </a>
+                      <ul class="dropdown-menu white-dropdown-menu pull-right" aria-labelledby="more_options">
+                        <li>
+                          <a class="white-dropdown-link" href ng-click="profilesAdmCtrl.duplicateProfile(profile)">
+                            <div class="hbox">
+                              <aside class="width-35 text-center v-middle">
+                                <i class="simple-line-big fal fa-clone"></i>
+                              </aside>
+                              <aside class="v-middle">{{ 'GENERICS.DUPLICATE' | translate }}</aside>
+                            </div>
+                          </a>
+                          <a class="white-dropdown-link" href ng-if="profile.Editable && !profilesAdmCtrl.isMicrosoftIntegration(profile)" mini-modal mini-modal-title="Transferir usuários para perfil" mini-modal-fields="profilesAdmCtrl.delete_profile_fields" mini-modal-callback="profilesAdmCtrl.deleteProfile(model, profile)">
+                            <div class="hbox">
+                              <aside class="width-35 text-center v-middle">
+                                <i class="simple-line-big fal fa-trash"></i>
+                              </aside>
+                              <aside class="v-middle">{{ 'GENERICS.DELETE' | translate }}</aside>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+  </modal-content>
+  <modal-side-slide slide-id="profile_slide" modal-side-slide-title="{{ 'ADMINISTRATION.USERS.PROFILES_MODAL.PROFILES_ADM.PROFILE' | translate }}" cypress-prefix="administration-new-profile">
+    <profiles-adm-slide-content model="profilesAdmCtrl.model" editing="profilesAdmCtrl.editing" is-microsoft-profile="profilesAdmCtrl.isMicrosoftIntegration(profilesAdmCtrl.model)"></profiles-adm-slide-content>
+  </modal-side-slide>
+</dynamic-modal>

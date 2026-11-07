@@ -1,0 +1,7 @@
+passo: p_produtos
+url: https://app10.ploomes.com/Products/table
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

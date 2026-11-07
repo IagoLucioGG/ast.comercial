@@ -35,37 +35,61 @@ public class PollingIntegracaoService(IServiceScopeFactory scopeFactory, ILogger
 
     private async Task ProcessarFluxosPendentesAsync(CancellationToken ct)
     {
-        using var scope = scopeFactory.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-        var agora = DateTime.UtcNow;
-
-        var fluxos = await db.FluxosIntegracao
-            .Include(f => f.Integracao)
-            .Where(f => f.Ativo
-                && f.Direcao == DirecaoFluxo.Entrada
-                && f.ModoEntrada == ModoEntrada.Polling
-                && f.IntervaloPollingMinutos != null
-                && f.Integracao.Ativo
-                && f.Integracao.Status == StatusIntegracao.Ligado
-                && (f.UltimaSincronizacao == null
-                    || f.UltimaSincronizacao.Value.AddMinutes(f.IntervaloPollingMinutos!.Value) <= agora))
-            .ToListAsync(ct);
-
-        foreach (var fluxo in fluxos)
+        // TENANT: o escopo do serviço de fundo nasce com EmpresaIdAtual = 0, o que esconderia todos os fluxos
+        // pelo filtro global. Descobrimos os fluxos devidos sem o filtro (Ativo explícito) e processamos cada um
+        // em escopo próprio, com o tenant do fluxo definido.
+        List<(long Id, long EmpresaId)> devidos;
+        using (var scope = scopeFactory.CreateScope())
         {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var agora = DateTime.UtcNow;
+
+            devidos = (await db.FluxosIntegracao
+                .IgnoreQueryFilters()
+                .AsNoTracking()
+                .Where(f => f.Ativo
+                    && f.Direcao == DirecaoFluxo.Entrada
+                    && f.ModoEntrada == ModoEntrada.Polling
+                    && f.IntervaloPollingMinutos != null
+                    && f.Integracao.Ativo
+                    && f.Integracao.EmpresaId == f.EmpresaId
+                    && f.Integracao.Status == StatusIntegracao.Ligado
+                    && (f.UltimaSincronizacao == null
+                        || f.UltimaSincronizacao.Value.AddMinutes(f.IntervaloPollingMinutos!.Value) <= agora))
+                .Select(f => new { f.Id, f.EmpresaId })
+                .ToListAsync(ct))
+                .Select(f => (f.Id, f.EmpresaId))
+                .ToList();
+        }
+
+        foreach (var (fluxoId, empresaId) in devidos)
+        {
+            using var scope = scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.EmpresaIdAtual = empresaId;
+            db.UsuarioAtual = "Integração (polling)";
+
+            // Com o tenant definido, o filtro global garante que só dados da empresa do fluxo sejam lidos/gravados
+            var fluxo = await db.FluxosIntegracao
+                .Include(f => f.Integracao)
+                .FirstOrDefaultAsync(f => f.Id == fluxoId, ct);
+            if (fluxo is null) continue;
+
             try
             {
                 await ExecutarPollingFluxoAsync(db, fluxo, ct);
                 fluxo.UltimaSincronizacao = DateTime.UtcNow;
                 await db.SaveChangesAsync(ct);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not OperationCanceledException)
             {
                 logger.LogError(ex, "Erro no polling do fluxo {FluxoId} (integração {IntegracaoId})", fluxo.Id, fluxo.IntegracaoId);
+
+                // Descarta o que ficou pendente na tentativa que falhou e registra o erro
+                db.ChangeTracker.Clear();
                 db.LogsIntegracao.Add(new LogIntegracao
                 {
-                    EmpresaId = fluxo.EmpresaId,
+                    EmpresaId = empresaId,
                     IntegracaoId = fluxo.IntegracaoId,
                     FluxoIntegracaoId = fluxo.Id,
                     Direcao = DirecaoFluxo.Entrada,
@@ -231,6 +255,9 @@ public class PollingIntegracaoService(IServiceScopeFactory scopeFactory, ILogger
             if (valor is null) continue;
             var prop = tipo.GetProperty(campo, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase);
             if (prop is null || !prop.CanWrite) continue;
+            // Nunca permitir que um mapeamento troque a empresa/identidade do registro
+            if (prop.Name is nameof(EntidadeBase.Id) or nameof(EntidadeBase.EmpresaId)
+                or nameof(EntidadeBase.CriadoEm) or nameof(EntidadeBase.AtualizadoEm)) continue;
 
             try
             {

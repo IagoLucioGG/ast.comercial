@@ -1,0 +1,48 @@
+<a
+  class="new-proposal-pane-example button button-white-no-border pull-right bottom-menu-button"
+  ng-if="$ctrl.model.Shared && !$ctrl.sharing_accepted && !$ctrl.sharing_refused"
+  ng-click="$ctrl.openShareModal()"
+  ng-class="{ 'disabled': !$ctrl.sharePermission }"
+  uib-tooltip="{{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.NO_PERMISSION_TO_SHARE' | translate }}"
+  tooltip-append-to-body="true"
+  tooltip-placement="bottom"
+  tooltip-enable="!$ctrl.sharePermission">
+  <span class="text-special-green">
+    <i class="fas fa-lightbulb regular-fa"></i>
+  </span>
+  <span>
+    {{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.SHARE_ON' | translate }}
+  </span>
+</a>
+<a
+  class="new-proposal-pane-example button button-white-no-border pull-right bottom-menu-button"
+  ng-if="$ctrl.model.Shared && $ctrl.sharing_accepted && !$ctrl.sharing_refused"
+  ng-click="$ctrl.openShareModal()">
+  <span class="text-success">
+    <i class="fas fa-check-circle regular-fa"></i>
+  </span>
+  <span>
+    {{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.SHARE_ACCEPTED' | translate }}
+  </span>
+</a>
+<a
+  class="new-proposal-pane-example button button-white-no-border pull-right bottom-menu-button"
+  ng-if="$ctrl.model.Shared && !$ctrl.sharing_accepted && $ctrl.sharing_refused"
+  ng-click="$ctrl.openShareModal()">
+  <span class="text-danger">
+    <i class="fas fa-times-circle regular-fa"></i>
+  </span>
+  <span>
+    {{ 'GENERIC_DIRECTIVES.DOCUMENT_PAGE_COMPONENTS.SHARE_REFUSED' | translate }}
+  </span>
+</a>
+<span ng-repeat="sign_integration in $ctrl.sign_integrations">
+  <a class="new-proposal-pane-example button button-white-no-border pull-right bottom-menu-button" ng-click="sign_integration.Action()">
+    <span
+      class="text-special-green"
+      ng-class="{ 'text-special-green': sign_integration.SigningOpen, 'text-success': !sign_integration.SigningOpen }">
+      <i class="fal regular-fa" ng-class="{ 'fa-lightbulb': sign_integration.SigningOpen, 'fa-check-circle': !sign_integration.SigningOpen }"></i>
+    </span>
+    <span class="text-darkest-neutral">{{sign_integration.Label}}</span>
+  </a>
+</span>

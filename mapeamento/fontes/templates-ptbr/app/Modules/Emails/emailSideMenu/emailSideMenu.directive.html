@@ -1,0 +1,39 @@
+
+<div class="bottom-side-wrapper">
+  <div class="button full-width button-white-light-border b-1 button-very-big" ng-click="emailSideMenuCtrl.goToEmailIntegrations()">
+    <div class="hbox">
+      <aside class="v-middle width-35 text-center">
+        <span>
+          <i class="fal fa-tools simple-line-space"></i>
+        </span>
+      </aside>
+      <aside class="text-left">
+        <span class="text-regular semi-big"> Configurações de e-mail</span>
+      </aside>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-click="emailSideMenuCtrl.goToEmailTemplates()" data-cy="emails-templates-button">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-envelope-open-text simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">Modelos de e-mail</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-click="emailSideMenuCtrl.openFoldersModal()" data-cy="emails-folders-button">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-folders simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">Configurar pastas</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,7 +9,7 @@ import ModalFiltro from '@/components/shared/ModalFiltro.vue'
 export interface ColunaConfig {
   campo: string
   label: string
-  tipo?: 'texto' | 'data' | 'badge' | 'status' | 'moeda' | 'avatar'
+  tipo?: 'texto' | 'data' | 'badge' | 'status' | 'moeda' | 'avatar' | 'booleano'
   largura?: string
 }
 
@@ -105,7 +105,7 @@ const selectFields = computed(() => {
   
   for (const campo of colunasVisiveis.value) {
     if (campo.includes('/')) {
-      expands.add(campo.split('/')[0])
+      expands.add(campo.split('/')[0] ?? campo)
     } else {
       camposDiretos.add(campo)
     }
@@ -192,6 +192,13 @@ function onAplicarFiltro(filtro: string | null) {
   carregar()
 }
 
+/** Primeira letra do nome, ignorando prefixos entre colchetes como "[Demo]". */
+function inicialDe(nome: unknown): string {
+  const limpo = String(nome ?? '').replace(/^(\s*\[[^\]]*\]\s*)+/, '').trim()
+  const letra = limpo.match(/[\p{L}\p{N}]/u)?.[0]
+  return (letra ?? '?').toUpperCase()
+}
+
 function formatarValor(item: any, col: ColunaConfig): string {
   let val: any
   if (col.campo.includes('/')) {
@@ -209,6 +216,7 @@ function formatarValor(item: any, col: ColunaConfig): string {
     case 'data': return new Date(val).toLocaleDateString('pt-BR')
     case 'moeda': return `R$ ${Number(val).toLocaleString('pt-BR')}`
     case 'status': return val ? 'Ativo' : 'Inativo'
+    case 'booleano': return val ? 'Sim' : 'Não'
     default: return String(val)
   }
 }
@@ -255,7 +263,7 @@ onMounted(carregar)
               <tr v-for="item in itens" :key="item.Id" class="row-click" @click="abrirEditar(item.Id)">
                 <td v-for="col in colunasAtivas" :key="col.campo">
                   <div v-if="col.tipo === 'avatar'" class="cell-avatar">
-                    <div class="avatar-mini">{{ (item[col.campo] ?? '?')[0] }}</div>
+                    <div class="avatar-mini">{{ inicialDe(item[col.campo]) }}</div>
                     <span>{{ item[col.campo] ?? '-' }}</span>
                   </div>
                   <span v-else-if="col.tipo === 'status'"><span class="dot" :class="{ on: item[col.campo] }"></span>{{ item[col.campo] ? 'Ativo' : 'Inativo' }}</span>

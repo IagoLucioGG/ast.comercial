@@ -1,0 +1,7 @@
+passo: p_funil
+url: https://app10.ploomes.com/Deals/39689/funnel
+status: completed
+erro: 
+screenshot: captured
+acessibilidade: captured
+dom: not_requested

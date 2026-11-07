@@ -1,0 +1,194 @@
+<div class="vbox small-header">
+  <header class="regular-header new-header b-b-1">
+    <div class="hbox stretch">
+      <aside class="v-middle">
+        <div class="simple-inline" ng-repeat="type in tasksCtrl.all_types">
+          <a href class="button-fixed-size button-white-no-border button-fixed-size-big button-fixed-side-round" ng-click="tasksCtrl.quickTypeFilter(type)" ng-style="type.on && {'background-color': type.Color}">
+            <i class="fal font-very-big" ng-class="type.Icon" ng-style="type.on && {'color': 'white'}"></i>
+          </a>
+        </div>
+      </aside>
+      <aside class="v-middle">
+        <a ng-click="tasksCtrl.state.go('tasks.' + tasksCtrl.current_view + '.newtask')" class="button button-action pull-right" data-cy="tasks-new-task-button">
+          <i class="fas fa-calendar-plus button-icon"></i>
+          {{ 'TASKS.NEW_TASK' | translate }}
+        </a>
+        <a id="orders-menu-button" class="button button-white-no-border pull-right" open-side-menu side-menu-id="task_side_menu">
+          <span class="text-action"><i class="fal fa-cog button-icon"></i></span> {{ 'GENERICS.MENU' | translate }}
+        </a>
+        <div class="dropdown pull-right">
+          <a href class="dropdown-toggle button button-white-no-border pull-right" type="button" id="task_views" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <!--<span>{{ 'TASKS.VISUALIZATION' | translate }}: </span>-->
+            <ng-switch on="tasksCtrl.current_view">
+              <span ng-switch-when="calendar"><span class="text-action"><i class="fal fa-calendar button-icon"></i></span>{{ 'TASKS.CALENDAR' | translate }}</span>
+              <span ng-switch-when="list"><span class="text-action"><i class="fal fa-tasks button-icon"></i></span>{{ 'TASKS.LIST' | translate }}</span>
+              <span ng-switch-when="table"><span class="text-action"><i class="fal fa-table button-icon"></i></span>{{ 'TASKS.TABLE' | translate }}</span>
+            </ng-switch>
+            <span>
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="more_options">
+            <div class="dropdown-subtitle">{{ 'TASKS.VISUALIZATION_MODE' | translate }}</div>
+            <li>
+              <a href class="white-dropdown-link" ng-show="tasksCtrl.current_view !== 'calendar'" ng-click="tasksCtrl.changeVisualization('calendar')">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-calendar simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span>{{ 'TASKS.CALENDAR' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href class="white-dropdown-link" ng-show="tasksCtrl.current_view !== 'list'" ng-click="tasksCtrl.changeVisualization('list')">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-tasks simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span>{{ 'TASKS.LIST' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href class="white-dropdown-link" ng-show="tasksCtrl.current_view !== 'table'" ng-click="tasksCtrl.changeVisualization('table')">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-table simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span>{{ 'TASKS.TABLE' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ui-sref="interactionrecords.table">
+                <div class="hbox">
+                  <aside class="v-middle width-25 min-width-25 max-width-25 text-center">
+                    <span class="text-neutral">
+                      <i class="fal fa-comment-lines simple-line list-simple-line"></i>
+                    </span>
+                  </aside>
+                  <aside class="v-middle">
+                    <span>{{ 'TASKS.INTERACTION_RECORDS' | translate }}</span>
+                  </aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown pull-right">
+          <filters-menu filters="tasksCtrl.filters" applied-filter="tasksCtrl.applied_filter" filter-actions-fn="tasksCtrl.filterActions"></filters-menu>
+        </div>
+        <div class="dropdown pull-right" ng-show="tasksCtrl.current_view !== 'table'">
+          <a href class="dropdown-toggle button button-white-no-border pull-right" type="button" id="population-list" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span>
+              <span class="text-action"><i class="fal fa-eye button-icon"></i></span>
+              {{ 'GENERICS.SHOW' | translate }}
+              <i class="fal fa-angle-down dropdown-sign"></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu white-dropdown-menu pull-right no-padding-top" aria-labelledby="population-list">
+            <div class="dropdown-subtitle">{{ 'TASKS.TASK_STATUS' | translate }}</div>
+            <li>
+              <a class="white-dropdown-link" ng-click="tasksCtrl.finished_only = !tasksCtrl.finished_only; tasksCtrl.changePopulation(1); $event.stopPropagation()">
+                <div class="hbox">
+                  <aside class="width-20 v-middle">
+                    <span ng-show="tasksCtrl.finished_only">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </aside>
+                  <aside class="font-semi-big v-middle">
+                    {{ 'TASKS.FINISHED_TASKS' | translate }}
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ng-click="tasksCtrl.open_only = !tasksCtrl.open_only; tasksCtrl.changePopulation(2); $event.stopPropagation()">
+                <div class="hbox">
+                  <aside class="width-20 v-middle">
+                    <span ng-show="tasksCtrl.open_only">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </aside>
+                  <aside class="font-semi-big v-middle">
+                    {{ 'TASKS.OPEN_TASKS' | translate }}
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <div class="dropdown-subtitle">{{ 'TASKS.TASK_OWNERS' | translate }}</div>
+            <li>
+              <a class="white-dropdown-link" ng-click="tasksCtrl.user_only = !tasksCtrl.user_only; tasksCtrl.changePopulation(3); $event.stopPropagation()">
+                <div class="hbox">
+                  <aside class="width-20 v-middle">
+                    <span ng-show="tasksCtrl.user_only">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </aside>
+                  <aside class="font-semi-big v-middle">
+                    {{ 'TASKS.MY_TASKS' | translate }}
+                  </aside>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="white-dropdown-link" ng-click="tasksCtrl.others_only = !tasksCtrl.others_only; tasksCtrl.changePopulation(4); $event.stopPropagation()">
+                <div class="hbox">
+                  <aside class="width-20 v-middle">
+                    <span ng-show="tasksCtrl.others_only">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </aside>
+                  <aside class="font-semi-big v-middle">
+                    {{ 'TASKS.OTHERS_TASKS' | translate }}
+                  </aside>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <button ng-click="tasksCtrl.toggleMap()" class="button button-white-no-border pull-right bottom-menu-button">
+          <span class="text-action"><i class="fal fa-map button-icon"></i></span>
+          <span>
+            {{ 'TASKS.MAP' | translate }}
+          </span>
+        </button>
+        <meeting-bot-modal class="pull-right"></meeting-bot-modal>
+        <helper-button helper-key="'TASKS_PAGE'" tooltip-placement="'left'"></helper-button>
+      </aside>
+    </div>
+  </header>
+  <section>
+    <div class="vbox side-scroll">
+      <section class="scrollable" ui-view="tasks-view"></section>
+      <google-maps markers="tasksCtrl.map_tasks" loaded="tasksCtrl.loaded" modal="#main_task_modal" modal-sref="{{'tasks.'+tasksCtrl.current_view+'.task'}}"></google-maps>
+    </div>
+  </section>
+
+  <!-- MODALS -->
+  <google-calendar-integration ng-if="tasksCtrl.state.current.name == 'tasks.calendar.googlecalendar' || tasksCtrl.state.current.name == 'tasks.list.googlecalendar'"></google-calendar-integration>
+  <filters-modal ng-if="tasksCtrl.state.current.name.endsWith('filter')" modal-id="filter_modal" entity="tasksCtrl.main_entity"
+    filter-actions-fn="tasksCtrl.filterActions">
+  </filters-modal>
+  <tasks-integrations ng-if="tasksCtrl.state.current.name.endsWith('.integrations')"></tasks-integrations>
+  <task-types ng-if="tasksCtrl.state.current.name.endsWith('.types')"></task-types>
+
+  <!--SIDE-MENU-->
+  <side-menu side-menu-id="task_side_menu">
+    <task-side-menu current-view="tasksCtrl.current_view"></task-side-menu>
+  </side-menu>
+  <!--END OF SIDE-MENU-->
+</div>

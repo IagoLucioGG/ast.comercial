@@ -1,0 +1,51 @@
+
+<div class="bottom-side-wrapper">
+  <div class="button full-width button-white-light-border b-1 button-very-big" ng-click="productSideMenuCtrl.openImportationModal()" ng-if="productSideMenuCtrl.import_permission">
+    <div class="hbox">
+      <aside class="v-middle width-35 text-center">
+        <span>
+          <i class="fal fa-file-excel simple-line-space"></i>
+        </span>
+      </aside>
+      <aside class="text-left">
+        <span class="text-regular semi-big"> {{'PRODUCTS.SIDE_MENU.IMPORT_PRODUCTS_FROM_EXCEL' | translate}}</span>
+      </aside>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="productSideMenuCtrl.administrator_permission" ui-sref="{{'formconfig.form({formid: ' + productSideMenuCtrl.product_form_id + ' })'}}">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-pen-square simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{'PRODUCTS.SIDE_MENU.CONFIG_PRODUCT_FIELDS' | translate}}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="productSideMenuCtrl.activeCPQModule && productSideMenuCtrl.administrator_permission" ng-click="productSideMenuCtrl.openPartGroupModal()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-cabinet-filing simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{'PRODUCTS.SIDE_MENU.CONFIG_OPTION_CATEGORIES' | translate}}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="productSideMenuCtrl.administrator_permission" ng-click="productSideMenuCtrl.openProductListModal()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-tag simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{'PRODUCTS.SIDE_MENU.CONFIG_PRODUCT_TAGS' | translate}}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>

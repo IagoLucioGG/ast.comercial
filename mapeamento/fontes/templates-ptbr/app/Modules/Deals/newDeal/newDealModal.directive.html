@@ -1,0 +1,73 @@
+<dynamic-modal modal-id="{{::modalId}}"
+  modal-title="{{newDealCtrl.buildModalTitle()}}"
+  toggle-modal="newDealCtrl.toggle_modal"
+  wider="!newDealCtrl.show_pipeline_list"
+  footer="true"
+  dark="true"
+  ng-form
+  name="new_deal_form"
+
+  hidden-menu="!model && !newDealCtrl.show_pipeline_list && newDealCtrl.pipelines"
+  hidden-menu-selected="newDealCtrl.selected_pipeline"
+  hidden-menu-select-callback="newDealCtrl.selectPipelineCallback(selected)"
+
+  has-proposal="newDealCtrl.initial_load && newDealCtrl.hasProposal()"
+  proposal-open="newDealCtrl.proposal_opening"
+  block-back-state="newDealCtrl.block_back_state"
+  cypress-prefix="new-deal-modal"
+  is-fetching-modal-content="newDealCtrl.isFetchingModalContent"
+>
+  <modal-content>
+    <div class="hbox stretch" ng-if="newDealCtrl.initial_load && !newDealCtrl.show_pipeline_list">
+      <aside class="overflow-hidden width-550">
+        <div class="wizard arrange-mid" ng-hide="model || newDealCtrl.selected_pipeline.pipeline.stages.length === 1">
+          <a ng-repeat="stage in newDealCtrl.selected_pipeline.pipeline.stages track by $index" ng-click="newDealCtrl.changeStage($index)" ng-style="{'width': 100/newDealCtrl.selected_pipeline.pipeline.stages.length + '%'}" ng-class="{'past-stage': $index <= newDealCtrl.selected_stage_index, 'disabled-wizard': newDealCtrl.selected_pipeline.pipeline.must_pass_all_stages && $index > newDealCtrl.selected_stage_index}" href tooltip-placement="bottom" uib-tooltip="{{stage.Name}}" tooltip-append-to-body="true">
+            <div>{{stage.Name}}</div>
+          </a>
+        </div>
+        <div class="line line-border arrange-top"></div>
+        <div class="vbox scroll-shadow darkest-background-shadow" ng-class="{ 'deals-vbox': !(model || newDealCtrl.selected_pipeline.pipeline.stages.length === 1) }">
+          <section class="scrollable scroll-shadow-container" ng-if="newDealCtrl.can_load_form">
+            <div class="gap-15"></div>
+            <div ng-repeat="section in ::newDealCtrl.sections track by $index">
+              <div ng-if="section.Id === 'null'">
+                <forms model="newDealCtrl.new_deal" fields="newDealCtrl.forms[$index]" form="new_deal_form" formula-trigger-hide-or-disable="true"></forms>
+                <div class="gap-20"></div>
+              </div>
+              <div ng-if="section.Id !== 'null'" ng-hide="section.hidden">
+                <modal-section section-form="new_deal_form" name="section.name" section-id="section.Id">
+                  <forms model="newDealCtrl.new_deal" fields="newDealCtrl.forms[$index]" form="new_deal_form" formula-trigger-hide-or-disable="true" name="'section_form_' + section.Id"></forms>
+                </modal-section>
+                <div class="gap-20"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+      <aside ng-if="newDealCtrl.hasProposal() && newDealCtrl.proposal_opening" class="regular-background b-l-1 proposal-hidden" id="new_proposal" ng-class="{'width-450-proposal':newDealCtrl.proposal_opening}">
+        <new-quote-modal deal="newDealCtrl.new_deal" ng-if="newDealCtrl.proposal_opening" new-quote-form="new_deal_form"></new-quote-modal>
+      </aside>
+    </div>
+    <new-deal-pipeline-selector 
+      select-pipeline-fn="newDealCtrl.selectPipelineCallback" 
+      ng-if="newDealCtrl.initial_load && newDealCtrl.show_pipeline_list"
+      pipelines="newDealCtrl.pipelines">
+    </new-deal-pipeline-selector>
+  </modal-content>
+  <modal-footer>
+    <div class="side-wrapper stretch">
+      <div class="document-footer-container stretch" ng-if="!newDealCtrl.show_pipeline_list">
+        <loading-tooltip loading="newDealCtrl.loading" form="new_deal_form"></loading-tooltip>
+        <button
+          class="button button-action pull-right" 
+          ng-class="{disabled: newDealCtrl.disabled_button_save}" 
+          ng-click="newDealCtrl.submitControl(newDealCtrl.new_deal, new_deal_form)"
+          aria-label="botão de enviar formulário de (novo:deal:aa:s) (name:deal::s)"
+          ng-disabled="newDealCtrl.disabled_button_save" 
+        >
+          Salvar
+        </button>
+      </div>
+    </div>
+  </modal-footer>
+</dynamic-modal>

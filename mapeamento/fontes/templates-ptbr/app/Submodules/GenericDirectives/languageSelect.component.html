@@ -1,0 +1,16 @@
+<div class="form-group col-sm-12">
+  <label>
+    <span class="font-semi-big">
+      Selecione a linguagem do sistema
+    </span>
+    <br>
+    <small class="text-muted" ng-if="$ctrl.isChangingForAccount">
+      Essa opção não sobrepõe o idioma configurado pelo usuário nas configurações de perfil.
+    </small>
+    <small class="text-muted" ng-if="!$ctrl.isChangingForAccount">
+      Essa opção será aplicada apenas no seu perfil.
+    </small>
+  </label>
+  <select class="form-control input-sm" ng-options="language.Name for language in $ctrl.languages"
+    ng-model="$ctrl.selected_language" ng-change="$ctrl.languageSelectCallback()"></select>
+</div>

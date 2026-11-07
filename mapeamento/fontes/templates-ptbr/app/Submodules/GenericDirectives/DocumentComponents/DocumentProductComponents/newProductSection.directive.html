@@ -1,0 +1,425 @@
+<collapse ng-if="productSectionCtrl.can_load" show-default="field.sectionAlwaysOpen || !collapseAll" arrows="['fa-angle-up', 'fa-angle-down']">
+  <div class="col-sm-12 clearfix product-section new-product-section" context-menu="productSectionCtrl.sectionMenuOptions(section)">
+    <a class="button-fixed-size button-fixed-size-small button-white-light-border new-standard-shadow b-1 inline-edit-icon add-section button-fixed-side-round" href ng-if="multipliable && sectionIndex === sectionArray.length - 1" ng-click="productSectionCtrl.addSection()">
+      <span class="text-action"><i class="fas fa-plus"></i></span>
+    </a>
+    <a class="button-fixed-size button-fixed-size-small button-white-light-border new-standard-shadow b-1 inline-edit-icon remove-section button-fixed-side-round" href ng-if="multipliable && sectionArray.length > 1" ng-click="productSectionCtrl.removeSection()">
+      <span class="text-action"><i class="fas fa-minus fixing-fixed-size-button"></i></span>
+    </a>
+    <a
+      class="button-neutral-gray button font-regular-size text-left button-full-width"
+      role="button"
+      ng-if="!section['products_cannot_be_viewed']"
+      collapse-controller="{{'#proposalProducts_' + field.key + '_' + sectionIndex}}"
+    >
+      {{productSectionCtrl.section_name}} {{ section[modelPrefix + '_section_products'].length > 0 ? ' - ' + ('GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.SECTION_NUMBER_OF_ITEMS' | translate_with_replace : { number:
+      section[modelPrefix + '_section_products'].length }) : '' }}
+      <i collapse-arrow-controller class="fal dropdown-sign"></i>
+    </a>
+    <a class="button-neutral-gray button font-regular-size text-left button-full-width" ng-if="section['products_cannot_be_viewed']">
+      <i class="fas fa-lock"></i>
+      {{ productSectionCtrl.section_name + ' - ' + ('GENERIC_DIRECTIVES.DOCUMENT_PRODUCT_COMPONENTS.NOT_PERMISSION_TO_VIEW_PRODUCTS' | translate_with_replace : { count: section['products_cannot_be_viewed'] }) }}
+    </a>
+    <div ng-if="!section['products_cannot_be_viewed']" id="{{'proposalProducts_' + field.key + '_' + sectionIndex}}">
+      <div class="white-content clearfix b-1 border-bottom-fix neutral-background-rgba">
+        <div class="wrapper" ng-if="productSectionCtrl.section_product_form">
+          <div class="gap-10"></div>
+          <div class="side-scroll white-content b-1 rounded-regular" ng-if="productSectionCtrl.table_load">
+            <div class="side-scroll-container nowrap wrapper" fixed-column-table fixed-columns-indexes="productSectionCtrl.fixed_column_indexes">
+              <table class="table first-child-border sub-products-table table-smaller-header full-editable-table table-draggable"  id="product-section-table" ui-sortable="productSectionCtrl.sortableOptions" ng-model="section[modelPrefix + '_section_products']" ui-preserve-size="true">
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="font-very-small text-neutral hbox" style="text-transform: initial;" uib-tooltip="Esconder campos travados" tooltip-append-to-body="true">
+                        <aside class="v-middle width-20">
+                          <input type="checkbox" ng-model="productSectionCtrl.hide_disabled_fields"
+                            ng-change="productSectionCtrl.toggleHideDisabledFields()">
+                        </aside>
+                      </div>
+                    </th>
+                    <th
+                      class="mini-cell"
+                      ng-repeat="field in productSectionCtrl.section_product_form"
+                      ng-hide="field.hidden || field.defaultFormHidden || field.disableHidden || field.key.includes('part') || productSectionCtrl.section_product_form_hide_map[field.key]">
+                      {{field.label}}
+                      <span class="field-label-alerts">
+                        <field-symbol-validation field="field" model="productSectionCtrl.new_product" always-valid="productSectionCtrl.insertedProduct"></field-symbol-validation>
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <!-- new product tbody -->
+                <tbody ng-if="productSectionCtrl.new_product" ng-form="inserting_new_product_form">
+                  <tr>
+                    <td class="please-nowrap">
+                      <div class="white-content height-30"></div>
+                    </td>
+                    <td>
+                      <div class="side-wrapper-smaller font-bold">
+                        Novo item
+                      </div>
+                    </td>
+                    <td colspan="{{productSectionCtrl.section_product_form_length - 1}}"></td>
+                    <td class="width-40" colspan="4"></td>
+                  </tr>
+                  <tr class="drag-button drag-line input-square">
+                    <td class="please-nowrap" ng-init="productSectionCtrl.unbindNewProductForm(inserting_new_product_form)">
+                      <div class="white-content b-1 height-30"></div>
+                    </td>
+                    <td ng-if="productSectionCtrl.product_field" class="product-select-td">
+                      <div class="height-20 field-alerts" ng-init="productSectionCtrl.setNewProductScope($parent)">
+                        <field-symbol-validation field="productSectionCtrl.product_field" model="productSectionCtrl.new_product" form="inserting_new_product_form"></field-symbol-validation>
+                      </div>
+                      <div class="input-group full-width">
+                        <select-fk
+                          model="productSectionCtrl.new_product[productSectionCtrl.product_field.key]"
+                          parent-model="productSectionCtrl.new_product"
+                          option-change-callback="productSectionCtrl.productSelect(model, productSectionCtrl.new_product, $parent, true)"
+                          display-name-variable="product_name"
+                          field="productSectionCtrl.product_field"
+                          api-url="{{productSectionCtrl.product_field.apiUrl}}"
+                          display-property="{{productSectionCtrl.product_field.displayProperty}}"
+                          list="true"
+                          required="true"
+                          disabled="productSectionCtrl.product_field.disabled"
+                          loading="productSectionCtrl.isProductFormulaLocked('new')">
+                        </select-fk>
+                        <div class="input-group-btn">
+                          <a class="btn button button-white dropdown-toggle button-square" href
+                            ng-class="{ 'disabled': productSectionCtrl.product_field.disabled }" ng-click="productSectionCtrl.advancedProductSelectModal(productSectionCtrl.new_product, $parent, true)">
+                            <span class="text-action">
+                              <i class="fas fa-search"></i>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      ng-repeat="field in productSectionCtrl.section_product_form"
+                      ng-hide="field.hidden || field.defaultFormHidden || field.disableHidden || field.key.includes('part') || field.key.includes('_product_product') || productSectionCtrl.section_product_form_hide_map[field.key]"
+                      ng-class="{ 'product-text-area': field.typeId === 2 || field.typeId === 22 }">
+                      <div class="height-20 field-alerts" ng-if="field.required || field.unique || field.internalFormula || field.externalFormulaUrl || field.fieldDisableFormula || field.fieldHideFormula || field.requiredFieldFormula">
+                        <field-symbol-validation field="field" model="productSectionCtrl.new_product" form="inserting_new_product_form"></field-symbol-validation>
+                      </div>
+                      <div class="input-group full-width">
+                        <div class="form-control input-sm invisible-input" disabled="disabled" ng-show="field.formHidden">
+                          <i class="fal fa-eye-slash text-muted"></i>
+                        </div>
+                        <new-field
+                          ng-if="field.key.includes('_product_contact_product')"
+                          ng-hide="field.formHidden"
+                          ng-class="{'is-button': field.isButton}"
+                          field="productSectionCtrl.new_product.contact_product_field"
+                          model="productSectionCtrl.new_product"
+                          property="productSectionCtrl.new_product.contact_product_field.key"
+                          required="productSectionCtrl.new_product.contact_product_field.required"
+                          disabled="!productSectionCtrl.new_product.contact_product_field || productSectionCtrl.new_product.contact_product_field.disabled"
+                          wide="productSectionCtrl.new_product.contact_product_field.wide"
+                          hide-label="true"
+                          formula-scope="$parent.$parent"
+                          formula-resettable-variables="true"
+                          formula-get-allowed-scopes-fn="productSectionCtrl.getAllowedScopes"
+                          formula-hide-callback-fn="productSectionCtrl.updateFieldsHideMap"
+                          model-change-callback="productSectionCtrl.modelChangeCallback(new_val, old_val, first_trigger, $parent.$parent, false, true, productSectionCtrl.new_product)"
+                          apply-default-values="productSectionCtrl.apply_default_values"
+                          rebuild-opt-query="productSectionCtrl.rebuildOptQuery"
+                          loading-formula="productSectionCtrl.isProductFormulaLocked('new')">
+                        </new-field>
+                        <new-field
+                          ng-if="!field.key.includes('_product_contact_product')"
+                          ng-hide="field.typeId === 2 || field.typeId === 22 || field.formHidden"
+                          ng-class="{'is-button': field.isButton}"
+                          field="field"
+                          model="productSectionCtrl.new_product"
+                          property="field.key"
+                          required="field.required"
+                          disabled="field.disabled"
+                          wide="field.wide"
+                          hide-label="true"
+                          formula-scope="$parent.$parent"
+                          formula-resettable-variables="true"
+                          formula-get-allowed-scopes-fn="productSectionCtrl.getAllowedScopes"
+                          formula-hide-callback-fn="productSectionCtrl.updateFieldsHideMap"
+                          formula-trigger-hide-or-disable="true"
+                          model-change-callback="productSectionCtrl.modelChangeCallback(new_val, old_val, first_trigger)"
+                          apply-default-values="productSectionCtrl.apply_default_values"
+                          loading-formula="productSectionCtrl.isProductFormulaLocked('new')">
+                        </new-field>
+                        <a
+                          href
+                          mini-modal
+                          ng-if="(field.typeId === 2 || field.typeId === 22) && productSectionCtrl.allow_new_text_area"
+                          ng-hide="field.formHidden"
+                          block-model-watcher="true"
+                          mini-modal-callback="productSectionCtrl.modelChangeCallback(new_val, old_val, first_trigger)"
+                          mini-modal-fields-filtering-fn="productSectionCtrl.miniModalFieldsFiltering(fields)"
+                          mini-modal-fields="[field]"
+                          mini-modal-model="productSectionCtrl.new_product"
+                          mini-modal-title="{{field.label}}"
+                          mini-modal-width="width-1000"
+                          mini-modal-not-trigger-formula="true"
+                          mini-modal-hide-footer="field.typeId === 22"
+                          mini-modal-has-backup-model="field.typeId === 2"
+                          use-default-modal-structure="true">
+                          <span ng-if="productSectionCtrl.new_sanitize_front && productSectionCtrl.new_product[field.key] && field.typeId === 2" ng-bind-html="productSectionCtrl.sanitizeHTML(productSectionCtrl.new_product[field.key]) | to_trusted_text_area"></span>
+                          <span ng-if="!productSectionCtrl.new_sanitize_front && productSectionCtrl.new_product[field.key] && field.typeId === 2" ng-bind-html="productSectionCtrl.new_product[field.key] | to_trusted_text_area"></span>
+                          <span class="text-muted" ng-if="productSectionCtrl.new_product[field.key] && field.typeId === 22">
+                            Visualizar...
+                          </span>
+                          <span class="text-muted" ng-if="!productSectionCtrl.new_product[field.key]">Adicionar...</span>
+                        </a>
+                        <a ng-if="(field.typeId === 2 || field.typeId === 22) && !productSectionCtrl.allow_new_text_area">
+                          <span class="text-muted">Adicionar...</span>
+                        </a>
+                        <div class="input-group-btn" ng-if="field.key.includes('_product_contact_product')">
+                          <a class="btn button button-white dropdown-toggle button-square" href
+                            ng-class="{ 'disabled': !productSectionCtrl.new_product.contact_product_field || productSectionCtrl.new_product.contact_product_field.disabled }"
+                            ng-click="productSectionCtrl.advancedProductSelectModal(productSectionCtrl.new_product, $parent.$parent, true, true)">
+                            <span class="text-action">
+                              <i class="fas fa-search"></i>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td colspan="3" class="min-width-175 width-175">
+                      <a
+                        href
+                        class="button-action button button-full-width button-full-editable-table"
+                        ng-class="{ 'disabled': productSectionCtrl.block_new_product_insertion || inserting_new_product_form.$invalid }"
+                        ng-click="!productSectionCtrl.block_new_product_insertion && !inserting_new_product_form.$invalid && productSectionCtrl.addProduct(null, inserting_new_product_form, true)"
+                        uib-tooltip="Clique aqui para adicionar o produto"
+                        tooltip-is-open="productSectionCtrl.new_product[productSectionCtrl.product_field.key] !== undefined && !productSectionCtrl.closeTooltip"
+                        tooltip-trigger="none">
+                        <span class="text-white font-small text-regular-weight">
+                          Incluir
+                        </span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr class="options-line" ng-if="productSectionCtrl.new_product.show_parts" ng-init="suggestionRelationships=productSectionCtrl.createSuggestionRelationships(productSectionCtrl.new_product[modelPrefix + '_product_product'][0].product_parts, productSectionCtrl.new_product)">
+                    <td class="options-empty-cell"></td>
+                    <td colspan="{{productSectionCtrl.section_product_form_length + 3}}">
+                      <new-product-part
+                        index="{{$index}}"
+                        suggestion-relationships="suggestionRelationships"
+                        product-index="{{field.key + '_' + sectionIndex + '-new'}}"
+                        ng-repeat="parts_form_obj in productSectionCtrl.section_product_parts_forms_objects"
+                        parent-product="productSectionCtrl.new_product"
+                        product-parts="productSectionCtrl.new_product[modelPrefix + '_product_product'][0].product_parts"
+                        selected-parts="productSectionCtrl.new_product[modelPrefix + '_product_parts_' + parts_form_obj.field.quickFormProductPartCode]"
+                        section-scope="productSectionCtrl.parent_scope"
+                        document-scope="productSectionCtrl.document_scope"
+                        product-scope="$parent.$parent"
+                        model-prefix="modelPrefix"
+                        parts-form="parts_form_obj.form"
+                        parts-field="parts_form_obj.field"
+                        editing-model="false">
+                      </new-product-part>
+                    </td>
+                  </tr>
+                </tbody>
+                <!-- product list head tbody -->
+                <tbody ng-if="section[modelPrefix + '_section_products'].length > 0">
+                  <tr class="neutral-line">
+                    <td class="please-nowrap">
+                      <div class="white-content height-30"></div>
+                    </td>
+                    <td>
+                      <div class="side-wrapper-smaller font-bold">
+                        Itens adicionados
+                      </div>
+                    </td>
+                    <td colspan="{{productSectionCtrl.section_product_form_length - 1}}"></td>
+                    <td class="width-40" colspan="4"></td>
+                  </tr>
+                </tbody>
+                <!-- product list tbody -->
+                <tbody ng-repeat="product in section[modelPrefix + '_section_products'] | limitTo: productSectionCtrl.limit_to_products" ng-init="productIndex = $index" ng-form="inserting_product_form" ng-show="!productSectionCtrl.show_loading">
+                  <tr class="drag-button drag-line input-square input-filled">
+                    <td class="please-nowrap">
+                      <div ng-if="section[modelPrefix + '_section_products'].length === 1" class="white-content b-1 height-30"></div>
+                      <div ng-if="section[modelPrefix + '_section_products'].length > 1" class="hbox white-content b-1 height-30">
+                        <aside class="v-middle">
+                          <div class="token-drag-indicator muted-token mini-dragger"></div>
+                        </aside>
+                      </div>
+                    </td>
+                    <td ng-if="productSectionCtrl.product_field" class="product-select-td">
+                      <div class="height-20 field-alerts">
+                        <field-symbol-validation field="productSectionCtrl.product_field" model="product" form="inserting_product_form"></field-symbol-validation>
+                      </div>
+                      <div class="input-group full-width">
+                        <select-fk
+                          model="product[productSectionCtrl.product_field.key]"
+                          parent-model="product"
+                          option-change-callback="productSectionCtrl.productSelect(model, product, $parent)"
+                          display-name-variable="product_name"
+                          field="productSectionCtrl.product_field"
+                          api-url="{{productSectionCtrl.product_field.apiUrl}}"
+                          display-property="{{productSectionCtrl.product_field.displayProperty}}"
+                          list="true"
+                          required="true"
+                          disabled="productSectionCtrl.product_field.disabled"
+                          loading="productSectionCtrl.isProductFormulaLocked(product.unique_id)">
+                        </select-fk>
+                        <div class="input-group-btn">
+                          <a class="btn button button-white dropdown-toggle button-square" href ng-click="productSectionCtrl.advancedProductSelectModal(product, $parent)">
+                            <span class="text-action">
+                              <i class="fas fa-search"></i>
+                            </span>
+                          </a>
+                        </div>
+                    </td>
+                    <td
+                      ng-repeat="p_field in productSectionCtrl.section_product_form_map[product.unique_id]"
+                      ng-hide="p_field.hidden || p_field.defaultFormHidden || p_field.disableHidden || p_field.key.includes('part') || p_field.key.includes('_product_product') || productSectionCtrl.section_product_form_hide_map[p_field.key]"
+                      ng-class="{ 'product-text-area': p_field.typeId === 2 || p_field.typeId === 22  }">
+                      <div class="height-20 field-alerts" ng-if="p_field.required || p_field.unique || p_field.internalFormula || p_field.externalFormulaUrl">
+                        <field-symbol-validation field="p_field" model="product" form="inserting_product_form"></field-symbol-validation>
+                      </div>
+                      <div class="input-group full-width">
+                        <div class="form-control input-sm invisible-input" disabled="disabled" ng-show="p_field.formHidden">
+                          <i class="fal fa-eye-slash text-muted"></i>
+                        </div>
+                        <new-field
+                          ng-if="p_field.key.includes('_product_contact_product')"
+                          ng-hide="p_field.formHidden"
+                          field="product.contact_product_field"
+                          model="product"
+                          property="product.contact_product_field.key"
+                          required="product.contact_product_field.required"
+                          disabled="!product.contact_product_field || product.contact_product_field.disabled"
+                          wide="product.contact_product_field.wide"
+                          hide-label="true"
+                          formula-scope="$parent.$parent"
+                          formula-get-allowed-scopes-fn="productSectionCtrl.getAllowedScopes"
+                          formula-resettable-variables="true"
+                          formula-trigger-hide-or-disable="true"
+                          formula-hide-callback-fn="productSectionCtrl.updateFieldsHideMap"
+                          model-change-callback="productSectionCtrl.modelChangeCallback(new_val, old_val, first_trigger, $parent.$parent, false, true, product)"
+                          apply-default-values="productSectionCtrl.apply_default_values"
+                          loading-formula="productSectionCtrl.isProductFormulaLocked(product.unique_id)">
+                        </new-field>
+                        <new-field
+                          ng-if="!p_field.key.includes('_product_contact_product')"
+                          ng-class="{'is-button': p_field.isButton}"
+                          ng-hide="p_field.typeId === 2 || p_field.typeId === 22 || p_field.formHidden"
+                          field="p_field"
+                          model="product"
+                          property="p_field.key"
+                          required="p_field.required"
+                          disabled="p_field.disabled"
+                          wide="p_field.wide"
+                          hide-label="true"
+                          formula-scope="$parent.$parent"
+                          formula-resettable-variables="true"
+                          formula-get-allowed-scopes-fn="productSectionCtrl.getAllowedScopes"
+                          formula-trigger-hide-or-disable="true"
+                          formula-hide-callback-fn="productSectionCtrl.updateFieldsHideMap"
+                          model-change-callback="productSectionCtrl.modelChangeCallback(new_val, old_val, first_trigger)"
+                          loading-formula="productSectionCtrl.isProductFormulaLocked(product.unique_id)">
+                        </new-field>
+                        <a
+                          href
+                          ng-if="p_field.typeId === 2 || p_field.typeId === 22"
+                          ng-hide="p_field.formHidden"
+                          mini-modal
+                          mini-modal-title="Editando {{p_field.label}}"
+                          mini-modal-fields="[p_field]"
+                          mini-modal-model="product"
+                          mini-modal-callback="productSectionCtrl.miniModalFieldEditCallback()"
+                          mini-modal-fields-filtering-fn="productSectionCtrl.miniModalFieldsFiltering(fields)"
+                          mini-modal-width="width-1000"
+                          mini-modal-not-trigger-formula="true"
+                          mini-modal-hide-footer="p_field.typeId === 22"
+                          mini-modal-has-backup-model="p_field.typeId === 2"
+                          block-model-watcher="true"
+                          use-default-modal-structure="true">
+                          <span ng-if="productSectionCtrl.new_sanitize_front && product[p_field.key] && p_field.typeId === 2" ng-bind-html="productSectionCtrl.sanitizeHTML(product[p_field.key]) | to_trusted_text_area"></span>
+                          <span ng-if="!productSectionCtrl.new_sanitize_front && product[p_field.key] && p_field.typeId === 2" ng-bind-html="product[p_field.key] | to_trusted_text_area"></span>
+                          <span class="text-muted" ng-if="product[p_field.key] && p_field.typeId === 22">
+                            Visualizar...
+                          </span>
+                          <span class="text-muted" ng-if="!product[p_field.key]">Adicionar...</span>
+                        </a>
+                        <div class="input-group-btn" ng-if="p_field.key.includes('_product_contact_product')">
+                          <a class="btn button button-white dropdown-toggle button-square" ng-class="{ 'disabled': !product.contact_product_field || product.contact_product_field.disabled }" href
+                            ng-click="productSectionCtrl.advancedProductSelectModal(product, $parent.$parent, null, true)">
+                            <span class="text-action">
+                              <i class="fas fa-search"></i>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a class="button-white button button-full-width button-full-editable-table" ng-class="{ 'forced-no-bottom-border': product.show_parts }" href ng-click="productSectionCtrl.toggleProductParts(product, $index)" ng-if="productSectionCtrl.section_product_parts_forms_objects.length > 0 && product[modelPrefix + '_product_product'][0].product_parts.length > 0">
+                        <span class="font-small" ng-class="{ 'text-muted': !product.show_parts, 'text-regular': product.show_parts }">
+                          Opcionais
+                          ({{productSectionCtrl.selectedProductPartsDisplay(product)}})
+                          <i class="fal dropdown-sign-super-small" ng-class="{ 'fa-angle-down': !product.show_parts, 'fa-angle-up': product.show_parts }"></i>
+                        </span>
+                      </a>
+                      <a class="button-white button button-full-width button-full-editable-table disabled" ng-class="{ 'forced-no-bottom-border': product.show_parts }" href ng-if="productSectionCtrl.section_product_parts_forms_objects.length === 0 || !product[modelPrefix + '_product_product'][0].product_parts || product[modelPrefix + '_product_product'][0].product_parts.length === 0">
+                        <span class="font-small">
+                          Sem opcionais
+                        </span>
+                      </a>
+                    </td>
+                    <td class="width-20">
+                      <a class="button-white button button-full-width button-full-editable-table" href ng-click="productSectionCtrl.duplicateProduct(product)">
+                        <span class="text-action">
+                          <i class="fal fa-clone fixing-fixed-size-button"></i>
+                        </span>
+                      </a>
+                    </td>
+                    <td class="width-20">
+                      <a class="button-white button button-full-width button-full-editable-table" href ng-click="productSectionCtrl.removeProduct($index, product.unique_id)">
+                        <span class="text-action">
+                          <i class="fal fa-trash fixing-fixed-size-button"></i>
+                        </span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr class="options-line" ng-if="product[modelPrefix + '_product_product'][0].product_parts" ng-show="product.show_parts">
+                    <td class="options-empty-cell"></td>
+                    <td colspan="{{productSectionCtrl.section_product_form_length + 3}}">
+                      <new-product-part
+                        index="{{$index}}"
+                        product-index="{{field.key + '_' + sectionIndex + '-' + productIndex}}"
+                        ng-repeat="parts_form_obj in productSectionCtrl.section_product_parts_forms_objects"
+                        parent-product="product"
+                        product-parts="product[modelPrefix + '_product_product'][0].product_parts"
+                        selected-parts="product[modelPrefix + '_product_parts_' + parts_form_obj.field.quickFormProductPartCode]"
+                        section-scope="productSectionCtrl.parent_scope"
+                        document-scope="productSectionCtrl.document_scope"
+                        product-scope="$parent.$parent"
+                        model-prefix="modelPrefix"
+                        parts-form="parts_form_obj.form"
+                        parts-field="parts_form_obj.field"
+                        editing-model="true">
+                      </new-product-part>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="gap-10" ng-if="!productSectionCtrl.section_product_form"></div>
+        <div ng-form name="section_form" class="doc-section-form">
+          <forms
+            model="section"
+            fields="productSectionCtrl.section_form"
+            formula-scoped="productSectionCtrl.parent_scope"
+            form="section_form"
+            is-modal-full-screen="isModalFullScreen"
+            editing-model="editingModel"
+            ignore-default-values="editingModel"></forms>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gap-15 col-sm-12"></div>
+</collapse>

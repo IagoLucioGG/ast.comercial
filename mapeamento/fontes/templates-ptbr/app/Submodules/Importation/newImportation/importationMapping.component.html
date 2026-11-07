@@ -1,0 +1,109 @@
+<div class="wizard-step" wizard-step-content="2">
+  <div class="wrapper">
+    <alert-message
+      ng-if="mappingCtrl.activeMdmModule"
+      status="'alert'"
+      message="'IMPORTATION.MAPPING.MDM_DUPLICATE_DETECTION_ALERT' | translate"
+    ></alert-message>
+    <br ng-if="mappingCtrl.activeMdmModule">
+    <span class="font-thin font-title">Mapeamento de colunas</span>
+    <br>
+    <span class="text-muted">
+      Especifique a qual campo no Ploomes cada uma das suas colunas abaixo está relacionada. Apresentamos apenas as 5 primeiras linhas da planilha importada para referência.
+    </span>
+    <br>
+    <br ng-if="mappingCtrl.warnings.length > 0">
+    <div ng-if="mappingCtrl.activeWorkflowModule && mappingCtrl.entity.Id === 10">
+      <div class="hbox">
+        <aside class="v-middle">
+          <div>
+            <span class="font-semi-big">
+              Importar vínculos de produtos
+            </span>
+            <br>
+            <small class="text-muted">
+              Ative essa opção para habilitar a importação de vínculos entre produtos (produto pai com produto filho).
+              <br>
+              <span class="font-bold">
+                Modificar essa opção irá resetar o mapeamento atual.
+              </span>
+            </small>
+          </div>
+        </aside>
+        <aside class="v-middle">
+          <div class="left-wrapper">
+            <div class="switch">
+              <input
+                class="cmn-toggle cmn-toggle-round-flat"
+                id="cmn-toggle-import-parts"
+                type="checkbox"
+                ng-model="mappingCtrl.import_product_parts"
+                ng-change="mappingCtrl.updateMapping()">
+              <label class="pull-right" for="cmn-toggle-import-parts"></label>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <ul ng-if="mappingCtrl.warnings.length > 0">
+      <li ng-repeat="(warning_key, warning_obj) in mappingCtrl.warnings">
+        <span ng-bind-html="warning_obj.main_description | to_trusted"></span>
+        <br>
+        <span class="text-darkest-neutral text-small" ng-bind-html="warning_obj.sub_description | to_trusted"></span>
+      </li>
+    </ul>
+    <br>
+    <div class="panel b-1 white-content medium-shadow">
+      <div class="side-scroll">
+        <div class="side-scroll-container nowrap">
+          <table class="table table-striped import-table">
+            <thead>
+              <tr>
+                <th class="medium-cell" ng-repeat="column in mappingCtrl.sheetPreview.Columns track by $index">
+                  <select ng-options="entity.Name for entity in mappingCtrl.entities" class="form-control input-sm" ng-model="mappingCtrl.col_mapping[$index].entity" ng-change="mappingCtrl.setEntity(mappingCtrl.col_mapping[$index].entity, $index)">
+                    <option value=""></option>
+                  </select>
+                  <div class="gap-10"></div>
+                  <div class="hbox">
+                    <div style="display: flex; gap: 3px; align-items: center;">
+                       <select ng-options="(field.label || field.key) for field in mappingCtrl.getAvailableFields(mappingCtrl.col_mapping[$index]) track by field.key" class="form-control input-sm" ng-class="{'importation-field-not-selected': mappingCtrl.col_mapping[$index].field === false}" ng-model="mappingCtrl.col_mapping[$index].field" ng-disabled="!mappingCtrl.col_mapping[$index].entity" ng-change="mappingCtrl.selectedField(mappingCtrl.col_mapping[$index])">
+                        </select>
+                      <i
+                        ng-if="mappingCtrl.isMdmDetectionField(mappingCtrl.col_mapping[$index])"
+                        class="far fa-circle-exclamation font-very-small v-middle"
+                        uib-tooltip="Este campo é usado para detectar duplicidade no módulo de Gestão de Dados."
+                        tooltip-placement="top"
+                        tooltip-append-to-body="true"
+                      ></i>
+                    </div>
+                  </div>
+                  <div class="gap-10"></div>
+                  <div class="checkbox mbottom0 height-20">
+                    <label
+                      ng-show="mappingCtrl.col_mapping[$index].field && !mappingCtrl.col_mapping[$index].field.multiple"
+                      uib-tooltip="Todos campos marcados precisam coincidir para o cadastro ser considerado duplicado."
+                      tooltip-placement="top"
+                      tooltip-append-to-body="true"
+                      tooltip-enable="mappingCtrl.isMdmPreviewActive"
+                    >
+                      <input class="mtop2_5" id="optionsRadios1" type="checkbox" name="optionsRadios" value="option1" checked="" ng-model="mappingCtrl.col_mapping[$index].unique" ng-disabled="mappingCtrl.col_mapping[$index].unique_disabled">
+                      <span class="text-transform-none font-small">Detectar duplicado por este campo</span>
+                    </label>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-bold" ng-repeat="column in mappingCtrl.sheetPreview.Columns track by $index">{{::column.Name}}</td>
+              </tr>
+              <tr ng-repeat="row in mappingCtrl.sheetPreview.Rows track by $index">
+                <td ng-repeat="cell in row track by $index">{{::cell.Value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

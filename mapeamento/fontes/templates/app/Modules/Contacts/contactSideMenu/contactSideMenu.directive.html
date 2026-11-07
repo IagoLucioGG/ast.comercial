@@ -1,0 +1,54 @@
+<div class="bottom-side-wrapper">
+  <div class="button full-width button-white-light-border b-1 button-very-big" ng-click="contactSideMenuCtrl.openImportationModal()" ng-if="contactSideMenuCtrl.import_permission" data-cy="{{ contactSideMenuCtrl.state.current.name.includes('producttable') ? 'contact-side-menu-contact-product-import-excel' : 'contact-side-menu-btn-contact-import-excel' }}">
+    <div class="hbox">
+      <aside class="v-middle width-35 text-center">
+        <span>
+          <i class="fal fa-file-excel simple-line-space"></i>
+        </span>
+      </aside>
+      <aside class="text-left">
+        <span class="text-regular semi-big"> {{ (contactSideMenuCtrl.state.current.name.includes('producttable') ? 'CONTACTS.SIDE_MENU.IMPORT_CONTACT_PRODUCTS_FROM_EXCEL' : 'CONTACTS.SIDE_MENU.IMPORT_CONTACTS_FROM_EXCEL') | translate_sentence }}</span>
+      </aside>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="contactSideMenuCtrl.administrator_permission" ui-sref="{{'formconfig.form({formid: ' + contactSideMenuCtrl.contact_form_id + ' })'}}" data-cy="contact-side-menu-btn-contact-form-config">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-pen-square simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'CONTACTS.SIDE_MENU.FORM_CONFIG' | translate }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="button full-width button-white-light-border b-1 semi-big button-very-big" ng-if="contactSideMenuCtrl.tags_permission" ng-click="contactSideMenuCtrl.openTagsModal()" data-cy="contact-side-menu-btn-tag-config">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+            <i class="fal fa-tag simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'CONTACTS.SIDE_MENU.TAG_CONFIG' | translate }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      class="button full-width button-white-light-border b-1 semi-big button-very-big"
+      ng-if="contactSideMenuCtrl.canEditExternalForm"
+      data-cy="contact-side-menu-btn-config-external-forms"
+      ng-click="contactSideMenuCtrl.openExternalFormsModal()">
+      <div class="hbox">
+        <aside class="v-middle width-35 text-center">
+          <i class="fal fa-pen-square simple-line-space"></i>
+        </aside>
+        <aside class="v-middle text-left">
+          <span class="text-regular">{{ 'CONTACTS.SIDE_MENU.CONFIG_EXTERNAL_FORMS' | translate_sentence }}</span>
+        </aside>
+      </div>
+    </div>
+  </div>  
+</div>
